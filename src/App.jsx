@@ -1,122 +1,118 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import React, { useState } from 'react';
+import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { ShopProvider, useShop } from './context/ShopContext';
+import Products from './pages/Products';
+import ProductDetails from './pages/ProductDetails';
+import Checkout from './pages/Checkout';
+import CompareDrawer from './components/CompareDrawer';
+import CartDrawer from './components/CartDrawer';
+import { FiGrid, FiHeart, FiShoppingCart, FiSun, FiMoon } from 'react-icons/fi';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+function AppContent() {
+  const {
+    cart,
+    wishlist,
+    darkMode,
+    toggleTheme
+  } = useShop();
+
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const wishlistCount = wishlist.length;
+
+  const handleWishlistClick = () => {
+    if (wishlist.length === 0) {
+      alert("Your wishlist is empty!");
+      return;
+    }
+    const listNames = wishlist.map(p => `• ${p.name} ($${p.price})`).join('\n');
+    alert(`Your Wishlist Items:\n\n${listNames}`);
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <Router>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col justify-between transition-colors duration-300">
+        
+        {/* Standalone Content Area */}
+        <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
+          <Routes>
+            {/* Product Catalog Listing */}
+            <Route path="/" element={<Products />} />
+            
+            {/* Product Details page */}
+            <Route path="/product/:slug" element={<ProductDetails />} />
 
-      <div className="ticks"></div>
+            {/* Checkout page */}
+            <Route path="/checkout" element={<Checkout />} />
+          </Routes>
+        </main>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {/* Bottom compare widgets */}
+        <CompareDrawer />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {/* Global Cart Drawer */}
+        <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+
+        {/* Floating Utility Menu (Bottom Right Dock) */}
+        <div className="fixed bottom-6 right-6 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-2xl border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-2.5 flex items-center gap-2.5">
+          {/* Catalog Home */}
+          <Link
+            to="/"
+            className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-blue-500 rounded-xl transition-all"
+            title="View Catalog"
+          >
+            <FiGrid className="w-5.5 h-5.5" />
+          </Link>
+
+          {/* Wishlist count */}
+          <button
+            onClick={handleWishlistClick}
+            className="relative p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-500 rounded-xl transition-all cursor-pointer"
+            title="Wishlist"
+          >
+            <FiHeart className="w-5.5 h-5.5" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-black h-4.5 w-4.5 rounded-full flex items-center justify-center border border-white dark:border-slate-900">
+                {wishlistCount}
+              </span>
+            )}
+          </button>
+
+          {/* Shopping Cart count */}
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="relative p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-blue-500 rounded-xl transition-all cursor-pointer"
+            title="Cart"
+          >
+            <FiShoppingCart className="w-5.5 h-5.5" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[10px] font-black h-4.5 w-4.5 rounded-full flex items-center justify-center border border-white dark:border-slate-900">
+                {cartCount}
+              </span>
+            )}
+          </button>
+
+          {/* Light/Dark Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-blue-500 rounded-xl transition-all cursor-pointer"
+            title="Toggle Theme"
+          >
+            {darkMode ? <FiSun className="w-5.5 h-5.5" /> : <FiMoon className="w-5.5 h-5.5" />}
+          </button>
+        </div>
+        
+      </div>
+    </Router>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <ShopProvider>
+      <AppContent />
+    </ShopProvider>
+  );
+}
