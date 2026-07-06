@@ -40,7 +40,7 @@ export default function CartDrawer({ isOpen, onClose }) {
               </div>
               <button
                 onClick={onClose}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-650 dark:hover:text-slate-200"
+                className="p-1 rounded-none text-slate-400 hover:text-slate-650 dark:hover:text-slate-200"
               >
                 <FiX className="w-5 h-5" />
               </button>
@@ -50,7 +50,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
               {cart.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                  <div className="p-6 bg-slate-50 dark:bg-slate-950 text-slate-400 dark:text-slate-650 rounded-full">
+                  <div className="p-6 bg-slate-50 dark:bg-slate-950 text-slate-400 dark:text-slate-650 rounded-none">
                     <FiShoppingBag className="w-12 h-12" />
                   </div>
                   <div className="space-y-1">
@@ -69,7 +69,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                       className="flex gap-4 p-3 bg-slate-100/40 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/40 rounded-none"
                     >
                       {/* Image */}
-                      <div className="h-20 w-20 rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0">
+                      <div className="h-20 w-20 rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0">
                         <img src={product.thumbnail} alt={product.name} className="h-full w-full object-cover" />
                       </div>
 
@@ -86,7 +86,7 @@ export default function CartDrawer({ isOpen, onClose }) {
 
                         <div className="flex items-center justify-between">
                           {/* Qty controls */}
-                          <div className="flex items-center bg-slate-100 dark:bg-slate-850 rounded-lg p-0.5">
+                          <div className="flex items-center bg-slate-100 dark:bg-slate-850 rounded-none p-0.5">
                             <button
                               onClick={() => updateCartQuantity(product.id, quantity - 1)}
                               className="p-1 text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer"
@@ -111,7 +111,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                             </span>
                             <button
                               onClick={() => removeFromCart(product.id)}
-                              className="text-slate-400 hover:text-red-500 p-1 rounded-md transition-colors"
+                              className="text-slate-400 hover:text-red-500 p-1 rounded-none transition-colors"
                             >
                               <FiTrash2 className="w-4 h-4" />
                             </button>
@@ -152,14 +152,14 @@ export default function CartDrawer({ isOpen, onClose }) {
                 <div className="flex gap-2">
                   <button
                     onClick={clearCart}
-                    className="px-4 py-3 border border-slate-200 dark:border-slate-800 text-slate-650 dark:text-slate-350 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-semibold transition-all cursor-pointer"
+                    className="px-4 py-3 border border-slate-200 dark:border-slate-800 text-slate-650 dark:text-slate-350 rounded-none hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-semibold transition-all cursor-pointer"
                   >
                     Clear All
                   </button>
                   <Link
                     to="/checkout"
                     onClick={onClose}
-                    className="flex-1 flex justify-center py-3 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-xl shadow-lg shadow-blue-500/20 hover:scale-[1.02] transition-all cursor-pointer text-center text-sm"
+                    className="flex-1 flex justify-center py-3 bg-blue-600 hover:bg-blue-700 text-white font-extrabold rounded-none shadow-lg shadow-blue-500/20 hover:scale-[1.02] transition-all cursor-pointer text-center text-sm"
                   >
                     Checkout
                   </Link>

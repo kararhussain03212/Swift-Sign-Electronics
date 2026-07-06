@@ -44,7 +44,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
             onClick={() => onQuickView(product)}
             className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-none cursor-pointer"
           >
-            <span className="flex items-center gap-1.5 bg-white text-slate-800 font-bold px-4 py-2 rounded-xl text-sm shadow-lg hover:scale-105 transition-all">
+            <span className="flex items-center gap-1.5 bg-white text-slate-800 font-bold px-4 py-2 rounded-none text-sm shadow-lg hover:scale-105 transition-all">
               <FiEye /> Quick View
             </span>
           </button>
@@ -115,7 +115,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
               {/* Wishlist Button */}
               <button
                 onClick={() => toggleWishlist(product)}
-                className={`p-3 border rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:scale-105 transition-all cursor-pointer ${
+                className={`p-3 border rounded-none hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:scale-105 transition-all cursor-pointer ${
                   inWishlist
                     ? 'border-red-500 bg-red-50 dark:bg-red-950/20 text-red-500'
                     : 'border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400'
@@ -128,7 +128,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
               {/* Compare Button */}
               <button
                 onClick={() => toggleCompare(product)}
-                className={`p-3 border rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:scale-105 transition-all cursor-pointer ${
+                className={`p-3 border rounded-none hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:scale-105 transition-all cursor-pointer ${
                   inCompare
                     ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/20 text-orange-500'
                     : 'border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400'
@@ -141,7 +141,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
               {/* View Details Link */}
               <Link
                 to={`/product/${product.slug}`}
-                className="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-bold transition-all"
+                className="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-none text-sm font-bold transition-all"
               >
                 Details
               </Link>
@@ -150,7 +150,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
               <button
                 disabled={isOutOfStock}
                 onClick={() => addToCart(product)}
-                className={`flex items-center gap-1.5 px-5 py-2.5 font-bold text-sm rounded-xl shadow-md transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-5 py-2.5 font-bold text-sm rounded-none shadow-md transition-all cursor-pointer ${
                   isOutOfStock
                     ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'
                     : 'bg-blue-600 hover:bg-blue-700 text-white hover:scale-102 hover:shadow-lg'
@@ -203,7 +203,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           {/* Wishlist */}
           <button
             onClick={() => toggleWishlist(product)}
-            className={`p-2.5 bg-white dark:bg-slate-850 hover:bg-red-500 dark:hover:bg-red-500 hover:text-white rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 transition-all cursor-pointer ${
+            className={`p-2.5 bg-white dark:bg-slate-850 hover:bg-red-500 dark:hover:bg-red-500 hover:text-white rounded-none shadow-lg border border-slate-100 dark:border-slate-800 transition-all cursor-pointer ${
               inWishlist ? 'text-red-500 bg-red-50 dark:bg-red-950/20' : 'text-slate-600 dark:text-slate-350'
             }`}
             title="Wishlist"
@@ -214,7 +214,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           {/* Compare */}
           <button
             onClick={() => toggleCompare(product)}
-            className={`p-2.5 bg-white dark:bg-slate-850 hover:bg-orange-500 hover:text-white rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 transition-all cursor-pointer ${
+            className={`p-2.5 bg-white dark:bg-slate-850 hover:bg-orange-500 hover:text-white rounded-none shadow-lg border border-slate-100 dark:border-slate-800 transition-all cursor-pointer ${
               inCompare ? 'text-orange-500 bg-orange-50 dark:bg-orange-950/20' : 'text-slate-600 dark:text-slate-350'
             }`}
             title="Compare"
@@ -225,7 +225,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           {/* Quick View */}
           <button
             onClick={() => onQuickView(product)}
-            className="p-2.5 bg-white dark:bg-slate-850 hover:bg-blue-600 hover:text-white text-slate-600 dark:text-slate-350 rounded-xl shadow-lg border border-slate-100 dark:border-slate-800 transition-all cursor-pointer"
+            className="p-2.5 bg-white dark:bg-slate-850 hover:bg-blue-600 hover:text-white text-slate-600 dark:text-slate-350 rounded-none shadow-lg border border-slate-100 dark:border-slate-800 transition-all cursor-pointer"
             title="Quick View"
           >
             <FiEye className="w-4 h-4" />
@@ -284,7 +284,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           <button
             disabled={isOutOfStock}
             onClick={() => addToCart(product)}
-            className={`p-2.5 rounded-xl shadow-md cursor-pointer transition-all flex items-center justify-center ${
+            className={`p-2.5 rounded-none shadow-md cursor-pointer transition-all flex items-center justify-center ${
               isOutOfStock
                 ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'
                 : 'bg-blue-600 hover:bg-blue-750 text-white hover:scale-105 hover:shadow-lg'

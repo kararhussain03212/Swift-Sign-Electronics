@@ -20,7 +20,7 @@ export default function CompareDrawer() {
   return (
     <>
       {/* Bottom Sticky Compare Bar */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[95vw] max-w-2xl bg-slate-900/95 dark:bg-slate-950/95 backdrop-blur-md border border-slate-700/50 rounded-2xl p-4 shadow-2xl flex items-center justify-between text-white gap-4">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[95vw] max-w-2xl bg-slate-900/95 dark:bg-slate-950/95 backdrop-blur-md border border-slate-700/50 rounded-none p-4 shadow-2xl flex items-center justify-between text-white gap-4">
         <div className="flex items-center gap-3 overflow-x-auto py-1 scrollbar-none">
           <div className="flex items-center gap-1.5 text-blue-400">
             <FiActivity className="w-5 h-5 flex-shrink-0 animate-pulse" />
@@ -31,7 +31,7 @@ export default function CompareDrawer() {
             {compareList.map((product) => (
               <div
                 key={product.id}
-                className="relative h-10 w-10 rounded-lg overflow-hidden bg-slate-800 border border-slate-700 flex-shrink-0 group"
+                className="relative h-10 w-10 rounded-none overflow-hidden bg-slate-800 border border-slate-700 flex-shrink-0 group"
               >
                 <img src={product.thumbnail} alt={product.name} className="h-full w-full object-cover" />
                 <button
@@ -49,7 +49,7 @@ export default function CompareDrawer() {
           <button
             onClick={() => setShowModal(true)}
             disabled={compareList.length < 2}
-            className={`px-4 py-2 text-xs md:text-sm font-bold rounded-xl transition-all whitespace-nowrap cursor-pointer ${
+            className={`px-4 py-2 text-xs md:text-sm font-bold rounded-none transition-all whitespace-nowrap cursor-pointer ${
               compareList.length < 2
                 ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
                 : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg'
@@ -67,7 +67,7 @@ export default function CompareDrawer() {
             className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
           >
             <div
-              className="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+              className="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-none overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
             >
               {/* Modal Header */}
               <div className="p-5 md:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
@@ -79,7 +79,7 @@ export default function CompareDrawer() {
                 </div>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-xl transition-colors cursor-pointer"
+                  className="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-none transition-colors cursor-pointer"
                 >
                   <FiX className="w-5 h-5 text-slate-500 dark:text-slate-400" />
                 </button>
@@ -87,7 +87,7 @@ export default function CompareDrawer() {
 
               {/* Modal Comparison Content */}
               <div className="flex-1 overflow-auto p-5 md:p-6">
-                <div className="min-w-[600px] border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden">
+                <div className="min-w-[600px] border border-slate-200 dark:border-slate-800 rounded-none overflow-hidden">
                   <table className="w-full border-collapse text-left text-sm">
                     <thead>
                       <tr className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
@@ -97,7 +97,7 @@ export default function CompareDrawer() {
                           return (
                             <th key={product.id} className="p-4 border-l border-slate-200 dark:border-slate-800 w-1/4">
                               <div className="space-y-2">
-                                <div className="h-24 w-full rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-900">
+                                <div className="h-24 w-full rounded-none overflow-hidden bg-slate-100 dark:bg-slate-900">
                                   <img src={product.thumbnail} alt={product.name} className="h-full w-full object-cover" />
                                 </div>
                                 <h4 className="font-extrabold text-slate-800 dark:text-slate-200 text-sm line-clamp-2">

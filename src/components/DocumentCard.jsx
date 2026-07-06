@@ -39,10 +39,10 @@ export default function DocumentCard({ document }) {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl shadow-xs hover:shadow-md hover:border-blue-500/20 dark:hover:border-blue-400/20 transition-all duration-300">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-none shadow-xs hover:shadow-md hover:border-blue-500/20 dark:hover:border-blue-400/20 transition-all duration-300">
       {/* File Info */}
       <div className="flex items-start gap-3.5">
-        <div className="p-3 bg-slate-50 dark:bg-slate-950 text-blue-600 dark:text-blue-400 rounded-xl">
+        <div className="p-3 bg-slate-50 dark:bg-slate-950 text-blue-600 dark:text-blue-400 rounded-none">
           <FiFileText className="w-6 h-6" />
         </div>
         <div className="space-y-1">
@@ -50,7 +50,7 @@ export default function DocumentCard({ document }) {
             {document.title}
           </h4>
           <div className="flex items-center gap-2 text-xs">
-            <span className={`px-2 py-0.5 rounded-md font-bold text-[10px] uppercase ${getBadgeStyle(document.type)}`}>
+            <span className={`px-2 py-0.5 rounded-none font-bold text-[10px] uppercase ${getBadgeStyle(document.type)}`}>
               {document.type}
             </span>
             <span className="text-slate-400 dark:text-slate-500 font-medium">
@@ -66,7 +66,7 @@ export default function DocumentCard({ document }) {
         <button
           onClick={handlePreview}
           disabled={isPreviewing}
-          className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl text-sm font-semibold transition-all cursor-pointer disabled:opacity-50"
+          className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-none text-sm font-semibold transition-all cursor-pointer disabled:opacity-50"
         >
           <FiEye /> {isPreviewing ? 'Loading...' : 'Preview'}
         </button>
@@ -75,11 +75,11 @@ export default function DocumentCard({ document }) {
         <button
           onClick={handleDownload}
           disabled={isDownloading}
-          className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold shadow-xs hover:shadow-md transition-all cursor-pointer disabled:opacity-80"
+          className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-none text-sm font-bold shadow-xs hover:shadow-md transition-all cursor-pointer disabled:opacity-80"
         >
           {isDownloading ? (
             <>
-              <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-none animate-spin"></span>
               Downloading
             </>
           ) : (

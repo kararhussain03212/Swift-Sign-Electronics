@@ -62,7 +62,7 @@ export default function ProductTabs({ product }) {
 
                 {/* Purpose */}
                 {product.introduction?.purpose && (
-                  <div className="p-5 bg-blue-50/50 dark:bg-blue-950/10 border border-blue-100/50 dark:border-blue-900/10 rounded-2xl">
+                  <div className="p-5 bg-blue-50/50 dark:bg-blue-950/10 border border-blue-100/50 dark:border-blue-900/10 rounded-none">
                     <h4 className="font-bold text-blue-800 dark:text-blue-400 text-sm uppercase tracking-wider mb-2">
                       Product Purpose
                     </h4>

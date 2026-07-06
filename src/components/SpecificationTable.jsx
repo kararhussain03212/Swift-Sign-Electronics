@@ -8,7 +8,7 @@ export default function SpecificationTable({ specifications = {} }) {
   }
 
   return (
-    <div className="overflow-hidden border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs">
+    <div className="overflow-hidden border border-slate-200 dark:border-slate-800 rounded-none shadow-xs">
       <table className="w-full text-left text-sm border-collapse">
         <tbody>
           {specEntries.map(([key, value], index) => (
