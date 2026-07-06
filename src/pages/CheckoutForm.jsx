@@ -116,7 +116,7 @@ export default function CheckoutForm() {
         
         {/* Left Side: Form */}
         <div className="lg:col-span-8">
-          <form id="checkout-form" onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
+          <form id="checkout-form" onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-none shadow-sm overflow-hidden flex flex-col h-full">
             
             {/* Blue Header */}
             <div className="bg-blue-600 text-white px-8 py-6">
@@ -221,7 +221,7 @@ export default function CheckoutForm() {
         <div className="lg:col-span-4 space-y-6">
           
           {/* Order Summary Card */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 rounded-none p-6 border border-slate-200 dark:border-slate-800 shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-lg font-black text-slate-800 dark:text-slate-100">Order Summary</h2>
               <span className="text-blue-500 font-bold text-sm">{cart.length} Item{cart.length !== 1 ? 's' : ''}</span>
@@ -277,7 +277,7 @@ export default function CheckoutForm() {
           </div>
 
           {/* Info Card */}
-          <div className="bg-blue-600 text-white rounded-2xl p-6 shadow-sm">
+          <div className="bg-blue-600 text-white rounded-none p-6 shadow-sm">
             <h3 className="font-bold mb-4">Why shop with us?</h3>
             <ul className="space-y-3 text-sm font-medium text-blue-50">
               <li className="flex items-start gap-2">

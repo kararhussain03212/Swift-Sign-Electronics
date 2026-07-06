@@ -23,10 +23,10 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
   if (viewMode === 'list') {
     return (
       <div
-        className="group relative flex flex-col md:flex-row gap-6 p-5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 hover:border-blue-500/30 dark:hover:border-blue-400/30 rounded-3xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+        className="group relative flex flex-col md:flex-row gap-6 p-5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 hover:border-blue-500/30 dark:hover:border-blue-400/30 rounded-none hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
       >
         {/* Left Side: Product Image & Badges */}
-        <div className="relative w-full md:w-56 h-48 rounded-2xl overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0 flex items-center justify-center">
+        <div className="relative w-full md:w-56 h-48 rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0 flex items-center justify-center">
           <img
             src={product.thumbnail}
             alt={product.name}
@@ -34,7 +34,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
             className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
           />
           {product.discount > 0 && (
-            <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-md z-10">
+            <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-none shadow-md z-10">
               -{product.discount}% OFF
             </span>
           )}
@@ -42,7 +42,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           {/* Quick View Button overlay on Image */}
           <button
             onClick={() => onQuickView(product)}
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl cursor-pointer"
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-none cursor-pointer"
           >
             <span className="flex items-center gap-1.5 bg-white text-slate-800 font-bold px-4 py-2 rounded-xl text-sm shadow-lg hover:scale-105 transition-all">
               <FiEye /> Quick View
@@ -55,7 +55,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           <div className="space-y-2">
             {/* Header info */}
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold px-2.5 py-0.5 rounded-full">
+              <span className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold px-2.5 py-0.5 rounded-none">
                 {product.category}
               </span>
               <span className="text-slate-400 dark:text-slate-500 font-medium">
@@ -89,7 +89,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
                   <FiX /> Out of Stock
                 </span>
               ) : (
-                <span className="flex items-center gap-1 text-emerald-500 font-bold bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-md">
+                <span className="flex items-center gap-1 text-emerald-500 font-bold bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-none">
                   <FiCheck /> In Stock ({product.stock} left)
                 </span>
               )}
@@ -168,10 +168,10 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
   // Grid view (Default)
   return (
     <div
-      className="group relative flex flex-col justify-between bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 hover:border-blue-500/30 dark:hover:border-blue-400/30 rounded-3xl hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
+      className="group relative flex flex-col justify-between bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 hover:border-blue-500/30 dark:hover:border-blue-400/30 rounded-none hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
     >
       {/* Product Image Panel */}
-      <div className="relative w-full h-56 rounded-t-3xl overflow-hidden bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+      <div className="relative w-full h-56 rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
         <img
           src={product.thumbnail}
           alt={product.name}
@@ -182,19 +182,19 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
         {/* Discount & Out of Stock Badges */}
         <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 z-10">
           {product.discount > 0 && (
-            <span className="bg-red-500 text-white text-xs font-black px-2.5 py-1 rounded-full shadow-md">
+            <span className="bg-red-500 text-white text-xs font-black px-2.5 py-1 rounded-none shadow-md">
               -{product.discount}% OFF
             </span>
           )}
           {isOutOfStock && (
-            <span className="bg-slate-900/85 backdrop-blur-xs text-white text-xs font-bold px-2.5 py-1 rounded-full border border-slate-700">
+            <span className="bg-slate-900/85 backdrop-blur-xs text-white text-xs font-bold px-2.5 py-1 rounded-none border border-slate-700">
               SOLD OUT
             </span>
           )}
         </div>
 
         {/* Category Badge */}
-        <span className="absolute top-3.5 right-3.5 bg-blue-50/90 dark:bg-blue-900/85 backdrop-blur-xs text-blue-600 dark:text-blue-400 text-xs font-extrabold px-2.5 py-1 rounded-full shadow-xs">
+        <span className="absolute top-3.5 right-3.5 bg-blue-50/90 dark:bg-blue-900/85 backdrop-blur-xs text-blue-600 dark:text-blue-400 text-xs font-extrabold px-2.5 py-1 rounded-none shadow-xs">
           {product.category}
         </span>
 

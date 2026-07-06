@@ -49,8 +49,8 @@ export default function Checkout() {
           {cart.map(({ product, quantity }) => {
             const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
             return (
-              <div key={product.id} className="flex flex-col sm:flex-row gap-6 p-6 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-[2rem] shadow-sm items-center">
-                <div className="w-24 h-24 bg-slate-50 dark:bg-slate-950 rounded-2xl overflow-hidden flex-shrink-0">
+              <div key={product.id} className="flex flex-col sm:flex-row gap-6 p-6 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-none shadow-sm items-center">
+                <div className="w-24 h-24 bg-slate-50 dark:bg-slate-950 rounded-none overflow-hidden flex-shrink-0">
                   <img src={product.thumbnail} alt={product.name} className="w-full h-full object-cover" />
                 </div>
                 
@@ -95,7 +95,7 @@ export default function Checkout() {
 
         {/* Right Side: Order Summary */}
         <div className="lg:col-span-4">
-          <div className="bg-slate-100/50 dark:bg-slate-900/50 rounded-[2rem] p-6 lg:p-8 border border-slate-200/80 dark:border-slate-800/80 sticky top-6">
+          <div className="bg-slate-100/50 dark:bg-slate-900/50 rounded-none p-6 lg:p-8 border border-slate-200/80 dark:border-slate-800/80 sticky top-6">
             <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6">
               Order Summary
             </h2>

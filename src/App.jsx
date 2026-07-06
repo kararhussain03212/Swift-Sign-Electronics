@@ -96,14 +96,7 @@ function AppContent() {
             )}
           </button>
 
-          {/* Light/Dark Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-blue-500 rounded-xl transition-all cursor-pointer"
-            title="Toggle Theme"
-          >
-            {darkMode ? <FiSun className="w-5.5 h-5.5" /> : <FiMoon className="w-5.5 h-5.5" />}
-          </button>
+
         </div>
         
       </div>

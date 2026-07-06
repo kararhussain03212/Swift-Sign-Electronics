@@ -142,7 +142,7 @@ export default function ProductDetails({ onQuickView }) {
             </div>
 
             {/* Price tag */}
-            <div className="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-2xl flex items-center justify-between border border-slate-200/50 dark:border-slate-800/40">
+            <div className="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-none flex items-center justify-between border border-slate-200/50 dark:border-slate-800/40">
               <div className="space-y-1">
                 <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase">Unit Price</span>
                 <div className="flex items-baseline gap-2.5">
@@ -178,7 +178,7 @@ export default function ProductDetails({ onQuickView }) {
             <div className="flex flex-wrap items-center gap-4">
               {/* Qty Selector */}
               {!isOutOfStock && (
-                <div className="flex items-center bg-slate-100 dark:bg-slate-850 p-1.5 rounded-2xl border border-slate-200/50 dark:border-slate-800/40">
+                <div className="flex items-center bg-slate-100 dark:bg-slate-850 p-1.5 rounded-none border border-slate-200/50 dark:border-slate-800/40">
                   <button
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                     className="p-2 text-slate-500 hover:text-slate-850 dark:hover:text-slate-200 cursor-pointer"
@@ -201,7 +201,7 @@ export default function ProductDetails({ onQuickView }) {
               <button
                 disabled={isOutOfStock}
                 onClick={() => addToCart(product, quantity)}
-                className={`flex-1 min-w-[200px] flex items-center justify-center gap-2 py-4 font-black rounded-2xl shadow-xl transition-all cursor-pointer ${
+                className={`flex-1 min-w-[200px] flex items-center justify-center gap-2 py-4 font-black rounded-none shadow-xl transition-all cursor-pointer ${
                   isOutOfStock
                     ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'
                     : 'bg-blue-600 hover:bg-blue-700 text-white hover:scale-102 shadow-blue-500/20'
@@ -217,7 +217,7 @@ export default function ProductDetails({ onQuickView }) {
                   addToCart(product, quantity);
                   alert("Proceeding to simulated checkout with this item!");
                 }}
-                className={`px-6 py-4 font-black rounded-2xl transition-all cursor-pointer border ${
+                className={`px-6 py-4 font-black rounded-none transition-all cursor-pointer border ${
                   isOutOfStock
                     ? 'border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-650 cursor-not-allowed'
                     : 'border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/10 text-blue-600 dark:text-blue-400'
@@ -269,7 +269,7 @@ export default function ProductDetails({ onQuickView }) {
       </section>
 
       {/* Tabs description section */}
-      <section className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-[2rem] p-6 md:p-10 shadow-xs">
+      <section className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-none p-6 md:p-10 shadow-xs">
         <ProductTabs product={product} />
       </section>
 

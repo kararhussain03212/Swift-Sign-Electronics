@@ -66,7 +66,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                   return (
                     <div
                       key={product.id}
-                      className="flex gap-4 p-3 bg-slate-100/40 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/40 rounded-2xl"
+                      className="flex gap-4 p-3 bg-slate-100/40 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/40 rounded-none"
                     >
                       {/* Image */}
                       <div className="h-20 w-20 rounded-xl overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0">
