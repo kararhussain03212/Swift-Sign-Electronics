@@ -9,11 +9,9 @@ export const products = [
     discount: 15,
     rating: 4.8,
     reviews: 142,
-    thumbnail: "https://images.unsplash.com/photo-1608962714026-af9a77909d38?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_1_soldering_1783336796232.png",
     images: [
-      "https://images.unsplash.com/photo-1608962714026-af9a77909d38?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1610444583731-9e1e2d4d00ae?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_1_soldering_1783336796232.png"
     ],
     description: "High-precision digital soldering station with temperature control, rapid heating, and an ergonomic heat-resistant handle.",
     introduction: {
@@ -84,10 +82,9 @@ export const products = [
     discount: 10,
     rating: 4.7,
     reviews: 86,
-    thumbnail: "https://images.unsplash.com/photo-1610444583731-9e1e2d4d00ae?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_2_hotair_1783336806044.png",
     images: [
-      "https://images.unsplash.com/photo-1610444583731-9e1e2d4d00ae?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1608962714026-af9a77909d38?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_2_hotair_1783336806044.png"
     ],
     description: "Professional closed-loop hot air station for desoldering QFP, SOP, PLCC, and BGA components safely.",
     introduction: {
@@ -151,10 +148,9 @@ export const products = [
     discount: 0,
     rating: 4.9,
     reviews: 312,
-    thumbnail: "https://images.unsplash.com/photo-1544724480-823730aa494b?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_3_cutters_1783336819821.png",
     images: [
-      "https://images.unsplash.com/photo-1544724480-823730aa494b?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_3_cutters_1783336819821.png"
     ],
     description: "Ultra-sharp precision flush cutters for clean, close cutting on copper and soft wires. Crafted with high-grade carbon steel.",
     introduction: {
@@ -215,10 +211,9 @@ export const products = [
     discount: 5,
     rating: 4.8,
     reviews: 215,
-    thumbnail: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_4_multimeter_1783336842806.png",
     images: [
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1601524909162-be87252be298?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_4_multimeter_1783336842806.png"
     ],
     description: "Compact True-RMS multimeter for field service technicians, featuring auto-ranging, voltage detection, and backlit display.",
     introduction: {
@@ -286,10 +281,9 @@ export const products = [
     discount: 8,
     rating: 4.8,
     reviews: 67,
-    thumbnail: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_5_oscilloscope_1783336873444.png",
     images: [
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_5_oscilloscope_1783336873444.png"
     ],
     description: "4-Channel 100MHz digital oscilloscope with large screen, built-in waveform generator, and serial decoding capabilities.",
     introduction: {
@@ -358,10 +352,9 @@ export const products = [
     discount: 12,
     rating: 4.6,
     reviews: 45,
-    thumbnail: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_6_power_supply_1783336885030.png",
     images: [
-      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1601524909162-be87252be298?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_6_power_supply_1783336885030.png"
     ],
     description: "Highly stable, low ripple linear DC power supply with three independent channels, total 195W power, and programmable USB control.",
     introduction: {
@@ -427,10 +420,9 @@ export const products = [
     discount: 10,
     rating: 4.5,
     reviews: 32,
-    thumbnail: "https://images.unsplash.com/photo-1601524909162-be87252be298?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_7_func_gen_1783336896544.png",
     images: [
-      "https://images.unsplash.com/photo-1601524909162-be87252be298?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_7_func_gen_1783336896544.png"
     ],
     description: "30MHz DDS signal generator with dual output channels, 150MSa/s sample rate, and built-in standard and arbitrary waveforms.",
     introduction: {
@@ -497,10 +489,9 @@ export const products = [
     discount: 0,
     rating: 4.9,
     reviews: 18,
-    thumbnail: "https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_8_logic_analyzer_1783336907806.png",
     images: [
-      "https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1562408590-e32931084e23?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_8_logic_analyzer_1783336907806.png"
     ],
     description: "Premium USB-based 16-channel logic analyzer and mixed-signal recorder. Captures digital and analog signals with state-of-the-art software.",
     introduction: {
@@ -566,10 +557,9 @@ export const products = [
     discount: 0,
     rating: 4.7,
     reviews: 58,
-    thumbnail: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_9_clamp_meter_1783336917964.png",
     images: [
-      "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_9_clamp_meter_1783336917964.png"
     ],
     description: "Rugged AC/DC clamp meter for commercial and residential electricians. Measures current up to 400A without breaking the circuit.",
     introduction: {
@@ -635,10 +625,9 @@ export const products = [
     discount: 20,
     rating: 4.7,
     reviews: 184,
-    thumbnail: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_10_robot_kit_1783336926773.png",
     images: [
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1531747118685-ca8fa6e08806?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_10_robot_kit_1783336926773.png"
     ],
     description: "Complete educational DIY robotics kit based on Arduino Uno. Build an obstacle-avoiding, Bluetooth-controlled 2WD vehicle.",
     introduction: {
@@ -708,10 +697,9 @@ export const products = [
     discount: 10,
     rating: 4.6,
     reviews: 56,
-    thumbnail: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_11_iot_kit_1783336935122.png",
     images: [
-      "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_11_iot_kit_1783336935122.png"
     ],
     description: "Explore IoT (Internet of Things) with this ESP32 & Zigbee sensor development kit. Create custom smart home monitors and alerts.",
     introduction: {
@@ -778,10 +766,9 @@ export const products = [
     discount: 15,
     rating: 4.8,
     reviews: 74,
-    thumbnail: "https://images.unsplash.com/photo-1531747118685-ca8fa6e08806?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_12_line_bot_1783336946432.png",
     images: [
-      "https://images.unsplash.com/photo-1531747118685-ca8fa6e08806?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_12_line_bot_1783336946432.png"
     ],
     description: "An infrared sensor-based line tracker robot kit. Learn PID controller logic and calibration procedures.",
     introduction: {
@@ -849,10 +836,9 @@ export const products = [
     discount: 5,
     rating: 4.7,
     reviews: 42,
-    thumbnail: "https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_13_weather_kit_1783336954845.png",
     images: [
-      "https://images.unsplash.com/photo-1563770660941-20978e870e26?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_13_weather_kit_1783336954845.png"
     ],
     description: "Build an internet-connected weather monitoring station with Barometric Pressure, Temp, Humidity, and OLED display.",
     introduction: {
@@ -919,10 +905,9 @@ export const products = [
     discount: 0,
     rating: 4.8,
     reviews: 152,
-    thumbnail: "https://images.unsplash.com/photo-1562408590-e32931084e23?auto=format&fit=crop&w=600&q=80",
+    thumbnail: "/products/prod_14_radio_kit_1783336964305.png",
     images: [
-      "https://images.unsplash.com/photo-1562408590-e32931084e23?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1608962714026-af9a77909d38?auto=format&fit=crop&w=600&q=80"
+      "/products/prod_14_radio_kit_1783336964305.png"
     ],
     description: "Start your soldering journey! Assemble a portable, functional FM radio tuner with digital search and speaker output.",
     introduction: {

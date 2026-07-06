@@ -200,10 +200,7 @@ export default function ProductDetails({ onQuickView }) {
               {/* Add to Cart button */}
               <button
                 disabled={isOutOfStock}
-                onClick={() => {
-                  addToCart(product, quantity);
-                  alert(`${quantity} x "${product.name}" added to cart!`);
-                }}
+                onClick={() => addToCart(product, quantity)}
                 className={`flex-1 min-w-[200px] flex items-center justify-center gap-2 py-4 font-black rounded-2xl shadow-xl transition-all cursor-pointer ${
                   isOutOfStock
                     ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'

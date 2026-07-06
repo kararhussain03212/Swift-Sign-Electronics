@@ -4,6 +4,7 @@ import { ShopProvider, useShop } from './context/ShopContext';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
 import Checkout from './pages/Checkout';
+import CheckoutForm from './pages/CheckoutForm';
 import CompareDrawer from './components/CompareDrawer';
 import CartDrawer from './components/CartDrawer';
 import { FiGrid, FiHeart, FiShoppingCart, FiSun, FiMoon } from 'react-icons/fi';
@@ -44,8 +45,9 @@ function AppContent() {
             {/* Product Details page */}
             <Route path="/product/:slug" element={<ProductDetails />} />
 
-            {/* Checkout page */}
+            {/* Checkout pages */}
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/checkout/details" element={<CheckoutForm />} />
           </Routes>
         </main>
 
