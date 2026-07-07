@@ -13,9 +13,7 @@
   letter-spacing: -0.5px;
 }
 
-.dark .discover-slider-heading {
-  color: #ffffff;
-}
+
 
 .discover-slider-wrapper {
   position: relative;
@@ -61,10 +59,7 @@
   transform: translateY(-6px);
 }
 
-.dark .discover-card:hover {
-  background-color: #1f2028;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
-}
+
 
 .discover-card-info {
   display: flex;
@@ -92,9 +87,7 @@
   overflow: hidden;
 }
 
-.dark .discover-card-title {
-  color: #f1f5f9;
-}
+
 
 .discover-card-metric {
   font-size: 12px;
@@ -122,11 +115,7 @@
   transition: transform 0.3s ease;
 }
 
-.dark .discover-card-image {
-  /* Prevent multiply blending issues in dark mode */
-  mix-blend-mode: normal;
-  border-radius: 6px;
-}
+
 
 .discover-card:hover .discover-card-image {
   transform: scale(1.05);
@@ -152,12 +141,7 @@
   transition: all 0.2s ease;
 }
 
-.dark .discover-scroll-btn {
-  background-color: #1f2028;
-  border-color: #334155;
-  color: #94a3b8;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
+
 
 .discover-scroll-btn:hover {
   background-color: #f8fafc;
@@ -166,11 +150,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.dark .discover-scroll-btn:hover {
-  background-color: #334155;
-  color: #ffffff;
-  border-color: #ffffff;
-}
+
 
 .discover-scroll-btn.left {
   left: -20px;

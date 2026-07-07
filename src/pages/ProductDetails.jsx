@@ -87,10 +87,10 @@ export default function ProductDetails({ onQuickView }) {
     <div className="max-w-6xl mx-auto px-4 lg:px-8 py-10 min-h-screen space-y-16 text-left">
       
       {/* Breadcrumbs */}
-      <div className="text-sm font-semibold text-slate-400 dark:text-slate-500">
+      <div className="text-sm font-semibold text-slate-400">
         <Link to="/" className="hover:text-blue-500 transition-colors">Catalog</Link>
         <span className="mx-2">/</span>
-        <span className="text-slate-500 dark:text-slate-450">{product.category}</span>
+        <span className="text-slate-500">{product.category}</span>
         <span className="mx-2">/</span>
         <span className="text-slate-700 text-slate-700 line-clamp-1 inline-block align-bottom max-w-xs">{product.name}</span>
       </div>
@@ -109,15 +109,15 @@ export default function ProductDetails({ onQuickView }) {
             
             {/* Tag/Brand Header */}
             <div className="flex flex-wrap items-center gap-3">
-              <span className="bg-blue-55/80 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-black px-3 py-1 rounded-none uppercase">
+              <span className="bg-blue-55/80 text-blue-600 text-xs font-black px-3 py-1 rounded-none uppercase">
                 {product.category}
               </span>
               <span className="text-sm text-slate-400 font-bold uppercase tracking-wider">
-                Brand: <strong className="text-slate-700 dark:text-slate-350">{product.brand}</strong>
+                Brand: <strong className="text-slate-700">{product.brand}</strong>
               </span>
-              <span className="text-slate-300 dark:text-slate-800">|</span>
+              <span className="text-slate-300">|</span>
               <span className="text-sm text-slate-400 font-medium">
-                SKU: <strong className="text-slate-700 dark:text-slate-300">{product.SKU}</strong>
+                SKU: <strong className="text-slate-700">{product.SKU}</strong>
               </span>
             </div>
 
@@ -129,9 +129,9 @@ export default function ProductDetails({ onQuickView }) {
             {/* Rating Summary link */}
             <div className="flex items-center gap-4">
               <Rating value={product.rating} reviewsCount={product.reviews} />
-              <span className="text-slate-300 dark:text-slate-800">|</span>
+              <span className="text-slate-300">|</span>
               {isOutOfStock ? (
-                <span className="bg-red-50 dark:bg-red-950/20 text-red-500 text-xs font-bold px-2.5 py-0.5 rounded-none">
+                <span className="bg-red-50 text-red-500 text-xs font-bold px-2.5 py-0.5 rounded-none">
                   Out of Stock
                 </span>
               ) : (
@@ -144,7 +144,7 @@ export default function ProductDetails({ onQuickView }) {
             {/* Price tag */}
             <div className="p-4 bg-slate-50 bg-slate-100/50 rounded-none flex items-center justify-between border border-slate-200/50 border-slate-200/40">
               <div className="space-y-1">
-                <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase">Unit Price</span>
+                <span className="text-xs font-bold text-slate-400 uppercase">Unit Price</span>
                 <div className="flex items-baseline gap-2.5">
                   <span className="text-2xl font-extrabold text-slate-800">
                     ${discountedPrice.toFixed(2)}
@@ -178,19 +178,19 @@ export default function ProductDetails({ onQuickView }) {
             <div className="flex flex-wrap items-center gap-4">
               {/* Qty Selector */}
               {!isOutOfStock && (
-                <div className="flex items-center bg-slate-100 dark:bg-slate-850 p-1 rounded-none border border-slate-200/50 border-slate-200/40">
+                <div className="flex items-center bg-slate-100 p-1 rounded-none border border-slate-200/50 border-slate-200/40">
                   <button
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="p-1.5 text-slate-500 hover:text-slate-850 dark:hover:text-slate-200 cursor-pointer"
+                    className="p-1.5 text-slate-500 hover:text-slate-850 cursor-pointer"
                   >
                     <FiMinus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="px-3 font-bold text-slate-700 dark:text-slate-300 text-sm">
+                  <span className="px-3 font-bold text-slate-700 text-sm">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
-                    className="p-1.5 text-slate-500 hover:text-slate-850 dark:hover:text-slate-200 cursor-pointer"
+                    className="p-1.5 text-slate-500 hover:text-slate-850 cursor-pointer"
                   >
                     <FiPlus className="w-3.5 h-3.5" />
                   </button>
@@ -203,7 +203,7 @@ export default function ProductDetails({ onQuickView }) {
                 onClick={() => addToCart(product, quantity)}
                 className={`flex-1 min-w-[150px] flex items-center justify-center gap-1.5 py-2.5 text-sm font-bold rounded-none shadow-md transition-all cursor-pointer ${
                   isOutOfStock
-                    ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'
+                    ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
                     : 'bg-blue-600 hover:bg-blue-700 text-white hover:scale-102 shadow-blue-500/20'
                 }`}
               >
@@ -219,8 +219,8 @@ export default function ProductDetails({ onQuickView }) {
                 }}
                 className={`px-5 py-2.5 text-sm font-bold rounded-none transition-all cursor-pointer border ${
                   isOutOfStock
-                    ? 'border-slate-200 border-slate-200 text-slate-400 dark:text-slate-650 cursor-not-allowed'
-                    : 'border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/10 text-blue-600 dark:text-blue-400'
+                    ? 'border-slate-200 border-slate-200 text-slate-400 cursor-not-allowed'
+                    : 'border-blue-600 hover:bg-blue-50 text-blue-600'
                 }`}
               >
                 Buy Now
@@ -239,7 +239,7 @@ export default function ProductDetails({ onQuickView }) {
                 <FiHeart className={isAlreadyInWishlist ? 'fill-current' : ''} />
                 {isAlreadyInWishlist ? 'Saved in Wishlist' : 'Add to Wishlist'}
               </button>
-              <span className="text-slate-300 dark:text-slate-800">|</span>
+              <span className="text-slate-300">|</span>
 
               {/* Compare */}
               <button
@@ -251,7 +251,7 @@ export default function ProductDetails({ onQuickView }) {
                 <FiActivity />
                 {isAlreadyInCompare ? 'Added in Compare' : 'Add to Compare'}
               </button>
-              <span className="text-slate-300 dark:text-slate-800">|</span>
+              <span className="text-slate-300">|</span>
 
               {/* Share */}
               <button
@@ -281,7 +281,7 @@ export default function ProductDetails({ onQuickView }) {
           Frequently Asked Questions
         </h3>
         
-        <div className="border border-slate-200 border-slate-200 rounded-none overflow-hidden bg-white bg-white shadow-xs divide-y divide-slate-100 dark:divide-slate-800">
+        <div className="border border-slate-200 border-slate-200 rounded-none overflow-hidden bg-white bg-white shadow-xs divide-y divide-slate-100">
           {[
             { q: "Is this component certified for industrial application?", a: "Yes, this component matches industrial performance targets and is fully ESD-safe (Electrostatic Discharge protected) where noted in the specifications sheet." },
             { q: "Where can I find drivers or software libraries for this device?", a: "You can find downloadable programming codes, MQTT server templates, and pinout datasheets under the 'Documents' tab on this page." },

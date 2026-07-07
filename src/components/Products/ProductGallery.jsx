@@ -70,7 +70,7 @@ export default function ProductGallery({ images = [] }) {
         ref={containerRef}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
-        className="relative aspect-square w-full rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800/80 flex items-center justify-center cursor-crosshair group"
+        className="relative aspect-square w-full rounded-none overflow-hidden bg-slate-50 border border-slate-200/80 flex items-center justify-center cursor-crosshair group"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
@@ -82,7 +82,7 @@ export default function ProductGallery({ images = [] }) {
 
         {/* Hover zoom panel overlay (Desktop only) */}
         <div
-          className="hidden md:block absolute inset-0 pointer-events-none z-10 bg-no-repeat bg-cover border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 transition-opacity duration-150"
+          className="hidden md:block absolute inset-0 pointer-events-none z-10 bg-no-repeat bg-cover border border-slate-300 bg-white transition-opacity duration-150"
           style={{
             ...zoomStyle,
             backgroundSize: '200%',
@@ -92,7 +92,7 @@ export default function ProductGallery({ images = [] }) {
         {/* Action icons */}
         <button
           onClick={() => setIsFullscreen(true)}
-          className="absolute top-4 right-4 p-3 bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 backdrop-blur-xs text-slate-700 dark:text-slate-200 rounded-none shadow-lg hover:scale-105 transition-all opacity-0 group-hover:opacity-100 duration-300 cursor-pointer"
+          className="absolute top-4 right-4 p-3 bg-white/80 hover:bg-white backdrop-blur-xs text-slate-700 rounded-none shadow-lg hover:scale-105 transition-all opacity-0 group-hover:opacity-100 duration-300 cursor-pointer"
           title="Fullscreen View"
         >
           <FiMaximize2 className="w-5 h-5" />
@@ -106,7 +106,7 @@ export default function ProductGallery({ images = [] }) {
                 e.stopPropagation();
                 handlePrev();
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/70 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900 backdrop-blur-xs text-slate-700 dark:text-slate-350 rounded-none shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20"
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/70 hover:bg-white backdrop-blur-xs text-slate-700 rounded-none shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20"
             >
               <FiChevronLeft className="w-5 h-5" />
             </button>
@@ -115,7 +115,7 @@ export default function ProductGallery({ images = [] }) {
                 e.stopPropagation();
                 handleNext();
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/70 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900 backdrop-blur-xs text-slate-700 dark:text-slate-350 rounded-none shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20"
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/70 hover:bg-white backdrop-blur-xs text-slate-700 rounded-none shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20"
             >
               <FiChevronRight className="w-5 h-5" />
             </button>
@@ -135,10 +135,10 @@ export default function ProductGallery({ images = [] }) {
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`relative h-20 w-20 rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0 border-2 cursor-pointer transition-all ${
+              className={`relative h-20 w-20 rounded-none overflow-hidden bg-slate-50 flex-shrink-0 border-2 cursor-pointer transition-all ${
                 activeIndex === index
                   ? 'border-blue-500 shadow-md ring-2 ring-blue-500/20'
-                  : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600'
+                  : 'border-slate-200 hover:border-slate-400'
               }`}
             >
               <img
