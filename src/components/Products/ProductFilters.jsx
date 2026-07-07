@@ -68,7 +68,7 @@ export default function ProductFilters({
     filters.inStockOnly ||
     filters.minRating > 0;
 
-  const FilterSections = () => (
+  const renderFilterSections = () => (
     <div className="space-y-6">
       {/* Active Filters Header */}
       <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
@@ -208,7 +208,7 @@ export default function ProductFilters({
     <div>
       {/* Desktop Filter Sidebar Container */}
       <div className="hidden lg:block w-64 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-none p-6 shadow-sm sticky top-24">
-        <FilterSections />
+        {renderFilterSections()}
       </div>
 
       {/* Mobile Sticky Control Bar */}
@@ -288,7 +288,7 @@ export default function ProductFilters({
         </div>
 
         <div className="flex-1 overflow-y-auto pb-6">
-          <FilterSections />
+          {renderFilterSections()}
         </div>
 
         <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-4 mt-auto">

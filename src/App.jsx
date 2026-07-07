@@ -12,11 +12,7 @@ import HeroSlider from './components/Home/HeroSlider';
 import Blogs from './pages/Home';
 import CompareDrawer from './components/Products/CompareDrawer';
 import QuickViewModal from './components/Products/QuickViewModal';
-import Account from './pages/Account';
-import Dashboard from './pages/Dashboard';
-import AddProject from './pages/AddProject';
-import Footer from './components/Layout/Footer';
-import Preloader from './components/Layout/Preloader';
+import Footer from './components/Footer';
 import './App.css';
 
 const DEFAULT_PROJECTS = [
@@ -467,34 +463,6 @@ function App() {
         return <Checkout />;
       case 'checkout-details':
         return <CheckoutForm />;
-      case 'account':
-        return <Account onLoginSuccess={handleLoginSuccess} initialIsLogin={accountInitialIsLogin} />;
-      case 'dashboard':
-        return (
-          <Dashboard 
-            user={currentUser} 
-            onLogout={handleLogout} 
-            onLoginSuccess={handleLoginSuccess} 
-            drafts={draftsList}
-            wishlistItems={unifiedWishlist}
-          />
-        );
-      case 'add-project':
-        return (
-          <AddProject 
-            currentUser={currentUser} 
-            onRedirectToLogin={() => {
-              setAccountInitialIsLogin(true);
-              setActiveTab('account');
-            }} 
-            onAddProject={handlePublishProject}
-            onSaveDraft={handleSaveDraft}
-            onPreview={(proj) => {
-              setActiveTab('home');
-              handleSetSelectedBlog(proj);
-            }}
-          />
-        );
       case 'home':
       default:
         return (
@@ -522,10 +490,8 @@ function App() {
         );
     }
   };
-
   return (
     <>
-      <Preloader />
       <div className="app-container">
         {/* 1. Banner */}
         <Banner />
@@ -534,15 +500,7 @@ function App() {
         <Navbar 
           activeTab={activeTab} 
           onTabChange={(tab) => {
-            if (tab === 'account-login') {
-              setAccountInitialIsLogin(true);
-              setActiveTab('account');
-              navigate('/');
-            } else if (tab === 'account-signup') {
-              setAccountInitialIsLogin(false);
-              setActiveTab('account');
-              navigate('/');
-            } else if (tab === 'blogs') {
+            if (tab === 'blogs') {
               setActiveTab('home');
               setSelectedBlog(null);
               navigate('/');
@@ -612,7 +570,7 @@ function App() {
         {showScrollTop && (
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-[#84cc16] text-white shadow-[0_4px_14px_rgba(132,204,22,0.4)] hover:bg-[#65a30d] hover:scale-110 hover:-translate-y-1 transition-all cursor-pointer flex items-center justify-center border-2 border-white/20"
+            className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-[#0fafb8] text-white shadow-[0_4px_14px_rgba(15,175,184,0.4)] hover:bg-[#0a7981] hover:scale-110 hover:-translate-y-1 transition-all cursor-pointer flex items-center justify-center border-2 border-white/20"
             aria-label="Scroll to top"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -1,16 +1,24 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { FiCpu, FiGrid, FiList, FiChevronDown, FiAlertCircle, FiSettings } from 'react-icons/fi';
+import React, { useState, useMemo } from 'react';
+import { FiGrid, FiList, FiChevronDown, FiAlertCircle } from 'react-icons/fi';
 import { products } from '../data/products';
 import ProductCard from '../components/Products/ProductCard';
 import SearchBar from '../components/Products/SearchBar';
 import Pagination from '../components/Products/Pagination';
 import QuickViewModal from '../components/Products/QuickViewModal';
 
+const maxPrice = (() => {
+  let highestPrice = 0;
+  products.forEach(p => {
+    if (p.price > highestPrice) highestPrice = p.price;
+  });
+  return Math.ceil(highestPrice);
+})();
+
 export default function Products() {
   const [filters, setFilters] = useState({
     categories: [],
     brands: [],
-    priceRange: [0, 500],
+    priceRange: [0, maxPrice],
     inStockOnly: false,
     minRating: 0,
     search: ''
@@ -26,30 +34,6 @@ export default function Products() {
     setFilters(prev => ({ ...prev, search: val }));
     setCurrentPage(1);
   };
-
-  // Derive unique brands and categories for filter options
-  const { availableBrands, availableCategories, maxPrice } = useMemo(() => {
-    const brands = new Set();
-    const categories = new Set();
-    let highestPrice = 0;
-
-    products.forEach(p => {
-      if (p.brand) brands.add(p.brand);
-      if (p.category) categories.add(p.category);
-      if (p.price > highestPrice) highestPrice = p.price;
-    });
-
-    return {
-      availableBrands: Array.from(brands),
-      availableCategories: Array.from(categories),
-      maxPrice: Math.ceil(highestPrice)
-    };
-  }, []);
-
-  // Set initial max price in filters
-  useEffect(() => {
-    setFilters(prev => ({ ...prev, priceRange: [0, maxPrice] }));
-  }, [maxPrice]);
 
   // Filtering Logic
   const filteredProducts = useMemo(() => {
@@ -94,7 +78,7 @@ export default function Products() {
 
       return true;
     });
-  }, [filters, maxPrice]);
+  }, [filters]);
 
   // Sorting Logic
   const sortedProducts = useMemo(() => {

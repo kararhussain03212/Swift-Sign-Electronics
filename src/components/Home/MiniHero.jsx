@@ -12,7 +12,7 @@ export default function MiniHero({ title, subtitle }) {
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-[#09090b]/40 pointer-events-none z-0"></div>
       
       <div className="max-w-4xl mx-auto relative z-10 text-white flex flex-col items-center justify-center">
-        <h1 className="text-xl md:text-2xl font-extrabold uppercase tracking-widest text-[#84cc16] mb-1">
+        <h1 className="text-xl md:text-2xl font-extrabold uppercase tracking-widest text-[#0fafb8] mb-1">
           {title}
         </h1>
         <p className="text-[10px] md:text-xs text-gray-300 font-bold max-w-xl mx-auto tracking-wide">

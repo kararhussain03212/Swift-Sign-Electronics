@@ -189,7 +189,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
             <button 
               type="button"
               onClick={onRedirectToLogin}
-              className="px-6 py-3 bg-[#84cc16] hover:bg-[#f7b500] text-white text-sm font-bold rounded shadow-sm transition cursor-pointer mt-2"
+              className="px-6 py-3 bg-[#0fafb8] hover:bg-[#0a7981] text-white text-sm font-bold rounded shadow-sm transition cursor-pointer mt-2"
             >
               Go to Account Page
             </button>
@@ -214,7 +214,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
         
         {isSuccess && (
           <div className="fixed top-24 right-6 bg-black text-white px-5 py-3.5 rounded shadow-2xl font-bold z-50 flex items-center gap-3 animate-bounce">
-            <CheckCircle className="h-5 w-5 text-[#84cc16]" />
+            <CheckCircle className="h-5 w-5 text-[#0fafb8]" />
             <span>Project published successfully! Redirecting...</span>
           </div>
         )}
@@ -291,7 +291,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
               localStorage.setItem('swift-sign-preview-project', JSON.stringify(previewProj));
               window.open(window.location.origin + window.location.pathname + '#preview', '_blank');
             }}
-            className="text-white bg-[#84cc16] hover:bg-[#f7b500] font-bold text-xs px-6 py-2 rounded transition cursor-pointer uppercase tracking-wide"
+            className="text-white bg-[#0fafb8] hover:bg-[#073b45] font-bold text-xs px-6 py-2 rounded transition cursor-pointer uppercase tracking-wide"
           >
             Preview
           </button>
@@ -367,7 +367,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
             <SectionCard id="section-team" title="The Team" hasCheckbox checkboxLabel="I'm not this project's author" checkboxState={notAuthor} setCheckboxState={setNotAuthor}>
               {!notAuthor && currentUser && (
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-10 h-10 rounded-full bg-[#84cc16] flex items-center justify-center text-white font-bold text-lg">
+                  <div className="w-10 h-10 rounded-full bg-[#0fafb8] flex items-center justify-center text-white font-bold text-lg">
                     {currentUser.username.charAt(0).toUpperCase()}
                   </div>
                   <span className="text-sm font-medium text-black">{currentUser.username} <span className="text-gray-400">(Author)</span></span>
@@ -458,10 +458,10 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Write your project details here. Markdown is supported."
-                    className="w-full h-64 border border-[#84cc16] focus:ring-1 focus:ring-[#84cc16] rounded p-4 text-sm font-medium outline-none transition-shadow mb-3 bg-white"
+                    className="w-full h-64 border border-[#0fafb8] focus:ring-1 focus:ring-[#0fafb8] rounded p-4 text-sm font-medium outline-none transition-shadow mb-3 bg-white"
                   />
                   <div className="flex gap-2">
-                    <button type="button" onClick={() => setShowDescInput(false)} className="bg-[#84cc16] hover:bg-[#f7b500] transition text-white px-6 py-2 rounded text-sm font-bold cursor-pointer">Done Editing</button>
+                    <button type="button" onClick={() => setShowDescInput(false)} className="bg-[#0fafb8] hover:bg-[#073b45] transition text-white px-6 py-2 rounded text-sm font-bold cursor-pointer">Done Editing</button>
                   </div>
                 </div>
               ) : (
@@ -481,7 +481,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
                     <select 
                       value={codeLang} 
                       onChange={(e) => setCodeLang(e.target.value)}
-                      className="border-b border-gray-300 bg-transparent py-2 text-sm font-bold outline-none focus:border-[#84cc16] cursor-pointer"
+                      className="border-b border-gray-300 bg-transparent py-2 text-sm font-bold outline-none focus:border-[#0fafb8] cursor-pointer"
                     >
                       <option value="C++">C/C++ (Arduino)</option>
                       <option value="Python">Python</option>
@@ -490,14 +490,14 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
                   </div>
                   
                   <div className="flex flex-wrap gap-8 mb-6 text-sm font-medium text-gray-600">
-                    <label className="flex items-center gap-2 cursor-pointer hover:text-[#84cc16] transition">
-                      <input type="radio" className="accent-[#84cc16] w-4 h-4" checked={codeType === 'text'} onChange={() => setCodeType('text')} /> Write Directly
+                    <label className="flex items-center gap-2 cursor-pointer hover:text-[#0fafb8] transition">
+                      <input type="radio" className="accent-[#0fafb8] w-4 h-4" checked={codeType === 'text'} onChange={() => setCodeType('text')} /> Write Directly
                     </label>
-                    <label className="flex items-center gap-2 cursor-pointer hover:text-[#84cc16] transition">
-                      <input type="radio" className="accent-[#84cc16] w-4 h-4" checked={codeType === 'file'} onChange={() => setCodeType('file')} /> Upload File (.ino)
+                    <label className="flex items-center gap-2 cursor-pointer hover:text-[#0fafb8] transition">
+                      <input type="radio" className="accent-[#0fafb8] w-4 h-4" checked={codeType === 'file'} onChange={() => setCodeType('file')} /> Upload File (.ino)
                     </label>
-                    <label className="flex items-center gap-2 cursor-pointer hover:text-[#84cc16] transition">
-                      <input type="radio" className="accent-[#84cc16] w-4 h-4" checked={codeType === 'zip'} onChange={() => setCodeType('zip')} /> Upload ZIP
+                    <label className="flex items-center gap-2 cursor-pointer hover:text-[#0fafb8] transition">
+                      <input type="radio" className="accent-[#0fafb8] w-4 h-4" checked={codeType === 'zip'} onChange={() => setCodeType('zip')} /> Upload ZIP
                     </label>
                   </div>
 
@@ -506,7 +506,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
                       value={codeContent}
                       onChange={(e) => setCodeContent(e.target.value)}
                       placeholder={`// Write your ${codeLang} code here...\nvoid setup() {\n\n}\n\nvoid loop() {\n\n}`}
-                      className="w-full h-64 border border-[#84cc16] rounded p-5 font-mono text-xs bg-[#f8f9fa] text-gray-800 outline-none focus:ring-1 focus:ring-[#84cc16] mb-5"
+                      className="w-full h-64 border border-[#0fafb8] rounded p-5 font-mono text-xs bg-[#f8f9fa] text-gray-800 outline-none focus:ring-1 focus:ring-[#0fafb8] mb-5"
                     />
                   ) : (
                     <div className="mb-5">
@@ -522,7 +522,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
 
                   <div className="flex gap-2">
                     {codeType === 'text' && (
-                      <button type="button" onClick={() => setShowCodeInput(false)} className="bg-[#84cc16] hover:bg-[#f7b500] text-white px-6 py-2 rounded text-sm font-bold cursor-pointer transition">Save Code</button>
+                      <button type="button" onClick={() => setShowCodeInput(false)} className="bg-[#0fafb8] hover:bg-[#073b45] text-white px-6 py-2 rounded text-sm font-bold cursor-pointer transition">Save Code</button>
                     )}
                     <button type="button" onClick={() => setShowCodeInput(false)} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded text-sm font-bold cursor-pointer transition">Cancel</button>
                   </div>
@@ -530,7 +530,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
               ) : (
                 <>
                   {codeType === 'text' && codeContent && <pre className="mb-4 text-xs bg-[#f8f9fa] text-gray-800 p-5 rounded border border-gray-200 overflow-x-auto font-mono">{codeContent}</pre>}
-                  {codeType !== 'text' && codeFile && <div className="mb-4 p-4 border border-gray-200 rounded flex items-center"><p className="text-sm text-gray-700 font-medium flex items-center gap-3"><Upload className="w-5 h-5 text-[#84cc16]"/> {codeFile}</p></div>}
+                  {codeType !== 'text' && codeFile && <div className="mb-4 p-4 border border-gray-200 rounded flex items-center"><p className="text-sm text-gray-700 font-medium flex items-center gap-3"><Upload className="w-5 h-5 text-[#0fafb8]"/> {codeFile}</p></div>}
                   <DashedButton onClick={() => setShowCodeInput(true)} label={codeContent || codeFile ? "Edit code" : "Add a link or embed code"} />
                 </>
               )}
@@ -540,7 +540,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
             <SectionCard id="section-app" title="Arduino App Lab" hasCheckbox checkboxLabel="No Arduino App to add in this project" checkboxState={noApp} setCheckboxState={setNoApp}>
               {!noApp && (
                 <>
-                  {appLabFile && <p className="mb-4 text-sm font-medium text-gray-700 flex items-center gap-3 border border-gray-200 p-4 rounded"><Upload className="w-5 h-5 text-[#84cc16]"/> {appLabFile}</p>}
+                  {appLabFile && <p className="mb-4 text-sm font-medium text-gray-700 flex items-center gap-3 border border-gray-200 p-4 rounded"><Upload className="w-5 h-5 text-[#0fafb8]"/> {appLabFile}</p>}
                   {showAppInput ? (
                     <div className="w-full flex flex-col gap-4 animate-in fade-in duration-200">
                       <StyledUploadZone 
@@ -591,7 +591,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
             <SectionCard id="section-docs" title="Documentation" hasCheckbox checkboxLabel="No documentation to add" checkboxState={noDocs} setCheckboxState={setNoDocs}>
               {!noDocs && (
                 <>
-                  {documentation && <a href={documentation} target="_blank" rel="noreferrer" className="mb-4 text-sm font-medium text-[#84cc16] hover:underline block border border-gray-200 p-4 rounded">{documentation}</a>}
+                  {documentation && <a href={documentation} target="_blank" rel="noreferrer" className="mb-4 text-sm font-medium text-[#0fafb8] hover:underline block border border-gray-200 p-4 rounded">{documentation}</a>}
                   {showDocInput ? (
                     <div className="w-full flex gap-3 animate-in fade-in duration-200">
                       <input 
@@ -599,9 +599,9 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
                         value={documentation}
                         onChange={(e) => setDocumentation(e.target.value)}
                         placeholder="https://docs.example.com"
-                        className="flex-1 border border-[#84cc16] rounded px-4 py-2 text-sm font-medium outline-none text-black focus:ring-1 focus:ring-[#84cc16]"
+                        className="flex-1 border border-[#0fafb8] rounded px-4 py-2 text-sm font-medium outline-none text-black focus:ring-1 focus:ring-[#0fafb8]"
                       />
-                      <button type="button" onClick={() => setShowDocInput(false)} className="bg-[#84cc16] hover:bg-[#f7b500] transition text-white px-6 rounded text-sm font-bold cursor-pointer">Save URL</button>
+                      <button type="button" onClick={() => setShowDocInput(false)} className="bg-[#0fafb8] hover:bg-[#073b45] transition text-white px-6 rounded text-sm font-bold cursor-pointer">Save URL</button>
                     </div>
                   ) : (
                     <DashedButton onClick={() => setShowDocInput(true)} label="Add a link or embed" />
@@ -620,7 +620,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
                   <p className="text-sm text-gray-500 mb-3 leading-relaxed">
                     Add your content in these sections or bypass them using their checkboxes to publish.
                   </p>
-                  <a href="#/" onClick={(e) => e.preventDefault()} className="text-xs font-bold text-[#84cc16] hover:underline uppercase tracking-wider">Check content guidelines</a>
+                  <a href="#/" onClick={(e) => e.preventDefault()} className="text-xs font-bold text-[#0fafb8] hover:underline uppercase tracking-wider">Check content guidelines</a>
                 </div>
                 
                 <div className="px-4 py-2">
@@ -643,7 +643,7 @@ export default function AddProject({ currentUser, onRedirectToLogin, onAddProjec
                 disabled={!canPublish}
                 className={`w-full py-4 rounded font-bold text-sm uppercase tracking-wider transition
                   ${canPublish 
-                    ? 'bg-[#84cc16] hover:bg-[#f7b500] text-white cursor-pointer' 
+                    ? 'bg-[#0fafb8] hover:bg-[#073b45] text-white cursor-pointer' 
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
               >
@@ -677,7 +677,7 @@ const SectionCard = ({ id, title, children, hasCheckbox, checkboxLabel, checkbox
         <label className="flex items-center gap-2 text-sm text-gray-500 cursor-pointer absolute right-8 top-8 hover:text-black transition select-none">
           <input 
             type="checkbox" 
-            className="rounded-sm border-gray-300 accent-[#84cc16] w-4 h-4"
+            className="rounded-sm border-gray-300 accent-[#0fafb8] w-4 h-4"
             checked={checkboxState}
             onChange={(e) => setCheckboxState(e.target.checked)}
           />
@@ -693,14 +693,14 @@ const DashedButton = ({ onClick, label }) => (
   <button 
     type="button"
     onClick={onClick}
-    className="w-full py-5 border-2 border-dashed border-gray-200 rounded hover:bg-gray-50 hover:border-[#84cc16] transition text-[#84cc16] font-bold text-sm uppercase tracking-wider flex items-center justify-center cursor-pointer"
+    className="w-full py-5 border-2 border-dashed border-gray-200 rounded hover:bg-gray-50 hover:border-[#0fafb8] transition text-[#0fafb8] font-bold text-sm uppercase tracking-wider flex items-center justify-center cursor-pointer"
   >
     {label}
   </button>
 );
 
 const StyledUploadZone = ({ onChange, accept, label }) => (
-  <div className="relative w-full flex flex-col items-center justify-center p-10 border-2 border-dashed border-gray-300 rounded bg-[#fafafa] hover:bg-gray-50 hover:border-[#84cc16] transition cursor-pointer group">
+  <div className="relative w-full flex flex-col items-center justify-center p-10 border-2 border-dashed border-gray-300 rounded bg-[#fafafa] hover:bg-gray-50 hover:border-[#0fafb8] transition cursor-pointer group">
     <input 
       type="file" 
       accept={accept}
@@ -708,8 +708,8 @@ const StyledUploadZone = ({ onChange, accept, label }) => (
       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
       title=""
     />
-    <Upload className="w-8 h-8 text-gray-400 group-hover:text-[#84cc16] mb-3 transition" />
-    <span className="text-sm font-medium text-gray-600 group-hover:text-[#84cc16] transition">{label}</span>
+    <Upload className="w-8 h-8 text-gray-400 group-hover:text-[#0fafb8] mb-3 transition" />
+    <span className="text-sm font-medium text-gray-600 group-hover:text-[#0fafb8] transition">{label}</span>
   </div>
 );
 
@@ -721,9 +721,9 @@ const InputRow = ({ value, onChange, onAdd, onCancel, placeholder, error }) => (
         value={value} 
         onChange={onChange} 
         placeholder={placeholder}
-        className={`flex-1 border-b-2 bg-transparent ${error ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-[#84cc16]'} py-2 text-sm outline-none font-medium text-black transition-colors`}
+        className={`flex-1 border-b-2 bg-transparent ${error ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-[#0fafb8]'} py-2 text-sm outline-none font-medium text-black transition-colors`}
       />
-      <button type="button" onClick={onAdd} className="bg-[#84cc16] text-white px-6 rounded text-sm font-bold cursor-pointer hover:bg-[#f7b500] transition">Add</button>
+      <button type="button" onClick={onAdd} className="bg-[#0fafb8] text-white px-6 rounded text-sm font-bold cursor-pointer hover:bg-[#073b45] transition">Add</button>
       <button type="button" onClick={onCancel} className="bg-gray-100 text-gray-600 px-6 rounded text-sm font-bold cursor-pointer hover:bg-gray-200 transition">Cancel</button>
     </div>
     {error && <p className="text-xs text-red-500 mt-2 font-medium">{error}</p>}
@@ -749,11 +749,11 @@ const ChecklistItem = ({ label, isComplete, isLast, onClick }) => (
   <button 
     type="button"
     onClick={onClick}
-    className={`w-full flex items-center justify-between py-3 ${!isLast ? 'border-b border-gray-100' : ''} cursor-pointer hover:bg-gray-50 transition px-2 rounded group`}
+    className="w-full flex items-center justify-between py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition px-2 rounded group"
   >
-    <span className={`text-sm font-medium text-left group-hover:text-[#84cc16] transition ${isComplete ? 'text-gray-800' : 'text-gray-400'}`}>{label}</span>
+    <span className={`text-sm font-medium text-left group-hover:text-[#0fafb8] transition ${isComplete ? 'text-gray-800' : 'text-gray-400'}`}>{label}</span>
     {isComplete ? (
-      <CheckCircle className="w-5 h-5 text-[#84cc16]" />
+      <CheckCircle className="w-5 h-5 text-[#0fafb8]" />
     ) : (
       <div className="w-5 h-5 rounded-full border-2 border-gray-200 group-hover:border-gray-300 transition" />
     )}

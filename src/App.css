@@ -111,7 +111,7 @@
   position: absolute;
   top: 16px;
   left: 16px;
-  background-color: #f7b500;
+  background-color: #073b45;
   color: #ffffff;
   font-size: 11px;
   font-weight: 700;
@@ -144,7 +144,7 @@
 }
 
 .product-title:hover {
-  color: #84cc16;
+  color: #0fafb8;
 }
 
 .product-footer {
@@ -157,7 +157,7 @@
 .product-price {
   font-size: 20px;
   font-weight: 700;
-  color: #84cc16;
+  color: #0fafb8;
 }
 
 .product-btn {
@@ -178,12 +178,12 @@
 }
 
 .product-btn:hover {
-  background-color: #84cc16;
+  background-color: #0fafb8;
   color: #ffffff;
 }
 
 .dark .product-btn:hover {
-  background-color: #84cc16;
+  background-color: #0fafb8;
   color: #ffffff;
 }
 
@@ -241,7 +241,7 @@
 }
 
 .cta-primary-btn {
-  background-color: #84cc16;
+  background-color: #0fafb8;
   color: #ffffff;
   border: none;
   font-weight: 600;
@@ -252,7 +252,7 @@
 }
 
 .cta-primary-btn:hover {
-  background-color: #f7b500;
+  background-color: #073b45;
 }
 
 .cta-secondary-btn {
@@ -329,7 +329,7 @@ html, body {
 .preloader-title {
   font-size: 28px;
   font-weight: 800;
-  color: #84cc16;
+  color: #0fafb8;
   margin: 0;
   display: flex;
   align-items: center;
@@ -362,7 +362,7 @@ html, body {
 .preloader-spinner-progress {
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #84cc16, #f7b500);
+  background: linear-gradient(90deg, #0fafb8, #073b45);
   position: absolute;
   left: -100%;
   animation: loading-bar 1.5s infinite ease-in-out;
@@ -371,11 +371,11 @@ html, body {
 @keyframes pulse-glow {
   0%, 100% {
     transform: scale(1);
-    filter: drop-shadow(0 0 5px rgba(132, 204, 22, 0.2));
+    filter: drop-shadow(0 0 5px rgba(15, 175, 184, 0.2));
   }
   50% {
     transform: scale(1.08);
-    filter: drop-shadow(0 0 15px rgba(132, 204, 22, 0.6));
+    filter: drop-shadow(0 0 15px rgba(15, 175, 184, 0.6));
   }
 }
 

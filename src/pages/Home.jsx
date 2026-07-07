@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import MiniHero from '../components/Home/MiniHero';
 import Categories, { BLOG_CATEGORIES } from '../components/Products/Categories';
 import DiscoverSlider from '../components/Home/DiscoverSlider';
 import FeaturedProductsSlider from '../components/Home/FeaturedProductsSlider';
+import '../components/Home/ProjectGuidesCarousel.css';
 import { 
   Search, 
   ChevronDown,
@@ -10,7 +11,9 @@ import {
   MessageCircle,
   Heart,
   ArrowUpDown,
-  Star
+  Star,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 // Single project dummy data as requested
 const ALL_PROJECTS = [
@@ -98,21 +101,21 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
   const [productDropdownOpen, setProductDropdownOpen] = useState(false);
   const [typeDropdownOpen, setTypeDropdownOpen] = useState(false);
   const [diffDropdownOpen, setDiffDropdownOpen] = useState(false);
+
+  // Project guides carousel active index
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [isCarouselHovered, setIsCarouselHovered] = useState(false);
+
   const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
 
   // Detailed page table of contents active section state
   const [activeSection, setActiveSection] = useState("Intro");
 
+  // Section names for Table of Contents
+  const SECTIONS = ["Intro", "Devices & Components", "Software & Tools", "Project description", "Code", "Arduino App Lab", "Downloadable files"];
+
   // Refs for scrolling to sections
-  const sectionRefs = {
-    "Intro": useRef(null),
-    "Devices & Components": useRef(null),
-    "Software & Tools": useRef(null),
-    "Project description": useRef(null),
-    "Code": useRef(null),
-    "Arduino App Lab": useRef(null),
-    "Downloadable files": useRef(null)
-  };
+  const sectionRefs = useRef({});
 
   const handleCatSelect = (idx) => {
     setActiveCat(idx);
@@ -120,7 +123,7 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
 
   const handleSectionClick = (sectionName) => {
     setActiveSection(sectionName);
-    sectionRefs[sectionName]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    sectionRefs.current[sectionName]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   // Hover eye logic: increases views count
@@ -231,6 +234,19 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
     return viewsB - viewsA;
   });
 
+  useEffect(() => {
+    setCarouselIndex(0);
+  }, [sortedProjects.length]);
+
+  // Self-moving (auto-play) effect for the 3D project guides carousel
+  useEffect(() => {
+    if (sortedProjects.length <= 1 || isCarouselHovered) return;
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev + 1) % sortedProjects.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [sortedProjects.length, isCarouselHovered]);
+
   // Render detailed view if selected
   if (selectedBlog) {
     const isBlogWishlisted = wishlistItems.some(i => i.id === selectedBlog.id);
@@ -283,7 +299,7 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
                 <span>{selectedBlog.date}</span>
                 <span>•</span>
                 <span 
-                  className="cursor-help flex items-center gap-1 hover:text-[#84cc16] transition"
+                  className="cursor-help flex items-center gap-1 hover:text-[#0fafb8] transition"
                   onMouseEnter={() => selectedBlog.id === 1 && handleEyeHover()}
                   title={selectedBlog.id === 1 ? "Hover to increase views!" : ""}
                 >
@@ -295,16 +311,16 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
                 <span className="uppercase">{selectedBlog.license}</span>
               </div>
               <div className="flex items-center gap-3">
-                <button className="hover:text-[#84cc16] transition cursor-pointer" aria-label="Share on Facebook">
+                <button className="hover:text-[#0fafb8] transition cursor-pointer" aria-label="Share on Facebook">
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
                 </button>
-                <button className="hover:text-[#84cc16] transition cursor-pointer" aria-label="Share on LinkedIn">
+                <button className="hover:text-[#0fafb8] transition cursor-pointer" aria-label="Share on LinkedIn">
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
                 </button>
-                <button className="hover:text-[#84cc16] transition cursor-pointer" aria-label="Share on X">
+                <button className="hover:text-[#0fafb8] transition cursor-pointer" aria-label="Share on X">
                   <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </button>
-                <button className="hover:text-[#84cc16] transition cursor-pointer" aria-label="Copy Link">
+                <button className="hover:text-[#0fafb8] transition cursor-pointer" aria-label="Copy Link">
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
                 </button>
                 <span className="text-gray-300">|</span>
@@ -335,14 +351,14 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
             {/* Document Content Sections (TOC targets) */}
             <div className="space-y-8 text-gray-700 leading-relaxed text-sm md:text-base mb-12">
               
-              <section ref={sectionRefs["Intro"]} className="scroll-mt-10 p-5 bg-slate-50 border-l-4 border-blue-500 rounded-r-xl">
+              <section ref={(el) => { sectionRefs.current["Intro"] = el; }} className="scroll-mt-10 p-5 bg-slate-50 border-l-4 border-blue-500 rounded-r-xl">
                 <h2 className="text-xl font-extrabold text-black border-b border-gray-200 pb-2 mb-3">Introduction</h2>
                 <p className="text-gray-600 text-sm leading-relaxed">
                   {selectedBlog.intro || "This project demonstrates running a local LLM or speech module on device to interpret natural language commands and actuate hardware directly without any cloud dependence. We utilize specialized embedded weights mapped to standard microcontroller ports."}
                 </p>
               </section>
 
-              <section ref={sectionRefs["Devices & Components"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-amber-500 rounded-r-xl shadow-sm">
+              <section ref={(el) => { sectionRefs.current["Devices & Components"] = el; }} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-amber-500 rounded-r-xl shadow-sm">
                 <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Devices & Components</h2>
                 <ul className="list-disc list-inside space-y-2 pl-2 text-gray-800 text-sm font-semibold">
                   {selectedBlog.devices && selectedBlog.devices.length > 0 ? (
@@ -358,7 +374,7 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
                 </ul>
               </section>
 
-              <section ref={sectionRefs["Software & Tools"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-purple-500 rounded-r-xl shadow-sm">
+              <section ref={(el) => { sectionRefs.current["Software & Tools"] = el; }} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-purple-500 rounded-r-xl shadow-sm">
                 <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Software & Tools</h2>
                 <ul className="list-disc list-inside space-y-2 pl-2 text-gray-800 text-sm font-semibold">
                   {selectedBlog.software && selectedBlog.software.length > 0 ? (
@@ -372,28 +388,28 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
                 </ul>
               </section>
 
-              <section ref={sectionRefs["Project description"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-green-500 rounded-r-xl shadow-sm">
+              <section ref={(el) => { sectionRefs.current["Project description"] = el; }} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-green-500 rounded-r-xl shadow-sm">
                 <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Project Description</h2>
                 <p className="text-gray-800 text-sm leading-relaxed font-semibold">
                   {selectedBlog.description || "The complete system parses standard user input strings entirely offline. The local inference engine executes on the board within 40ms, triggering pin output voltage modulation dynamically."}
                 </p>
               </section>
 
-              <section ref={sectionRefs["Code"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-gray-700 rounded-r-xl shadow-sm">
+              <section ref={(el) => { sectionRefs.current["Code"] = el; }} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-gray-700 rounded-r-xl shadow-sm">
                 <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Code</h2>
                 <pre className="bg-gray-100 text-black p-4 rounded-lg overflow-x-auto text-xs font-mono border border-gray-200">
                   {selectedBlog.code || `#include <ArduinoAppLab.h>\n\nLocalAgent agent;\n\nvoid setup() {\n  pinMode(LED_PIN, OUTPUT);\n  agent.begin();\n}\n\nvoid loop() {\n  if (agent.available()) {\n    String cmd = agent.readCommand();\n    agent.executeOnDevice(cmd);\n  }\n}`}
                 </pre>
               </section>
 
-              <section ref={sectionRefs["Arduino App Lab"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-[#84cc16] rounded-r-xl shadow-sm">
+              <section ref={(el) => { sectionRefs.current["Arduino App Lab"] = el; }} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-[#0fafb8] rounded-r-xl shadow-sm">
                 <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Arduino App Lab</h2>
                 <p className="text-gray-800 text-sm leading-relaxed font-semibold">
                   {selectedBlog.appLab || "Configure the desktop controller by binding the correct USB/COM port. Ensure model weights are fully loaded prior to active deployment loops."}
                 </p>
               </section>
 
-              <section ref={sectionRefs["Downloadable files"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-teal-500 rounded-r-xl shadow-sm">
+              <section ref={(el) => { sectionRefs.current["Downloadable files"] = el; }} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-teal-500 rounded-r-xl shadow-sm">
                 <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Downloadable Files</h2>
                 <div className="space-y-2">
                   {selectedBlog.files && selectedBlog.files.length > 0 ? (
@@ -443,13 +459,13 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
                     value={commentInput}
                     onChange={(e) => setCommentInput(e.target.value)}
                     placeholder="Enter your comment related to this project blog..."
-                    className="w-full rounded-xl border border-gray-300 p-4 text-sm text-gray-700 outline-none transition focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16]/20"
+                    className="w-full rounded-xl border border-gray-300 p-4 text-sm text-gray-700 outline-none transition focus:border-[#0fafb8] focus:ring-1 focus:ring-[#0fafb8]/20"
                     required
                   ></textarea>
                 </div>
                 <button
                   type="submit"
-                  className="bg-[#84cc16] hover:bg-[#f7b500] text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-sm transition cursor-pointer"
+                  className="bg-[#0fafb8] hover:bg-[#073b45] text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-sm transition cursor-pointer"
                 >
                   Submit Comment
                 </button>
@@ -483,13 +499,13 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
                 Table of contents
               </div>
               <div className="divide-y divide-gray-100 text-xs">
-                {Object.keys(sectionRefs).map((name) => {
+                {SECTIONS.map((name) => {
                   const isActive = activeSection === name;
                   return (
                     <button
                       key={name}
                       onClick={() => handleSectionClick(name)}
-                      className={`w-full text-left px-4 py-3 transition cursor-pointer font-bold ${isActive ? "bg-gray-100 text-black border-l-4 border-[#84cc16] font-bold" : "text-gray-600 hover:bg-gray-50"}`}
+                      className={`w-full text-left px-4 py-3 transition cursor-pointer font-bold ${isActive ? "bg-gray-100 text-black border-l-4 border-[#0fafb8] font-bold" : "text-gray-600 hover:bg-gray-50"}`}
                     >
                       {name}
                     </button>
@@ -500,20 +516,20 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
 
             {/* Feedback Stats Panel */}
             <div className="bg-white p-3 rounded-full border border-gray-200/80 shadow-sm flex items-center justify-around max-w-[280px] mx-auto text-xs text-gray-500">
-              <button className="flex items-center gap-1.5 hover:text-[#84cc16] cursor-pointer font-bold">
+              <button className="flex items-center gap-1.5 hover:text-[#0fafb8] cursor-pointer font-bold">
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" /></svg> {blogRespects}
               </button>
               <span className="text-gray-300">|</span>
-              <button className="flex items-center gap-1.5 hover:text-[#84cc16] cursor-pointer font-bold">
+              <button className="flex items-center gap-1.5 hover:text-[#0fafb8] cursor-pointer font-bold">
                 <MessageCircle className="h-4 w-4" /> {blogComments.length}
               </button>
               <span className="text-gray-300">|</span>
               <button 
                 onClick={(e) => handleProjectWishlistToggle(e, selectedBlog)}
-                className={`flex items-center gap-1.5 cursor-pointer transition ${isBlogWishlisted ? 'text-[#84cc16]' : 'hover:text-teal-600'}`}
+                className={`flex items-center gap-1.5 cursor-pointer transition ${isBlogWishlisted ? 'text-[#0fafb8]' : 'hover:text-teal-600'}`}
                 aria-label="Wishlist"
               >
-                <Heart className={`h-4 w-4 ${isBlogWishlisted ? 'fill-[#84cc16] text-[#84cc16]' : ''}`} />
+                <Heart className={`h-4 w-4 ${isBlogWishlisted ? 'fill-[#0fafb8] text-[#0fafb8]' : ''}`} />
               </button>
             </div>
 
@@ -717,7 +733,36 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
         <FeaturedProductsSlider products={FEATURED_PRODUCTS_DUMMY} onBuyNow={() => onTabChange?.('cart')} />
       </div>
 
-      {/* Grid rendering list of filtered projects */}
+      {/* Banner with hero3.png as background cover */}
+      <div className="mt-12 mb-12">
+        <div 
+          className="relative rounded-2xl overflow-hidden mb-8 shadow-sm min-h-[280px] flex items-center bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero3.png')" }}
+        >
+          {/* Black light opaque overlay for text readability */}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px]" />
+          
+          <div className="relative z-10 p-8 md:p-10 w-full text-white">
+            <span className="bg-white/25 backdrop-blur-sm text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full text-white mb-4 inline-block">
+              Interactive Library
+            </span>
+            <h3 className="text-xl md:text-3xl font-extrabold mb-3 leading-tight text-white">
+              Hardware Guides & Code Libraries
+            </h3>
+            <p className="text-xs md:text-sm text-gray-250 mb-5 font-semibold leading-relaxed max-w-xl">
+              Access schematic diagrams, high-resolution connection layouts, pre-written code scripts, and comprehensive assembly walkthroughs. Built for engineers and hobbyists alike.
+            </p>
+            <button 
+              onClick={() => document.getElementById('project-guides-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-5 py-2.5 bg-[#073b45] hover:bg-white text-white hover:text-[#073b45] border border-[#073b45] transition font-medium rounded-lg shadow-sm inline-flex items-center gap-2 cursor-pointer text-xs"
+            >
+              Explore Tutorials
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* 3D Center-Focused Carousel for Project Guides & Tutorials */}
       <div className="discover-slider-section" style={{ marginTop: '0', marginBottom: '2.5rem' }}>
         <h2 id="project-guides-section" className="discover-slider-heading">Project Guides & Tutorials</h2>
       </div>
@@ -727,54 +772,115 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
           <p className="text-xs text-gray-400 mt-1.5">Try changing your dropdown options or clearing the search text box.</p>
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {sortedProjects.map(project => {
-            const isProjectWishlisted = wishlistItems.some(i => i.id === project.id);
-            const pViews = project.id === 1 ? viewsCount : (project.views || 0);
-            const pLikes = project.id === 1 ? respectsCount : ((project.likes || 0) + (isProjectWishlisted ? 1 : 0));
-            const pComments = commentsMap[project.id]?.length || 0;
-            return (
-              <article 
-                key={project.id}
-                onClick={() => setSelectedBlog(project)}
-                className="premium-card border border-slate-150 rounded-2xl group"
-              >
-                <div className="premium-card-info">
-                  <span className="discover-card-category text-[#94a3b8] font-bold">{project.category || 'Tutorial'} • by {project.author}</span>
-                  <h3 className="discover-card-title group-hover:text-[#84cc16] transition-colors">{project.title}</h3>
-                  <div className="mt-1 flex items-center gap-3 text-xs text-slate-500 font-bold">
-                    <span 
-                      className="flex items-center gap-1 hover:text-black transition cursor-help"
-                      onMouseEnter={() => project.id === 1 && handleEyeHover()}
+        <div 
+          className="project-carousel-wrapper"
+          onMouseEnter={() => setIsCarouselHovered(true)}
+          onMouseLeave={() => setIsCarouselHovered(false)}
+        >
+          <div className="project-carousel-container">
+            {sortedProjects.map((project, idx) => {
+              const isProjectWishlisted = wishlistItems.some(i => i.id === project.id);
+              const pViews = project.id === 1 ? viewsCount : (project.views || 0);
+              const pLikes = project.id === 1 ? respectsCount : ((project.likes || 0) + (isProjectWishlisted ? 1 : 0));
+              const pComments = commentsMap[project.id]?.length || 0;
+
+              // Circular offset logic
+              const N = sortedProjects.length;
+              let offset = idx - carouselIndex;
+              if (offset < -N / 2) offset += N;
+              if (offset > N / 2) offset -= N;
+
+              // Setup CSS classes
+              let cardClass = "hidden";
+              if (offset === 0) {
+                cardClass = "active";
+              } else if (offset === -1 || (offset === N - 1 && N === 2)) {
+                cardClass = "prev";
+              } else if (offset === 1 || (offset === -(N - 1) && N === 2)) {
+                cardClass = "next";
+              }
+
+              return (
+                <div 
+                  key={project.id}
+                  onClick={() => {
+                    if (cardClass === "active") {
+                      setSelectedBlog(project);
+                    } else if (cardClass === "prev") {
+                      setCarouselIndex(idx);
+                    } else if (cardClass === "next") {
+                      setCarouselIndex(idx);
+                    }
+                  }}
+                  className={`project-carousel-card ${cardClass}`}
+                >
+                  <div className="premium-card-info">
+                    <span className="discover-card-category text-[#94a3b8] font-bold">
+                      {project.category || 'Tutorial'} • by {project.author}
+                    </span>
+                    <h3 className="discover-card-title group-hover:text-[#0fafb8] transition-colors">
+                      {project.title}
+                    </h3>
+                    <div className="mt-1 flex items-center gap-3 text-xs text-slate-500 font-bold">
+                      <span 
+                        className="flex items-center gap-1 hover:text-black transition cursor-help"
+                        onMouseEnter={() => project.id === 1 && handleEyeHover()}
+                      >
+                        <Eye className="h-4 w-4 text-gray-400" /> {pViews.toLocaleString()}
+                      </span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1">
+                        <MessageCircle className="h-4 w-4 text-gray-400" /> {pComments}
+                      </span>
+                      <span>•</span>
+                      <span className="flex items-center gap-1">
+                        <Heart className="h-4 w-4 text-gray-400" /> {pLikes}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="premium-card-image-wrapper">
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="premium-card-image"
+                    />
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleProjectWishlistToggle(e, project);
+                      }}
+                      className={`absolute top-3 right-3 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border shadow-sm transition hover:scale-110 ${isProjectWishlisted ? 'text-black' : 'text-gray-400 hover:text-black'}`}
                     >
-                      <Eye className="h-4 w-4 text-gray-400" /> {pViews.toLocaleString()}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <MessageCircle className="h-4 w-4 text-gray-400" /> {pComments}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <Heart className="h-4 w-4 text-gray-400" /> {pLikes}
-                    </span>
+                      <Heart className={`h-4 w-4 ${isProjectWishlisted ? 'fill-black text-black' : ''}`} />
+                    </button>
                   </div>
                 </div>
-                <div className="premium-card-image-wrapper">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="premium-card-image"
-                  />
-                  <button 
-                    onClick={(e) => handleProjectWishlistToggle(e, project)}
-                    className={`absolute top-3 right-3 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border shadow-sm transition hover:scale-110 ${isProjectWishlisted ? 'text-black' : 'text-gray-400 hover:text-black'}`}
-                  >
-                    <Heart className={`h-4 w-4 ${isProjectWishlisted ? 'fill-black text-black' : ''}`} />
-                  </button>
-                </div>
-              </article>
-            );
-          })}
+              );
+            })}
+          </div>
+
+          {/* Carousel Arrows under the cards */}
+          {sortedProjects.length > 1 && (
+            <div className="project-carousel-controls">
+              <button 
+                type="button"
+                onClick={() => setCarouselIndex((prev) => (prev - 1 + sortedProjects.length) % sortedProjects.length)}
+                className="project-carousel-btn"
+                aria-label="Previous Project"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <button 
+                type="button"
+                onClick={() => setCarouselIndex((prev) => (prev + 1) % sortedProjects.length)}
+                className="project-carousel-btn"
+                aria-label="Next Project"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+          )}
         </div>
       )}
 

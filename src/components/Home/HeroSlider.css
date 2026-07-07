@@ -1,9 +1,9 @@
 .hero-slider-container {
   position: relative;
-  height: 600px;
+  height: 480px;
   width: 100%;
   overflow: hidden;
-  background-color: #000000;
+  background-color: #05282f;
   color: #ffffff;
   user-select: none;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -15,7 +15,7 @@
   position: absolute;
   inset: 0;
   background-image: 
-    radial-gradient(rgba(11, 175, 82, 0.1) 1px, transparent 1px),
+    radial-gradient(rgba(15, 175, 184, 0.15) 1px, transparent 1px),
     linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
   background-size: 40px 40px, 80px 80px, 80px 80px;
@@ -91,7 +91,7 @@
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 1px;
-  color: #84cc16; /* Clean professional green accent */
+  color: #0fafb8; /* Clean professional teal accent */
   text-transform: uppercase;
 }
 
@@ -105,7 +105,7 @@
 }
 
 .hero-main-title-highlight {
-  color: #84cc16;
+  color: #0fafb8;
 }
 
 .hero-tagline {
@@ -135,7 +135,7 @@
 }
 
 .hero-info-icon-wrapper {
-  color: #84cc16;
+  color: #0fafb8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -148,22 +148,24 @@
 
 /* Bright professional green button */
 .hero-action-btn {
-  background-color: #84cc16;
-  color: #000000;
-  font-weight: 700;
+  background-color: #0fafb8;
+  color: #ffffff;
+  border: 1px solid #0fafb8;
+  font-weight: 500;
   padding: 12px 28px;
   border-radius: 6px;
   font-size: 14px;
-  border: none;
   cursor: pointer;
   width: fit-content;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .hero-action-btn:hover {
-  background-color: #a3e635;
+  background-color: #ffffff;
+  color: #0fafb8;
+  border-color: #ffffff;
 }
 
 /* Right Image Showcase Column */
@@ -182,7 +184,7 @@
   max-height: 340px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 15px 30px rgba(132, 204, 22, 0.15));
+  filter: drop-shadow(0 15px 30px rgba(15, 175, 184, 0.15));
 }
 
 /* Navigation controls */
@@ -200,9 +202,9 @@
 }
 
 .hero-nav-arrow:hover {
-  background: rgba(132, 204, 22, 0.2);
-  border-color: #84cc16;
-  color: #84cc16;
+  background: rgba(15, 175, 184, 0.2);
+  border-color: #0fafb8;
+  color: #0fafb8;
 }
 
 .hero-nav-arrow.left {
@@ -244,7 +246,7 @@
 }
 
 .hero-dot.active {
-  background: #84cc16;
+  background: #0fafb8;
   width: 20px;
   border-radius: 4px;
 }
@@ -252,45 +254,77 @@
 /* Responsive adjustment */
 @media (max-width: 992px) {
   .hero-slider-container {
-    height: auto;
+    height: 640px; /* Fixed height on mobile/tablet to prevent page jumps/shifts */
   }
   .hero-slide {
     position: relative;
+    height: 100%;
     flex-direction: column;
-    padding: 60px 24px;
+    padding: 40px 24px 60px 24px;
     opacity: 1;
     display: none;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
   }
   .hero-slide.active {
     display: flex;
   }
   .hero-showcase-right {
     max-width: 100%;
-    margin-top: 40px;
+    margin-top: 16px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .hero-product-img {
-    max-height: 240px;
+    max-height: 160px;
+    width: auto;
   }
   .hero-text-fixed-container {
-    height: auto;
+    height: 130px; /* Fixed size container on mobile to stabilize text */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
   }
   .hero-content-left {
     max-width: 100%;
     align-items: center;
     text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
   }
   .hero-badge-row {
     justify-content: center;
+    margin-bottom: 12px;
+  }
+  .hero-tagline {
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 0;
   }
   .hero-info-list {
     align-items: center;
     height: auto;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .hero-info-item {
+    font-size: 12px;
+    gap: 10px;
   }
   .hero-action-btn {
     align-self: center;
   }
   .hero-main-title {
-    font-size: 32px;
+    font-size: 24px;
+    line-height: 1.25;
+    margin-bottom: 6px;
   }
   .hero-nav-arrow {
     display: none;
@@ -298,5 +332,6 @@
   .hero-dots-container {
     left: 50%;
     transform: translateX(-50%);
+    bottom: 16px;
   }
 }
