@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MiniHero from '../components/MiniHero';
+import MiniHero from '../components/Home/MiniHero';
 import { Eye, Clock, XCircle, FileText, Share2, Award, Heart, ShieldAlert, Activity, User, Lock, Mail, CheckCircle } from 'lucide-react';
 
 export default function Dashboard({ 

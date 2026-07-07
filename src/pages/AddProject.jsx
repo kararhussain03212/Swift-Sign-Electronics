@@ -7,7 +7,7 @@ import {
   X,
   Info
 } from 'lucide-react';
-import MiniHero from '../components/MiniHero';
+import MiniHero from '../components/Home/MiniHero';
 
 // MOCK DATABASE: Only these users can be added as contributors
 const REGISTERED_USERS = ['hardik_chadda', 'bilal_tariq', 'admin', 'maker_pro'];

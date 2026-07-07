@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import Banner from './components/Banner';
-import Navbar from './components/Navbar';
-import HeroSlider from './components/HeroSlider';
-import Blogs from './components/Blogs';
-import Cart from './components/Cart';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { useShop } from './context/ShopContext';
+import Products from './pages/Products';
+import ProductDetails from './pages/ProductDetails';
+import Contact from './pages/Contact';
+import Checkout from './pages/Checkout';
+import CheckoutForm from './pages/CheckoutForm';
+import Banner from './components/Layout/Banner';
+import Navbar from './components/Layout/Navbar';
+import HeroSlider from './components/Home/HeroSlider';
+import Blogs from './pages/Home';
+import CompareDrawer from './components/Products/CompareDrawer';
+import QuickViewModal from './components/Products/QuickViewModal';
 import Account from './pages/Account';
 import Dashboard from './pages/Dashboard';
 import AddProject from './pages/AddProject';
-import Footer from './components/Footer';
-import Preloader from './components/Preloader';
+import Footer from './components/Layout/Footer';
+import Preloader from './components/Layout/Preloader';
 import './App.css';
 
 const DEFAULT_PROJECTS = [
@@ -153,9 +161,20 @@ const DEFAULT_PROJECTS = [
 ];
 
 function App() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { 
+    cart: shopCart, 
+    wishlist: shopWishlist, 
+    addToCart: shopAddToCart, 
+    removeFromCart: shopRemoveFromCart, 
+    toggleWishlist: shopToggleWishlist 
+  } = useShop();
+
   const [activeTab, setActiveTab] = useState('home');
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -235,8 +254,67 @@ function App() {
     return null;
   });
 
-  const [cartItems, setCartItems] = useState([]);
-  const [wishlistItems, setWishlistItems] = useState([]);
+  const [cartItems, setCartItems] = useState(() => {
+    const saved = localStorage.getItem('swift-sign-cart');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [wishlistItems, setWishlistItems] = useState(() => {
+    const saved = localStorage.getItem('swift-sign-wishlist');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('swift-sign-cart', JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
+    localStorage.setItem('swift-sign-wishlist', JSON.stringify(wishlistItems));
+  }, [wishlistItems]);
+
+  // Compute unified cart and wishlist from both portal and shop context
+  const portalCartMapped = cartItems.map(item => ({
+    id: item.id,
+    title: item.title,
+    price: item.price,
+    image: item.image,
+    category: item.category,
+    quantity: item.quantity || 1,
+    isPortal: true
+  }));
+
+  const shopCartMapped = (shopCart || []).map(item => ({
+    id: `shop-${item.product.id}`,
+    title: item.product.name,
+    price: `Rs. ${(item.product.price * (1 - (item.product.discount || 0) / 100)).toLocaleString()}`,
+    image: item.product.thumbnail,
+    category: item.product.category,
+    quantity: item.quantity,
+    isPortal: false,
+    shopId: item.product.id
+  }));
+
+  const unifiedCart = [...portalCartMapped, ...shopCartMapped];
+
+  const portalWishlistMapped = wishlistItems.map(item => ({
+    id: item.id,
+    title: item.title,
+    price: item.price,
+    image: item.image,
+    category: item.category,
+    isPortal: true
+  }));
+
+  const shopWishlistMapped = (shopWishlist || []).map(item => ({
+    id: `shop-${item.id}`,
+    title: item.name,
+    price: `Rs. ${(item.price * (1 - (item.discount || 0) / 100)).toLocaleString()}`,
+    image: item.thumbnail,
+    category: item.category,
+    isPortal: false,
+    shopId: item.id
+  }));
+
+  const unifiedWishlist = [...portalWishlistMapped, ...shopWishlistMapped];
 
   // URL Hash handling
   useEffect(() => {
@@ -306,22 +384,44 @@ function App() {
 
   // Cart actions
   const handleRemoveFromCart = (id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+    if (typeof id === 'string' && id.startsWith('shop-')) {
+      const shopId = parseInt(id.replace('shop-', ''), 10);
+      shopRemoveFromCart(shopId);
+    } else {
+      setCartItems(prev => prev.filter(item => item.id !== id));
+    }
   };
 
   const handleMoveToCart = (item) => {
-    setCartItems(prev => {
-      const exists = prev.find(i => i.id === item.id);
-      if (exists) {
-        return prev.map(i => i.id === item.id ? { ...i, quantity: (i.quantity || 1) + 1 } : i);
+    if (item.id && typeof item.id === 'string' && item.id.startsWith('shop-')) {
+      const shopId = parseInt(item.id.replace('shop-', ''), 10);
+      const prod = shopWishlist.find(p => p.id === shopId);
+      if (prod) {
+        shopAddToCart(prod);
+        shopToggleWishlist(prod);
       }
-      return [...prev, { ...item, price: item.price || 'Rs. 0', quantity: 1 }];
-    });
-    setWishlistItems(prev => prev.filter(i => i.id !== item.id));
+    } else {
+      setCartItems(prev => {
+        const exists = prev.find(i => i.id === item.id);
+        if (exists) {
+          return prev.map(i => i.id === item.id ? { ...i, quantity: (i.quantity || 1) + 1 } : i);
+        }
+        return [...prev, { ...item, price: item.price || 'Rs. 0', quantity: 1 }];
+      });
+      setWishlistItems(prev => prev.filter(i => i.id !== item.id));
+    }
   };
 
   const handleRemoveFromWishlist = (id) => {
-    setWishlistItems(prev => prev.filter(item => item.id !== id));
+    if (typeof id === 'string' && id.startsWith('shop-')) {
+      const shopId = parseInt(id.replace('shop-', ''), 10);
+      const prod = shopWishlist.find(p => p.id === shopId);
+      if (prod) {
+        shopToggleWishlist(prod);
+      }
+    } else {
+      setWishlistItems(prev => prev.filter(item => item.id !== id));
+    }
   };
 
   const handleAddToCart = (product) => {
@@ -344,18 +444,29 @@ function App() {
     });
   };
 
+  // Sync router path changes back to tab state
+  useEffect(() => {
+    if (location.pathname === '/products') {
+      setActiveTab('products');
+    } else if (location.pathname.startsWith('/product/')) {
+      setActiveTab('product-details');
+    } else if (location.pathname === '/contact') {
+      setActiveTab('contact');
+    } else if (location.pathname === '/checkout') {
+      setActiveTab('checkout');
+    } else if (location.pathname === '/checkout/details') {
+      setActiveTab('checkout-details');
+    } else if (location.pathname === '/') {
+      // Keep active tab as is (e.g. home, dashboard, account, add-project)
+    }
+  }, [location.pathname]);
+
   const renderContent = () => {
     switch (activeTab) {
-      case 'cart':
-        return (
-          <Cart 
-            cartItems={cartItems} 
-            onRemoveFromCart={handleRemoveFromCart}
-            wishlistItems={wishlistItems}
-            onMoveToCart={handleMoveToCart}
-            onRemoveFromWishlist={handleRemoveFromWishlist}
-          />
-        );
+      case 'checkout':
+        return <Checkout />;
+      case 'checkout-details':
+        return <CheckoutForm />;
       case 'account':
         return <Account onLoginSuccess={handleLoginSuccess} initialIsLogin={accountInitialIsLogin} />;
       case 'dashboard':
@@ -365,7 +476,7 @@ function App() {
             onLogout={handleLogout} 
             onLoginSuccess={handleLoginSuccess} 
             drafts={draftsList}
-            wishlistItems={wishlistItems}
+            wishlistItems={unifiedWishlist}
           />
         );
       case 'add-project':
@@ -395,8 +506,17 @@ function App() {
             setWishlistItems={setWishlistItems}
             projects={projectsList}
             onTabChange={(tab) => {
-              setActiveTab(tab);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              if (tab === 'products') {
+                navigate('/products');
+              } else if (tab === 'contact') {
+                navigate('/contact');
+              } else if (tab === 'cart') {
+                navigate('/checkout');
+              } else {
+                setActiveTab(tab);
+                navigate('/');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
             }}
           />
         );
@@ -410,70 +530,97 @@ function App() {
         {/* 1. Banner */}
         <Banner />
 
-      {/* 2. Navbar */}
-      <Navbar 
-        activeTab={activeTab} 
-        onTabChange={(tab) => {
-          if (tab === 'account-login') {
-            setAccountInitialIsLogin(true);
-            setActiveTab('account');
-          } else if (tab === 'account-signup') {
-            setAccountInitialIsLogin(false);
-            setActiveTab('account');
-          } else if (tab === 'blogs') {
-            setActiveTab('home');
-            setSelectedBlog(null);
-            window.location.hash = '#project-guides-section';
-            setTimeout(() => {
-              document.getElementById('project-guides-section')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          } else if (tab === 'featured') {
-            setActiveTab('home');
-            setSelectedBlog(null);
-            window.location.hash = '#featured-products-section';
-            setTimeout(() => {
-              document.getElementById('featured-products-section')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          } else {
-            setActiveTab(tab);
-            if (window.location.hash === '#blogs' || window.location.hash === '#blogs-section' || window.location.hash === '#project-guides-section' || window.location.hash === '#featured-products-section') {
-              window.history.pushState("", document.title, window.location.pathname + window.location.search);
-            }
-            if (tab === 'home') {
+        {/* 2. Navbar */}
+        <Navbar 
+          activeTab={activeTab} 
+          onTabChange={(tab) => {
+            if (tab === 'account-login') {
+              setAccountInitialIsLogin(true);
+              setActiveTab('account');
+              navigate('/');
+            } else if (tab === 'account-signup') {
+              setAccountInitialIsLogin(false);
+              setActiveTab('account');
+              navigate('/');
+            } else if (tab === 'blogs') {
+              setActiveTab('home');
               setSelectedBlog(null);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              navigate('/');
+              setTimeout(() => {
+                document.getElementById('project-guides-section')?.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            } else if (tab === 'featured') {
+              setActiveTab('home');
+              setSelectedBlog(null);
+              navigate('/');
+              setTimeout(() => {
+                document.getElementById('featured-products-section')?.scrollIntoView({ behavior: 'smooth' });
+              }, 100);
+            } else if (tab === 'products') {
+              navigate('/products');
+            } else if (tab === 'contact') {
+              navigate('/contact');
+            } else if (tab === 'cart') {
+              navigate('/checkout');
+            } else {
+              setActiveTab(tab);
+              navigate('/');
+              if (window.location.hash === '#blogs' || window.location.hash === '#blogs-section' || window.location.hash === '#project-guides-section' || window.location.hash === '#featured-products-section') {
+                window.history.pushState("", document.title, window.location.pathname + window.location.search);
+              }
+              if (tab === 'home') {
+                setSelectedBlog(null);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
             }
-          }
-        }} 
-        currentUser={currentUser}
-        onLogout={handleLogout}
-        cartCount={cartItems.length}
-      />
+          }} 
+          currentUser={currentUser}
+          onLogout={handleLogout}
+          cartCount={unifiedCart.reduce((sum, item) => sum + item.quantity, 0)}
+        />
 
-      {/* 3. Hero Section Slider - Only show when not viewing details or other pages */}
-      {activeTab === 'home' && !selectedBlog && <HeroSlider />}
+        {/* 3. Hero Section Slider - Only show on home page and home tab when not viewing details */}
+        {location.pathname === '/' && activeTab === 'home' && !selectedBlog && <HeroSlider />}
 
-      {/* 4. Core Page Content */}
-      <main className="main-content-full">
-        {renderContent()}
-      </main>
+        {/* 4. Core Page Content */}
+        <main className="main-content-full">
+          <Routes>
+            <Route path="/" element={renderContent()} />
+            <Route path="/products" element={<Products onQuickView={setQuickViewProduct} />} />
+            <Route path="/product/:slug" element={<ProductDetails onQuickView={setQuickViewProduct} />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/checkout" element={renderContent()} />
+            <Route path="/checkout/details" element={renderContent()} />
+          </Routes>
+        </main>
 
-      {/* 5. Footer */}
-      <Footer />
-      
-      {/* Scroll to Top Button */}
-      {showScrollTop && (
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-[#84cc16] text-white shadow-[0_4px_14px_rgba(132,204,22,0.4)] hover:bg-[#65a30d] hover:scale-110 hover:-translate-y-1 transition-all cursor-pointer flex items-center justify-center border-2 border-white/20"
-          aria-label="Scroll to top"
-        >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-          </svg>
-        </button>
-      )}
-    </div>
+        {/* 5. Footer */}
+        <Footer />
+        
+        {/* Bottom compare widgets */}
+        <CompareDrawer />
+
+        {/* Global Quick View Modal */}
+        {quickViewProduct && (
+          <QuickViewModal
+            product={quickViewProduct}
+            onClose={() => setQuickViewProduct(null)}
+          />
+        )}
+
+        {/* Scroll to Top Button */}
+        {showScrollTop && (
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-[#84cc16] text-white shadow-[0_4px_14px_rgba(132,204,22,0.4)] hover:bg-[#65a30d] hover:scale-110 hover:-translate-y-1 transition-all cursor-pointer flex items-center justify-center border-2 border-white/20"
+            aria-label="Scroll to top"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </svg>
+          </button>
+        )}
+      </div>
     </>
   );
 }
