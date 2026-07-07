@@ -1,4 +1,9 @@
 @import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -56,23 +61,56 @@ body {
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
+  text-align: left;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
 }
 
-h1,
-h2 {
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
   font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+  font-weight: 700 !important;
+  color: #000000 !important;
 }
+
+.text-white h1,
+.text-white h2,
+.text-white h3,
+.text-white h4,
+.text-white h5,
+.text-white h6,
+.bg-teal-600 h1,
+.bg-teal-600 h2,
+.bg-teal-600 h3,
+.bg-\[\#0b4f30\] h1,
+.bg-\[\#0b4f30\] h2,
+.bg-\[\#0b4f30\] h3,
+.hero-slider-container h1,
+.hero-slider-container h2,
+.hero-slider-container h3,
+.hero-slide h1,
+.hero-slide h2 {
+  color: #ffffff !important;
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: #ffffff !important;
+}
+
+
 
 h1 {
   font-size: 56px;
@@ -109,4 +147,23 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+/* Custom HR divider color rule */
+hr {
+  border: 0;
+  border-top: 1px solid #000000 !important;
+  background-color: #000000 !important;
+  opacity: 1 !important;
+}
+
+/* Footer White Headings Overrides */
+.footer-container h1,
+.footer-container h2,
+.footer-container h3,
+.footer-container h4,
+.footer-container h5,
+.footer-container h6,
+.footer-col-title {
+  color: #ffffff !important;
 }
