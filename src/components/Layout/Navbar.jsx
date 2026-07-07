@@ -243,8 +243,30 @@ export default function Navbar({ activeTab, onTabChange, currentUser, onLogout, 
             >
               Blogs
             </a>
-            <a href="#featured-products-section" className="navbar-link" onClick={(e) => { e.preventDefault(); onTabChange?.('featured'); }}>Featured Products</a>
-            <a href="#" className="navbar-link">Contact Us</a>
+            <a 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                onTabChange?.('products');
+                setIsMenuOpen(false);
+              }} 
+              className={`navbar-link ${activeTab === 'products' ? 'text-[#84cc16]' : ''}`}
+              style={activeTab === 'products' ? { color: '#84cc16' } : {}}
+            >
+              Products
+            </a>
+            <a 
+              href="#" 
+              onClick={(e) => {
+                e.preventDefault();
+                onTabChange?.('contact');
+                setIsMenuOpen(false);
+              }} 
+              className={`navbar-link ${activeTab === 'contact' ? 'text-[#84cc16]' : ''}`}
+              style={activeTab === 'contact' ? { color: '#84cc16' } : {}}
+            >
+              Contact Us
+            </a>
             <a href="#" className="navbar-link">
               Solution
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">

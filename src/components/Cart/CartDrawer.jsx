@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiX, FiMinus, FiPlus, FiTrash2, FiShoppingBag } from 'react-icons/fi';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 
 export default function CartDrawer({ isOpen, onClose }) {
   const {

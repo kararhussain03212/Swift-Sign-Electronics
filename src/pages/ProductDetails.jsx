@@ -7,10 +7,10 @@ import {
 } from 'react-icons/fi';
 import { products } from '../data/products';
 import { useShop } from '../context/ShopContext';
-import ProductGallery from '../components/ProductGallery';
-import ProductTabs from '../components/ProductTabs';
-import RelatedProducts from '../components/RelatedProducts';
-import Rating from '../components/Rating';
+import ProductGallery from '../components/Products/ProductGallery';
+import ProductTabs from '../components/Products/ProductTabs';
+import RelatedProducts from '../components/Products/RelatedProducts';
+import Rating from '../components/Products/Rating';
 
 export default function ProductDetails({ onQuickView }) {
   const { slug } = useParams();
@@ -84,7 +84,7 @@ export default function ProductDetails({ onQuickView }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-16 text-left">
+    <div className="max-w-6xl mx-auto px-4 lg:px-8 py-10 min-h-screen space-y-16 text-left">
       
       {/* Breadcrumbs */}
       <div className="text-sm font-semibold text-slate-400 dark:text-slate-500">

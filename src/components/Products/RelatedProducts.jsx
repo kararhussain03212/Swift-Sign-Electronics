@@ -1,5 +1,5 @@
 import React from 'react';
-import { products } from '../data/products';
+import { products } from '../../data/products';
 import ProductCard from './ProductCard';
 
 export default function RelatedProducts({ relatedIds = [], currentProductId, onQuickView }) {

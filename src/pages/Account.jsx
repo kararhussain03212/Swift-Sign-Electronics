@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MiniHero from '../components/MiniHero';
+import MiniHero from '../components/Home/MiniHero';
 import { Mail, User, Lock } from 'lucide-react';
 
 export default function Account({ onLoginSuccess, initialIsLogin = true }) {

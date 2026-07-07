@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiHeart, FiShoppingCart, FiEye, FiCheck, FiX, FiActivity } from 'react-icons/fi';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 import Rating from './Rating';
 
 export default function ProductCard({ product, viewMode = 'grid', onQuickView }) {
