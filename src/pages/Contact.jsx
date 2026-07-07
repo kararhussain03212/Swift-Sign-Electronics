@@ -234,50 +234,45 @@ export default function Contact() {
             <div className="space-y-4">
               
               {/* Whatsapp */}
-              <div className="p-4 bg-slate-850/60 dark:bg-slate-950/40 border border-slate-800/50 rounded-none flex items-start gap-4">
-                <div className="w-10 h-10 rounded-none bg-blue-600/10 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <a href="https://wa.me/923338399480" target="_blank" rel="noopener noreferrer" className="block p-4 bg-slate-850/60 dark:bg-slate-950/40 hover:bg-slate-800/80 border border-slate-800/50 hover:border-slate-700/80 rounded-none flex items-start gap-4 transition-all group">
+                <div className="w-10 h-10 rounded-none bg-blue-600/10 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-blue-600/20 group-hover:text-blue-300 transition-colors">
                   <FiMessageCircle className="w-5 h-5" />
                 </div>
                 <div className="space-y-1">
                   <span className="block text-[9px] font-black text-slate-500 tracking-wider uppercase">Whatsapp</span>
                   <strong className="block text-sm font-bold text-white tracking-wide">+92 333 8399480</strong>
-                  <a 
-                    href="https://wa.me/923338399480"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-600 hover:bg-blue-750 text-white text-[10px] font-black rounded-none transition-colors mt-2"
-                  >
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-600 group-hover:bg-blue-500 text-white text-[10px] font-black rounded-none transition-colors mt-2">
                     <FiMessageCircle className="w-3 h-3" />
                     <span>Chat on WhatsApp</span>
-                  </a>
+                  </div>
                 </div>
-              </div>
+              </a>
 
               {/* Phone */}
-              <div className="p-4 bg-slate-850/60 dark:bg-slate-950/40 border border-slate-800/50 rounded-none flex items-start gap-4">
-                <div className="w-10 h-10 rounded-none bg-blue-600/10 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <a href="tel:+923338399480" className="block p-4 bg-slate-850/60 dark:bg-slate-950/40 hover:bg-slate-800/80 border border-slate-800/50 hover:border-slate-700/80 rounded-none flex items-start gap-4 transition-all group">
+                <div className="w-10 h-10 rounded-none bg-blue-600/10 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-blue-600/20 group-hover:text-blue-300 transition-colors">
                   <FiPhone className="w-4.5 h-4.5" />
                 </div>
                 <div className="space-y-1">
                   <span className="block text-[9px] font-black text-slate-500 tracking-wider uppercase">Phone</span>
                   <strong className="block text-sm font-bold text-white tracking-wide">+92 333 8399480</strong>
                 </div>
-              </div>
+              </a>
 
               {/* Email */}
-              <div className="p-4 bg-slate-850/60 dark:bg-slate-950/40 border border-slate-800/50 rounded-none flex items-start gap-4">
-                <div className="w-10 h-10 rounded-none bg-blue-600/10 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <a href="mailto:info@swiftsigngeneraltrading.com" className="block p-4 bg-slate-850/60 dark:bg-slate-950/40 hover:bg-slate-800/80 border border-slate-800/50 hover:border-slate-700/80 rounded-none flex items-start gap-4 transition-all group">
+                <div className="w-10 h-10 rounded-none bg-blue-600/10 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-blue-600/20 group-hover:text-blue-300 transition-colors">
                   <FiMail className="w-4.5 h-4.5" />
                 </div>
                 <div className="space-y-1">
                   <span className="block text-[9px] font-black text-slate-500 tracking-wider uppercase">Email</span>
                   <strong className="block text-xs font-bold text-white tracking-wide break-all">info@swiftsigngeneraltrading.com</strong>
                 </div>
-              </div>
+              </a>
 
               {/* Address */}
-              <div className="p-4 bg-slate-850/60 dark:bg-slate-950/40 border border-slate-800/50 rounded-none flex items-start gap-4">
-                <div className="w-10 h-10 rounded-none bg-blue-600/10 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <a href="https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan" target="_blank" rel="noopener noreferrer" className="block p-4 bg-slate-850/60 dark:bg-slate-950/40 hover:bg-slate-800/80 border border-slate-800/50 hover:border-slate-700/80 rounded-none flex items-start gap-4 transition-all group">
+                <div className="w-10 h-10 rounded-none bg-blue-600/10 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-blue-600/20 group-hover:text-blue-300 transition-colors">
                   <FiMapPin className="w-4.5 h-4.5" />
                 </div>
                 <div className="space-y-1">
@@ -286,7 +281,7 @@ export default function Contact() {
                     Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan
                   </p>
                 </div>
-              </div>
+              </a>
 
             </div>
           </div>
