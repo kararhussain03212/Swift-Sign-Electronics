@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiSun, FiMoon, FiShoppingCart, FiHeart, FiCpu, FiMenu, FiX, FiActivity, FiSearch } from 'react-icons/fi';
-import { useShop } from '../context/ShopContext';
-import CartDrawer from './CartDrawer';
+import { useShop } from '../../context/ShopContext';
+import CartDrawer from '../Cart/CartDrawer';
 
 export default function Header({ onSearchChange, searchValue }) {
   const navigate = useNavigate();

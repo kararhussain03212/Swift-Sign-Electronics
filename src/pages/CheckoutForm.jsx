@@ -71,7 +71,7 @@ export default function CheckoutForm() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 animate-fade-in font-sans">
+    <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 py-8 min-h-screen animate-fade-in font-sans">
       
       {/* Top Stepper */}
       <div className="flex justify-center items-center text-xs md:text-sm font-bold mb-16 mt-4">

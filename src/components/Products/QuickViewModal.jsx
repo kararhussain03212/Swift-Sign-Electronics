@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FiX, FiShoppingCart, FiPlus, FiMinus, FiHeart, FiCheck } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 import Rating from './Rating';
 
 export default function QuickViewModal({ product, onClose }) {

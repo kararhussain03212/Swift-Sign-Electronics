@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FiInfo, FiSliders, FiPackage, FiFileText } from 'react-icons/fi';
 import SpecificationTable from './SpecificationTable';
 import ShippingList from './ShippingList';
-import DocumentCard from './DocumentCard';
+import DocumentCard from '../Home/DocumentCard';
 
 export default function ProductTabs({ product }) {
   const [activeTab, setActiveTab] = useState('intro');

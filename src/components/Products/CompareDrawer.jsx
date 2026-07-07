@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FiX, FiCheck, FiChevronRight, FiGitPullRequest, FiActivity } from 'react-icons/fi';
-import { useShop } from '../context/ShopContext';
+import { useShop } from '../../context/ShopContext';
 
 export default function CompareDrawer() {
   const { compareList, removeFromCompare, clearCompare } = useShop();
@@ -20,7 +20,7 @@ export default function CompareDrawer() {
   return (
     <>
       {/* Bottom Sticky Compare Bar */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[95vw] max-w-2xl bg-slate-900/95 dark:bg-slate-950/95 backdrop-blur-md border border-slate-700/50 rounded-none p-4 shadow-2xl flex items-center justify-between text-white gap-4 relative animate-fade-in">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95vw] max-w-2xl bg-slate-900/95 dark:bg-slate-950/95 backdrop-blur-md border border-slate-700/50 rounded-none p-4 shadow-2xl flex items-center justify-between text-white gap-4 animate-fade-in">
 
         <div className="flex items-center gap-3 overflow-x-auto py-1 scrollbar-none">
           <div className="flex items-center gap-1.5 text-blue-400">
@@ -72,7 +72,7 @@ export default function CompareDrawer() {
       <>
         {showModal && (
           <div
-            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
+            className="fixed inset-0 z-60 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
           >
             <div
               className="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-none overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"

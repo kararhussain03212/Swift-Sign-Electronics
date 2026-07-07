@@ -30,7 +30,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-10 bg-white dark:bg-slate-950 min-h-screen">
+    <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 py-10 bg-white dark:bg-slate-950 min-h-screen">
       
       {/* Top Stepper */}
       <div className="flex justify-center items-center text-xs md:text-sm font-bold mb-16 mt-4">

@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { FiCpu, FiGrid, FiList, FiChevronDown, FiAlertCircle, FiSettings } from 'react-icons/fi';
 import { products } from '../data/products';
-import ProductCard from '../components/ProductCard';
-import SearchBar from '../components/SearchBar';
-import Pagination from '../components/Pagination';
-import QuickViewModal from '../components/QuickViewModal';
+import ProductCard from '../components/Products/ProductCard';
+import SearchBar from '../components/Products/SearchBar';
+import Pagination from '../components/Products/Pagination';
+import QuickViewModal from '../components/Products/QuickViewModal';
 
 export default function Products() {
   const [filters, setFilters] = useState({
@@ -154,7 +154,7 @@ export default function Products() {
   };
 
   return (
-    <div className="space-y-12">
+    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-10 min-h-screen space-y-12">
 
 
       {/* Category Pills Quick Navigation */}
