@@ -13,10 +13,10 @@ export default function Checkout() {
   if (cart.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center space-y-6">
-        <h1 className="text-3xl font-black text-slate-800 dark:text-slate-100">
+        <h1 className="text-3xl font-black text-slate-800 text-slate-800">
           Your Cart is Empty
         </h1>
-        <p className="text-slate-500 dark:text-slate-400">
+        <p className="text-slate-500 text-slate-600">
           You don't have any items in your cart to review.
         </p>
         <Link 
@@ -30,7 +30,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 py-10 bg-white dark:bg-slate-950 min-h-screen">
+    <div className="w-full max-w-6xl mx-auto px-4 lg:px-8 py-10 bg-white min-h-screen">
       
       {/* Top Stepper */}
       <div className="flex justify-center items-center text-xs md:text-sm font-bold mb-16 mt-4">
@@ -53,11 +53,11 @@ export default function Checkout() {
       <h2 className="text-lg font-bold text-slate-400 mb-6">Shopping Cart</h2>
       
       {/* Cart Header */}
-      <div className="flex items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-4 mb-2">
-        <h1 className="text-2xl font-black text-slate-800 dark:text-slate-100">
+      <div className="flex items-center gap-4 border-b border-slate-200 pb-4 mb-2">
+        <h1 className="text-lg font-bold text-slate-800">
           My Items ({cart.length})
         </h1>
-        <span className="text-sm font-bold text-slate-800 dark:text-slate-200 ml-4">
+        <span className="text-xs font-bold text-slate-500 ml-4">
           Weight: 0.47kg
         </span>
       </div>
@@ -67,30 +67,30 @@ export default function Checkout() {
         {cart.map(({ product, quantity }) => {
           const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
           return (
-            <div key={product.id} className="flex flex-col md:flex-row md:items-center py-6 border-b border-slate-100 dark:border-slate-800/50 group">
+            <div key={product.id} className="flex flex-col md:flex-row md:items-center py-6 border-b border-slate-100 group">
               
               <div className="flex items-center mb-4 md:mb-0">
-                <div className="w-24 h-24 flex-shrink-0 mr-6 bg-white dark:bg-slate-900 rounded-none p-1 border border-slate-100 dark:border-slate-800">
+                <div className="w-24 h-24 flex-shrink-0 mr-6 bg-white rounded-none p-1 border border-slate-200">
                   <img src={product.thumbnail} alt={product.name} className="w-full h-full object-contain" />
                 </div>
               </div>
 
               <div className="flex-1 mb-4 md:mb-0 md:pr-4">
-                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-1 leading-snug">
+                <h3 className="text-sm font-bold text-slate-800 mb-1 leading-snug">
                   {product.name}
                 </h3>
                 <p className="text-xs text-slate-400">SKU: {product.SKU}</p>
               </div>
               
               <div className="flex items-center justify-between md:justify-end w-full md:w-auto">
-                <div className="w-24 text-left md:text-right font-bold text-slate-800 dark:text-slate-100 md:mr-8 text-sm">
+                <div className="w-24 text-left md:text-right font-bold text-slate-800 md:mr-8 text-sm">
                   ${discountedPrice.toFixed(2)}
                 </div>
                 
-                <div className="flex items-center border border-slate-200 dark:border-slate-700 rounded-none md:mr-8 bg-white dark:bg-slate-900">
+                <div className="flex items-center border border-slate-200 rounded-none md:mr-8 bg-white">
                   <button 
                     onClick={() => updateCartQuantity(product.id, Math.max(1, quantity - 1))}
-                    className="px-3 py-1.5 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    className="px-3 py-1.5 text-slate-500 hover:bg-slate-50 transition-colors"
                   >
                     <FiMinus className="w-3 h-3" />
                   </button>
@@ -98,21 +98,21 @@ export default function Checkout() {
                     type="text" 
                     value={quantity} 
                     readOnly 
-                    className="w-10 text-center text-sm font-bold outline-none bg-transparent dark:text-slate-100" 
+                    className="w-10 text-center text-sm font-bold outline-none bg-transparent text-slate-800" 
                   />
                   <button 
                     onClick={() => updateCartQuantity(product.id, Math.min(product.stock, quantity + 1))}
-                    className="px-3 py-1.5 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    className="px-3 py-1.5 text-slate-500 hover:bg-slate-50 transition-colors"
                   >
                     <FiPlus className="w-3 h-3" />
                   </button>
                 </div>
                 
-                <div className="w-24 text-right font-black text-slate-800 dark:text-slate-100 md:mr-12 text-sm">
+                <div className="w-24 text-right font-black text-slate-800 md:mr-12 text-sm">
                   ${(discountedPrice * quantity).toFixed(2)}
                 </div>
                 
-                <div className="flex flex-row md:flex-col gap-4 md:gap-2 text-xs text-slate-500 dark:text-slate-400">
+                <div className="flex flex-row md:flex-col gap-4 md:gap-2 text-xs text-slate-500 text-slate-600">
                   <button 
                     onClick={() => removeFromCart(product.id)} 
                     className="flex items-center gap-1.5 hover:text-slate-800 dark:hover:text-slate-200 transition-colors"
@@ -129,24 +129,24 @@ export default function Checkout() {
 
       {/* Footer / Summary */}
       <div className="mt-16 flex flex-col items-center md:items-end mb-20">
-        <div className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-8">
+        <div className="text-2xl font-bold text-slate-900 mb-6">
           Total: ${total.toFixed(2)}
         </div>
         
-        <div className="flex flex-col sm:flex-row items-center gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
           <button 
             onClick={() => navigate('/checkout/details')} 
-            className="w-full sm:w-auto px-10 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none transition-colors shadow-lg shadow-blue-600/30"
+            className="w-full sm:w-auto px-8 py-2.5 text-sm bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none transition-colors shadow-md shadow-blue-600/30"
           >
             Proceed to Checkout
           </button>
         </div>
         
-        <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+        <div className="flex items-center gap-3 text-xs text-slate-500">
           or you could 
           <Link 
             to="/" 
-            className="px-6 py-2.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-none transition-colors border border-slate-200 dark:border-slate-700"
+            className="px-5 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 font-bold rounded-none transition-colors border border-slate-200"
           >
             Continue Shopping
           </Link>
