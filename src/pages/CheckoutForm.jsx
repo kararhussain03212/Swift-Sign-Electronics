@@ -43,7 +43,7 @@ export default function CheckoutForm() {
         </p>
         <Link 
           to="/"
-          className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/30"
+          className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none transition-all shadow-lg shadow-blue-500/30"
         >
           Continue Shopping
         </Link>
@@ -73,42 +73,21 @@ export default function CheckoutForm() {
   return (
     <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8 animate-fade-in font-sans">
       
-      {/* Header & Stepper */}
-      <div className="mb-10">
-        <h1 className="text-3xl font-black text-slate-800 dark:text-slate-100 mb-8">
-          Checkout
-        </h1>
-        
-        {/* Progress Stepper */}
-        <div className="flex items-center justify-center max-w-lg mx-auto relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-slate-200 dark:bg-slate-800 z-0"></div>
-          <div className="absolute left-[16.66%] top-1/2 -translate-y-1/2 w-[33.33%] h-0.5 bg-blue-500 z-0"></div>
-          
-          <div className="flex justify-between w-full relative z-10">
-            {/* Step 1: Cart */}
-            <div className="flex flex-col items-center gap-2 bg-slate-50 dark:bg-slate-950 px-2">
-              <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold shadow-[0_0_0_4px_rgba(59,130,246,0.2)]">
-                <FiCheck className="w-4 h-4" />
-              </div>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">Cart</span>
-            </div>
-            
-            {/* Step 2: Delivery */}
-            <div className="flex flex-col items-center gap-2 bg-slate-50 dark:bg-slate-950 px-2">
-              <div className="w-8 h-8 rounded-full bg-blue-500 text-white shadow-[0_0_0_4px_rgba(59,130,246,0.2)] flex items-center justify-center font-bold">
-                2
-              </div>
-              <span className="text-xs font-bold text-blue-500">Delivery</span>
-            </div>
-            
-            {/* Step 3: Confirm */}
-            <div className="flex flex-col items-center gap-2 bg-slate-50 dark:bg-slate-950 px-2">
-              <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-500 flex items-center justify-center font-bold">
-                3
-              </div>
-              <span className="text-xs font-bold text-slate-400">Confirm</span>
-            </div>
-          </div>
+      {/* Top Stepper */}
+      <div className="flex justify-center items-center text-xs md:text-sm font-bold mb-16 mt-4">
+        <Link to="/checkout" className="flex items-center text-blue-600 hover:opacity-80 transition-opacity">
+          <div className="w-2 h-2 rounded-full bg-blue-600 mr-2"></div>
+          Shopping Cart
+        </Link>
+        <div className="w-16 md:w-32 h-0.5 bg-blue-600 mx-4"></div>
+        <div className="flex items-center text-blue-600">
+          <div className="w-2 h-2 rounded-full bg-blue-600 mr-2"></div>
+          Check Out
+        </div>
+        <div className="w-16 md:w-32 h-0.5 bg-slate-200 dark:bg-slate-800 mx-4"></div>
+        <div className="flex items-center text-slate-400">
+          <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 mr-2"></div>
+          Confirm the Order
         </div>
       </div>
 
@@ -136,14 +115,14 @@ export default function CheckoutForm() {
                   <label className="text-xs font-black text-slate-500 uppercase tracking-wide">Full Name <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input required type="text" className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="e.g. Ali Raza" />
+                    <input required type="text" className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="e.g. Ali Raza" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-black text-slate-500 uppercase tracking-wide">Phone Number <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input required type="tel" className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="+92 3XX XXXXXXX" />
+                    <input required type="tel" className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="+92 3XX XXXXXXX" />
                   </div>
                 </div>
               </div>
@@ -152,14 +131,14 @@ export default function CheckoutForm() {
                 <label className="text-xs font-black text-slate-500 uppercase tracking-wide">Email Address (Optional)</label>
                 <div className="relative">
                   <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input type="email" className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="ali@example.com" />
+                  <input type="email" className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="ali@example.com" />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs font-black text-slate-500 uppercase tracking-wide">Province <span className="text-red-500">*</span></label>
-                  <select required className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 text-slate-500">
+                  <select required className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 text-slate-500">
                     <option value="">Select Province</option>
                     <option value="Punjab">Punjab</option>
                     <option value="Sindh">Sindh</option>
@@ -169,7 +148,7 @@ export default function CheckoutForm() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-black text-slate-500 uppercase tracking-wide">City <span className="text-red-500">*</span></label>
-                  <select required className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 text-slate-500">
+                  <select required className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 text-slate-500">
                     <option value="">Select city first</option>
                     <option value="Lahore">Lahore</option>
                     <option value="Karachi">Karachi</option>
@@ -178,7 +157,7 @@ export default function CheckoutForm() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-black text-slate-500 uppercase tracking-wide">Postal Code</label>
-                  <input type="text" className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="e.g. 54000" />
+                  <input type="text" className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="e.g. 54000" />
                 </div>
               </div>
 
@@ -186,13 +165,13 @@ export default function CheckoutForm() {
                 <label className="text-xs font-black text-slate-500 uppercase tracking-wide">Street Address <span className="text-red-500">*</span></label>
                 <div className="relative">
                   <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input required type="text" className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="House/Flat No., Street, Area" />
+                  <input required type="text" className="w-full pl-10 pr-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="House/Flat No., Street, Area" />
                 </div>
               </div>
 
               <div className="space-y-2">
                 <label className="text-xs font-black text-slate-500 uppercase tracking-wide">Order Notes <span className="text-slate-400 normal-case font-medium">(optional)</span></label>
-                <textarea rows="3" className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="Any special instructions for delivery..."></textarea>
+                <textarea rows="3" className="w-full px-4 py-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all dark:text-slate-100 placeholder-slate-400" placeholder="Any special instructions for delivery..."></textarea>
               </div>
             </div>
 
@@ -207,7 +186,7 @@ export default function CheckoutForm() {
               <button
                 type="submit"
                 disabled={isProcessing}
-                className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2"
+                className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-bold rounded-none shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2"
               >
                 {isProcessing ? 'Processing...' : 'Confirm Order'} 
                 {!isProcessing && <FiChevronRight className="w-5 h-5" />}
@@ -232,7 +211,7 @@ export default function CheckoutForm() {
                 const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
                 return (
                   <div key={product.id} className="flex gap-3">
-                    <div className="h-12 w-12 bg-slate-50 dark:bg-slate-950 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800 flex-shrink-0">
+                    <div className="h-12 w-12 bg-slate-50 dark:bg-slate-950 rounded-none overflow-hidden border border-slate-200 dark:border-slate-800 flex-shrink-0">
                       <img src={product.thumbnail} alt={product.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex-1">
@@ -251,9 +230,9 @@ export default function CheckoutForm() {
             <div className="flex gap-2 mb-6">
               <div className="relative flex-1">
                 <FiTag className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-                <input type="text" placeholder="Coupon code" className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+                <input type="text" placeholder="Coupon code" className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-none text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
               </div>
-              <button type="button" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm font-bold rounded-lg transition-colors">
+              <button type="button" className="px-4 py-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-sm font-bold rounded-none transition-colors">
                 Apply
               </button>
             </div>

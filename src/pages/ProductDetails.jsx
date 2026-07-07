@@ -109,7 +109,7 @@ export default function ProductDetails({ onQuickView }) {
             
             {/* Tag/Brand Header */}
             <div className="flex flex-wrap items-center gap-3">
-              <span className="bg-blue-55/80 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-black px-3 py-1 rounded-full uppercase">
+              <span className="bg-blue-55/80 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-black px-3 py-1 rounded-none uppercase">
                 {product.category}
               </span>
               <span className="text-sm text-slate-400 font-bold uppercase tracking-wider">
@@ -131,11 +131,11 @@ export default function ProductDetails({ onQuickView }) {
               <Rating value={product.rating} reviewsCount={product.reviews} />
               <span className="text-slate-300 dark:text-slate-800">|</span>
               {isOutOfStock ? (
-                <span className="bg-red-50 dark:bg-red-950/20 text-red-500 text-xs font-bold px-2.5 py-0.5 rounded-md">
+                <span className="bg-red-50 dark:bg-red-950/20 text-red-500 text-xs font-bold px-2.5 py-0.5 rounded-none">
                   Out of Stock
                 </span>
               ) : (
-                <span className="bg-emerald-55/80 dark:bg-emerald-950/20 text-emerald-500 text-xs font-bold px-2.5 py-0.5 rounded-md flex items-center gap-1">
+                <span className="bg-emerald-55/80 dark:bg-emerald-950/20 text-emerald-500 text-xs font-bold px-2.5 py-0.5 rounded-none flex items-center gap-1">
                   <FiCheck /> In Stock ({product.stock} items)
                 </span>
               )}
@@ -157,7 +157,7 @@ export default function ProductDetails({ onQuickView }) {
                 </div>
               </div>
               {product.discount > 0 && (
-                <span className="bg-red-500 text-white font-black text-xs px-3.5 py-1.5 rounded-xl shadow-md">
+                <span className="bg-red-500 text-white font-black text-xs px-3.5 py-1.5 rounded-none shadow-md">
                   SAVE {product.discount}%
                 </span>
               )}
@@ -281,7 +281,7 @@ export default function ProductDetails({ onQuickView }) {
           Frequently Asked Questions
         </h3>
         
-        <div className="border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden bg-white dark:bg-slate-900 shadow-xs divide-y divide-slate-100 dark:divide-slate-800">
+        <div className="border border-slate-200 dark:border-slate-800 rounded-none overflow-hidden bg-white dark:bg-slate-900 shadow-xs divide-y divide-slate-100 dark:divide-slate-800">
           {[
             { q: "Is this component certified for industrial application?", a: "Yes, this component matches industrial performance targets and is fully ESD-safe (Electrostatic Discharge protected) where noted in the specifications sheet." },
             { q: "Where can I find drivers or software libraries for this device?", a: "You can find downloadable programming codes, MQTT server templates, and pinout datasheets under the 'Documents' tab on this page." },

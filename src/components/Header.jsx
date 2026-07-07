@@ -42,7 +42,7 @@ export default function Header({ onSearchChange, searchValue }) {
           
           {/* Logo Section */}
           <Link to="/" className="flex items-center gap-2.5 text-blue-600 dark:text-blue-400 select-none group flex-shrink-0">
-            <div className="p-2.5 bg-blue-600 text-white rounded-2xl group-hover:scale-105 transition-all shadow-md shadow-blue-500/20">
+            <div className="p-2.5 bg-blue-600 text-white rounded-none group-hover:scale-105 transition-all shadow-md shadow-blue-500/20">
               <FiCpu className="w-5 h-5" />
             </div>
             <div className="flex flex-col">
@@ -64,7 +64,7 @@ export default function Header({ onSearchChange, searchValue }) {
               <button className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer">
                 Categories
               </button>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xl py-2.5 opacity-0 pointer-events-none group-hover/cat:opacity-100 group-hover/cat:pointer-events-auto transition-all duration-200 translate-y-2 group-hover/cat:translate-y-0">
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-none shadow-xl py-2.5 opacity-0 pointer-events-none group-hover/cat:opacity-100 group-hover/cat:pointer-events-auto transition-all duration-200 translate-y-2 group-hover/cat:translate-y-0">
                 <Link to="/" className="block px-4 py-2 hover:bg-slate-50 dark:hover:bg-slate-850 hover:text-blue-500 text-slate-700 dark:text-slate-300">
                   Tools
                 </Link>
@@ -79,9 +79,9 @@ export default function Header({ onSearchChange, searchValue }) {
             <a href="#about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               About Lab
             </a>
-            <a href="#contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link to="/contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Contact
-            </a>
+            </Link>
           </nav>
 
           {/* Search bar inside header (Desktop) */}
@@ -92,7 +92,7 @@ export default function Header({ onSearchChange, searchValue }) {
                 value={searchValue}
                 onChange={(e) => onSearchChange(e.target.value)}
                 placeholder="Search components..."
-                className="w-full pl-4 pr-10 py-2 text-sm bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/25 dark:focus:ring-blue-400/25 text-slate-800 dark:text-slate-200"
+                className="w-full pl-4 pr-10 py-2 text-sm bg-slate-100/60 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-none focus:outline-none focus:ring-2 focus:ring-blue-500/25 dark:focus:ring-blue-400/25 text-slate-800 dark:text-slate-200"
               />
               <FiSearch className="absolute right-3.5 text-slate-400 pointer-events-none" />
             </form>
@@ -102,10 +102,19 @@ export default function Header({ onSearchChange, searchValue }) {
           <div className="flex items-center gap-1.5 md:gap-3.5">
 
 
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-655 dark:text-slate-400 hover:text-blue-500 rounded-none transition-all cursor-pointer"
+              title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {darkMode ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
+            </button>
+
             {/* Wishlist Icon */}
             <button
               onClick={handleWishlistClick}
-              className="relative p-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-655 dark:text-slate-400 hover:text-red-500 rounded-xl transition-all cursor-pointer"
+              className="relative p-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-655 dark:text-slate-400 hover:text-red-500 rounded-none transition-all cursor-pointer"
               aria-label="Wishlist"
             >
               <FiHeart className="w-5 h-5" />
@@ -119,7 +128,7 @@ export default function Header({ onSearchChange, searchValue }) {
             {/* Shopping Cart Icon */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-660 dark:text-slate-400 hover:text-blue-500 rounded-xl transition-all cursor-pointer"
+              className="relative p-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-660 dark:text-slate-400 hover:text-blue-500 rounded-none transition-all cursor-pointer"
               aria-label="Shopping Cart"
             >
               <FiShoppingCart className="w-5 h-5" />
@@ -133,7 +142,7 @@ export default function Header({ onSearchChange, searchValue }) {
             {/* Mobile Menu Toggle (Hamburger) */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl transition-all cursor-pointer"
+              className="lg:hidden p-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-none transition-all cursor-pointer"
               aria-label="Menu"
             >
               {isMobileMenuOpen ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
@@ -151,7 +160,7 @@ export default function Header({ onSearchChange, searchValue }) {
                   value={searchValue}
                   onChange={(e) => onSearchChange(e.target.value)}
                   placeholder="Search components..."
-                  className="w-full pl-4 pr-10 py-2.5 text-sm bg-slate-100/60 dark:bg-slate-950/60 border border-slate-250 dark:border-slate-800 rounded-xl text-slate-800 dark:text-slate-200"
+                  className="w-full pl-4 pr-10 py-2.5 text-sm bg-slate-100/60 dark:bg-slate-950/60 border border-slate-250 dark:border-slate-800 rounded-none text-slate-800 dark:text-slate-200"
                 />
                 <FiSearch className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-450" />
               </form>
@@ -172,9 +181,9 @@ export default function Header({ onSearchChange, searchValue }) {
               <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-blue-500 py-1.5 border-b border-slate-100 dark:border-slate-800/50">
                 About Lab
               </a>
-              <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-blue-500 py-1.5">
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-blue-500 py-1.5">
                 Contact Us
-              </a>
+              </Link>
             </nav>
           </div>
         )}

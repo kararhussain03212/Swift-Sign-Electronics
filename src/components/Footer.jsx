@@ -24,7 +24,7 @@ export default function Footer() {
         {/* Core Value Badges Panel */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-slate-800 text-sm">
           <div className="flex items-center gap-3.5">
-            <div className="p-3 bg-slate-800 text-blue-450 rounded-2xl">
+            <div className="p-3 bg-slate-800 text-blue-450 rounded-none">
               <FiTruck className="w-6 h-6 text-blue-400" />
             </div>
             <div>
@@ -34,7 +34,7 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-3.5">
-            <div className="p-3 bg-slate-800 text-orange-450 rounded-2xl">
+            <div className="p-3 bg-slate-800 text-orange-450 rounded-none">
               <FiShield className="w-6 h-6 text-orange-400" />
             </div>
             <div>
@@ -44,7 +44,7 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-3.5">
-            <div className="p-3 bg-slate-800 text-emerald-450 rounded-2xl">
+            <div className="p-3 bg-slate-800 text-emerald-450 rounded-none">
               <FiRefreshCw className="w-6 h-6 text-emerald-400" />
             </div>
             <div>
@@ -54,7 +54,7 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-3.5">
-            <div className="p-3 bg-slate-800 text-purple-450 rounded-2xl">
+            <div className="p-3 bg-slate-800 text-purple-450 rounded-none">
               <FiSmile className="w-6 h-6 text-purple-400" />
             </div>
             <div>
@@ -70,7 +70,7 @@ export default function Footer() {
           {/* Company Bio */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-2.5 text-blue-400">
-              <div className="p-2 bg-blue-600 text-white rounded-xl">
+              <div className="p-2 bg-blue-600 text-white rounded-none">
                 <FiCpu className="w-5 h-5" />
               </div>
               <span className="font-black text-white text-lg tracking-wider uppercase">
@@ -81,11 +81,11 @@ export default function Footer() {
               Your premier online warehouse for electronic components, high-grade workbench instruments, and STEM robotics hardware. Supplying creators, makers, and engineers since 2012.
             </p>
             <div className="flex items-center gap-3.5 pt-2">
-              <a href="#" className="p-2.5 bg-slate-800 hover:bg-blue-600 hover:text-white rounded-xl transition-all"><FaFacebook className="w-4 h-4" /></a>
-              <a href="#" className="p-2.5 bg-slate-800 hover:bg-blue-400 hover:text-white rounded-xl transition-all"><FaTwitter className="w-4 h-4" /></a>
-              <a href="#" className="p-2.5 bg-slate-800 hover:bg-blue-800 hover:text-white rounded-xl transition-all"><FaLinkedin className="w-4 h-4" /></a>
-              <a href="#" className="p-2.5 bg-slate-800 hover:bg-red-600 hover:text-white rounded-xl transition-all"><FaYoutube className="w-4 h-4" /></a>
-              <a href="#" className="p-2.5 bg-slate-800 hover:bg-slate-700 hover:text-white rounded-xl transition-all"><FaGithub className="w-4 h-4" /></a>
+              <a href="#" className="p-2.5 bg-slate-800 hover:bg-blue-600 hover:text-white rounded-none transition-all"><FaFacebook className="w-4 h-4" /></a>
+              <a href="#" className="p-2.5 bg-slate-800 hover:bg-blue-400 hover:text-white rounded-none transition-all"><FaTwitter className="w-4 h-4" /></a>
+              <a href="#" className="p-2.5 bg-slate-800 hover:bg-blue-800 hover:text-white rounded-none transition-all"><FaLinkedin className="w-4 h-4" /></a>
+              <a href="#" className="p-2.5 bg-slate-800 hover:bg-red-600 hover:text-white rounded-none transition-all"><FaYoutube className="w-4 h-4" /></a>
+              <a href="#" className="p-2.5 bg-slate-800 hover:bg-slate-700 hover:text-white rounded-none transition-all"><FaGithub className="w-4 h-4" /></a>
             </div>
           </div>
 
@@ -127,14 +127,14 @@ export default function Footer() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="w-full pl-4 pr-10 py-3 bg-slate-800 border border-slate-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-white placeholder-slate-500"
+                  className="w-full pl-4 pr-10 py-3 bg-slate-800 border border-slate-700/50 rounded-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm text-white placeholder-slate-500"
                 />
                 <FiMail className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
               </div>
               <button
                 type="submit"
                 disabled={isSubscribed}
-                className="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-sm transition-all cursor-pointer whitespace-nowrap"
+                className="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-none text-sm transition-all cursor-pointer whitespace-nowrap"
               >
                 {isSubscribed ? 'Adding...' : 'Subscribe'}
               </button>

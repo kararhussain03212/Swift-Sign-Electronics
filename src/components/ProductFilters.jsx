@@ -138,7 +138,7 @@ export default function ProductFilters({
           step="10"
           value={filters.priceRange[1]}
           onChange={handlePriceChange}
-          className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-500 focus:outline-none"
+          className="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-none appearance-none cursor-pointer accent-blue-500 focus:outline-none"
         />
         <div className="flex justify-between text-xs text-slate-400">
           <span>$0.00</span>
@@ -181,7 +181,7 @@ export default function ProductFilters({
             <button
               key={num}
               onClick={() => handleRatingChange(num)}
-              className={`flex items-center gap-2 text-sm py-1 px-2 rounded-lg transition-all text-left ${
+              className={`flex items-center gap-2 text-sm py-1 px-2 rounded-none transition-all text-left ${
                 filters.minRating === num
                   ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-semibold'
                   : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
@@ -207,15 +207,15 @@ export default function ProductFilters({
   return (
     <div>
       {/* Desktop Filter Sidebar Container */}
-      <div className="hidden lg:block w-64 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-3xl p-6 shadow-sm sticky top-24">
+      <div className="hidden lg:block w-64 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-none p-6 shadow-sm sticky top-24">
         <FilterSections />
       </div>
 
       {/* Mobile Sticky Control Bar */}
-      <div className="lg:hidden flex items-center justify-between gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl shadow-sm mb-6">
+      <div className="lg:hidden flex items-center justify-between gap-3 p-4 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-none shadow-sm mb-6">
         <button
           onClick={() => setIsOpenMobile(true)}
-          className="flex items-center gap-2 py-2 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm font-semibold"
+          className="flex items-center gap-2 py-2 px-4 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-none hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-sm font-semibold"
         >
           <FiFilter /> Filters {hasActiveFilters && <span className="h-2 w-2 rounded-full bg-orange-500"></span>}
         </button>
@@ -226,7 +226,7 @@ export default function ProductFilters({
             <select
               value={sortOption}
               onChange={(e) => setSortOption(e.target.value)}
-              className="appearance-none bg-slate-50 dark:bg-slate-800 border-none text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300 py-2 pl-3 pr-8 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="appearance-none bg-slate-50 dark:bg-slate-800 border-none text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300 py-2 pl-3 pr-8 rounded-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="featured">Featured</option>
               <option value="newest">Newest</option>
@@ -238,10 +238,10 @@ export default function ProductFilters({
           </div>
 
           {/* Grid/List Toggle */}
-          <div className="flex items-center bg-slate-50 dark:bg-slate-800 p-1 rounded-xl">
+          <div className="flex items-center bg-slate-50 dark:bg-slate-800 p-1 rounded-none">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition-all ${
+              className={`p-1.5 rounded-none transition-all ${
                 viewMode === 'grid'
                   ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs'
                   : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
@@ -251,7 +251,7 @@ export default function ProductFilters({
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg transition-all ${
+              className={`p-1.5 rounded-none transition-all ${
                 viewMode === 'list'
                   ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs'
                   : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'
@@ -281,7 +281,7 @@ export default function ProductFilters({
           <span className="font-bold text-slate-800 dark:text-slate-100">Filter Products</span>
           <button
             onClick={() => setIsOpenMobile(false)}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            className="p-1 rounded-none text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
           >
             <FiX className="w-5 h-5" />
           </button>
@@ -297,7 +297,7 @@ export default function ProductFilters({
           </span>
           <button
             onClick={() => setIsOpenMobile(false)}
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold text-sm shadow-md transition-all duration-200"
+            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-none font-bold text-sm shadow-md transition-all duration-200"
           >
             Apply Filters
           </button>

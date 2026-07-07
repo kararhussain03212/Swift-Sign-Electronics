@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
-import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { ShopProvider, useShop } from './context/ShopContext';
 import Products from './pages/Products';
 import ProductDetails from './pages/ProductDetails';
 import Checkout from './pages/Checkout';
 import CheckoutForm from './pages/CheckoutForm';
+import Contact from './pages/Contact';
 import CompareDrawer from './components/CompareDrawer';
 import CartDrawer from './components/CartDrawer';
 import { FiGrid, FiHeart, FiShoppingCart, FiSun, FiMoon } from 'react-icons/fi';
 import './App.css';
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function AppContent() {
   const {
@@ -34,6 +45,7 @@ function AppContent() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 flex flex-col justify-between transition-colors duration-300">
         
         {/* Standalone Content Area */}
@@ -48,6 +60,9 @@ function AppContent() {
             {/* Checkout pages */}
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/checkout/details" element={<CheckoutForm />} />
+
+            {/* Contact Page */}
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
 
@@ -62,7 +77,7 @@ function AppContent() {
           {/* Catalog Home */}
           <Link
             to="/"
-            className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-blue-500 rounded-xl transition-all"
+            className="p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-655 hover:text-blue-500 rounded-xl transition-all"
             title="View Catalog"
           >
             <FiGrid className="w-5.5 h-5.5" />
@@ -71,7 +86,7 @@ function AppContent() {
           {/* Wishlist count */}
           <button
             onClick={handleWishlistClick}
-            className="relative p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-red-500 rounded-xl transition-all cursor-pointer"
+            className="relative p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-655 hover:text-red-500 rounded-xl transition-all cursor-pointer"
             title="Wishlist"
           >
             <FiHeart className="w-5.5 h-5.5" />
@@ -85,7 +100,7 @@ function AppContent() {
           {/* Shopping Cart count */}
           <button
             onClick={() => setIsCartOpen(true)}
-            className="relative p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-blue-500 rounded-xl transition-all cursor-pointer"
+            className="relative p-3 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-660 hover:text-blue-500 rounded-xl transition-all cursor-pointer"
             title="Cart"
           >
             <FiShoppingCart className="w-5.5 h-5.5" />
@@ -95,8 +110,6 @@ function AppContent() {
               </span>
             )}
           </button>
-
-
         </div>
         
       </div>

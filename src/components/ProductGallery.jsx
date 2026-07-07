@@ -70,7 +70,7 @@ export default function ProductGallery({ images = [] }) {
         ref={containerRef}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
-        className="relative aspect-square w-full rounded-3xl overflow-hidden bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800/80 flex items-center justify-center cursor-crosshair group"
+        className="relative aspect-square w-full rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800/80 flex items-center justify-center cursor-crosshair group"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
@@ -92,7 +92,7 @@ export default function ProductGallery({ images = [] }) {
         {/* Action icons */}
         <button
           onClick={() => setIsFullscreen(true)}
-          className="absolute top-4 right-4 p-3 bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 backdrop-blur-xs text-slate-700 dark:text-slate-200 rounded-2xl shadow-lg hover:scale-105 transition-all opacity-0 group-hover:opacity-100 duration-300 cursor-pointer"
+          className="absolute top-4 right-4 p-3 bg-white/80 dark:bg-slate-900/80 hover:bg-white dark:hover:bg-slate-900 backdrop-blur-xs text-slate-700 dark:text-slate-200 rounded-none shadow-lg hover:scale-105 transition-all opacity-0 group-hover:opacity-100 duration-300 cursor-pointer"
           title="Fullscreen View"
         >
           <FiMaximize2 className="w-5 h-5" />
@@ -106,7 +106,7 @@ export default function ProductGallery({ images = [] }) {
                 e.stopPropagation();
                 handlePrev();
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/70 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900 backdrop-blur-xs text-slate-700 dark:text-slate-350 rounded-xl shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20"
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/70 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900 backdrop-blur-xs text-slate-700 dark:text-slate-350 rounded-none shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20"
             >
               <FiChevronLeft className="w-5 h-5" />
             </button>
@@ -115,7 +115,7 @@ export default function ProductGallery({ images = [] }) {
                 e.stopPropagation();
                 handleNext();
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/70 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900 backdrop-blur-xs text-slate-700 dark:text-slate-350 rounded-xl shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20"
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 bg-white/70 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900 backdrop-blur-xs text-slate-700 dark:text-slate-350 rounded-none shadow-md opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-20"
             >
               <FiChevronRight className="w-5 h-5" />
             </button>
@@ -123,7 +123,7 @@ export default function ProductGallery({ images = [] }) {
         )}
 
         {/* Counter Badge */}
-        <div className="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-xs text-white text-xs font-bold px-3 py-1.5 rounded-full">
+        <div className="absolute bottom-4 left-4 bg-slate-900/70 backdrop-blur-xs text-white text-xs font-bold px-3 py-1.5 rounded-none">
           {activeIndex + 1} / {images.length}
         </div>
       </div>
@@ -135,7 +135,7 @@ export default function ProductGallery({ images = [] }) {
             <button
               key={index}
               onClick={() => setActiveIndex(index)}
-              className={`relative h-20 w-20 rounded-2xl overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0 border-2 cursor-pointer transition-all ${
+              className={`relative h-20 w-20 rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0 border-2 cursor-pointer transition-all ${
                 activeIndex === index
                   ? 'border-blue-500 shadow-md ring-2 ring-blue-500/20'
                   : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600'
@@ -164,7 +164,7 @@ export default function ProductGallery({ images = [] }) {
               </span>
               <button
                 onClick={() => setIsFullscreen(false)}
-                className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-all cursor-pointer"
+                className="p-3 bg-white/10 hover:bg-white/20 rounded-none backdrop-blur-md transition-all cursor-pointer"
               >
                 <FiX className="w-6 h-6" />
               </button>
@@ -176,7 +176,7 @@ export default function ProductGallery({ images = [] }) {
                 key={activeIndex}
                 src={images[activeIndex]}
                 alt={`Lightbox view`}
-                className="max-h-full max-w-full object-contain rounded-xl"
+                className="max-h-full max-w-full object-contain rounded-none"
               />
 
               {/* Lightbox arrows */}
@@ -184,13 +184,13 @@ export default function ProductGallery({ images = [] }) {
                 <>
                   <button
                     onClick={handlePrev}
-                    className="absolute left-0 p-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl backdrop-blur-xs transition-all cursor-pointer"
+                    className="absolute left-0 p-4 bg-white/5 hover:bg-white/10 text-white rounded-none backdrop-blur-xs transition-all cursor-pointer"
                   >
                     <FiChevronLeft className="w-8 h-8" />
                   </button>
                   <button
                     onClick={handleNext}
-                    className="absolute right-0 p-4 bg-white/5 hover:bg-white/10 text-white rounded-2xl backdrop-blur-xs transition-all cursor-pointer"
+                    className="absolute right-0 p-4 bg-white/5 hover:bg-white/10 text-white rounded-none backdrop-blur-xs transition-all cursor-pointer"
                   >
                     <FiChevronRight className="w-8 h-8" />
                   </button>
@@ -204,7 +204,7 @@ export default function ProductGallery({ images = [] }) {
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`h-14 w-14 rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
+                  className={`h-14 w-14 rounded-none overflow-hidden border-2 cursor-pointer transition-all ${
                     activeIndex === index
                       ? 'border-blue-500 shadow-md ring-2 ring-blue-500/20'
                       : 'border-white/20 hover:border-white/50'
