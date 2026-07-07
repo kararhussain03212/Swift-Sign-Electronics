@@ -79,9 +79,9 @@ export default function Header({ onSearchChange, searchValue }) {
             <a href="#about" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               About Lab
             </a>
-            <a href="#contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+            <Link to="/contact" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Contact
-            </a>
+            </Link>
           </nav>
 
           {/* Search bar inside header (Desktop) */}
@@ -101,6 +101,15 @@ export default function Header({ onSearchChange, searchValue }) {
           {/* Actions & Utilities */}
           <div className="flex items-center gap-1.5 md:gap-3.5">
 
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="p-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-655 dark:text-slate-400 hover:text-blue-500 rounded-none transition-all cursor-pointer"
+              title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
+            >
+              {darkMode ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
+            </button>
 
             {/* Wishlist Icon */}
             <button
@@ -172,9 +181,9 @@ export default function Header({ onSearchChange, searchValue }) {
               <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-blue-500 py-1.5 border-b border-slate-100 dark:border-slate-800/50">
                 About Lab
               </a>
-              <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-blue-500 py-1.5">
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-blue-500 py-1.5">
                 Contact Us
-              </a>
+              </Link>
             </nav>
           </div>
         )}

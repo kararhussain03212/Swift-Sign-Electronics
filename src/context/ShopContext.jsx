@@ -30,13 +30,7 @@ export const ShopProvider = ({ children }) => {
   });
 
   // Dark Mode State
-  const [darkMode, setDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('electro_theme');
-    if (savedTheme) {
-      return savedTheme === 'dark';
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
-  });
+  const [darkMode, setDarkMode] = useState(false);
 
   // Sync to Local Storage and DOM
   useEffect(() => {
@@ -143,6 +137,10 @@ export const ShopProvider = ({ children }) => {
     setCompareList((prevCompare) => prevCompare.filter((item) => item.id !== productId));
   };
 
+  const clearCompare = () => {
+    setCompareList([]);
+  };
+
   const toggleTheme = () => setDarkMode(!darkMode);
 
   return (
@@ -163,6 +161,7 @@ export const ShopProvider = ({ children }) => {
         toggleCompare,
         isInCompare,
         removeFromCompare,
+        clearCompare,
         toggleTheme,
       }}
     >

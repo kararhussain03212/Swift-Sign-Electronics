@@ -3,7 +3,7 @@ import { FiX, FiCheck, FiChevronRight, FiGitPullRequest, FiActivity } from 'reac
 import { useShop } from '../context/ShopContext';
 
 export default function CompareDrawer() {
-  const { compareList, removeFromCompare } = useShop();
+  const { compareList, removeFromCompare, clearCompare } = useShop();
   const [showModal, setShowModal] = useState(false);
 
   if (compareList.length === 0) return null;
@@ -20,7 +20,8 @@ export default function CompareDrawer() {
   return (
     <>
       {/* Bottom Sticky Compare Bar */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[95vw] max-w-2xl bg-slate-900/95 dark:bg-slate-950/95 backdrop-blur-md border border-slate-700/50 rounded-none p-4 shadow-2xl flex items-center justify-between text-white gap-4">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[95vw] max-w-2xl bg-slate-900/95 dark:bg-slate-950/95 backdrop-blur-md border border-slate-700/50 rounded-none p-4 shadow-2xl flex items-center justify-between text-white gap-4 relative animate-fade-in">
+
         <div className="flex items-center gap-3 overflow-x-auto py-1 scrollbar-none">
           <div className="flex items-center gap-1.5 text-blue-400">
             <FiActivity className="w-5 h-5 flex-shrink-0 animate-pulse" />
@@ -45,7 +46,7 @@ export default function CompareDrawer() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setShowModal(true)}
             disabled={compareList.length < 2}
@@ -56,6 +57,13 @@ export default function CompareDrawer() {
             }`}
           >
             Compare Now
+          </button>
+          <button
+            onClick={clearCompare}
+            className="w-8 h-8 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 hover:text-white rounded-full flex items-center justify-center transition-colors cursor-pointer"
+            title="Clear and close comparison"
+          >
+            <FiX className="w-4 h-4" />
           </button>
         </div>
       </div>
