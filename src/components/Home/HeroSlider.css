@@ -3,13 +3,16 @@
   height: 480px;
   width: 100%;
   overflow: hidden;
-  background-color: #05282f;
+  
+  /* Modern Gradient Replacement */
+  /* background: linear-gradient(135deg, #05282f 0%, #000000 100%); */
+background: linear-gradient(135deg, #01151a 0%, #114b59 50%, #000000 100%);
+  
   color: #ffffff;
   user-select: none;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   border-bottom: 1px solid #111;
 }
-
 /* Background grid styling mimicking subtle PCB traces or dots */
 .hero-slider-bg-overlay {
   position: absolute;
