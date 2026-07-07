@@ -181,7 +181,7 @@ export default function Products() {
             className={`px-6 py-3 rounded-none font-bold text-sm transition-all cursor-pointer border flex items-center gap-2 ${
               filters.categories.length === 0
                 ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/10'
-                : 'bg-white dark:bg-slate-900 text-slate-650 dark:text-slate-350 border-slate-200 dark:border-slate-800 hover:border-slate-350 dark:hover:border-slate-700'
+                : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'
             }`}
           >
             <span>All Products</span>
@@ -196,7 +196,7 @@ export default function Products() {
                 className={`px-6 py-3 rounded-none font-bold text-sm transition-all cursor-pointer border flex items-center gap-2 ${
                   isSelected
                     ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/10'
-                    : 'bg-white dark:bg-slate-900 text-slate-650 dark:text-slate-350 border-slate-200 dark:border-slate-800 hover:border-slate-350 dark:hover:border-slate-700'
+                    : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'
                 }`}
               >
                 <span>{cat}</span>
@@ -214,9 +214,9 @@ export default function Products() {
         <main className="flex-1 space-y-6">
           
           {/* Header Controls (Desktop top-bar) */}
-          <div className="hidden lg:flex items-center justify-between gap-4 p-4 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/85 rounded-none shadow-xs">
-            <div className="text-sm font-semibold text-slate-500 dark:text-slate-400">
-              Showing <span className="text-slate-800 dark:text-slate-200 font-extrabold">{sortedProducts.length}</span> components
+          <div className="hidden lg:flex items-center justify-between gap-4 p-4 bg-white border border-slate-200 rounded-none shadow-sm">
+            <div className="text-sm font-semibold text-slate-600">
+              Showing <span className="text-slate-800 font-extrabold">{sortedProducts.length}</span> components
             </div>
 
             <div className="flex items-center gap-4">
@@ -227,7 +227,7 @@ export default function Products() {
                   <select
                     value={sortOption}
                     onChange={(e) => setSortOption(e.target.value)}
-                    className="appearance-none bg-slate-50 dark:bg-slate-850 text-sm font-bold text-slate-750 dark:text-slate-300 py-2 pl-3.5 pr-9 rounded-none border border-slate-200/50 dark:border-slate-800/40 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                    className="appearance-none bg-white text-sm font-bold text-slate-700 py-2 pl-3.5 pr-9 rounded-none border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
                   >
                     <option value="featured">Featured</option>
                     <option value="newest">Newest</option>
@@ -240,13 +240,13 @@ export default function Products() {
               </div>
 
               {/* Grid / List toggle */}
-              <div className="flex items-center bg-slate-105 dark:bg-slate-950 p-1 rounded-none">
+              <div className="flex items-center bg-slate-100 p-1 rounded-none">
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-2 rounded-none transition-all cursor-pointer ${
                     viewMode === 'grid'
-                      ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-450 shadow-xs'
-                      : 'text-slate-400 dark:text-slate-500 hover:text-slate-600'
+                      ? 'bg-white text-blue-600 shadow-xs'
+                      : 'text-slate-400 hover:text-slate-600'
                   }`}
                   title="Grid View"
                 >
@@ -256,8 +256,8 @@ export default function Products() {
                   onClick={() => setViewMode('list')}
                   className={`p-2 rounded-none transition-all cursor-pointer ${
                     viewMode === 'list'
-                      ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-450 shadow-xs'
-                      : 'text-slate-400 dark:text-slate-500 hover:text-slate-600'
+                      ? 'bg-white text-blue-600 shadow-xs'
+                      : 'text-slate-400 hover:text-slate-600'
                   }`}
                   title="List View"
                 >
@@ -269,12 +269,12 @@ export default function Products() {
 
           {/* Inline Search results bar */}
           {filters.search && (
-            <div className="flex items-center gap-2 p-3 bg-blue-50/40 dark:bg-blue-950/10 border border-blue-100/30 dark:border-blue-900/10 rounded-none text-sm">
-              <span className="text-slate-500 dark:text-slate-400 font-medium">Search results for:</span>
-              <strong className="text-blue-600 dark:text-blue-400">"{filters.search}"</strong>
+            <div className="flex items-center gap-2 p-3 bg-blue-50 border border-blue-200 rounded-none text-sm">
+              <span className="text-slate-700 font-medium">Search results for:</span>
+              <strong className="text-blue-600">"{filters.search}"</strong>
               <button
                 onClick={() => handleSearchChange('')}
-                className="ml-auto text-xs font-semibold text-slate-400 hover:text-slate-600 dark:hover:text-slate-205"
+                className="ml-auto text-xs font-semibold text-slate-500 hover:text-slate-700"
               >
                 Clear
               </button>
@@ -284,19 +284,19 @@ export default function Products() {
           {/* Cards Grid */}
           <div className="relative">
             {paginatedProducts.length === 0 ? (
-              <div className="flex flex-col items-center justify-center text-center p-14 border border-dashed border-slate-250 dark:border-slate-800 rounded-none bg-slate-50/20 dark:bg-slate-900/10 space-y-4">
-                <div className="p-4 bg-orange-50 dark:bg-orange-950/20 text-orange-500 rounded-none">
+              <div className="flex flex-col items-center justify-center text-center p-14 border border-dashed border-slate-300 rounded-none bg-slate-50 space-y-4">
+                <div className="p-4 bg-orange-50 text-orange-500 rounded-none">
                   <FiAlertCircle className="w-8 h-8" />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-lg font-black text-slate-800 dark:text-slate-100">No components found</h3>
-                  <p className="text-slate-500 dark:text-slate-400 text-sm max-w-sm">
+                  <h3 className="text-lg font-black text-slate-800">No components found</h3>
+                  <p className="text-slate-600 text-sm max-w-sm">
                     No results match your active filter set. Try broadening your keywords, resetting prices, or editing category checkboxes.
                   </p>
                 </div>
                 <button
                   onClick={handleResetAll}
-                  className="px-5 py-2.5 bg-blue-605 text-white font-bold rounded-none text-sm shadow-md hover:bg-blue-700 transition-all cursor-pointer"
+                  className="px-5 py-2.5 bg-blue-600 text-white font-bold rounded-none text-sm shadow-md hover:bg-blue-700 transition-all cursor-pointer"
                 >
                   Reset All Filters
                 </button>

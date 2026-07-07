@@ -92,7 +92,7 @@ export default function ProductDetails({ onQuickView }) {
         <span className="mx-2">/</span>
         <span className="text-slate-500 dark:text-slate-450">{product.category}</span>
         <span className="mx-2">/</span>
-        <span className="text-slate-700 dark:text-slate-200 line-clamp-1 inline-block align-bottom max-w-xs">{product.name}</span>
+        <span className="text-slate-700 text-slate-700 line-clamp-1 inline-block align-bottom max-w-xs">{product.name}</span>
       </div>
 
       {/* Main Details Panel */}
@@ -122,7 +122,7 @@ export default function ProductDetails({ onQuickView }) {
             </div>
 
             {/* Product Title */}
-            <h1 className="text-3xl md:text-4xl font-black text-slate-800 dark:text-slate-100 leading-tight">
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 leading-tight">
               {product.name}
             </h1>
 
@@ -135,18 +135,18 @@ export default function ProductDetails({ onQuickView }) {
                   Out of Stock
                 </span>
               ) : (
-                <span className="bg-emerald-55/80 dark:bg-emerald-950/20 text-emerald-500 text-xs font-bold px-2.5 py-0.5 rounded-none flex items-center gap-1">
+                <span className="bg-emerald-55/80 bg-emerald-50 text-emerald-500 text-xs font-bold px-2.5 py-0.5 rounded-none flex items-center gap-1">
                   <FiCheck /> In Stock ({product.stock} items)
                 </span>
               )}
             </div>
 
             {/* Price tag */}
-            <div className="p-4 bg-slate-50 dark:bg-slate-950/50 rounded-none flex items-center justify-between border border-slate-200/50 dark:border-slate-800/40">
+            <div className="p-4 bg-slate-50 bg-slate-100/50 rounded-none flex items-center justify-between border border-slate-200/50 border-slate-200/40">
               <div className="space-y-1">
                 <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase">Unit Price</span>
                 <div className="flex items-baseline gap-2.5">
-                  <span className="text-3xl font-black text-slate-800 dark:text-slate-100">
+                  <span className="text-2xl font-extrabold text-slate-800">
                     ${discountedPrice.toFixed(2)}
                   </span>
                   {product.discount > 0 && (
@@ -164,7 +164,7 @@ export default function ProductDetails({ onQuickView }) {
             </div>
 
             {/* Short Description */}
-            <p className="text-slate-500 dark:text-slate-400 text-sm md:text-base leading-relaxed">
+            <p className="text-slate-500 text-slate-600 text-sm md:text-base leading-relaxed">
               {product.description}
             </p>
 
@@ -173,26 +173,26 @@ export default function ProductDetails({ onQuickView }) {
           </div>
 
           {/* Action Row */}
-          <div className="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-4">
+          <div className="pt-6 border-t border-slate-200 border-slate-200 space-y-4">
             
             <div className="flex flex-wrap items-center gap-4">
               {/* Qty Selector */}
               {!isOutOfStock && (
-                <div className="flex items-center bg-slate-100 dark:bg-slate-850 p-1.5 rounded-none border border-slate-200/50 dark:border-slate-800/40">
+                <div className="flex items-center bg-slate-100 dark:bg-slate-850 p-1 rounded-none border border-slate-200/50 border-slate-200/40">
                   <button
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="p-2 text-slate-500 hover:text-slate-850 dark:hover:text-slate-200 cursor-pointer"
+                    className="p-1.5 text-slate-500 hover:text-slate-850 dark:hover:text-slate-200 cursor-pointer"
                   >
-                    <FiMinus className="w-4 h-4" />
+                    <FiMinus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="px-5 font-black text-slate-700 dark:text-slate-300 text-sm">
+                  <span className="px-3 font-bold text-slate-700 dark:text-slate-300 text-sm">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
-                    className="p-2 text-slate-500 hover:text-slate-850 dark:hover:text-slate-200 cursor-pointer"
+                    className="p-1.5 text-slate-500 hover:text-slate-850 dark:hover:text-slate-200 cursor-pointer"
                   >
-                    <FiPlus className="w-4 h-4" />
+                    <FiPlus className="w-3.5 h-3.5" />
                   </button>
                 </div>
               )}
@@ -201,13 +201,13 @@ export default function ProductDetails({ onQuickView }) {
               <button
                 disabled={isOutOfStock}
                 onClick={() => addToCart(product, quantity)}
-                className={`flex-1 min-w-[200px] flex items-center justify-center gap-2 py-4 font-black rounded-none shadow-xl transition-all cursor-pointer ${
+                className={`flex-1 min-w-[150px] flex items-center justify-center gap-1.5 py-2.5 text-sm font-bold rounded-none shadow-md transition-all cursor-pointer ${
                   isOutOfStock
                     ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'
                     : 'bg-blue-600 hover:bg-blue-700 text-white hover:scale-102 shadow-blue-500/20'
                 }`}
               >
-                <FiShoppingCart className="w-5 h-5" /> Add to Cart
+                <FiShoppingCart className="w-4 h-4" /> Add to Cart
               </button>
 
               {/* Buy Now button */}
@@ -217,9 +217,9 @@ export default function ProductDetails({ onQuickView }) {
                   addToCart(product, quantity);
                   alert("Proceeding to simulated checkout with this item!");
                 }}
-                className={`px-6 py-4 font-black rounded-none transition-all cursor-pointer border ${
+                className={`px-5 py-2.5 text-sm font-bold rounded-none transition-all cursor-pointer border ${
                   isOutOfStock
-                    ? 'border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-650 cursor-not-allowed'
+                    ? 'border-slate-200 border-slate-200 text-slate-400 dark:text-slate-650 cursor-not-allowed'
                     : 'border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/10 text-blue-600 dark:text-blue-400'
                 }`}
               >
@@ -269,7 +269,7 @@ export default function ProductDetails({ onQuickView }) {
       </section>
 
       {/* Tabs description section */}
-      <section className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-none p-6 md:p-10 shadow-xs">
+      <section className="bg-white bg-white border border-slate-200/80 border-slate-200/80 rounded-none p-6 md:p-10 shadow-xs">
         <ProductTabs product={product} />
       </section>
 
@@ -277,11 +277,11 @@ export default function ProductDetails({ onQuickView }) {
 
       {/* Accordion FAQ Area */}
       <section className="space-y-6">
-        <h3 className="text-xl md:text-2xl font-black text-slate-800 dark:text-slate-100">
+        <h3 className="text-xl md:text-2xl font-black text-slate-800 text-slate-800">
           Frequently Asked Questions
         </h3>
         
-        <div className="border border-slate-200 dark:border-slate-800 rounded-none overflow-hidden bg-white dark:bg-slate-900 shadow-xs divide-y divide-slate-100 dark:divide-slate-800">
+        <div className="border border-slate-200 border-slate-200 rounded-none overflow-hidden bg-white bg-white shadow-xs divide-y divide-slate-100 dark:divide-slate-800">
           {[
             { q: "Is this component certified for industrial application?", a: "Yes, this component matches industrial performance targets and is fully ESD-safe (Electrostatic Discharge protected) where noted in the specifications sheet." },
             { q: "Where can I find drivers or software libraries for this device?", a: "You can find downloadable programming codes, MQTT server templates, and pinout datasheets under the 'Documents' tab on this page." },
@@ -290,13 +290,13 @@ export default function ProductDetails({ onQuickView }) {
             <div key={idx} className="p-5 space-y-2">
               <button
                 onClick={() => toggleFaq(idx)}
-                className="w-full flex items-center justify-between font-bold text-slate-800 dark:text-slate-200 hover:text-blue-500 text-sm md:text-base cursor-pointer text-left"
+                className="w-full flex items-center justify-between font-bold text-slate-800 text-slate-700 hover:text-blue-500 text-sm md:text-base cursor-pointer text-left"
               >
                 <span>{faq.q}</span>
                 <FiChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${faqOpen[idx] ? 'rotate-180 text-blue-500' : ''}`} />
               </button>
               {faqOpen[idx] && (
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed pt-1.5 border-t border-slate-100 dark:border-slate-800/40">
+                <p className="text-sm text-slate-500 text-slate-600 leading-relaxed pt-1.5 border-t border-slate-100 border-slate-200/40">
                   {faq.a}
                 </p>
               )}
@@ -307,7 +307,7 @@ export default function ProductDetails({ onQuickView }) {
 
 
       {/* Related Products list */}
-      <section className="pt-8 border-t border-slate-200 dark:border-slate-800">
+      <section className="pt-8 border-t border-slate-200 border-slate-200">
         <RelatedProducts
           relatedIds={product.relatedProducts}
           currentProductId={product.id}

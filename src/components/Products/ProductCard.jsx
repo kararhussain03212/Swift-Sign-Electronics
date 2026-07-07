@@ -23,10 +23,10 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
   if (viewMode === 'list') {
     return (
       <div
-        className="group relative flex flex-col md:flex-row gap-6 p-5 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 hover:border-blue-500/30 dark:hover:border-blue-400/30 rounded-none hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+        className="group relative flex flex-col md:flex-row gap-6 p-5 bg-white border border-slate-200 hover:border-blue-500/50 rounded-none hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
       >
         {/* Left Side: Product Image & Badges */}
-        <div className="relative w-full md:w-56 h-48 rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0 flex items-center justify-center">
+        <div className="relative w-full md:w-56 h-48 rounded-none overflow-hidden bg-slate-50 flex-shrink-0 flex items-center justify-center">
           <img
             src={product.thumbnail}
             alt={product.name}
@@ -55,21 +55,21 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           <div className="space-y-2">
             {/* Header info */}
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold px-2.5 py-0.5 rounded-none">
+              <span className="bg-blue-50 text-blue-600 font-bold px-2.5 py-0.5 rounded-none">
                 {product.category}
               </span>
-              <span className="text-slate-400 dark:text-slate-500 font-medium">
-                Brand: <strong className="text-slate-600 dark:text-slate-300 font-semibold">{product.brand}</strong>
+              <span className="text-slate-500 font-medium">
+                Brand: <strong className="text-slate-700 font-semibold">{product.brand}</strong>
               </span>
-              <span className="text-slate-400 dark:text-slate-500 font-medium">|</span>
-              <span className="text-slate-400 dark:text-slate-500 font-medium">
-                SKU: <strong className="text-slate-600 dark:text-slate-300 font-semibold">{product.SKU}</strong>
+              <span className="text-slate-500 font-medium">|</span>
+              <span className="text-slate-500 font-medium">
+                SKU: <strong className="text-slate-700 font-semibold">{product.SKU}</strong>
               </span>
             </div>
 
             {/* Name */}
             <Link to={`/product/${product.slug}`} className="block">
-              <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 hover:text-blue-500 dark:hover:text-blue-400 transition-colors line-clamp-1">
+              <h3 className="text-lg font-bold text-slate-800 hover:text-blue-600 transition-colors line-clamp-1">
                 {product.name}
               </h3>
             </Link>
@@ -78,7 +78,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
             <Rating value={product.rating} reviewsCount={product.reviews} />
 
             {/* Short Description */}
-            <p className="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 pr-6">
+            <p className="text-slate-600 text-sm line-clamp-2 pr-6">
               {product.description}
             </p>
 
@@ -89,7 +89,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
                   <FiX /> Out of Stock
                 </span>
               ) : (
-                <span className="flex items-center gap-1 text-emerald-500 font-bold bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-none">
+                <span className="flex items-center gap-1 text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-none">
                   <FiCheck /> In Stock ({product.stock} left)
                 </span>
               )}
@@ -97,14 +97,14 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           </div>
 
           {/* Pricing and Action row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 mt-4 border-t border-slate-200">
             {/* Price section */}
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-black text-slate-800 dark:text-slate-100">
+              <span className="text-2xl font-black text-slate-800">
                 ${discountedPrice.toFixed(2)}
               </span>
               {product.discount > 0 && (
-                <span className="text-sm text-slate-400 line-through">
+                <span className="text-sm text-slate-500 line-through">
                   ${product.price.toFixed(2)}
                 </span>
               )}
@@ -115,10 +115,10 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
               {/* Wishlist Button */}
               <button
                 onClick={() => toggleWishlist(product)}
-                className={`p-3 border rounded-none hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:scale-105 transition-all cursor-pointer ${
+                className={`p-3 border rounded-none hover:bg-slate-50 hover:scale-105 transition-all cursor-pointer ${
                   inWishlist
-                    ? 'border-red-500 bg-red-50 dark:bg-red-950/20 text-red-500'
-                    : 'border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400'
+                    ? 'border-red-500 bg-red-50 text-red-500'
+                    : 'border-slate-200 text-slate-500'
                 }`}
                 title="Add to Wishlist"
               >
@@ -128,10 +128,10 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
               {/* Compare Button */}
               <button
                 onClick={() => toggleCompare(product)}
-                className={`p-3 border rounded-none hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:scale-105 transition-all cursor-pointer ${
+                className={`p-3 border rounded-none hover:bg-slate-50 hover:scale-105 transition-all cursor-pointer ${
                   inCompare
-                    ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/20 text-orange-500'
-                    : 'border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400'
+                    ? 'border-orange-500 bg-orange-50 text-orange-500'
+                    : 'border-slate-200 text-slate-500'
                 }`}
                 title="Compare Product"
               >
@@ -141,7 +141,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
               {/* View Details Link */}
               <Link
                 to={`/product/${product.slug}`}
-                className="px-4 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-none text-sm font-bold transition-all"
+                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-none text-sm font-bold transition-all"
               >
                 Details
               </Link>
@@ -168,10 +168,10 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
   // Grid view (Default)
   return (
     <div
-      className="group relative flex flex-col justify-between bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 hover:border-blue-500/30 dark:hover:border-blue-400/30 rounded-none hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
+      className="group relative flex flex-col justify-between bg-white border border-slate-200 hover:border-blue-500/50 rounded-none hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
     >
       {/* Product Image Panel */}
-      <div className="relative w-full h-56 rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4">
+      <div className="relative w-full h-48 rounded-none overflow-hidden bg-slate-50 flex items-center justify-center p-3">
         <img
           src={product.thumbnail}
           alt={product.name}
@@ -194,7 +194,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
         </div>
 
         {/* Category Badge */}
-        <span className="absolute top-3.5 right-3.5 bg-blue-50/90 dark:bg-blue-900/85 backdrop-blur-xs text-blue-600 dark:text-blue-400 text-xs font-extrabold px-2.5 py-1 rounded-none shadow-xs">
+        <span className="absolute top-3.5 right-3.5 bg-blue-50 backdrop-blur-xs text-blue-600 text-xs font-extrabold px-2.5 py-1 rounded-none shadow-xs">
           {product.category}
         </span>
 
@@ -203,19 +203,19 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           {/* Wishlist */}
           <button
             onClick={() => toggleWishlist(product)}
-            className={`p-2.5 bg-white dark:bg-slate-850 hover:bg-red-500 dark:hover:bg-red-500 hover:text-white rounded-none shadow-lg border border-slate-100 dark:border-slate-800 transition-all cursor-pointer ${
-              inWishlist ? 'text-red-500 bg-red-50 dark:bg-red-950/20' : 'text-slate-600 dark:text-slate-350'
+            className={`p-2.5 bg-white hover:bg-red-500 hover:text-white rounded-none shadow-lg border border-slate-200 transition-all cursor-pointer ${
+              inWishlist ? 'text-red-500 bg-red-50' : 'text-slate-600'
             }`}
             title="Wishlist"
           >
             <FiHeart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
           </button>
-          
+
           {/* Compare */}
           <button
             onClick={() => toggleCompare(product)}
-            className={`p-2.5 bg-white dark:bg-slate-850 hover:bg-orange-500 hover:text-white rounded-none shadow-lg border border-slate-100 dark:border-slate-800 transition-all cursor-pointer ${
-              inCompare ? 'text-orange-500 bg-orange-50 dark:bg-orange-950/20' : 'text-slate-600 dark:text-slate-350'
+            className={`p-2.5 bg-white hover:bg-orange-500 hover:text-white rounded-none shadow-lg border border-slate-200 transition-all cursor-pointer ${
+              inCompare ? 'text-orange-500 bg-orange-50' : 'text-slate-600'
             }`}
             title="Compare"
           >
@@ -225,7 +225,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           {/* Quick View */}
           <button
             onClick={() => onQuickView(product)}
-            className="p-2.5 bg-white dark:bg-slate-850 hover:bg-blue-600 hover:text-white text-slate-600 dark:text-slate-350 rounded-none shadow-lg border border-slate-100 dark:border-slate-800 transition-all cursor-pointer"
+            className="p-2.5 bg-white hover:bg-blue-600 hover:text-white text-slate-600 rounded-none shadow-lg border border-slate-200 transition-all cursor-pointer"
             title="Quick View"
           >
             <FiEye className="w-4 h-4" />
@@ -234,16 +234,16 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
       </div>
 
       {/* Body Content */}
-      <div className="p-5 flex-1 flex flex-col justify-between">
-        <div className="space-y-1.5">
+      <div className="p-4 flex-1 flex flex-col justify-between">
+        <div className="space-y-1">
           {/* Brand */}
-          <span className="text-xs text-slate-400 dark:text-slate-500 font-bold uppercase tracking-wider">
+          <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">
             {product.brand}
           </span>
 
           {/* Name */}
           <Link to={`/product/${product.slug}`} className="block">
-            <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 hover:text-blue-500 dark:hover:text-blue-400 transition-colors line-clamp-2">
+            <h3 className="text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors line-clamp-2">
               {product.name}
             </h3>
           </Link>
@@ -252,30 +252,30 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           <Rating value={product.rating} reviewsCount={product.reviews} showText={true} />
 
           {/* Short Description */}
-          <p className="text-slate-500 dark:text-slate-400 text-xs line-clamp-2 mt-1.5 leading-relaxed">
+          <p className="text-slate-600 text-xs line-clamp-2 mt-0.5 leading-tight">
             {product.description}
           </p>
 
           {/* Stock details */}
-          <div className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 mt-2">
+          <div className="text-[11px] font-semibold text-slate-500 mt-1">
             {!isOutOfStock ? (
-              <span className="text-emerald-500 font-bold">In Stock: {product.stock} items</span>
+              <span className="text-emerald-600 font-bold">In Stock: {product.stock} items</span>
             ) : (
-              <span className="text-red-500 font-bold">Out of stock</span>
+              <span className="text-red-600 font-bold">Out of stock</span>
             )}
           </div>
         </div>
 
         {/* Footer row */}
-        <div className="flex items-center justify-between gap-2 pt-4 mt-4 border-t border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between gap-2 pt-3 mt-3 border-t border-slate-200">
           {/* Prices */}
           <div className="flex flex-col">
             {product.discount > 0 && (
-              <span className="text-[11px] text-slate-400 line-through">
+              <span className="text-[10px] text-slate-500 line-through">
                 ${product.price.toFixed(2)}
               </span>
             )}
-            <span className="text-lg font-black text-slate-800 dark:text-slate-100">
+            <span className="text-base font-black text-slate-800">
               ${discountedPrice.toFixed(2)}
             </span>
           </div>

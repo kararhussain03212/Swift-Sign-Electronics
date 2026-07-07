@@ -20,10 +20,10 @@ export default function CompareDrawer() {
   return (
     <>
       {/* Bottom Sticky Compare Bar */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95vw] max-w-2xl bg-slate-900/95 dark:bg-slate-950/95 backdrop-blur-md border border-slate-700/50 rounded-none p-4 shadow-2xl flex items-center justify-between text-white gap-4 animate-fade-in">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95vw] max-w-2xl bg-white backdrop-blur-md border border-slate-200 rounded-none p-4 shadow-2xl flex items-center justify-between text-slate-800 gap-4 animate-fade-in">
 
         <div className="flex items-center gap-3 overflow-x-auto py-1 scrollbar-none">
-          <div className="flex items-center gap-1.5 text-blue-400">
+          <div className="flex items-center gap-1.5 text-blue-600">
             <FiActivity className="w-5 h-5 flex-shrink-0 animate-pulse" />
             <span className="text-xs md:text-sm font-black whitespace-nowrap">Compare ({compareList.length}/4)</span>
           </div>
@@ -32,7 +32,7 @@ export default function CompareDrawer() {
             {compareList.map((product) => (
               <div
                 key={product.id}
-                className="relative h-10 w-10 rounded-none overflow-hidden bg-slate-800 border border-slate-700 flex-shrink-0 group"
+                className="relative h-10 w-10 rounded-none overflow-hidden bg-slate-100 border border-slate-200 flex-shrink-0 group"
               >
                 <img src={product.thumbnail} alt={product.name} className="h-full w-full object-cover" />
                 <button
@@ -52,7 +52,7 @@ export default function CompareDrawer() {
             disabled={compareList.length < 2}
             className={`px-4 py-2 text-xs md:text-sm font-bold rounded-none transition-all whitespace-nowrap cursor-pointer ${
               compareList.length < 2
-                ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
                 : 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg'
             }`}
           >
@@ -60,7 +60,7 @@ export default function CompareDrawer() {
           </button>
           <button
             onClick={clearCompare}
-            className="w-8 h-8 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-400 hover:text-white rounded-full flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 hover:text-slate-800 rounded-full flex items-center justify-center transition-colors cursor-pointer"
             title="Clear and close comparison"
           >
             <FiX className="w-4 h-4" />
@@ -75,44 +75,44 @@ export default function CompareDrawer() {
             className="fixed inset-0 z-60 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
           >
             <div
-              className="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-none overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+              className="bg-white w-full max-w-5xl rounded-none overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
             >
               {/* Modal Header */}
-              <div className="p-5 md:p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div className="p-5 md:p-6 border-b border-slate-200 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <FiActivity className="text-blue-500 w-6 h-6" />
-                  <h3 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">
+                  <FiActivity className="text-blue-600 w-6 h-6" />
+                  <h3 className="text-lg md:text-xl font-bold text-slate-800">
                     Product Comparison
                   </h3>
                 </div>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-none transition-colors cursor-pointer"
+                  className="p-2 bg-slate-100 hover:bg-slate-200 rounded-none transition-colors cursor-pointer"
                 >
-                  <FiX className="w-5 h-5 text-slate-500 dark:text-slate-400" />
+                  <FiX className="w-5 h-5 text-slate-500" />
                 </button>
               </div>
 
               {/* Modal Comparison Content */}
               <div className="flex-1 overflow-auto p-5 md:p-6">
-                <div className="min-w-[600px] border border-slate-200 dark:border-slate-800 rounded-none overflow-hidden">
+                <div className="min-w-[600px] border border-slate-200 rounded-none overflow-hidden">
                   <table className="w-full border-collapse text-left text-sm">
                     <thead>
-                      <tr className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
+                      <tr className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 border-slate-200">
                         <th className="p-4 font-bold text-slate-500 w-1/5">Product details</th>
                         {compareList.map((product) => {
                           const discPrice = product.price * (1 - (product.discount || 0) / 100);
                           return (
-                            <th key={product.id} className="p-4 border-l border-slate-200 dark:border-slate-800 w-1/4">
+                            <th key={product.id} className="p-4 border-l border-slate-200 border-slate-200 w-1/4">
                               <div className="space-y-2">
-                                <div className="h-24 w-full rounded-none overflow-hidden bg-slate-100 dark:bg-slate-900">
+                                <div className="h-24 w-full rounded-none overflow-hidden bg-slate-100 bg-slate-50">
                                   <img src={product.thumbnail} alt={product.name} className="h-full w-full object-cover" />
                                 </div>
-                                <h4 className="font-extrabold text-slate-800 dark:text-slate-200 text-sm line-clamp-2">
+                                <h4 className="font-extrabold text-slate-800 text-slate-800 text-sm line-clamp-2">
                                   {product.name}
                                 </h4>
                                 <div className="flex items-center gap-2">
-                                  <span className="font-black text-slate-800 dark:text-slate-100">
+                                  <span className="font-black text-slate-800 text-slate-800">
                                     ${discPrice.toFixed(2)}
                                   </span>
                                   {product.discount > 0 && (
@@ -135,21 +135,21 @@ export default function CompareDrawer() {
                     </thead>
                     <tbody>
                       {/* Brand Row */}
-                      <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50/50 dark:hover:bg-slate-850/50 transition-colors">
-                        <td className="p-4 font-bold text-slate-700 dark:text-slate-350">Brand</td>
+                      <tr className="border-b border-slate-200 border-slate-200 hover:bg-slate-50/50 hover:bg-slate-100/50 transition-colors">
+                        <td className="p-4 font-bold text-slate-700 text-slate-700">Brand</td>
                         {compareList.map((product) => (
-                          <td key={product.id} className="p-4 border-l border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400">
+                          <td key={product.id} className="p-4 border-l border-slate-200 border-slate-200 text-slate-600 text-slate-600">
                             {product.brand}
                           </td>
                         ))}
                       </tr>
 
                       {/* Category Row */}
-                      <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50/50 dark:hover:bg-slate-850/50 transition-colors">
-                        <td className="p-4 font-bold text-slate-700 dark:text-slate-350">Category</td>
+                      <tr className="border-b border-slate-200 border-slate-200 hover:bg-slate-50/50 hover:bg-slate-100/50 transition-colors">
+                        <td className="p-4 font-bold text-slate-700 text-slate-700">Category</td>
                         {compareList.map((product) => (
-                          <td key={product.id} className="p-4 border-l border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400">
-                            <span className="bg-slate-105 dark:bg-slate-800 px-2 py-0.5 rounded text-xs font-semibold">
+                          <td key={product.id} className="p-4 border-l border-slate-200 border-slate-200 text-slate-600 text-slate-600">
+                            <span className="bg-slate-105 bg-blue-50 px-2 py-0.5 rounded text-xs font-semibold">
                               {product.category}
                             </span>
                           </td>
@@ -157,10 +157,10 @@ export default function CompareDrawer() {
                       </tr>
 
                       {/* Stock Row */}
-                      <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50/50 dark:hover:bg-slate-850/50 transition-colors">
-                        <td className="p-4 font-bold text-slate-700 dark:text-slate-350">Availability</td>
+                      <tr className="border-b border-slate-200 border-slate-200 hover:bg-slate-50/50 hover:bg-slate-100/50 transition-colors">
+                        <td className="p-4 font-bold text-slate-700 text-slate-700">Availability</td>
                         {compareList.map((product) => (
-                          <td key={product.id} className="p-4 border-l border-slate-200 dark:border-slate-800">
+                          <td key={product.id} className="p-4 border-l border-slate-200 border-slate-200">
                             {product.stock > 0 ? (
                               <span className="text-emerald-500 font-bold text-xs">In Stock ({product.stock})</span>
                             ) : (
@@ -171,10 +171,10 @@ export default function CompareDrawer() {
                       </tr>
 
                       {/* Rating Row */}
-                      <tr className="border-b border-slate-200 dark:border-slate-800 hover:bg-slate-50/50 dark:hover:bg-slate-850/50 transition-colors">
-                        <td className="p-4 font-bold text-slate-700 dark:text-slate-350">Rating</td>
+                      <tr className="border-b border-slate-200 border-slate-200 hover:bg-slate-50/50 hover:bg-slate-100/50 transition-colors">
+                        <td className="p-4 font-bold text-slate-700 text-slate-700">Rating</td>
                         {compareList.map((product) => (
-                          <td key={product.id} className="p-4 border-l border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400">
+                          <td key={product.id} className="p-4 border-l border-slate-200 border-slate-200 text-slate-600 text-slate-600">
                             ★ {product.rating} ({product.reviews} reviews)
                           </td>
                         ))}
@@ -182,10 +182,10 @@ export default function CompareDrawer() {
 
                       {/* Dynamic Spec Rows */}
                       {allSpecKeys.map((key) => (
-                        <tr key={key} className="border-b border-slate-200 dark:border-slate-800 last:border-0 hover:bg-slate-50/50 dark:hover:bg-slate-850/50 transition-colors">
-                          <td className="p-4 font-bold text-slate-705 dark:text-slate-355">{key}</td>
+                        <tr key={key} className="border-b border-slate-200 border-slate-200 last:border-0 hover:bg-slate-50/50 hover:bg-slate-100/50 transition-colors">
+                          <td className="p-4 font-bold text-slate-705 text-slate-700">{key}</td>
                           {compareList.map((product) => (
-                            <td key={product.id} className="p-4 border-l border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-xs">
+                            <td key={product.id} className="p-4 border-l border-slate-200 border-slate-200 text-slate-600 text-slate-600 text-xs">
                               {product.specifications?.[key] || '-'}
                             </td>
                           ))}
