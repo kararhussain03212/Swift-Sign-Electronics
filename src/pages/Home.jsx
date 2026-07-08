@@ -166,7 +166,7 @@ function FeaturedCategoriesSection() {
   const [activeCat, setActiveCat] = useState('all');
 
   return (
-    <div className="w-full border-b border-gray-200 bg-white my-12 md:my-16">
+    <div className="w-full my-12 md:my-16">
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex overflow-x-auto no-scrollbar gap-8 items-end h-[80px]">
           {FEATURED_CATEGORIES.map((cat) => {
@@ -334,29 +334,36 @@ function DiscoverSection() {
 }
 
 function BlogSection() {
-  const recentBlogs = BLOG_ARTICLES.slice(0, 6);
+  const recentBlogs = BLOG_ARTICLES.slice(0, 3);
 
   return (
     <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-white">
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Latest Blog Articles</h2>
-          <p className="text-gray-600 text-lg">Stay updated with the latest electronics and IoT tutorials</p>
+        <div className="mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Latest Blog Articles</h2>
+            <p className="text-gray-600 text-lg">Stay updated with the latest electronics and IoT tutorials</p>
+          </div>
+          <Link
+            to="/blog"
+            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition-all whitespace-nowrap"
+          >
+            View All Articles
+          </Link>
         </div>
 
         {/* Blog Grid/Slider */}
         {recentBlogs.length > 0 && (
           <Swiper
-            modules={[Autoplay, Navigation, Pagination]}
+            modules={[Navigation, Pagination]}
             spaceBetween={24}
             slidesPerView={1}
             breakpoints={{
               640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-              1280: { slidesPerView: 3 },
-              1536: { slidesPerView: 3 }
+              1024: { slidesPerView: 3 }
             }}
+            pagination={{ clickable: true }}
             navigation
             pagination={{ clickable: true }}
             autoplay={{ delay: 6000, disableOnInteraction: true }}

@@ -964,5 +964,860 @@ export const products = [
     SKU: "ADA-FM-RADIO",
     tags: ["soldering-kit", "diy-kits", "adafruit", "fm-radio", "beginners"],
     applications: ["Soldering Practice", "Basic Audio Circuit", "Hobby Project"]
+  },
+  {
+    "id": 15,
+    "name": "Precision Screwdriver Set Pro",
+    "slug": "precision-screwdriver-set-pro",
+    "category": "Tools",
+    "brand": "Weller",
+    "price": 45.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_tool.png",
+    "images": [
+      "/products/new_tool.png"
+    ],
+    "description": "High quality professional tools for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Precision Screwdriver Set Pro",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-16",
+    "tags": [
+      "tools"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Ceramic Tweezers",
+    "slug": "ceramic-tweezers",
+    "category": "Tools",
+    "brand": "Hakko",
+    "price": 15.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_tool.png",
+    "images": [
+      "/products/new_tool.png"
+    ],
+    "description": "High quality professional tools for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Ceramic Tweezers",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-17",
+    "tags": [
+      "tools"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Wire Stripper Ergonomic",
+    "slug": "wire-stripper-ergonomic",
+    "category": "Tools",
+    "brand": "Knipex",
+    "price": 35.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_tool.png",
+    "images": [
+      "/products/new_tool.png"
+    ],
+    "description": "High quality professional tools for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Wire Stripper Ergonomic",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-18",
+    "tags": [
+      "tools"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Crimping Pliers",
+    "slug": "crimping-pliers",
+    "category": "Tools",
+    "brand": "Engineer",
+    "price": 55.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_tool.png",
+    "images": [
+      "/products/new_tool.png"
+    ],
+    "description": "High quality professional tools for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Crimping Pliers",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-19",
+    "tags": [
+      "tools"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Desoldering Pump Heavy Duty",
+    "slug": "desoldering-pump-heavy-duty",
+    "category": "Tools",
+    "brand": "Pro'sKit",
+    "price": 25.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_tool.png",
+    "images": [
+      "/products/new_tool.png"
+    ],
+    "description": "High quality professional tools for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Desoldering Pump Heavy Duty",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-20",
+    "tags": [
+      "tools"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Bench Multimeter Elite",
+    "slug": "bench-multimeter-elite",
+    "category": "Instruments",
+    "brand": "Fluke",
+    "price": 450.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_instrument.png",
+    "images": [
+      "/products/new_instrument.png"
+    ],
+    "description": "High quality professional instruments for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Bench Multimeter Elite",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-21",
+    "tags": [
+      "instruments"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Digital Spectrum Analyzer",
+    "slug": "digital-spectrum-analyzer",
+    "category": "Instruments",
+    "brand": "Rigol",
+    "price": 899.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_instrument.png",
+    "images": [
+      "/products/new_instrument.png"
+    ],
+    "description": "High quality professional instruments for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Digital Spectrum Analyzer",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-22",
+    "tags": [
+      "instruments"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Bench Power Supply 60V",
+    "slug": "bench-power-supply-60v",
+    "category": "Instruments",
+    "brand": "Siglent",
+    "price": 250.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_instrument.png",
+    "images": [
+      "/products/new_instrument.png"
+    ],
+    "description": "High quality professional instruments for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Bench Power Supply 60V",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-23",
+    "tags": [
+      "instruments"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Logic Analyzer Pro 8",
+    "slug": "logic-analyzer-pro-8",
+    "category": "Instruments",
+    "brand": "Saleae",
+    "price": 299.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_instrument.png",
+    "images": [
+      "/products/new_instrument.png"
+    ],
+    "description": "High quality professional instruments for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Logic Analyzer Pro 8",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-24",
+    "tags": [
+      "instruments"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Handheld LCR Meter",
+    "slug": "handheld-lcr-meter",
+    "category": "Instruments",
+    "brand": "Keysight",
+    "price": 399.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_instrument.png",
+    "images": [
+      "/products/new_instrument.png"
+    ],
+    "description": "High quality professional instruments for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Handheld LCR Meter",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-25",
+    "tags": [
+      "instruments"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Smart Greenhouse Kit",
+    "slug": "smart-greenhouse-kit",
+    "category": "Projects",
+    "brand": "Arduino",
+    "price": 65.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_project.png",
+    "images": [
+      "/products/new_project.png"
+    ],
+    "description": "High quality professional projects for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Smart Greenhouse Kit",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-26",
+    "tags": [
+      "projects"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 26,
+    "name": "Weather Station IoT Kit",
+    "slug": "weather-station-iot-kit",
+    "category": "Projects",
+    "brand": "SparkFun",
+    "price": 85.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_project.png",
+    "images": [
+      "/products/new_project.png"
+    ],
+    "description": "High quality professional projects for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Weather Station IoT Kit",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-27",
+    "tags": [
+      "projects"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 27,
+    "name": "Neopixel Light Display Kit",
+    "slug": "neopixel-light-display-kit",
+    "category": "Projects",
+    "brand": "Adafruit",
+    "price": 45.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_project.png",
+    "images": [
+      "/products/new_project.png"
+    ],
+    "description": "High quality professional projects for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Neopixel Light Display Kit",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-28",
+    "tags": [
+      "projects"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 28,
+    "name": "Retro Gaming Arcade Kit",
+    "slug": "retro-gaming-arcade-kit",
+    "category": "Projects",
+    "brand": "Raspberry Pi",
+    "price": 120.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_project.png",
+    "images": [
+      "/products/new_project.png"
+    ],
+    "description": "High quality professional projects for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "Retro Gaming Arcade Kit",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-29",
+    "tags": [
+      "projects"
+    ],
+    "applications": [
+      "Electronics"
+    ]
+  },
+  {
+    "id": 29,
+    "name": "AI Camera Recognition Kit",
+    "slug": "ai-camera-recognition-kit",
+    "category": "Projects",
+    "brand": "DFRobot",
+    "price": 95.99,
+    "discount": 5,
+    "rating": 4.8,
+    "reviews": 42,
+    "thumbnail": "/products/new_project.png",
+    "images": [
+      "/products/new_project.png"
+    ],
+    "description": "High quality professional projects for electronic projects.",
+    "introduction": {
+      "overview": "A great addition to your workspace.",
+      "purpose": "To assist with electronic builds.",
+      "features": [
+        "High durability",
+        "Professional grade",
+        "Easy to use"
+      ],
+      "applications": [
+        "DIY projects",
+        "Professional use"
+      ],
+      "advantages": [
+        "Reliable",
+        "Cost-effective"
+      ]
+    },
+    "specifications": {
+      "Weight": "500g",
+      "Warranty": "1 Year"
+    },
+    "shippingList": [
+      {
+        "name": "AI Camera Recognition Kit",
+        "count": 1
+      }
+    ],
+    "documents": [],
+    "relatedProducts": [
+      1,
+      2,
+      3
+    ],
+    "stock": 50,
+    "SKU": "NEW-30",
+    "tags": [
+      "projects"
+    ],
+    "applications": [
+      "Electronics"
+    ]
   }
 ];
