@@ -364,8 +364,6 @@ function BlogSection() {
               1024: { slidesPerView: 3 }
             }}
             pagination={{ clickable: true }}
-            navigation
-            pagination={{ clickable: true }}
             autoplay={{ delay: 6000, disableOnInteraction: true }}
             className="w-full"
             style={{
