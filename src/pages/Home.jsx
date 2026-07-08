@@ -1,10 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { DUMMY_ELECTRONICS } from '../data/dummyElectronics';
+import 'swiper/css/effect-fade';
+import { products } from '../data/products';
+import { BLOG_ARTICLES } from '../data/blogData';
+import { Link } from 'react-router-dom';
+import { Clock, Calendar, ArrowRight, Heart, ShoppingCart, Eye, Check, X } from 'lucide-react';
 import { 
   BiGridAlt, 
   BiVolumeFull, 
@@ -68,86 +72,43 @@ const HERO_SLIDES = [
 
 export default function Home({ onTabChange }) {
   return (
-    <div className="w-full bg-gray-50">
+    <div className="w-full bg-gray-50 min-h-screen">
       {/* 1. HERO SLIDER SECTION */}
       <HeroSliderSection />
 
       {/* 2. FEATURED CATEGORIES SECTION */}
       <FeaturedCategoriesSection />
 
-      {/* 3. DISCOVER SECTION WITH BANNER & SLIDER */}
-      <SectionWithBanner
-        title="Discover"
-        subtitle="Browse our collection"
-        bannerColor="from-blue-600 to-blue-800"
-        bannerImage="/hero1.png"
-        bannerTitle="New in Discover"
-        bannerSubtitle="Latest electronics products"
+      {/* 6. DISCOVER ALL PRODUCTS SLIDER */}
+      <DiscoverSection />
+
+      {/* 3. TOOLS CATEGORY SLIDER */}
+      <CategorySliderSection
+        title="Tools"
+        subtitle="Essential tools for electronics projects"
+        category="Tools"
       />
 
-      {/* 4. NEW ARRIVALS SECTION */}
-      <SectionWithBanner
-        title="New Arrivals"
-        subtitle="Recently added products"
-        bannerColor="from-purple-600 to-purple-800"
-        bannerImage="/hero2.png"
-        bannerTitle="Fresh Stock"
-        bannerSubtitle="Discover what's new"
+
+
+      {/* 4. INSTRUMENTS CATEGORY SLIDER */}
+      <CategorySliderSection
+        title="Instruments"
+        subtitle="Precision measurement and diagnostic devices"
+        category="Instruments"
       />
 
-      {/* 5. FEATURED SECTION */}
-      <SectionWithBanner
-        title="Featured"
-        subtitle="Handpicked products"
-        bannerColor="from-green-600 to-green-800"
-        bannerImage="/hero3.png"
-        bannerTitle="Best Sellers"
-        bannerSubtitle="Most popular items"
+
+
+      {/* 5. PROJECTS CATEGORY SLIDER */}
+      <CategorySliderSection
+        title="Projects"
+        subtitle="Complete project kits and components"
+        category="Projects"
       />
 
-      {/* 6. MICROCONTROLLER SECTION */}
-      <SectionWithBanner
-        title="Microcontrollers"
-        subtitle="Arduino, ESP32, and more"
-        bannerColor="from-indigo-600 to-indigo-800"
-        bannerImage="/hero1.png"
-        bannerTitle="Arduino Boards"
-        bannerSubtitle="Open-source electronics"
-      />
-
-      {/* 7. DEVELOPMENT BOARDS SECTION */}
-      <SectionWithBanner
-        title="Development Boards"
-        subtitle="Single board computers"
-        bannerColor="from-red-600 to-red-800"
-        bannerImage="/hero2.png"
-        bannerTitle="Single Board Computer"
-        bannerSubtitle="Powerful computing solutions"
-      />
-
-      {/* 8. SENSORS & MODULES SECTION */}
-      <SectionWithBanner
-        title="Sensors & Modules"
-        subtitle="IoT components"
-        bannerColor="from-yellow-600 to-yellow-800"
-        bannerImage="/hero3.png"
-        bannerTitle="Smart Sensors"
-        bannerSubtitle="IoT technology"
-      />
-
-      {/* 9. ACCESSORIES SECTION */}
-      <PromotionalBanner
-        title="Premium Accessories"
-        subtitle="Complete your project with quality accessories and components"
-        bgColor="from-pink-600 to-pink-800"
-        ctaText="Shop Accessories"
-      />
-
-      {/* 10. BESTSELLERS SECTION */}
-      <ProductShowcaseSection
-        title="Bestsellers"
-        subtitle="Most purchased products"
-      />
+      {/* 8. BLOG SECTION */}
+      <BlogSection />
     </div>
   );
 }
@@ -241,197 +202,381 @@ function FeaturedCategoriesSection() {
   );
 }
 
-function ProductShowcaseSection({ title, subtitle }) {
+function CategorySliderSection({ title, subtitle, category }) {
+  const categoryProducts = products.filter(p => p.category === category).slice(0, 8);
+  const categoryBanner = categoryProducts[0];
+
   return (
-    <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 border-t border-gray-200">
-      <div className="mb-12">
+    <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-gray-50">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{title}</h2>
         <p className="text-gray-600 text-lg">{subtitle}</p>
       </div>
 
-      <Swiper
-        modules={[Navigation, Pagination]}
-        spaceBetween={16}
-        slidesPerView={1}
-        breakpoints={{
-          480: { slidesPerView: 2 },
-          768: { slidesPerView: 3 },
-          1024: { slidesPerView: 4 },
-          1280: { slidesPerView: 5 }
-        }}
-        navigation
-        pagination={{ clickable: true }}
-        className="w-full"
-        style={{
-          "--swiper-navigation-color": "#0fafb8",
-          "--swiper-pagination-color": "#0fafb8"
-        }}
-      >
-        {DUMMY_ELECTRONICS.map((product) => (
-          <SwiperSlide key={product.id}>
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition group h-full flex flex-col">
-              {/* Product Image */}
-              <div className="aspect-square w-full overflow-hidden bg-gray-50 flex items-center justify-center relative">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-[70%] h-[70%] object-contain group-hover:scale-110 transition"
-                  onError={(e) => {
-                    e.target.src = "https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?w=400&auto=format&fit=crop&q=80";
-                  }}
-                />
-                <div className="absolute top-3 right-3 bg-[#ff6b00] text-white px-3 py-1 rounded-full text-xs font-bold">
-                  New
+      {/* Category Banner */}
+      {categoryBanner && (
+        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg overflow-hidden">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-8 md:p-10">
+              {/* Banner Content */}
+              <div className="flex-1 text-white">
+                <div className="mb-2 text-sm font-bold text-blue-200 uppercase tracking-wider">
+                  {category} Essentials
                 </div>
+                <h3 className="text-2xl md:text-3xl font-bold mb-3">{categoryBanner.name}</h3>
+                <p className="text-blue-100 mb-4 line-clamp-2">{categoryBanner.description}</p>
+                <button className="bg-white text-blue-600 hover:bg-gray-100 font-bold px-6 py-2 rounded-lg transition text-sm">
+                  Shop {category}
+                </button>
               </div>
 
-              {/* Product Info */}
-              <div className="p-4 flex flex-col flex-grow">
-                <h3 className="text-sm font-bold text-gray-900 line-clamp-2 group-hover:text-[#0fafb8] transition mb-2">
-                  {product.name}
-                </h3>
-                <p className="text-xs text-gray-500 mb-4">{product.category}</p>
-
-                <div className="flex items-center gap-1 mb-4">
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <span key={i} className="text-yellow-400">★</span>
-                    ))}
-                  </div>
-                  <span className="text-xs text-gray-600">(42)</span>
-                </div>
-
-                <div className="flex items-center justify-between mt-auto">
-                  <span className="text-lg font-bold text-[#ff6b00]">{product.price}</span>
-                  <button className="bg-[#0fafb8] hover:bg-[#0a8d95] text-white px-4 py-2 rounded-lg text-xs font-bold transition">
-                    Add
-                  </button>
+              {/* Banner Image */}
+              <div className="flex-1 flex items-center justify-center">
+                <div className="relative w-full h-48 md:h-56">
+                  <img
+                    src={categoryBanner.thumbnail}
+                    alt={categoryBanner.name}
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      e.target.src = "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400&auto=format&fit=crop&q=80";
+                    }}
+                  />
                 </div>
               </div>
             </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+          </div>
+        </div>
+      )}
+
+      <div className="px-4 sm:px-6 lg:px-8">
+
+      {categoryProducts.length === 0 ? (
+        <div className="flex items-center justify-center h-64 bg-gray-50 rounded-lg">
+          <p className="text-gray-500">No products available in this category</p>
+        </div>
+      ) : (
+        <Swiper
+          modules={[Autoplay, Navigation, Pagination]}
+          spaceBetween={24}
+          slidesPerView={1}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4 },
+            1536: { slidesPerView: 5 }
+          }}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 5000, disableOnInteraction: true }}
+          className="w-full"
+          style={{
+            "--swiper-pagination-color": "#0fafb8",
+            "--swiper-navigation-color": "#0fafb8",
+            "--swiper-navigation-size": "28px"
+          }}
+        >
+          {categoryProducts.map((product) => (
+            <SwiperSlide key={product.id}>
+              <ProductCard product={product} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
+      </div>
     </div>
   );
 }
 
-function SectionWithBanner({ title, subtitle, bannerColor, bannerImage, bannerTitle, bannerSubtitle }) {
+function DiscoverSection() {
   return (
-    <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 mb-16">
-      <div className="mb-8 flex justify-between items-center border-b border-gray-200 pb-4">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900">{title}</h2>
-          <p className="text-gray-600 mt-1">{subtitle}</p>
-        </div>
-        <button className="text-[#0fafb8] font-bold text-sm hover:underline flex items-center gap-1">
-          View All
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+    <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-gray-50">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Discover</h2>
+        <p className="text-gray-600 text-lg">Explore our complete collection of electronics</p>
       </div>
+      <div className="px-4 sm:px-6 lg:px-8">
 
-      <div className="w-full">
-        {/* Products Slider */}
-        <div className="w-full">
+      {products.length === 0 ? (
+        <div className="flex items-center justify-center h-64 bg-gray-50 rounded-lg">
+          <p className="text-gray-500">No products available</p>
+        </div>
+      ) : (
+        <Swiper
+          modules={[Autoplay, Navigation, Pagination]}
+          spaceBetween={24}
+          slidesPerView={1}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+            1280: { slidesPerView: 4 },
+            1536: { slidesPerView: 5 }
+          }}
+          navigation
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 5000, disableOnInteraction: true }}
+          className="w-full"
+          style={{
+            "--swiper-pagination-color": "#0fafb8",
+            "--swiper-navigation-color": "#0fafb8",
+            "--swiper-navigation-size": "28px"
+          }}
+        >
+          {products.slice(0, 12).map((product) => (
+            <SwiperSlide key={product.id}>
+              <ProductCard product={product} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
+      </div>
+    </div>
+  );
+}
+
+function BlogSection() {
+  const recentBlogs = BLOG_ARTICLES.slice(0, 6);
+
+  return (
+    <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-white">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Latest Blog Articles</h2>
+          <p className="text-gray-600 text-lg">Stay updated with the latest electronics and IoT tutorials</p>
+        </div>
+
+        {/* Blog Grid/Slider */}
+        {recentBlogs.length > 0 && (
           <Swiper
-            modules={[Navigation, Pagination]}
-            spaceBetween={16}
+            modules={[Autoplay, Navigation, Pagination]}
+            spaceBetween={24}
             slidesPerView={1}
             breakpoints={{
-              480: { slidesPerView: 2 },
-              768: { slidesPerView: 3 },
-              1024: { slidesPerView: 4 },
-              1280: { slidesPerView: 5 }
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+              1280: { slidesPerView: 3 },
+              1536: { slidesPerView: 3 }
             }}
             navigation
             pagination={{ clickable: true }}
+            autoplay={{ delay: 6000, disableOnInteraction: true }}
             className="w-full"
             style={{
+              "--swiper-pagination-color": "#0fafb8",
               "--swiper-navigation-color": "#0fafb8",
-              "--swiper-pagination-color": "#0fafb8"
+              "--swiper-navigation-size": "28px"
             }}
           >
-            {DUMMY_ELECTRONICS.map((product) => (
-              <SwiperSlide key={product.id}>
-                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition group h-full flex flex-col">
-                  {/* Product Image */}
-                  <div className="aspect-square w-full overflow-hidden bg-gray-50 flex items-center justify-center relative">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-[70%] h-[70%] object-contain group-hover:scale-110 transition"
-                      onError={(e) => {
-                        e.target.src = "https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?w=400&auto=format&fit=crop&q=80";
-                      }}
-                    />
-                    <div className="absolute top-2 right-2 bg-[#ff6b00] text-white px-2 py-1 rounded text-xs font-bold">
-                      Sale
-                    </div>
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="p-3 flex flex-col flex-grow">
-                    <h3 className="text-xs font-bold text-gray-900 line-clamp-2 group-hover:text-[#0fafb8] transition mb-1">
-                      {product.name}
-                    </h3>
-                    <p className="text-xs text-gray-500 mb-2">{product.category}</p>
-
-                    <div className="flex items-center gap-1 mb-2">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <span key={i} className="text-yellow-400 text-xs">★</span>
-                        ))}
-                      </div>
-                      <span className="text-xs text-gray-600">(12)</span>
-                    </div>
-
-                    <div className="flex items-center justify-between mt-auto">
-                      <span className="text-sm font-bold text-[#ff6b00]">{product.price}</span>
-                      <button className="bg-[#0fafb8] hover:bg-[#0a8d95] text-white px-3 py-1.5 rounded text-xs font-bold transition">
-                        +
-                      </button>
-                    </div>
-                  </div>
-                </div>
+            {recentBlogs.map((blog) => (
+              <SwiperSlide key={blog.id}>
+                <BlogCard blog={blog} />
               </SwiperSlide>
             ))}
           </Swiper>
-        </div>
+        )}
       </div>
     </div>
   );
 }
 
-function PromotionalBanner({ title, subtitle, bgColor, ctaText }) {
+function BlogCard({ blog }) {
   return (
-    <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className={`bg-gradient-to-r ${bgColor} rounded-xl overflow-hidden shadow-xl`}>
-        <div className="grid md:grid-cols-2 items-center">
-          {/* Text Content */}
-          <div className="p-8 md:p-12 text-white">
-            <h3 className="text-3xl md:text-4xl font-bold mb-4">
-              {title}
-            </h3>
-            <p className="text-lg text-gray-100 mb-8 max-w-sm">
-              {subtitle}
-            </p>
-            <button className="bg-white text-gray-900 hover:bg-gray-100 font-bold px-8 py-3 rounded-lg transition">
-              {ctaText}
-            </button>
+    <Link to={`/blog/${blog.slug}`} className="block group h-full">
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all group h-full flex flex-col">
+        {/* Blog Cover Image */}
+        <div className="relative overflow-hidden aspect-video">
+          <img
+            src={blog.cover}
+            alt={blog.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            onError={(e) => {
+              e.target.src = "https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?w=400&auto=format&fit=crop&q=80";
+            }}
+          />
+          {/* Category Badge */}
+          <span
+            className="absolute top-3 left-3 text-xs font-bold text-white px-3 py-1 rounded-full"
+            style={{ backgroundColor: blog.categoryColor }}
+          >
+            {blog.category}
+          </span>
+          {/* Read Time Badge */}
+          <span className="absolute top-3 right-3 flex items-center gap-1 text-xs font-medium text-white bg-black/50 px-2.5 py-1 rounded-full">
+            <Clock size={12} /> {blog.readTime}
+          </span>
+        </div>
+
+        {/* Blog Content */}
+        <div className="p-4 flex flex-col flex-grow">
+          {/* Date */}
+          <div className="flex items-center gap-2 text-gray-500 text-xs mb-2">
+            <Calendar size={14} />
+            <span>{blog.date}</span>
           </div>
 
-          {/* Image */}
-          <div className="hidden md:flex h-[300px] bg-white/10 items-center justify-center">
-            <img
-              src="https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?w=500&auto=format&fit=crop&q=80"
-              alt={title}
-              className="h-[250px] object-contain"
-            />
+          {/* Title */}
+          <h3 className="text-base font-bold text-gray-900 line-clamp-2 group-hover:text-[#0fafb8] transition mb-2">
+            {blog.title}
+          </h3>
+
+          {/* Excerpt */}
+          <p className="text-xs text-gray-600 line-clamp-2 mb-4 flex-grow">
+            {blog.excerpt}
+          </p>
+
+          {/* Author and Read More */}
+          <div className="flex items-center justify-between pt-4 border-t border-gray-200 mt-auto">
+            <div className="flex items-center gap-2">
+              <img
+                src={blog.author.avatar}
+                alt={blog.author.name}
+                className="w-6 h-6 rounded-full object-cover"
+                onError={(e) => {
+                  e.target.src = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=80";
+                }}
+              />
+              <span className="text-xs font-medium text-gray-700 truncate">
+                {blog.author.name}
+              </span>
+            </div>
+            <span className="flex items-center gap-1 text-[#0fafb8] font-bold text-xs group-hover:gap-2 transition-all">
+              Read <ArrowRight size={12} />
+            </span>
           </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+function ProductCard({ product }) {
+  const finalPrice = product.price * (1 - (product.discount || 0) / 100);
+  const isOutOfStock = product.stock <= 0;
+
+  return (
+    <div className="group relative flex flex-col justify-between bg-white border border-slate-200 hover:border-blue-500/50 rounded-none hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 h-full">
+      {/* Product Image Panel */}
+      <div className="relative w-full h-48 rounded-none overflow-hidden bg-slate-50 flex items-center justify-center p-3">
+        <img
+          src={product.thumbnail}
+          alt={product.name}
+          className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+          onError={(e) => {
+            e.target.src = "https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?w=400&auto=format&fit=crop&q=80";
+          }}
+        />
+
+        {/* Discount & Out of Stock Badges */}
+        <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 z-10">
+          {product.discount > 0 && (
+            <span className="bg-red-500 text-white text-xs font-black px-2.5 py-1 rounded-none shadow-md">
+              -{product.discount}% OFF
+            </span>
+          )}
+          {isOutOfStock && (
+            <span className="bg-slate-900/85 backdrop-blur-xs text-white text-xs font-bold px-2.5 py-1 rounded-none border border-slate-700">
+              SOLD OUT
+            </span>
+          )}
+        </div>
+
+        {/* Category Badge */}
+        <span className="absolute top-3.5 right-3.5 bg-blue-50 backdrop-blur-xs text-blue-600 text-xs font-extrabold px-2.5 py-1 rounded-none shadow-xs">
+          {product.category}
+        </span>
+
+        {/* Action icons hover overlay */}
+        <div className="absolute bottom-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 z-10">
+          {/* Wishlist */}
+          <button
+            className="p-2.5 bg-white hover:bg-red-500 hover:text-white rounded-none shadow-lg border border-slate-200 transition-all cursor-pointer text-slate-600"
+            title="Wishlist"
+          >
+            <Heart className="w-4 h-4" />
+          </button>
+
+          {/* Quick View */}
+          <button
+            className="p-2.5 bg-white hover:bg-blue-600 hover:text-white text-slate-600 rounded-none shadow-lg border border-slate-200 transition-all cursor-pointer"
+            title="Quick View"
+          >
+            <Eye className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Body Content */}
+      <div className="p-4 flex-1 flex flex-col justify-between">
+        <div className="space-y-1">
+          {/* Brand */}
+          <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">
+            {product.brand}
+          </span>
+
+          {/* Name */}
+          <h3 className="text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors line-clamp-2">
+            {product.name}
+          </h3>
+
+          {/* Rating */}
+          <div className="flex items-center gap-2">
+            <div className="flex gap-0.5">
+              {[...Array(Math.floor(product.rating))].map((_, i) => (
+                <span key={i} className="text-yellow-400 text-xs">★</span>
+              ))}
+              {product.rating % 1 !== 0 && <span className="text-yellow-400 text-xs">★</span>}
+              {[...Array(5 - Math.ceil(product.rating))].map((_, i) => (
+                <span key={i} className="text-gray-300 text-xs">★</span>
+              ))}
+            </div>
+            <span className="text-xs text-slate-600 font-semibold">{product.rating.toFixed(1)}</span>
+            <span className="text-xs text-slate-500">({product.reviews})</span>
+          </div>
+
+          {/* Short Description */}
+          <p className="text-slate-600 text-xs line-clamp-2 mt-0.5 leading-tight">
+            {product.description}
+          </p>
+
+          {/* Stock details */}
+          <div className="text-[11px] font-semibold text-slate-500 mt-1">
+            {!isOutOfStock ? (
+              <span className="text-emerald-600 font-bold">In Stock: {product.stock} items</span>
+            ) : (
+              <span className="text-red-600 font-bold">Out of stock</span>
+            )}
+          </div>
+        </div>
+
+        {/* Footer row */}
+        <div className="flex items-center justify-between gap-2 pt-3 mt-3 border-t border-slate-200">
+          {/* Prices */}
+          <div className="flex flex-col">
+            {product.discount > 0 && (
+              <span className="text-[10px] text-slate-500 line-through">
+                ${product.price.toFixed(2)}
+              </span>
+            )}
+            <span className="text-base font-black text-slate-800">
+              ${finalPrice.toFixed(2)}
+            </span>
+          </div>
+
+          {/* Add to Cart button */}
+          <button
+            disabled={isOutOfStock}
+            className={`p-2.5 rounded-none shadow-md cursor-pointer transition-all flex items-center justify-center ${
+              isOutOfStock
+                ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
+                : 'bg-blue-600 hover:bg-blue-700 text-white hover:scale-105 hover:shadow-lg'
+            }`}
+            title="Add to Cart"
+          >
+            <ShoppingCart className="w-5 h-5" />
+          </button>
         </div>
       </div>
     </div>
   );
 }
+

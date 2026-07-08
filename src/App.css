@@ -4,7 +4,7 @@
   min-height: 100vh;
   background-color: #ffffff;
   color: #1f2937;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: "Inter", sans-serif;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -299,7 +299,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .preloader-title-accent {
