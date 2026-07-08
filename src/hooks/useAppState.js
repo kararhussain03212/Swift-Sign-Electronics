@@ -301,6 +301,13 @@ export function useAppState() {
       setActiveTab('checkout-details');
     } else if (location.pathname === '/blog' || location.pathname.startsWith('/blog/')) {
       setActiveTab('blogs');
+    } else if (
+      location.pathname === '/privacy-policy' ||
+      location.pathname === '/return-policy' ||
+      location.pathname === '/shipping-policy' ||
+      location.pathname === '/terms-and-conditions'
+    ) {
+      setActiveTab('policies');
     } else if (location.pathname === '/') {
       // Keep active tab as is (e.g. home, dashboard, account, add-project)
     }
