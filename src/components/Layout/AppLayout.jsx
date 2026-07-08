@@ -31,14 +31,7 @@ const AppLayout = ({
         activeTab={activeTab}
         onTabChange={(tab) => {
           if (tab === "blogs") {
-            setActiveTab("home");
-            setSelectedBlog(null);
-            navigate("/");
-            setTimeout(() => {
-              document
-                .getElementById("project-guides-section")
-                ?.scrollIntoView({ behavior: "smooth" });
-            }, 100);
+            navigate("/blog");
           } else if (tab === "featured") {
             setActiveTab("home");
             setSelectedBlog(null);

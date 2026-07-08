@@ -1,0 +1,81 @@
+/* --- Categories.css --- */
+
+.category-item-btn {
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  min-width: 90px;
+  box-sizing: border-box;
+}
+
+.category-item-btn .category-icon {
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.category-item-btn .category-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: #6b7280;
+  transition: color 0.25s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Hover and Active State Colors */
+.category-item-btn:hover .category-icon,
+.category-item-btn.active .category-icon {
+  color: #073b45 !important;
+  transform: translateY(-2px);
+}
+
+.category-item-btn:hover .category-label,
+.category-item-btn.active .category-label {
+  color: #073b45 !important;
+}
+
+/* Dark Mode Overrides */
+.dark .category-item-btn .category-icon {
+  color: #64748b;
+}
+
+.dark .category-item-btn .category-label {
+  color: #94a3b8;
+}
+
+.dark .category-item-btn:hover .category-icon,
+.dark .category-item-btn.active .category-icon {
+  color: #0fafb8 !important;
+}
+
+.dark .category-item-btn:hover .category-label,
+.dark .category-item-btn.active .category-label {
+  color: #0fafb8 !important;
+}
+
+/* Active Line Indicator */
+.category-active-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background-color: #073b45;
+  border-radius: 9999px;
+}
+
+.dark .category-active-line {
+  background-color: #0fafb8;
+}

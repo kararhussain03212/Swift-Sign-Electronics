@@ -8,6 +8,14 @@ export default function ProductGallery({ images = [] }) {
   const touchStart = useRef(null);
   const containerRef = useRef(null);
 
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
   // Keyboard controls for fullscreen gallery
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -19,14 +27,6 @@ export default function ProductGallery({ images = [] }) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isFullscreen, activeIndex]);
-
-  const handleNext = () => {
-    setActiveIndex((prev) => (prev + 1) % images.length);
-  };
-
-  const handlePrev = () => {
-    setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
-  };
 
   // Magnifier (Zoom on hover) for desktop
   const handleMouseMove = (e) => {

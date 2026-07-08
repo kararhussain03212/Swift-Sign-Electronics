@@ -8,6 +8,8 @@ import Contact from "./pages/Contact";
 import Checkout from "./pages/Checkout";
 import CheckoutForm from "./pages/CheckoutForm";
 import Blogs from "./pages/Home";
+import Blog from "./pages/Blog";
+import BlogDetails from "./pages/BlogDetails";
 import "./App.css";
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
             <ProductDetails onQuickView={appState.setQuickViewProduct} />
           }
         />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogDetails />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/checkout/details" element={<CheckoutForm />} />

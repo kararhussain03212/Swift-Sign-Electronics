@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './Categories.css';
 import { 
   Grid, 
   Volume2, 
@@ -26,7 +27,23 @@ export const BLOG_CATEGORIES = [
 
 export default function Categories({ activeCat, onCatSelect }) {
   const [scrollIdx, setScrollIdx] = useState(0);
-  const visible = 6;
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Responsive dynamic visible categories count
+  let visible = 6;
+  if (windowWidth < 480) {
+    visible = 2;
+  } else if (windowWidth < 768) {
+    visible = 3;
+  } else if (windowWidth < 1024) {
+    visible = 4;
+  }
   
   const handlePrev = () => {
     if (scrollIdx > 0) {
@@ -54,7 +71,7 @@ export default function Categories({ activeCat, onCatSelect }) {
         <ChevronLeft className="h-5 w-5" />
       </button>
 
-      <div className="flex flex-1 items-center justify-between mx-4 overflow-hidden">
+      <div className="flex flex-1 items-center justify-center gap-3 mx-4 overflow-hidden">
         {BLOG_CATEGORIES.slice(scrollIdx, scrollIdx + visible).map((cat, i) => {
           const realIdx = scrollIdx + i;
           const isActive = realIdx === activeCat;
@@ -63,8 +80,7 @@ export default function Categories({ activeCat, onCatSelect }) {
             <button
               key={cat.label + realIdx}
               onClick={() => onCatSelect?.(realIdx)}
-              className="group flex flex-col items-center gap-2 px-3 pb-3 text-center cursor-pointer transition-all relative"
-              style={{ minWidth: '100px' }}
+              className="relative group flex flex-col items-center gap-2 px-2 pb-2"
             >
               <Icon
                 className={`h-5 w-5 transition-colors ${isActive ? "text-slate-800" : "text-slate-400 group-hover:text-slate-600"}`}

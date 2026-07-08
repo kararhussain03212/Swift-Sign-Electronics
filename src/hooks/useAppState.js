@@ -299,6 +299,8 @@ export function useAppState() {
       setActiveTab('checkout');
     } else if (location.pathname === '/checkout/details') {
       setActiveTab('checkout-details');
+    } else if (location.pathname === '/blog' || location.pathname.startsWith('/blog/')) {
+      setActiveTab('blogs');
     } else if (location.pathname === '/') {
       // Keep active tab as is (e.g. home, dashboard, account, add-project)
     }
@@ -311,6 +313,8 @@ export function useAppState() {
       navigate("/contact");
     } else if (tab === "cart") {
       navigate("/checkout");
+    } else if (tab === "blogs") {
+      navigate("/blog");
     } else {
       setActiveTab(tab);
       navigate("/");
