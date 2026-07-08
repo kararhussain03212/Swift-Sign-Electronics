@@ -1,0 +1,51 @@
+/* Custom Blog styles */
+
+/* Scrollbar Hiding */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Smooth Scale & Shadow Transitions */
+.shadow-card {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+.shadow-card-hover {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Article Page Typography */
+.prose-article p {
+  color: #374151;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  margin-bottom: 1.5rem;
+}
+
+.prose-article blockquote p {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Pulse animation for load-more button or elements */
+.btn-pulse:active {
+  transform: scale(0.98);
+}

@@ -3,6 +3,7 @@ import MiniHero from '../components/Home/MiniHero';
 import Categories, { BLOG_CATEGORIES } from '../components/Products/Categories';
 import DiscoverSlider from '../components/Home/DiscoverSlider';
 import FeaturedProductsSlider from '../components/Home/FeaturedProductsSlider';
+import './CoverflowSlider.css';
 import { 
   Search, 
   ChevronDown,
@@ -10,7 +11,18 @@ import {
   MessageCircle,
   Heart,
   ArrowUpDown,
-  Star
+  Star,
+  Clock,
+  Calendar,
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle,
+  Download,
+  Cpu,
+  Terminal,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 // Single project dummy data as requested
 const ALL_PROJECTS = [
@@ -40,6 +52,7 @@ const FEATURED_PRODUCTS_DUMMY = [
     name: "Arduino Uno R4 WiFi Board",
     category: "Microcontrollers",
     price: "Rs. 6,800",
+    originalPrice: "Rs. 7,999",
     rating: 4.8,
     reviews: 64,
     image: "https://images.unsplash.com/photo-1608564697071-ddf911d81370?w=600&auto=format&fit=crop&q=80"
@@ -49,6 +62,7 @@ const FEATURED_PRODUCTS_DUMMY = [
     name: "DF15RMG High Torque Servo (20kg)",
     category: "Robotics & Motors",
     price: "Rs. 3,600",
+    originalPrice: "Rs. 4,500",
     rating: 4.9,
     reviews: 98,
     image: "/hero4.png"
@@ -58,11 +72,160 @@ const FEATURED_PRODUCTS_DUMMY = [
     name: "FireBeetle 2 ESP32-C5 Dual-Band WiFi 6",
     category: "Development Boards",
     price: "Rs. 1,950",
+    originalPrice: "Rs. 2,400",
     rating: 4.7,
     reviews: 29,
     image: "https://images.unsplash.com/photo-1517059224940-d4af9eec41b7?w=600&auto=format&fit=crop&q=80"
   }
 ];
+
+const ScrollProgressBar = () => {
+  const [scrollPercentage, setScrollPercentage] = React.useState(0);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      const totalScrollableHeight = scrollHeight - clientHeight;
+      setScrollPercentage(
+        totalScrollableHeight > 0 ? (scrollTop / totalScrollableHeight) * 100 : 0
+      );
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[60] h-1 bg-gray-100">
+      <div
+        className="h-full bg-[#0fafb8] transition-all duration-100 ease-linear"
+        style={{ width: `${scrollPercentage}%` }}
+      />
+    </div>
+  );
+};
+
+const ProjectCoverflowSlider = ({ 
+  projects, 
+  onProjectSelect, 
+  wishlistItems, 
+  handleProjectWishlistToggle, 
+  handleEyeHover, 
+  viewsCount, 
+  respectsCount, 
+  commentsMap,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  MessageCircle,
+  Heart
+}) => {
+  const [activeIndex, setActiveIndex] = React.useState(0);
+
+  const handlePrev = (e) => {
+    e.stopPropagation();
+    setActiveIndex((prev) => (prev === 0 ? projects.length - 1 : prev - 1));
+  };
+
+  const handleNext = (e) => {
+    e.stopPropagation();
+    setActiveIndex((prev) => (prev === projects.length - 1 ? 0 : prev + 1));
+  };
+
+  if (!projects || projects.length === 0) return null;
+
+  return (
+    <div className="project-coverflow-wrapper">
+      <div className="project-coverflow-container">
+        {projects.map((proj, idx) => {
+          let position = "inactive";
+          if (idx === activeIndex) {
+            position = "active";
+          } else if (idx === (activeIndex - 1 + projects.length) % projects.length) {
+            position = "left";
+          } else if (idx === (activeIndex + 1) % projects.length) {
+            position = "right";
+          }
+
+          const isProjectWishlisted = wishlistItems.some(i => i.id === proj.id);
+          const pViews = proj.id === 1 ? viewsCount : (proj.views || 0);
+          const pLikes = proj.id === 1 ? respectsCount : ((proj.likes || 0) + (isProjectWishlisted ? 1 : 0));
+          const pComments = commentsMap[proj.id]?.length || 0;
+
+          return (
+            <div
+              key={proj.id}
+              className={`project-coverflow-card ${position}`}
+              onClick={() => {
+                if (position === "active") {
+                  onProjectSelect?.(proj);
+                } else {
+                  setActiveIndex(idx);
+                }
+              }}
+            >
+              {/* Background Image */}
+              <div 
+                className="coverflow-card-bg"
+                style={{ backgroundImage: `url(${proj.image})` }}
+              />
+              <div className="coverflow-card-overlay" />
+
+              {/* Card Details */}
+              <div className="coverflow-card-content">
+                <span className="coverflow-card-category">{proj.category || "Tutorial"}</span>
+                <h3 className="coverflow-card-title">{proj.title}</h3>
+                
+                <div className="coverflow-card-meta">
+                  <span className="coverflow-author">By {proj.author}</span>
+                  <div className="coverflow-stats">
+                    <span 
+                      className="stat-item flex items-center gap-1"
+                      onMouseEnter={() => proj.id === 1 && handleEyeHover()}
+                    >
+                      <Eye size={12} /> {pViews.toLocaleString()}
+                    </span>
+                    <span className="stat-item flex items-center gap-1">
+                      <MessageCircle size={12} /> {pComments}
+                    </span>
+                    <span className="stat-item flex items-center gap-1">
+                      <Heart size={12} /> {pLikes}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Wishlist Heart Button */}
+              {position === "active" && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleProjectWishlistToggle(e, proj);
+                  }}
+                  className={`absolute top-4 right-4 p-2 rounded-full backdrop-blur-sm border shadow-sm transition hover:scale-110 cursor-pointer ${
+                    isProjectWishlisted ? "bg-[#0042d7] border-[#0042d7] text-white" : "bg-white/80 border-gray-200 text-gray-600 hover:text-[#0042d7]"
+                  }`}
+                >
+                  <Heart size={14} className={isProjectWishlisted ? "fill-white text-white" : ""} />
+                </button>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Navigation Buttons below */}
+      <div className="project-coverflow-nav">
+        <button onClick={handlePrev} className="coverflow-nav-btn" aria-label="Previous Project">
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <button onClick={handleNext} className="coverflow-nav-btn" aria-label="Next Project">
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishlistItems = [], setWishlistItems, projects = [], onTabChange }) {
   const [activeCat, setActiveCat] = useState(0);
@@ -238,289 +401,375 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
     const blogRespects = selectedBlog.id === 1 ? respectsCount : ((selectedBlog.likes || 0) + (isBlogWishlisted ? 1 : 0));
     const blogComments = commentsMap[selectedBlog.id] || [];
 
+    // Estimating readTime based on content length
+    const wordsCount = ((selectedBlog.intro || "") + (selectedBlog.description || "") + (selectedBlog.code || "")).split(/\s+/).length;
+    const readTimeVal = Math.max(3, Math.ceil(wordsCount / 200)) + " min read";
+
+    // Related projects recommendations
+    const relatedProjects = (projects || [])
+      .filter((p) => p.id !== selectedBlog.id)
+      .slice(0, 3);
+
     return (
-      <div className="w-full pb-8 pt-0 font-sans bg-white text-black">
-        
-        {/* Mini Hero */}
-        <MiniHero 
-          title="Project Tutorial" 
-          subtitle="Explore hands-on guides, schematics, source code, and developer walkthroughs."
-        />
+      <div className="font-sans bg-white pb-1 relative text-black">
+        {/* Scroll Progress Bar at the top */}
+        <ScrollProgressBar />
 
-        <div className="max-w-7xl mx-auto px-4 mt-8">
-          {/* Wishlist Toast Notification */}
-          {wishlistNotification && (
-            <div className="fixed top-24 right-6 bg-black text-white px-4 py-2.5 rounded-lg shadow-xl font-bold z-50 animate-bounce">
-              {wishlistNotification}
+        {/* Wishlist Toast Notification */}
+        {wishlistNotification && (
+          <div className="fixed top-24 right-6 bg-black text-white px-4 py-2.5 rounded-lg shadow-xl font-bold z-50 animate-bounce text-sm">
+            {wishlistNotification}
+          </div>
+        )}
+
+        {/* 1. Header Banner Area */}
+        <section
+          className="relative overflow-hidden text-white"
+          style={{
+            backgroundImage: `linear-gradient(rgba(7, 59, 69, 0.85), rgba(15, 175, 184, 0.85)), url(${selectedBlog.image})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            padding: "clamp(64px, 12vw, 120px) 0 clamp(48px, 9vw, 100px)",
+          }}
+        >
+          {/* Background Shapes */}
+          <div
+            className="pointer-events-none absolute"
+            style={{
+              right: "-80px",
+              top: "-80px",
+              width: "400px",
+              height: "400px",
+              borderRadius: "50%",
+              border: "2px solid rgba(255,255,255,0.06)",
+            }}
+          />
+          <div
+            className="pointer-events-none absolute"
+            style={{
+              right: "60px",
+              top: "40px",
+              width: "240px",
+              height: "240px",
+              borderRadius: "50%",
+              border: "1px solid rgba(255,255,255,0.05)",
+            }}
+          />
+
+          <div className="max-w-[1280px] mx-auto px-5 relative z-10">
+            {/* Back Navigation */}
+            <button
+              onClick={() => setSelectedBlog(null)}
+              className="inline-flex items-center gap-1.5 text-xs text-white/80 hover:text-white mb-6 font-semibold transition-colors bg-transparent border-none cursor-pointer"
+            >
+              <ArrowLeft size={14} /> Back to projects list
+            </button>
+
+            {/* Category Badge */}
+            <div className="mb-4">
+              <span
+                className="inline-flex items-center text-[11px] font-bold text-white bg-[#0fafb8] px-3.5 py-1.5 rounded-full shadow-sm"
+              >
+                {selectedBlog.category}
+              </span>
             </div>
-          )}
 
-          {/* Back Button */}
-          <button 
-            onClick={() => setSelectedBlog(null)}
-            className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-black hover:underline cursor-pointer"
-          >
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg> 
-            <span className="font-bold">Back to projects list</span>
-          </button>
-
-          {/* Two-column Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* Left Column (Article Content) */}
-          <div className="lg:col-span-2 bg-white p-6 md:p-8 rounded-xl border border-gray-200/80 shadow-sm">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-black leading-tight mb-4">
+            {/* Article Title */}
+            <h1
+              className="font-extrabold text-white mb-6 max-w-4xl"
+              style={{ fontSize: "clamp(24px, 4vw, 42px)", lineHeight: 1.2 }}
+            >
               {selectedBlog.title}
             </h1>
-            
-            <p className="text-lg text-gray-600 leading-relaxed mb-6 font-medium">
-              {selectedBlog.tagline}
-            </p>
 
-            {/* Metadata and Share Row */}
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 pb-4 mb-6 text-xs text-gray-400 font-semibold">
-              <div className="flex items-center gap-2">
-                <span>{selectedBlog.date}</span>
-                <span>•</span>
-                <span 
-                  className="cursor-help flex items-center gap-1 hover:text-[#84cc16] transition"
-                  onMouseEnter={() => selectedBlog.id === 1 && handleEyeHover()}
-                  title={selectedBlog.id === 1 ? "Hover to increase views!" : ""}
-                >
-                  <Eye className="h-3.5 w-3.5" /> {blogViews.toLocaleString()} views
-                </span>
-                <span>•</span>
-                <span>{blogRespects} respects</span>
-                <span>•</span>
-                <span className="uppercase">{selectedBlog.license}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <button className="hover:text-[#84cc16] transition cursor-pointer" aria-label="Share on Facebook">
-                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
-                </button>
-                <button className="hover:text-[#84cc16] transition cursor-pointer" aria-label="Share on LinkedIn">
-                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
-                </button>
-                <button className="hover:text-[#84cc16] transition cursor-pointer" aria-label="Share on X">
-                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </button>
-                <button className="hover:text-[#84cc16] transition cursor-pointer" aria-label="Copy Link">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
-                </button>
-                <span className="text-gray-300">|</span>
-                <button className="hover:text-red-500 transition cursor-pointer" aria-label="Report">
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21v8h-6l-1-1H5a2 2 0 00-2 2zm9-13.5V9" /></svg>
-                </button>
-              </div>
-            </div>
-
-            {/* Badges */}
-            <div className="flex flex-wrap gap-2 mb-6">
-              {selectedBlog.badges.map((badge, idx) => (
-                <span key={idx} className="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1.5 rounded border border-gray-200/60">
-                  {badge}
-                </span>
-              ))}
-            </div>
-
-            {/* Main Project Image */}
-            <div className="rounded-xl overflow-hidden border border-gray-200 mb-8 aspect-[16/10]">
-              <img 
-                src={selectedBlog.image} 
-                alt={selectedBlog.title} 
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            {/* Document Content Sections (TOC targets) */}
-            <div className="space-y-8 text-gray-700 leading-relaxed text-sm md:text-base mb-12">
-              
-              <section ref={sectionRefs["Intro"]} className="scroll-mt-10 p-5 bg-slate-50 border-l-4 border-blue-500 rounded-r-xl">
-                <h2 className="text-xl font-extrabold text-black border-b border-gray-200 pb-2 mb-3">Introduction</h2>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {selectedBlog.intro || "This project demonstrates running a local LLM or speech module on device to interpret natural language commands and actuate hardware directly without any cloud dependence. We utilize specialized embedded weights mapped to standard microcontroller ports."}
-                </p>
-              </section>
-
-              <section ref={sectionRefs["Devices & Components"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-amber-500 rounded-r-xl shadow-sm">
-                <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Devices & Components</h2>
-                <ul className="list-disc list-inside space-y-2 pl-2 text-gray-800 text-sm font-semibold">
-                  {selectedBlog.devices && selectedBlog.devices.length > 0 ? (
-                    selectedBlog.devices.map((d, i) => <li key={i}>{d}</li>)
-                  ) : (
-                    <>
-                      <li>UNO microcontroller board</li>
-                      <li>Solderless connection hookup cables</li>
-                      <li>RGB Status Indicator LEDs</li>
-                      <li>Rotary Analog potentiometer</li>
-                    </>
-                  )}
-                </ul>
-              </section>
-
-              <section ref={sectionRefs["Software & Tools"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-purple-500 rounded-r-xl shadow-sm">
-                <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Software & Tools</h2>
-                <ul className="list-disc list-inside space-y-2 pl-2 text-gray-800 text-sm font-semibold">
-                  {selectedBlog.software && selectedBlog.software.length > 0 ? (
-                    selectedBlog.software.map((s, i) => <li key={i}>{s}</li>)
-                  ) : (
-                    <>
-                      <li>Arduino IDE</li>
-                      <li>Custom firmware libraries compilation environments</li>
-                    </>
-                  )}
-                </ul>
-              </section>
-
-              <section ref={sectionRefs["Project description"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-green-500 rounded-r-xl shadow-sm">
-                <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Project Description</h2>
-                <p className="text-gray-800 text-sm leading-relaxed font-semibold">
-                  {selectedBlog.description || "The complete system parses standard user input strings entirely offline. The local inference engine executes on the board within 40ms, triggering pin output voltage modulation dynamically."}
-                </p>
-              </section>
-
-              <section ref={sectionRefs["Code"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-gray-700 rounded-r-xl shadow-sm">
-                <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Code</h2>
-                <pre className="bg-gray-100 text-black p-4 rounded-lg overflow-x-auto text-xs font-mono border border-gray-200">
-                  {selectedBlog.code || `#include <ArduinoAppLab.h>\n\nLocalAgent agent;\n\nvoid setup() {\n  pinMode(LED_PIN, OUTPUT);\n  agent.begin();\n}\n\nvoid loop() {\n  if (agent.available()) {\n    String cmd = agent.readCommand();\n    agent.executeOnDevice(cmd);\n  }\n}`}
-                </pre>
-              </section>
-
-              <section ref={sectionRefs["Arduino App Lab"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-[#84cc16] rounded-r-xl shadow-sm">
-                <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Arduino App Lab</h2>
-                <p className="text-gray-800 text-sm leading-relaxed font-semibold">
-                  {selectedBlog.appLab || "Configure the desktop controller by binding the correct USB/COM port. Ensure model weights are fully loaded prior to active deployment loops."}
-                </p>
-              </section>
-
-              <section ref={sectionRefs["Downloadable files"]} className="scroll-mt-10 p-5 bg-white border border-gray-200 border-l-4 border-l-teal-500 rounded-r-xl shadow-sm">
-                <h2 className="text-xl font-extrabold text-black border-b border-gray-100 pb-2 mb-3">Downloadable Files</h2>
-                <div className="space-y-2">
-                  {selectedBlog.files && selectedBlog.files.length > 0 ? (
-                    selectedBlog.files.map((file, i) => (
-                      <p key={i} className="text-teal-600 hover:underline cursor-pointer font-bold text-sm">
-                        {file}
-                      </p>
-                    ))
-                  ) : (
-                    <p className="text-teal-600 hover:underline cursor-pointer font-bold text-sm">
-                      local_inference_firmware_v1.zip (2.4 MB)
-                    </p>
-                  )}
-                </div>
-              </section>
-
-            </div>
-
-            {/* Comments Section */}
-            <div className="border-t border-gray-200 pt-8 mt-12">
-              <h2 className="text-2xl font-bold text-black mb-6">
-                Comments ({blogComments.length})
-              </h2>
-
-              {/* Comments List */}
-              <div className="space-y-6 mb-8">
-                {blogComments.map(comment => (
-                  <div key={comment.id} className="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-bold text-sm text-gray-800">{comment.author}</span>
-                      <span className="text-xs text-gray-400 font-medium">{comment.date}</span>
-                    </div>
-                    <p className="text-sm text-gray-600">{comment.text}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Comment Form */}
-              <form onSubmit={handleCommentSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="comment" className="block text-sm font-bold text-gray-700 mb-2">
-                    Write a comment...
-                  </label>
-                  <textarea
-                    id="comment"
-                    rows="4"
-                    value={commentInput}
-                    onChange={(e) => setCommentInput(e.target.value)}
-                    placeholder="Enter your comment related to this project blog..."
-                    className="w-full rounded-xl border border-gray-300 p-4 text-sm text-gray-700 outline-none transition focus:border-[#84cc16] focus:ring-1 focus:ring-[#84cc16]/20"
-                    required
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="bg-[#84cc16] hover:bg-[#f7b500] text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-sm transition cursor-pointer"
-                >
-                  Submit Comment
-                </button>
-              </form>
-            </div>
-
-          </div>
-
-          {/* Right Column (Sidebar details) */}
-          <div className="space-y-6">
-            
-            {/* Author Profile Box */}
-            <div className="bg-white p-5 rounded-xl border border-gray-200/80 shadow-sm flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-teal-600 flex items-center justify-center text-white font-bold text-lg">
+            {/* Metadata Row */}
+            <div className="flex flex-wrap items-center gap-5">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-full bg-[#0fafb8] border-2 border-white/30 flex items-center justify-center font-bold text-white text-sm">
                   {selectedBlog.author.charAt(0).toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="font-bold text-black">{selectedBlog.author}</h3>
-                  <p className="text-xs text-gray-400 font-bold">2 Followers • 1 Projects</p>
+                  <p className="text-white font-semibold text-[13px] leading-none">
+                    {selectedBlog.author}
+                  </p>
+                  <p className="text-white/60 text-[11px] mt-0.5">
+                    Maker Contributor
+                  </p>
                 </div>
               </div>
-              <button className="text-xs font-bold text-teal-600 border border-teal-200 hover:bg-teal-50 px-3 py-1.5 rounded-lg transition cursor-pointer">
-                FOLLOW
-              </button>
-            </div>
-
-            {/* Table of contents Container */}
-            <div className="bg-white rounded-xl border border-gray-200/80 shadow-sm overflow-hidden">
-              <div className="bg-teal-500/80 text-white px-4 py-3 font-extrabold text-sm">
-                Table of contents
-              </div>
-              <div className="divide-y divide-gray-100 text-xs">
-                {Object.keys(sectionRefs).map((name) => {
-                  const isActive = activeSection === name;
-                  return (
-                    <button
-                      key={name}
-                      onClick={() => handleSectionClick(name)}
-                      className={`w-full text-left px-4 py-3 transition cursor-pointer font-bold ${isActive ? "bg-gray-100 text-black border-l-4 border-[#84cc16] font-bold" : "text-gray-600 hover:bg-gray-50"}`}
-                    >
-                      {name}
-                    </button>
-                  );
-                })}
+              <div className="flex items-center gap-4 text-white/70 text-[12px] border-l border-white/20 pl-5">
+                <span className="flex items-center gap-1.5">
+                  <Calendar size={13} /> {selectedBlog.date}
+                </span>
+                <span className="flex items-center gap-1.5 cursor-help" onMouseEnter={() => selectedBlog.id === 1 && handleEyeHover()}>
+                  <Eye size={13} /> {blogViews.toLocaleString()} views
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Clock size={13} /> {readTimeVal}
+                </span>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Feedback Stats Panel */}
-            <div className="bg-white p-3 rounded-full border border-gray-200/80 shadow-sm flex items-center justify-around max-w-[280px] mx-auto text-xs text-gray-500">
-              <button className="flex items-center gap-1.5 hover:text-[#84cc16] cursor-pointer font-bold">
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" /></svg> {blogRespects}
-              </button>
-              <span className="text-gray-300">|</span>
-              <button className="flex items-center gap-1.5 hover:text-[#84cc16] cursor-pointer font-bold">
-                <MessageCircle className="h-4 w-4" /> {blogComments.length}
-              </button>
-              <span className="text-gray-300">|</span>
-              <button 
+        {/* 2. Core Article Layout Column */}
+        <div className="max-w-3xl mx-auto px-5 mb-16 mt-10">
+          
+          {/* Floating details row */}
+          <div className="border border-gray-100 rounded-2xl px-5 py-3.5 mb-8 shadow-card bg-white">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex items-center gap-3 sm:gap-6 flex-wrap">
+                <div className="flex items-center gap-1.5 text-gray-655">
+                  <Clock size={14} className="text-[#0fafb8] flex-shrink-0" />
+                  <span className="text-[12px] sm:text-[13px] font-semibold">
+                    {readTimeVal}
+                  </span>
+                </div>
+                <div className="hidden sm:block w-px h-4 bg-gray-200" />
+                <div className="flex items-center gap-1.5 text-gray-655">
+                  <BookOpen size={14} className="text-[#0fafb8] flex-shrink-0" />
+                  <span className="text-[12px] sm:text-[13px] font-semibold">
+                    {selectedBlog.type || "Tutorial"}
+                  </span>
+                </div>
+                <div className="hidden sm:block w-px h-4 bg-gray-200" />
+                <span className="text-[12px] sm:text-[13px] font-semibold text-gray-500 truncate max-w-[120px]">
+                  {selectedBlog.category}
+                </span>
+              </div>
+
+              {/* Likes/Respects Button */}
+              <button
                 onClick={(e) => handleProjectWishlistToggle(e, selectedBlog)}
-                className={`flex items-center gap-1.5 cursor-pointer transition ${isBlogWishlisted ? 'text-[#84cc16]' : 'hover:text-teal-600'}`}
-                aria-label="Wishlist"
+                className={`flex items-center gap-1.5 text-[12px] sm:text-[13px] font-bold px-4 py-1.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+                  isBlogWishlisted
+                    ? "bg-red-50 border-red-200 text-red-500"
+                    : "border-gray-200 text-gray-500 hover:border-red-200 hover:text-red-400"
+                }`}
               >
-                <Heart className={`h-4 w-4 ${isBlogWishlisted ? 'fill-[#84cc16] text-[#84cc16]' : ''}`} />
+                <Heart size={13} className={isBlogWishlisted ? "fill-red-500 text-red-500" : ""} />
+                <span>{blogRespects}</span>
               </button>
             </div>
+          </div>
+
+          {/* Article Body Content */}
+          <div className="prose-article space-y-6">
+            
+            {/* Introduction paragraph */}
+            {(selectedBlog.intro || selectedBlog.tagline) && (
+              <p
+                className="text-base sm:text-lg leading-[1.85] text-gray-805 font-medium border-l-4 pl-5 mb-8"
+                style={{ borderColor: "#0042d7" }}
+              >
+                {selectedBlog.intro || selectedBlog.tagline}
+              </p>
+            )}
+
+            {/* Devices & Components section */}
+            {selectedBlog.devices && selectedBlog.devices.length > 0 && (
+              <div className="my-8 p-6 bg-slate-50 border border-slate-100 rounded-2xl shadow-sm">
+                <h3 className="flex items-center gap-2 font-bold text-gray-900 mb-4 text-base">
+                  <Cpu className="text-[#0042d7] w-5 h-5" /> Devices & Components
+                </h3>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {selectedBlog.devices.map((device, idx) => (
+                    <li key={idx} className="flex items-center gap-2 text-sm text-gray-700 font-semibold">
+                      <CheckCircle className="text-[#0042d7] w-4 h-4 flex-shrink-0" /> {device}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Software & Tools section */}
+            {selectedBlog.software && selectedBlog.software.length > 0 && (
+              <div className="my-8 p-6 bg-slate-50 border border-slate-100 rounded-2xl shadow-sm">
+                <h3 className="flex items-center gap-2 font-bold text-gray-900 mb-4 text-base">
+                  <Terminal className="text-[#0042d7] w-5 h-5" /> Software & Tools
+                </h3>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {selectedBlog.software.map((sw, idx) => (
+                    <li key={idx} className="flex items-center gap-2 text-sm text-gray-700 font-semibold">
+                      <CheckCircle className="text-[#0042d7] w-4 h-4 flex-shrink-0" /> {sw}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Project description section */}
+            {selectedBlog.description && (
+              <div className="my-8">
+                <h3 className="font-bold text-gray-900 mb-3 text-base">Project Description</h3>
+                <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap">{selectedBlog.description}</p>
+              </div>
+            )}
+
+            {/* Code section */}
+            {selectedBlog.code && (
+              <div className="my-8">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="font-bold text-gray-900 text-base">Source Code</h3>
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(selectedBlog.code);
+                      showNotification("Code copied to clipboard!");
+                    }}
+                    className="text-xs text-[#0042d7] hover:underline font-bold flex items-center gap-1 cursor-pointer bg-transparent border-none"
+                  >
+                    Copy Code
+                  </button>
+                </div>
+                <pre className="bg-slate-900 text-slate-100 p-5 rounded-2xl overflow-x-auto text-xs font-mono border border-slate-800 shadow-inner max-h-96">
+                  <code>{selectedBlog.code}</code>
+                </pre>
+              </div>
+            )}
+
+            {/* Arduino App Lab section */}
+            {selectedBlog.appLab && selectedBlog.appLab !== "No app provided" && (
+              <div className="my-8 p-5 bg-teal-50/50 border border-teal-150 rounded-2xl">
+                <h3 className="font-bold text-teal-900 mb-2 text-sm uppercase tracking-wider">Arduino App Lab</h3>
+                <p className="text-teal-800 text-xs sm:text-sm font-semibold leading-relaxed">
+                  {selectedBlog.appLab}
+                </p>
+              </div>
+            )}
+
+            {/* Downloadable files section */}
+            {selectedBlog.files && selectedBlog.files.length > 0 && (
+              <div className="my-10">
+                <h3 className="font-bold text-gray-900 mb-3 text-base">Downloadable Files</h3>
+                <div className="space-y-2">
+                  {selectedBlog.files.map((file, idx) => (
+                    <div key={idx} className="flex items-center gap-2 p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                      <Download className="text-[#0042d7] w-4 h-4 flex-shrink-0" />
+                      <a 
+                        href="#download" 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          showNotification(`Downloading ${file.split(' ')[0]}...`);
+                        }}
+                        className="text-sm font-semibold text-slate-700 hover:text-[#0042d7] hover:underline"
+                      >
+                        {file}
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
           </div>
 
+          {/* Comments Section */}
+          <div className="border-t border-gray-200 pt-8 mt-12">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Comments ({blogComments.length})
+            </h2>
+
+            {/* Comments List */}
+            <div className="space-y-6 mb-8">
+              {blogComments.map(comment => (
+                <div key={comment.id} className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-bold text-sm text-gray-800">{comment.author}</span>
+                    <span className="text-xs text-gray-400 font-medium">{comment.date}</span>
+                  </div>
+                  <p className="text-sm text-gray-600">{comment.text}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Comment Form */}
+            <form onSubmit={handleCommentSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="comment" className="block text-sm font-bold text-gray-700 mb-2">
+                  Write a comment...
+                </label>
+                <textarea
+                  id="comment"
+                  rows="4"
+                  value={commentInput}
+                  onChange={(e) => setCommentInput(e.target.value)}
+                  placeholder="Enter your comment related to this project blog..."
+                  className="w-full rounded-xl border border-gray-300 p-4 text-sm text-gray-700 outline-none transition focus:border-[#0042d7] focus:ring-1 focus:ring-[#0042d7]/20 bg-white"
+                  required
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                className="bg-[#0042d7] hover:bg-[#0033a8] text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-sm transition cursor-pointer"
+              >
+                Submit Comment
+              </button>
+            </form>
+          </div>
+
         </div>
-      </div>
+
+        {/* Related Recommendations footer */}
+        {relatedProjects.length > 0 && (
+          <section className="bg-slate-50/70 border-t border-slate-100 py-14">
+            <div className="max-w-[1280px] mx-auto px-5">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <p className="text-[11px] font-bold text-[#0042d7] uppercase tracking-wider mb-1">
+                    Keep Reading
+                  </p>
+                  <h2 className="font-extrabold text-gray-900 text-xl sm:text-2xl">
+                    More Guides & Tutorials
+                  </h2>
+                </div>
+                <button
+                  onClick={() => setSelectedBlog(null)}
+                  className="flex items-center gap-1.5 text-[#0042d7] hover:text-[#0033a8] font-semibold text-xs sm:text-sm border border-[#0042d7] hover:bg-[#0042d7] hover:text-white rounded-full px-5 py-2 transition-all duration-200 cursor-pointer bg-transparent"
+                >
+                  View All Guides <ArrowRight size={14} />
+                </button>
+              </div>
+
+              {/* Related Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {relatedProjects.map((p) => (
+                  <article 
+                    key={p.id}
+                    onClick={() => setSelectedBlog(p)}
+                    className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 h-full flex flex-col cursor-pointer"
+                  >
+                    <div className="relative overflow-hidden aspect-video">
+                      <img
+                        src={p.image}
+                        alt={p.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <span
+                        className="absolute top-3 left-3 text-[10px] font-bold text-white px-2.5 py-0.5 rounded-full"
+                        style={{ backgroundColor: "#0042d7" }}
+                      >
+                        {p.category}
+                      </span>
+                    </div>
+                    <div className="p-4 flex-1 flex flex-col justify-between">
+                      <div>
+                        <p className="text-[10px] text-gray-400 mb-1 flex items-center gap-1">
+                          <Calendar size={10} /> {p.date}
+                        </p>
+                        <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 leading-snug">
+                          {p.title}
+                        </h3>
+                      </div>
+                      <span className="flex items-center gap-1 text-[#0042d7] font-bold text-[11px] mt-3">
+                        Read Guide <ArrowRight size={11} />
+                      </span>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
       </div>
     );
   }
@@ -685,10 +934,10 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
       )}
       
       {/* Featured Products Section */}
-      <div className="mt-12 mb-12">
+      <div className="mt-6 mb-6">
         {/* Banner with hero4.png as background cover */}
         <div 
-          className="relative rounded-2xl overflow-hidden mb-8 shadow-sm min-h-[280px] flex items-center bg-cover bg-center"
+          className="relative rounded-2xl overflow-hidden mb-4 shadow-sm min-h-[280px] flex items-center bg-cover bg-center"
           style={{ backgroundImage: "url('/hero4.png')" }}
         >
           {/* Black light opaque overlay for text readability */}
@@ -715,10 +964,37 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
 
         {/* Featured Products Slider */}
         <FeaturedProductsSlider products={FEATURED_PRODUCTS_DUMMY} onBuyNow={() => onTabChange?.('cart')} />
+
+        {/* Second Banner with hero3.png as background cover below Featured Products */}
+        <div 
+          className="relative rounded-2xl overflow-hidden mt-6 mb-4 shadow-sm min-h-[280px] flex items-center bg-cover bg-center"
+          style={{ backgroundImage: "url('/hero3.png')" }}
+        >
+          {/* Black light opaque overlay for text readability */}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px]" />
+          
+          <div className="relative z-10 p-8 md:p-10 w-full text-white">
+            <span className="bg-white/25 backdrop-blur-sm text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full text-white mb-4 inline-block">
+              Diagnostic & Lab Spotlight
+            </span>
+            <h3 className="text-xl md:text-3xl font-extrabold mb-3 leading-tight text-white">
+              Precision Diagnostic & Measuring Gear
+            </h3>
+            <p className="text-xs md:text-sm text-gray-250 mb-5 font-semibold leading-relaxed max-w-xl">
+              Equip your electronics workbench with premium oscilloscopes, safe global transit soldering kits, and active simulator testing diagnostics. Batch consultancy open for July.
+            </p>
+            <button 
+              onClick={() => onTabChange?.('products')}
+              className="px-5 py-2.5 bg-black hover:bg-black/90 text-white transition font-extrabold rounded-lg shadow-sm inline-flex items-center gap-2 cursor-pointer text-xs"
+            >
+              Shop Diagnostic Tools
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Grid rendering list of filtered projects */}
-      <div className="discover-slider-section" style={{ marginTop: '0', marginBottom: '2.5rem' }}>
+      <div className="discover-slider-section" style={{ marginTop: '0', marginBottom: '0.5rem' }}>
         <h2 id="project-guides-section" className="discover-slider-heading">Project Guides & Tutorials</h2>
       </div>
       {sortedProjects.length === 0 ? (
@@ -727,55 +1003,21 @@ export default function Home({ currentUser, selectedBlog, setSelectedBlog, wishl
           <p className="text-xs text-gray-400 mt-1.5">Try changing your dropdown options or clearing the search text box.</p>
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {sortedProjects.map(project => {
-            const isProjectWishlisted = wishlistItems.some(i => i.id === project.id);
-            const pViews = project.id === 1 ? viewsCount : (project.views || 0);
-            const pLikes = project.id === 1 ? respectsCount : ((project.likes || 0) + (isProjectWishlisted ? 1 : 0));
-            const pComments = commentsMap[project.id]?.length || 0;
-            return (
-              <article 
-                key={project.id}
-                onClick={() => setSelectedBlog(project)}
-                className="premium-card border border-slate-150 rounded-2xl group"
-              >
-                <div className="premium-card-info">
-                  <span className="discover-card-category text-[#94a3b8] font-bold">{project.category || 'Tutorial'} • by {project.author}</span>
-                  <h3 className="discover-card-title group-hover:text-[#84cc16] transition-colors">{project.title}</h3>
-                  <div className="mt-1 flex items-center gap-3 text-xs text-slate-500 font-bold">
-                    <span 
-                      className="flex items-center gap-1 hover:text-black transition cursor-help"
-                      onMouseEnter={() => project.id === 1 && handleEyeHover()}
-                    >
-                      <Eye className="h-4 w-4 text-gray-400" /> {pViews.toLocaleString()}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <MessageCircle className="h-4 w-4 text-gray-400" /> {pComments}
-                    </span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <Heart className="h-4 w-4 text-gray-400" /> {pLikes}
-                    </span>
-                  </div>
-                </div>
-                <div className="premium-card-image-wrapper">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="premium-card-image"
-                  />
-                  <button 
-                    onClick={(e) => handleProjectWishlistToggle(e, project)}
-                    className={`absolute top-3 right-3 p-1.5 rounded-full bg-white/80 backdrop-blur-sm border shadow-sm transition hover:scale-110 ${isProjectWishlisted ? 'text-black' : 'text-gray-400 hover:text-black'}`}
-                  >
-                    <Heart className={`h-4 w-4 ${isProjectWishlisted ? 'fill-black text-black' : ''}`} />
-                  </button>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+        <ProjectCoverflowSlider 
+          projects={sortedProjects}
+          onProjectSelect={setSelectedBlog}
+          wishlistItems={wishlistItems}
+          handleProjectWishlistToggle={handleProjectWishlistToggle}
+          handleEyeHover={handleEyeHover}
+          viewsCount={viewsCount}
+          respectsCount={respectsCount}
+          commentsMap={commentsMap}
+          ChevronLeft={ChevronLeft}
+          ChevronRight={ChevronRight}
+          Eye={Eye}
+          MessageCircle={MessageCircle}
+          Heart={Heart}
+        />
       )}
 
       {/* Wishlist Toast Notification */}
