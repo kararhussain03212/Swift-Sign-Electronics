@@ -30,19 +30,19 @@ export default function QuickViewModal({ product, onClose }) {
 
         {/* Modal Window Container */}
         <div
-          className="relative bg-white dark:bg-slate-900 rounded-none overflow-hidden shadow-2xl w-full max-w-4xl z-10 flex flex-col md:flex-row border border-slate-200/80 dark:border-slate-800/85"
+          className="relative bg-white rounded-none overflow-hidden shadow-2xl w-full max-w-4xl z-10 flex flex-col md:flex-row border border-slate-200/80"
         >
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-20 p-2 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-750 dark:text-slate-400 dark:hover:text-slate-200 rounded-none transition-all cursor-pointer"
+            className="absolute top-4 right-4 z-20 p-2 bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-750 rounded-none transition-all cursor-pointer"
           >
             <FiX className="w-5 h-5" />
           </button>
 
           {/* Left Panel: Images */}
-          <div className="w-full md:w-1/2 p-6 bg-slate-50 dark:bg-slate-950/60 flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-850">
-            <div className="relative aspect-square w-full rounded-none overflow-hidden bg-white dark:bg-slate-900 shadow-sm border border-slate-200/50 dark:border-slate-800">
+          <div className="w-full md:w-1/2 p-6 bg-slate-50 flex items-center justify-center border-b md:border-b-0 md:border-r border-slate-100">
+            <div className="relative aspect-square w-full rounded-none overflow-hidden bg-white shadow-sm border border-slate-200/50">
               <img src={product.thumbnail} alt={product.name} className="w-full h-full object-cover" />
               {product.discount > 0 && (
                 <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-black px-2.5 py-1 rounded-none shadow-md">
@@ -56,27 +56,27 @@ export default function QuickViewModal({ product, onClose }) {
           <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-between">
             <div className="space-y-4">
               <div className="space-y-1">
-                <span className="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold px-2.5 py-0.5 rounded-none">
+                <span className="bg-blue-50 text-blue-600 text-xs font-bold px-2.5 py-0.5 rounded-none">
                   {product.category}
                 </span>
-                <span className="text-xs text-slate-450 dark:text-slate-500 font-bold ml-2 uppercase">
+                <span className="text-xs text-slate-450 font-bold ml-2 uppercase">
                   {product.brand}
                 </span>
               </div>
 
-              <h2 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-slate-100 pr-8">
+              <h2 className="text-xl md:text-2xl font-bold text-slate-800 pr-8">
                 {product.name}
               </h2>
 
               <div className="flex items-center gap-4">
                 <Rating value={product.rating} reviewsCount={product.reviews} />
-                <span className="text-xs text-slate-400 dark:text-slate-500 font-semibold">
+                <span className="text-xs text-slate-400 font-semibold">
                   SKU: {product.SKU}
                 </span>
               </div>
 
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-black text-slate-800 dark:text-slate-150">
+                <span className="text-2xl font-black text-slate-800">
                   ${discountedPrice.toFixed(2)}
                 </span>
                 {product.discount > 0 && (
@@ -86,7 +86,7 @@ export default function QuickViewModal({ product, onClose }) {
                 )}
               </div>
 
-              <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-4">
+              <p className="text-sm text-slate-500 leading-relaxed line-clamp-4">
                 {product.description}
               </p>
 
@@ -103,23 +103,23 @@ export default function QuickViewModal({ product, onClose }) {
             </div>
 
             {/* Actions Panel */}
-            <div className="pt-6 mt-6 border-t border-slate-100 dark:border-slate-800 space-y-4">
+            <div className="pt-6 mt-6 border-t border-slate-100 space-y-4">
               {!isOutOfStock && (
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-slate-500 dark:text-slate-400">Qty:</span>
-                  <div className="flex items-center bg-slate-100 dark:bg-slate-800 rounded-none p-1">
+                  <span className="text-xs font-bold text-slate-500">Qty:</span>
+                  <div className="flex items-center bg-slate-100 rounded-none p-1">
                     <button
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                      className="p-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer"
+                      className="p-1.5 text-slate-500 hover:text-slate-800 cursor-pointer"
                     >
                       <FiMinus className="w-4 h-4" />
                     </button>
-                    <span className="px-4 font-bold text-slate-700 dark:text-slate-305 text-sm">
+                    <span className="px-4 font-bold text-slate-700 text-sm">
                       {quantity}
                     </span>
                     <button
                       onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
-                      className="p-1.5 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 cursor-pointer"
+                      className="p-1.5 text-slate-500 hover:text-slate-800 cursor-pointer"
                     >
                       <FiPlus className="w-4 h-4" />
                     </button>
@@ -134,7 +134,7 @@ export default function QuickViewModal({ product, onClose }) {
                   onClick={handleAddToCart}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 font-bold text-sm rounded-none shadow-md transition-all cursor-pointer ${
                     isOutOfStock
-                      ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed shadow-none'
+                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
                       : 'bg-blue-600 hover:bg-blue-700 text-white hover:scale-101 hover:shadow-lg shadow-blue-500/10'
                   }`}
                 >
@@ -144,10 +144,10 @@ export default function QuickViewModal({ product, onClose }) {
                 {/* Wishlist */}
                 <button
                   onClick={() => toggleWishlist(product)}
-                  className={`p-3 border rounded-none hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all cursor-pointer ${
+                  className={`p-3 border rounded-none hover:bg-slate-100 transition-all cursor-pointer ${
                     isAlreadyInWishlist
-                      ? 'border-red-500 bg-red-50 dark:bg-red-950/20 text-red-500'
-                      : 'border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-405'
+                      ? 'border-red-500 bg-red-50 text-red-500'
+                      : 'border-slate-200 text-slate-500'
                   }`}
                   title="Wishlist"
                 >
@@ -158,7 +158,7 @@ export default function QuickViewModal({ product, onClose }) {
                 <Link
                   to={`/product/${product.slug}`}
                   onClick={onClose}
-                  className="px-4 py-3 bg-slate-100 hover:bg-slate-200 dark:bg-slate-805 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-none text-sm font-bold transition-all text-center"
+                  className="px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-none text-sm font-bold transition-all text-center"
                 >
                   View Details
                 </Link>

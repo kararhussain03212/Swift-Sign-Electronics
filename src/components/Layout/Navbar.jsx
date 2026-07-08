@@ -116,20 +116,20 @@ export default function Navbar({ activeTab, onTabChange, currentUser, onLogout, 
                 onTabChange?.('home');
                 setIsMenuOpen(false);
               }} 
-              className={`navbar-link ${activeTab === 'home' ? 'text-[#0fafb8]' : ''}`}
-              style={activeTab === 'home' ? { color: '#0fafb8' } : {}}
+              className={`navbar-link ${activeTab === 'home' ? 'text-[#0042d7]' : ''}`}
+              style={activeTab === 'home' ? { color: '#0042d7' } : {}}
             >
               Home
             </a>
             <a 
-              href="#blogs" 
+              href="/blog" 
               onClick={(e) => {
                 e.preventDefault();
                 onTabChange?.('blogs');
                 setIsMenuOpen(false);
               }} 
-              className={`navbar-link ${activeTab === 'blogs' ? 'text-[#0fafb8]' : ''}`}
-              style={activeTab === 'blogs' ? { color: '#0fafb8' } : {}}
+              className={`navbar-link ${activeTab === 'blogs' ? 'text-[#0042d7]' : ''}`}
+              style={activeTab === 'blogs' ? { color: '#0042d7' } : {}}
             >
               Blogs
             </a>
@@ -140,8 +140,8 @@ export default function Navbar({ activeTab, onTabChange, currentUser, onLogout, 
                 onTabChange?.('products');
                 setIsMenuOpen(false);
               }} 
-              className={`navbar-link ${activeTab === 'products' ? 'text-[#0fafb8]' : ''}`}
-              style={activeTab === 'products' ? { color: '#0fafb8' } : {}}
+              className={`navbar-link ${activeTab === 'products' ? 'text-[#0042d7]' : ''}`}
+              style={activeTab === 'products' ? { color: '#0042d7' } : {}}
             >
               Products
             </a>
@@ -152,8 +152,8 @@ export default function Navbar({ activeTab, onTabChange, currentUser, onLogout, 
                 onTabChange?.('contact');
                 setIsMenuOpen(false);
               }} 
-              className={`navbar-link ${activeTab === 'contact' ? 'text-[#0fafb8]' : ''}`}
-              style={activeTab === 'contact' ? { color: '#0fafb8' } : {}}
+              className={`navbar-link ${activeTab === 'contact' ? 'text-[#0042d7]' : ''}`}
+              style={activeTab === 'contact' ? { color: '#0042d7' } : {}}
             >
               Contact Us
             </a>

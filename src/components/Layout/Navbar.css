@@ -43,7 +43,7 @@
 .navbar-title {
   font-size: 22px;
   font-weight: 700;
-  color: #0fafb8; /* Cohesive brand teal */
+  color: #0042d7; /* Cohesive brand blue */
   display: flex;
   align-items: center;
 }
@@ -63,7 +63,7 @@
   max-width: 600px;
   display: flex;
   align-items: center;
-  border: 2px solid #0fafb8;
+  border: 2px solid #0042d7;
   border-radius: 4px;
   overflow: hidden;
   height: 40px;
@@ -81,7 +81,7 @@
 }
 
 .navbar-search-button {
-  background-color: #0fafb8;
+  background-color: #0042d7;
   border: none;
   height: 100%;
   width: 46px;
@@ -94,7 +94,7 @@
 }
 
 .navbar-search-button:hover {
-  background-color: #0a7981;
+  background-color: #0033a8;
 }
 
 .navbar-search-button svg {
@@ -127,7 +127,7 @@
 }
 
 .navbar-action-item:hover {
-  color: #0fafb8;
+  color: #0042d7;
 }
 
 .navbar-action-icon {
@@ -174,7 +174,7 @@
 }
 
 .navbar-link:hover {
-  color: #0fafb8;
+  color: #0042d7;
 }
 
 .navbar-link svg {
@@ -337,12 +337,12 @@
 
 .navbar-dropdown-item:hover {
   background-color: #f3f4f6;
-  color: #0fafb8;
+  color: #0042d7;
 }
 
 .dark .navbar-dropdown-item:hover {
   background-color: #2e303a;
-  color: #0fafb8;
+  color: #0042d7;
 }
 
 .navbar-dropdown-item.text-red-500 {

@@ -1,6 +1,20 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { ChevronRight, ChevronLeft, BookOpen, Heart, Eye } from 'lucide-react';
+import React, { useRef, useEffect } from 'react';
+import { ChevronRight, ChevronLeft, BookOpen } from 'lucide-react';
 import './DiscoverSlider.css';
+
+// Pastel backgrounds list to match standard Daily Well-being color cards
+const PASTEL_COLORS = [
+  '#f0fdf4', // Light green tint
+  '#f0f9ff', // Light blue tint
+  '#fefce8', // Light yellow tint
+  '#faf5ff', // Light purple tint
+  '#fff1f2', // Light pink tint
+];
+
+const getPastelBg = (id) => {
+  const numId = typeof id === 'number' ? id : (id || '').toString().length;
+  return PASTEL_COLORS[numId % PASTEL_COLORS.length];
+};
 
 export default function DiscoverSlider({ projects = [], onProjectSelect }) {
   const containerRef = useRef(null);
@@ -25,17 +39,33 @@ export default function DiscoverSlider({ projects = [], onProjectSelect }) {
     }
   }, [projects]);
 
+  // Autoplay / self-moving effect
+  useEffect(() => {
+    if (!projects || projects.length === 0) return;
+
+    const timer = setInterval(() => {
+      if (containerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+        // If we reach near the end, reset scroll back to 0
+        if (scrollLeft + clientWidth >= scrollWidth - 15) {
+          containerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          const scrollAmount = clientWidth * 0.85;
+          containerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+      }
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, [projects]);
+
   const scroll = (direction) => {
-    if (containerRef.current && projects.length > 0) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      const scrollAmount = 316;
+    if (containerRef.current) {
+      const { clientWidth } = containerRef.current;
+      // Scroll by 85% of visible width for full page flow
+      const scrollAmount = clientWidth * 0.85;
 
       if (direction === 'right') {
-        if (scrollLeft + clientWidth >= scrollWidth - clientWidth * 2) {
-          const middleSetIndex = Math.floor(REPETITIONS / 2) * projects.length;
-          const targetElement = containerRef.current.children[middleSetIndex];
-          if (targetElement) containerRef.current.scrollLeft = targetElement.offsetLeft - 16;
-        }
         containerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
       } else {
         containerRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
@@ -43,75 +73,63 @@ export default function DiscoverSlider({ projects = [], onProjectSelect }) {
     }
   };
 
-  useEffect(() => {
-    if (isHovered || projects.length === 0) return;
-    const timer = setInterval(() => scroll('right'), 8000); // Slowed down auto-scroll to 8s
-    return () => clearInterval(timer);
-  }, [isHovered, projects]);
-
   if (!projects || projects.length === 0) return null;
 
   return (
-    <div 
-      className="discover-slider-section"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="discover-header">
+    <div className="discover-slider-section">
+      {/* Header with Title and Control Buttons */}
+      <div className="discover-slider-header">
         <h2 className="discover-slider-heading">Discover</h2>
-        
-        <div className="discover-controls-wrapper">
-          <a href="#blogs-section" className="discover-view-all">
+        <div className="discover-slider-controls">
+          <span className="discover-view-all" onClick={() => onProjectSelect?.(projects[0])}>
             View All
-          </a>
-          <div className="discover-arrows-wrapper">
-            <button 
-              onClick={() => scroll('left')}
-              className="discover-nav-btn"
-              aria-label="Scroll Left"
-            >
-              <ChevronLeft className="discover-arrow-icon" strokeWidth={1.5} />
-            </button>
-            <button 
-              onClick={() => scroll('right')}
-              className="discover-nav-btn"
-              aria-label="Scroll Right"
-            >
-              <ChevronRight className="discover-arrow-icon" strokeWidth={1.5} />
-            </button>
-          </div>
+          </span>
+          <button 
+            onClick={() => scroll('left')}
+            className="discover-header-nav-btn"
+            aria-label="Scroll Left"
+          >
+            <ChevronLeft className="h-4.5 w-4.5" />
+          </button>
+          <button 
+            onClick={() => scroll('right')}
+            className="discover-header-nav-btn"
+            aria-label="Scroll Right"
+          >
+            <ChevronRight className="h-4.5 w-4.5" />
+          </button>
         </div>
       </div>
       
+      {/* Slider Wrapper */}
       <div className="discover-slider-wrapper">
-        <div className="discover-slider-container animate-fade-in" ref={containerRef}>
-          {infiniteProjects.map((proj) => (
+        <div className="discover-slider-container" ref={containerRef}>
+          {projects.map((proj) => (
             <div 
               key={proj.uniqueKey} 
               onClick={() => onProjectSelect?.(proj)}
-              className="discover-card"
+              className="discover-premium-product-card"
             >
-              <div className="discover-card-image-wrapper">
-                <img src={proj.image} alt={proj.title} className="discover-card-image" />
-                <div className="discover-card-actions">
-                  <button className="discover-action-btn" aria-label="Add to Wishlist">
-                    <Heart className="discover-action-icon" />
-                  </button>
-                  <button className="discover-action-btn" aria-label="View Details">
-                    <Eye className="discover-action-icon" />
+              {/* Top Image Panel with dynamic pastel background */}
+              <div 
+                className="discover-product-image-wrapper"
+                style={{ backgroundColor: getPastelBg(proj.id) }}
+              >
+                <img src={proj.image} alt={proj.title} className="discover-product-image" />
+              </div>
+
+              {/* Bottom Info Details */}
+              <div className="discover-product-info">
+                <div>
+                  <span className="discover-product-brand">{proj.category}</span>
+                  <h3 className="discover-product-title">{proj.title}</h3>
+                </div>
+                <div>
+                  <div className="discover-product-price">Free Guide</div>
+                  <button className="discover-product-action-btn">
+                    <BookOpen className="h-4 w-4" /> READ GUIDE
                   </button>
                 </div>
-              </div>
-              
-              <div className="discover-card-info">
-                <span className="discover-card-category">{proj.category}</span>
-                <h3 className="discover-card-title">{proj.title}</h3>
-                <span className="discover-card-metric">Free Guide</span>
-                
-                <button type="button" className="discover-card-btn">
-                  <BookOpen className="discover-btn-icon" />
-                  View Tutorial
-                </button>
               </div>
             </div>
           ))}

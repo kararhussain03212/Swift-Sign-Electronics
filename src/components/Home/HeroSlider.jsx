@@ -129,6 +129,45 @@ export default function HeroSlider() {
 
   return (
     <div className="hero-slider-container">
+      {/* Abstract Background Shapes (same as Blogs hero banner) */}
+      <div
+        className="pointer-events-none absolute"
+        style={{
+          right: "-80px",
+          top: "-80px",
+          width: "420px",
+          height: "420px",
+          borderRadius: "50%",
+          border: "2px solid rgba(255,255,255,0.06)",
+          zIndex: 1
+        }}
+      />
+      <div
+        className="pointer-events-none absolute"
+        style={{
+          right: "80px",
+          top: "40px",
+          width: "260px",
+          height: "260px",
+          borderRadius: "50%",
+          border: "1px solid rgba(255,255,255,0.05)",
+          zIndex: 1
+        }}
+      />
+      <div
+        className="pointer-events-none absolute"
+        style={{
+          left: "-30px",
+          top: "50%",
+          width: "140px",
+          height: "45px",
+          borderRadius: "999px",
+          background: "rgba(255,255,255,0.04)",
+          transform: "rotate(-20deg)",
+          zIndex: 1
+        }}
+      />
+
       {/* Slides */}
       {slides.map((slide, idx) => {
         if (idx !== current) return null;
@@ -137,23 +176,23 @@ export default function HeroSlider() {
             key={idx}
             className="hero-slide active"
           >
-            {/* Left Column Content */}
-            <div className="hero-content-left">
-              {/* Fixed container for heading and tagline text */}
-              <div className="hero-text-fixed-container">
-                <h1 className="hero-main-title">
-                  {slide.titleLine1} <span className="hero-main-title-highlight">{slide.titleHighlight}</span> {slide.titleLine2}
-                </h1>
-                
-                <p className="hero-tagline">{slide.tagline}</p>
-              </div>
+            {/* Background Image Layer */}
+            <div 
+              className="hero-slide-bg-img"
+              style={{ backgroundImage: `url(${slide.image})` }}
+            />
+            {/* Dark dimming overlay in front of background image */}
+            <div className="hero-slide-bg-overlay-dim" />
+
+            {/* Centered content overlay */}
+            <div className="hero-slide-content-wrapper">
+              <h1 className="hero-main-title">
+                {slide.titleLine1} <span className="hero-main-title-highlight">{slide.titleHighlight}</span> {slide.titleLine2}
+              </h1>
+              
+              <p className="hero-tagline">{slide.tagline}</p>
               
               <button className="hero-action-btn">{slide.btnText}</button>
-            </div>
-
-            {/* Right Column Showcase */}
-            <div className="hero-showcase-right">
-              <img src={slide.image} alt={slide.titleHighlight} className="hero-product-img" />
             </div>
           </div>
         );
