@@ -119,11 +119,7 @@ export default function Blog() {
           padding: "clamp(60px, 10vw, 100px) 0 clamp(48px, 8vw, 80px)",
         }}
       >
-        {/* Background Image Layer */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 pointer-events-none"
-          style={{ backgroundImage: "url('/hero4.png')" }}
-        />
+
         {/* Background shapes */}
         <div
           className="pointer-events-none absolute"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation, EffectFade } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -117,12 +117,10 @@ function HeroSliderSection() {
   return (
     <div className="w-full">
       <Swiper
-        modules={[Autoplay, Pagination, Navigation]}
+        modules={[Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
         loop={true}
-        pagination={{ clickable: true, dynamicBullets: true }}
-        navigation
         autoplay={{ delay: 5000, disableOnInteraction: false }}
         className="w-full"
         style={{
@@ -256,7 +254,7 @@ function CategorySliderSection({ title, subtitle, category }) {
         </div>
       ) : (
         <Swiper
-          modules={[Autoplay, Navigation, Pagination]}
+          modules={[Autoplay]}
           spaceBetween={24}
           slidesPerView={1}
           breakpoints={{
@@ -265,8 +263,6 @@ function CategorySliderSection({ title, subtitle, category }) {
             1280: { slidesPerView: 4 },
             1536: { slidesPerView: 5 }
           }}
-          navigation
-          pagination={{ clickable: true }}
           autoplay={{ delay: 5000, disableOnInteraction: true }}
           className="w-full"
           style={{
@@ -302,7 +298,7 @@ function DiscoverSection() {
         </div>
       ) : (
         <Swiper
-          modules={[Autoplay, Navigation, Pagination]}
+          modules={[Autoplay]}
           spaceBetween={24}
           slidesPerView={1}
           breakpoints={{
@@ -311,8 +307,6 @@ function DiscoverSection() {
             1280: { slidesPerView: 4 },
             1536: { slidesPerView: 5 }
           }}
-          navigation
-          pagination={{ clickable: true }}
           autoplay={{ delay: 5000, disableOnInteraction: true }}
           className="w-full"
           style={{
@@ -356,14 +350,13 @@ function BlogSection() {
         {/* Blog Grid/Slider */}
         {recentBlogs.length > 0 && (
           <Swiper
-            modules={[Navigation, Pagination]}
+            modules={[Autoplay]}
             spaceBetween={24}
             slidesPerView={1}
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 3 }
             }}
-            pagination={{ clickable: true }}
             autoplay={{ delay: 6000, disableOnInteraction: true }}
             className="w-full"
             style={{
