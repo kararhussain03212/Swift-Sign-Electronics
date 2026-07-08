@@ -38,30 +38,32 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Column 4: Explore & Connect */}
-<div>
-  <h3 className="footer-col-title">Explore</h3>
-  <ul className="footer-links-list">
-    <li className="footer-link-item"><a href="#">FYP Projects Portfolio</a></li>
-    <li className="footer-link-item"><a href="#">Electronic Components</a></li>
-    <li className="footer-link-item"><a href="#">Prototyping Tools</a></li>
-    <li className="footer-link-item"><a href="#">Blogs & Tutorials</a></li>
-  </ul>
+        {/* Column 4: Explore */}
+        <div>
+          <h3 className="footer-col-title">Explore</h3>
+          <ul className="footer-links-list">
+            <li className="footer-link-item"><a href="#">FYP Projects Portfolio</a></li>
+            <li className="footer-link-item"><a href="#">Electronic Components</a></li>
+            <li className="footer-link-item"><a href="#">Prototyping Tools</a></li>
+            <li className="footer-link-item"><a href="#">Blogs & Tutorials</a></li>
+          </ul>
+        </div>
 
-  {/* Added Social Icons back here */}
-  <h3 className="footer-col-title" style={{ marginTop: '20px' }}>CONNECT</h3>
-  <div className="footer-social-icons">
-    <a href="https://github.com/vitejs/vite" target="_blank" rel="noreferrer" className="footer-social-btn" aria-label="GitHub">
-      <svg viewBox="0 0 19 19"><use href="/icons.svg#github-icon"></use></svg>
-    </a>
-    <a href="https://chat.vite.dev/" target="_blank" rel="noreferrer" className="footer-social-btn" aria-label="Discord">
-      <svg viewBox="0 0 20 19"><use href="/icons.svg#discord-icon"></use></svg>
-    </a>
-    <a href="https://x.com/vite_js" target="_blank" rel="noreferrer" className="footer-social-btn" aria-label="X (Twitter)">
-      <svg viewBox="0 0 19 19"><use href="/icons.svg#x-icon"></use></svg>
-    </a>
-  </div>
-</div>
+        {/* Column 5: Connect */}
+        <div>
+          <h3 className="footer-col-title">Connect</h3>
+          <div className="footer-social-icons">
+            <a href="https://github.com/vitejs/vite" target="_blank" rel="noreferrer" className="footer-social-btn" aria-label="GitHub">
+              <svg viewBox="0 0 19 19"><use href="/icons.svg#github-icon"></use></svg>
+            </a>
+            <a href="https://chat.vite.dev/" target="_blank" rel="noreferrer" className="footer-social-btn" aria-label="Discord">
+              <svg viewBox="0 0 20 19"><use href="/icons.svg#discord-icon"></use></svg>
+            </a>
+            <a href="https://x.com/vite_js" target="_blank" rel="noreferrer" className="footer-social-btn" aria-label="X (Twitter)">
+              <svg viewBox="0 0 19 19"><use href="/icons.svg#x-icon"></use></svg>
+            </a>
+          </div>
+        </div>
       </div>
 
       <div className="footer-bottom-row">
