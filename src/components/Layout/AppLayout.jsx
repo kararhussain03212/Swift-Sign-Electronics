@@ -26,7 +26,8 @@ const AppLayout = ({
       {/* 1. Banner */}
       <Banner />
 
-      {/* 2. Navbar */}
+      {/* 2. Navbar - Sticky Header */}
+      <div className="sticky top-0 z-40 bg-white">
       <Navbar
         activeTab={activeTab}
         onTabChange={(tab) => {
@@ -72,6 +73,7 @@ const AppLayout = ({
         onLogout={handleLogout}
         cartCount={unifiedCart.reduce((sum, item) => sum + item.quantity, 0)}
       />
+      </div>
 
       {/* 3. Core Page Content */}
       <main className="main-content-full">{children}</main>

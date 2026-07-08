@@ -115,7 +115,7 @@ export default function Blog() {
       <section
         className="relative overflow-hidden text-white"
         style={{
-          background: "linear-gradient(135deg, #f7931e 0%, #0042d7 100%)",
+          background: "linear-gradient(135deg, #065b61 0%, #0fafb8 100%)",
           padding: "clamp(60px, 10vw, 100px) 0 clamp(48px, 8vw, 80px)",
         }}
       >

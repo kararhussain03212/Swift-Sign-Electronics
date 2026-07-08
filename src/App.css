@@ -249,7 +249,7 @@
 
 /* Global overflow-x hidden to prevent horizontal flow/scroll */
 html, body {
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
 }
 

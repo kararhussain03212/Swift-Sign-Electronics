@@ -1,19 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Search, ShoppingCart, Menu, X, Cpu } from 'lucide-react';
+import { products } from '../../data/products';
 
 export default function Navbar({ activeTab, onTabChange, cartCount }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const searchInputRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  const handleSearchInput = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    if (query.trim().length >= 1) {
+      const filtered = products.filter(product =>
+        product.name.toLowerCase().includes(query.toLowerCase()) ||
+        product.category.toLowerCase().includes(query.toLowerCase()) ||
+        product.brand.toLowerCase().includes(query.toLowerCase())
+      ).slice(0, 6);
+      setSearchResults(filtered);
+      setShowDropdown(true);
+    } else {
+      setSearchResults([]);
+      setShowDropdown(false);
+    }
+  };
+
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      onTabChange?.('products');
+      sessionStorage.setItem('searchQuery', searchQuery);
+      setShowDropdown(false);
+      setSearchQuery('');
+    }
+  };
+
+  const handleSearchKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const handleProductClick = (product) => {
+    onTabChange?.('products');
+    sessionStorage.setItem('selectedProduct', product.id);
+    setShowDropdown(false);
+    setSearchQuery('');
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target) &&
+          !searchInputRef.current?.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const navLinks = [
     { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
     { id: 'products', label: 'Products' },
     { id: 'blogs', label: 'Blog' },
     { id: 'contact', label: 'Contact' }
   ];
 
   return (
-    <header className="bg-white border-b border-gray-100 w-full z-50">
+    <header className="bg-white border-b border-gray-100 w-full shadow-md">
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-[90px]">
           
@@ -62,15 +119,55 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
           {/* Right Section (Search & Cart) */}
           <div className="hidden md:flex items-center gap-5">
             {/* Search Bar */}
-            <div className="relative flex items-center w-[260px] h-[40px] bg-gray-50 border border-gray-200 rounded-full overflow-hidden group focus-within:border-[#0fafb8]/50 focus-within:ring-2 focus-within:ring-[#0fafb8]/10 transition-all">
-              <input
-                type="text"
-                placeholder="Search components..."
-                className="w-full h-full pl-4 pr-12 bg-transparent text-sm text-gray-800 placeholder-gray-400 focus:outline-none font-medium"
-              />
-              <button className="absolute right-0 h-full w-[46px] bg-gray-100 border-l border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#0fafb8] hover:text-white hover:border-[#0fafb8] transition-colors cursor-pointer">
-                <Search className="w-4 h-4" />
-              </button>
+            <div className="relative w-[260px]">
+              <div className="relative flex items-center h-[40px] bg-gray-50 border border-gray-200 rounded-full overflow-hidden group focus-within:border-[#0fafb8]/50 focus-within:ring-2 focus-within:ring-[#0fafb8]/10 transition-all">
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Search components..."
+                  value={searchQuery}
+                  onChange={handleSearchInput}
+                  onKeyPress={handleSearchKeyPress}
+                  className="w-full h-full pl-4 pr-12 bg-transparent text-sm text-gray-800 placeholder-gray-400 focus:outline-none font-medium"
+                />
+                <button
+                  onClick={handleSearch}
+                  className="absolute right-0 h-full w-[46px] bg-gray-100 border-l border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#0fafb8] hover:text-white hover:border-[#0fafb8] transition-colors cursor-pointer"
+                >
+                  <Search className="w-4 h-4" />
+                </button>
+              </div>
+
+              {showDropdown && searchResults.length > 0 && (
+                <div ref={dropdownRef} className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                  {searchResults.map((product) => (
+                    <button
+                      key={product.id}
+                      onClick={() => handleProductClick(product)}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors text-left"
+                    >
+                      <img
+                        src={product.thumbnail}
+                        alt={product.name}
+                        className="w-10 h-10 object-cover rounded"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                        <p className="text-xs text-gray-500">{product.category}</p>
+                      </div>
+                      <p className="text-sm font-semibold text-[#0fafb8]">${product.price}</p>
+                    </button>
+                  ))}
+                  {searchResults.length > 0 && (
+                    <button
+                      onClick={handleSearch}
+                      className="w-full px-4 py-2 text-center text-sm font-medium text-[#0fafb8] hover:bg-gray-50 border-t border-gray-100 transition-colors"
+                    >
+                      View all results
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* Cart Button */}
@@ -112,15 +209,57 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-[90px] left-0 w-full bg-white border-b border-gray-100 shadow-xl py-4 px-6 z-50">
           {/* Mobile Search */}
-          <div className="relative flex items-center w-full h-[44px] bg-gray-50 border border-gray-200 rounded-full overflow-hidden mb-6 focus-within:border-[#0fafb8] transition-colors">
-            <input
-              type="text"
-              placeholder="Search components..."
-              className="w-full h-full pl-5 pr-12 bg-transparent text-sm text-gray-800 placeholder-gray-400 focus:outline-none font-medium"
-            />
-            <button className="absolute right-0 h-full w-[46px] bg-gray-100 border-l border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#0fafb8] hover:text-white transition-colors">
-              <Search className="w-4 h-4" />
-            </button>
+          <div className="relative mb-6">
+            <div className="relative flex items-center w-full h-[44px] bg-gray-50 border border-gray-200 rounded-full overflow-hidden focus-within:border-[#0fafb8] transition-colors">
+              <input
+                type="text"
+                placeholder="Search components..."
+                value={searchQuery}
+                onChange={handleSearchInput}
+                onKeyPress={handleSearchKeyPress}
+                className="w-full h-full pl-5 pr-12 bg-transparent text-sm text-gray-800 placeholder-gray-400 focus:outline-none font-medium"
+              />
+              <button onClick={handleSearch} className="absolute right-0 h-full w-[46px] bg-gray-100 border-l border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#0fafb8] hover:text-white transition-colors">
+                <Search className="w-4 h-4" />
+              </button>
+            </div>
+
+            {showDropdown && searchResults.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                {searchResults.map((product) => (
+                  <button
+                    key={product.id}
+                    onClick={() => {
+                      handleProductClick(product);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors text-left"
+                  >
+                    <img
+                      src={product.thumbnail}
+                      alt={product.name}
+                      className="w-10 h-10 object-cover rounded"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                      <p className="text-xs text-gray-500">{product.category}</p>
+                    </div>
+                    <p className="text-sm font-semibold text-[#0fafb8]">${product.price}</p>
+                  </button>
+                ))}
+                {searchResults.length > 0 && (
+                  <button
+                    onClick={() => {
+                      handleSearch();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full px-4 py-2 text-center text-sm font-medium text-[#0fafb8] hover:bg-gray-50 border-t border-gray-100 transition-colors"
+                  >
+                    View all results
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
           <nav className="flex flex-col gap-2">
