@@ -1,7 +1,6 @@
 import React from "react";
 import Banner from "./Banner";
 import Navbar from "./Navbar";
-import HeroSlider from "../Home/HeroSlider";
 import Footer from "./Footer";
 import CompareDrawer from "../Products/CompareDrawer";
 import QuickViewModal from "../Products/QuickViewModal";
@@ -81,12 +80,7 @@ const AppLayout = ({
         cartCount={unifiedCart.reduce((sum, item) => sum + item.quantity, 0)}
       />
 
-      {/* 3. Hero Section Slider - Only show on home page and home tab when not viewing details */}
-      {location.pathname === "/" && activeTab === "home" && !selectedBlog && (
-        <HeroSlider />
-      )}
-
-      {/* 4. Core Page Content */}
+      {/* 3. Core Page Content */}
       <main className="main-content-full">{children}</main>
 
       {/* 5. Footer */}

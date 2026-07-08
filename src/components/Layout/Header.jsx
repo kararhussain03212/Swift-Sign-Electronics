@@ -38,7 +38,7 @@ export default function Header({ onSearchChange, searchValue }) {
   return (
     <>
       <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+        <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
           
           {/* Logo Section */}
           <Link to="/" className="flex items-center gap-2.5 text-blue-600 dark:text-blue-400 select-none group flex-shrink-0">

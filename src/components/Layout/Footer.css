@@ -46,7 +46,7 @@
 }
 
 .footer-logo-accent {
-  color: #84cc16;
+  color: #0fafb8;
 }
 
 .footer-tagline {
@@ -81,7 +81,7 @@
 }
 
 .footer-link-item a:hover {
-  color: #84cc16;
+  color: #0fafb8;
 }
 
 .footer-social-icons {
@@ -105,7 +105,7 @@
 }
 
 .footer-social-btn:hover {
-  background-color: #84cc16;
+  background-color: #0fafb8;
   transform: translateY(-2px);
 }
 

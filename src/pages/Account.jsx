@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MiniHero from '../components/Home/MiniHero';
+import MiniHero from '../components/Layout/MiniHero';
 import { Mail, User, Lock } from 'lucide-react';
 
 export default function Account({ onLoginSuccess, initialIsLogin = true }) {
@@ -30,7 +30,7 @@ export default function Account({ onLoginSuccess, initialIsLogin = true }) {
         title="Maker Community Portal" 
         subtitle="Log in or create an account to share projects, follow creators, and access custom firmware files."
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
       <div className="max-w-md mx-auto my-8 p-8 bg-white rounded-2xl border border-gray-200 shadow-sm">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-extrabold text-black mb-2">
@@ -50,14 +50,14 @@ export default function Account({ onLoginSuccess, initialIsLogin = true }) {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block px-4 pb-3 pt-4 w-full text-sm text-black bg-white rounded-xl border border-gray-300 appearance-none focus:outline-none focus:ring-1 focus:ring-[#84cc16] focus:border-[#84cc16] peer"
+                  className="block px-4 pb-3 pt-4 w-full text-sm text-black bg-white rounded-xl border border-gray-300 appearance-none focus:outline-none focus:ring-1 focus:ring-[#0fafb8] focus:border-[#0fafb8] peer"
                   placeholder="Enter your email"
                   autoComplete="off"
                   required
                 />
                 <label 
                   htmlFor="email" 
-                  className="absolute text-sm text-gray-400 font-bold duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-[#84cc16] left-2 cursor-text"
+                  className="absolute text-sm text-gray-400 font-bold duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-[#0fafb8] left-2 cursor-text"
                 >
                   Email Address
                 </label>
@@ -72,14 +72,14 @@ export default function Account({ onLoginSuccess, initialIsLogin = true }) {
                 id="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="block px-4 pb-3 pt-4 w-full text-sm text-black bg-white rounded-xl border border-gray-300 appearance-none focus:outline-none focus:ring-1 focus:ring-[#84cc16] focus:border-[#84cc16] peer"
+                className="block px-4 pb-3 pt-4 w-full text-sm text-black bg-white rounded-xl border border-gray-300 appearance-none focus:outline-none focus:ring-1 focus:ring-[#0fafb8] focus:border-[#0fafb8] peer"
                 placeholder="Enter your name"
                 autoComplete="off"
                 required
               />
               <label 
                 htmlFor="username" 
-                className="absolute text-sm text-gray-400 font-bold duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-[#84cc16] left-2 cursor-text"
+                className="absolute text-sm text-gray-400 font-bold duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-[#0fafb8] left-2 cursor-text"
               >
                 Username
               </label>
@@ -93,14 +93,14 @@ export default function Account({ onLoginSuccess, initialIsLogin = true }) {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="block px-4 pb-3 pt-4 w-full text-sm text-black bg-white rounded-xl border border-gray-300 appearance-none focus:outline-none focus:ring-1 focus:ring-[#84cc16] focus:border-[#84cc16] peer"
+                className="block px-4 pb-3 pt-4 w-full text-sm text-black bg-white rounded-xl border border-gray-300 appearance-none focus:outline-none focus:ring-1 focus:ring-[#0fafb8] focus:border-[#0fafb8] peer"
                 placeholder="Enter your password"
                 autoComplete="new-password"
                 required
               />
               <label 
                 htmlFor="password" 
-                className="absolute text-sm text-gray-400 font-bold duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-[#84cc16] left-2 cursor-text"
+                className="absolute text-sm text-gray-400 font-bold duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:text-[#0fafb8] left-2 cursor-text"
               >
                 Password
               </label>
@@ -109,7 +109,7 @@ export default function Account({ onLoginSuccess, initialIsLogin = true }) {
 
           <button 
             type="submit"
-            className="w-full py-3 bg-[#84cc16] hover:bg-[#f7b500] text-white text-sm font-bold rounded-xl shadow-sm transition cursor-pointer"
+            className="w-full py-3 bg-[#0fafb8] hover:bg-[#0a7981] text-white text-sm font-bold rounded-xl shadow-sm transition cursor-pointer"
           >
             {isLogin ? 'Sign In' : 'Register Account'}
           </button>
@@ -121,7 +121,7 @@ export default function Account({ onLoginSuccess, initialIsLogin = true }) {
           </span>
           <button 
             onClick={() => setIsLogin(!isLogin)}
-            className="text-[#84cc16] font-bold hover:underline cursor-pointer"
+            className="text-[#0fafb8] font-bold hover:underline cursor-pointer"
           >
             {isLogin ? 'Sign Up' : 'Log In'}
           </button>

@@ -154,7 +154,7 @@ export default function Products() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-10 min-h-screen space-y-12">
+    <div className="max-w-[1536px] mx-auto px-4 lg:px-8 py-10 min-h-screen space-y-12">
 
 
       {/* Category Pills Quick Navigation */}

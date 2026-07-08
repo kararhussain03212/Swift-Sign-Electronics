@@ -1,177 +1,148 @@
 import React, { useState } from 'react';
-import './Navbar.css';
+import { Search, ShoppingCart, Menu, X, Cpu } from 'lucide-react';
 
-export default function Navbar({ activeTab, onTabChange, currentUser, onLogout, cartCount }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isIndustryClosed, setIsIndustryClosed] = useState(false);
-  const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+export default function Navbar({ activeTab, onTabChange, cartCount }) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const navLinks = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'products', label: 'Products' },
+    { id: 'blogs', label: 'Blog' },
+    { id: 'contact', label: 'Contact' }
+  ];
 
   return (
-    <header 
-      className="navbar-container cursor-pointer" 
-      onClick={(e) => {
-        if (!e.target.closest('.navbar-search-wrapper') && !e.target.closest('a') && !e.target.closest('button')) {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      }}
-    >
-      {/* Main Top Row */}
-      <div className="navbar-main-row">
-        {/* Brand/Logo */}
-        <a 
-          href="#" 
-          onClick={(e) => {
-            e.preventDefault();
-            onTabChange?.('home');
-            setIsMenuOpen(false);
-          }} 
-          className="navbar-brand"
-        >
-          <img src="/logo.png" alt="Logo" className="navbar-logo" />
-          <span className="navbar-title">
-            Swift Sign
-            <span className="navbar-title-accent">Electronics</span>
-          </span>
-        </a>
-
-        {/* Search Bar (always visible) */}
-        <div className="navbar-search-wrapper">
-          <input
-            type="text"
-            placeholder="Search products, categories..."
-            className="navbar-search-input"
-          />
-          <button className="navbar-search-button" aria-label="Search">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Right side utilities */}
-        <div className="navbar-actions">
-          <a 
-            href="#" 
-            onClick={(e) => {
-              e.preventDefault();
-              onTabChange?.('cart');
-              setIsMenuOpen(false);
-            }} 
-            className="navbar-action-item relative"
+    <header className="bg-white border-b border-gray-100 w-full z-50">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-[90px]">
+          
+          {/* Logo Section */}
+          <div 
+            className="flex-shrink-0 flex items-center gap-3 cursor-pointer group" 
+            onClick={() => onTabChange?.('home')}
           >
-            <svg className="navbar-action-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-extrabold h-4 w-4 rounded-full flex items-center justify-center">
-                {cartCount}
+            {/* Tech Icon Logo */}
+            <div className="w-12 h-12 rounded-full border-2 border-gray-100 bg-gray-50 flex items-center justify-center p-1 group-hover:border-[#0fafb8]/30 transition-colors">
+              <div className="w-full h-full rounded-full border border-dashed border-[#0fafb8] flex items-center justify-center text-[#0fafb8] bg-[#0fafb8]/5">
+                <Cpu className="w-5 h-5" />
+              </div>
+            </div>
+            <div className="flex flex-col justify-center">
+              <span 
+                className="font-sans text-[24px] font-extrabold tracking-tight leading-none text-gray-900"
+              >
+                Swift Sign
               </span>
-            )}
-          </a>
-        </div>
-
-        {/* Hamburger Menu Icon */}
-        <button 
-          className="navbar-hamburger-btn" 
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle navigation menu"
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#4b5563',
-            cursor: 'pointer',
-            padding: '8px',
-            display: 'none'
-          }}
-        >
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" style={{ width: '24px', height: '24px' }}>
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-          </svg>
-        </button>
-      </div>
-
-      {/* Navigation Links Row */}
-      <div className={`navbar-links-row ${isMenuOpen ? 'is-open' : ''}`}>
-        <div className="navbar-links-container">
-          <a 
-            href="#" 
-            onClick={(e) => {
-              e.preventDefault();
-              setIsIndustryClosed(!isIndustryClosed);
-            }} 
-            className="navbar-link navbar-industry-link"
-          >
-            For Industry
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d={isIndustryClosed ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
-            </svg>
-          </a>
-
-          {/* Animating nav links container wrapper */}
-          <div className={`navbar-nav-links ${isIndustryClosed ? 'slide-left-closed' : 'slide-right-open'}`}>
-            <a 
-              href="#" 
-              onClick={(e) => {
-                e.preventDefault();
-                onTabChange?.('home');
-                setIsMenuOpen(false);
-              }} 
-              className={`navbar-link ${activeTab === 'home' ? 'text-[#0fafb8]' : ''}`}
-              style={activeTab === 'home' ? { color: '#0fafb8' } : {}}
-            >
-              Home
-            </a>
-            <a 
-              href="#blogs" 
-              onClick={(e) => {
-                e.preventDefault();
-                onTabChange?.('blogs');
-                setIsMenuOpen(false);
-              }} 
-              className={`navbar-link ${activeTab === 'blogs' ? 'text-[#0fafb8]' : ''}`}
-              style={activeTab === 'blogs' ? { color: '#0fafb8' } : {}}
-            >
-              Blogs
-            </a>
-            <a 
-              href="#" 
-              onClick={(e) => {
-                e.preventDefault();
-                onTabChange?.('products');
-                setIsMenuOpen(false);
-              }} 
-              className={`navbar-link ${activeTab === 'products' ? 'text-[#0fafb8]' : ''}`}
-              style={activeTab === 'products' ? { color: '#0fafb8' } : {}}
-            >
-              Products
-            </a>
-            <a 
-              href="#" 
-              onClick={(e) => {
-                e.preventDefault();
-                onTabChange?.('contact');
-                setIsMenuOpen(false);
-              }} 
-              className={`navbar-link ${activeTab === 'contact' ? 'text-[#0fafb8]' : ''}`}
-              style={activeTab === 'contact' ? { color: '#0fafb8' } : {}}
-            >
-              Contact Us
-            </a>
-            <a href="#" className="navbar-link">
-              Solution
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-              </svg>
-            </a>
-            <a href="#" className="navbar-link">
-              Support
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-              </svg>
-            </a>
+              <span className="text-[10px] font-bold text-[#0fafb8] tracking-[0.25em] uppercase mt-1">
+                Electronics
+              </span>
+            </div>
           </div>
+
+          {/* Center Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            <nav className="flex items-center gap-8">
+              {navLinks.map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => onTabChange?.(link.id)}
+                  className={`text-[15px] transition-colors ${
+                    activeTab === link.id 
+                    ? 'text-[#0fafb8] font-bold' 
+                    : 'text-gray-600 hover:text-[#0fafb8] font-semibold'
+                  }`}
+                >
+                  {link.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          {/* Right Section (Search & Cart) */}
+          <div className="hidden md:flex items-center gap-5">
+            {/* Search Bar */}
+            <div className="relative flex items-center w-[260px] h-[40px] bg-gray-50 border border-gray-200 rounded-full overflow-hidden group focus-within:border-[#0fafb8]/50 focus-within:ring-2 focus-within:ring-[#0fafb8]/10 transition-all">
+              <input
+                type="text"
+                placeholder="Search components..."
+                className="w-full h-full pl-4 pr-12 bg-transparent text-sm text-gray-800 placeholder-gray-400 focus:outline-none font-medium"
+              />
+              <button className="absolute right-0 h-full w-[46px] bg-gray-100 border-l border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#0fafb8] hover:text-white hover:border-[#0fafb8] transition-colors cursor-pointer">
+                <Search className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Cart Button */}
+            <button 
+              onClick={() => onTabChange?.('cart')}
+              className="relative w-11 h-11 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700 hover:text-[#0fafb8] hover:border-[#0fafb8]/30 hover:bg-gray-50 transition-colors cursor-pointer shadow-sm"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {/* Alert Badge */}
+              <span className="absolute -top-1 -right-1 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                {cartCount || 0}
+              </span>
+            </button>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <div className="md:hidden flex items-center gap-4">
+            <button 
+              onClick={() => onTabChange?.('cart')}
+              className="relative w-10 h-10 rounded-full border border-gray-200 bg-white flex items-center justify-center text-gray-700"
+            >
+              <ShoppingCart className="w-4 h-4" />
+              <span className="absolute -top-1 -right-1 flex h-[16px] w-[16px] items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white ring-2 ring-white">
+                {cartCount || 0}
+              </span>
+            </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-gray-700 p-1 hover:text-[#0fafb8] transition-colors"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden absolute top-[90px] left-0 w-full bg-white border-b border-gray-100 shadow-xl py-4 px-6 z-50">
+          {/* Mobile Search */}
+          <div className="relative flex items-center w-full h-[44px] bg-gray-50 border border-gray-200 rounded-full overflow-hidden mb-6 focus-within:border-[#0fafb8] transition-colors">
+            <input
+              type="text"
+              placeholder="Search components..."
+              className="w-full h-full pl-5 pr-12 bg-transparent text-sm text-gray-800 placeholder-gray-400 focus:outline-none font-medium"
+            />
+            <button className="absolute right-0 h-full w-[46px] bg-gray-100 border-l border-gray-200 flex items-center justify-center text-gray-500 hover:bg-[#0fafb8] hover:text-white transition-colors">
+              <Search className="w-4 h-4" />
+            </button>
+          </div>
+
+          <nav className="flex flex-col gap-2">
+            {navLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => {
+                  onTabChange?.(link.id);
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`text-left text-[16px] px-4 py-3 rounded-lg transition-colors ${
+                  activeTab === link.id 
+                  ? 'text-[#0fafb8] bg-[#0fafb8]/10 font-bold' 
+                  : 'text-gray-600 hover:bg-gray-50 font-semibold'
+                }`}
+              >
+                {link.label}
+              </button>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }

@@ -31,7 +31,7 @@ export default function CheckoutForm() {
 
   if (orderComplete) {
     return (
-      <div className="w-full max-w-7xl mx-auto px-4 py-12 min-h-screen flex items-center justify-center">
+      <div className="w-full max-w-[1536px] mx-auto px-4 py-12 min-h-screen flex items-center justify-center">
         <div className="text-center animate-fade-in space-y-4">
           <div className="flex justify-center text-blue-600">
             <FiCheckCircle className="w-20 h-20" />

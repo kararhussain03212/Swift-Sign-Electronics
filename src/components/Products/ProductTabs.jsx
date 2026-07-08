@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FiInfo, FiSliders, FiPackage, FiFileText } from 'react-icons/fi';
 import SpecificationTable from './SpecificationTable';
 import ShippingList from './ShippingList';
-import DocumentCard from '../Home/DocumentCard';
 
 export default function ProductTabs({ product }) {
   const [activeTab, setActiveTab] = useState('intro');
@@ -141,7 +140,24 @@ export default function ProductTabs({ product }) {
                 <h3 className="text-xl font-bold text-slate-800 mb-4">Datasheets & Manuals</h3>
                 <div className="grid grid-cols-1 gap-3.5">
                   {product.documents?.map((doc, idx) => (
-                    <DocumentCard key={idx} document={doc} />
+                    <a
+                      key={idx}
+                      href={doc.url || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:shadow-md hover:border-blue-300 transition cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-3">
+                        <FiFileText className="text-blue-600 text-xl group-hover:scale-110 transition" />
+                        <div>
+                          <p className="font-bold text-slate-800 group-hover:text-blue-600 transition">{doc.name}</p>
+                          {doc.size && <p className="text-xs text-slate-500">{doc.size}</p>}
+                        </div>
+                      </div>
+                      <svg className="w-5 h-5 text-slate-400 group-hover:text-blue-600 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                    </a>
                   ))}
                   {(!product.documents || product.documents.length === 0) && (
                     <p className="text-slate-500 text-sm">No documents listed.</p>

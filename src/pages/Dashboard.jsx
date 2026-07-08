@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import MiniHero from '../components/Home/MiniHero';
+import MiniHero from '../components/Layout/MiniHero';
 import { Eye, Clock, XCircle, FileText, Share2, Award, Heart, ShieldAlert, Activity, User, Lock, Mail, CheckCircle } from 'lucide-react';
 
 export default function Dashboard({ 
@@ -76,7 +76,7 @@ export default function Dashboard({
           title="Developer Dashboard" 
           subtitle="Manage your connected projects, view community feedback notifications, and track your recent activity."
         />
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-[1536px] mx-auto px-4">
           <div className="max-w-md mx-auto my-12 p-8 bg-white rounded border border-gray-200 shadow-sm">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-black mb-2">User Dashboard</h2>
@@ -90,7 +90,7 @@ export default function Dashboard({
                   type="text" 
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full border-b-2 bg-transparent border-gray-300 focus:border-[#84cc16] py-2 text-sm outline-none font-medium text-black transition-colors"
+                  className="w-full border-b-2 bg-transparent border-gray-300 focus:border-[#0fafb8] py-2 text-sm outline-none font-medium text-black transition-colors"
                   placeholder="Enter your name"
                   autoComplete="off"
                   required
@@ -103,7 +103,7 @@ export default function Dashboard({
                   type="password" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full border-b-2 bg-transparent border-gray-300 focus:border-[#84cc16] py-2 text-sm outline-none font-medium text-black transition-colors"
+                  className="w-full border-b-2 bg-transparent border-gray-300 focus:border-[#0fafb8] py-2 text-sm outline-none font-medium text-black transition-colors"
                   placeholder="Enter your password"
                   autoComplete="new-password"
                   required
@@ -112,7 +112,7 @@ export default function Dashboard({
 
               <button 
                 type="submit"
-                className="w-full py-4 mt-4 bg-[#84cc16] hover:bg-[#f7b500] text-white text-sm font-bold rounded shadow-sm transition cursor-pointer uppercase tracking-wider"
+                className="w-full py-4 mt-4 bg-[#0fafb8] hover:bg-[#0a7981] text-white text-sm font-bold rounded shadow-sm transition cursor-pointer uppercase tracking-wider"
               >
                 Sign In
               </button>
@@ -129,12 +129,12 @@ export default function Dashboard({
         title="Developer Dashboard" 
         subtitle="Manage your connected projects, view community feedback notifications, and track your recent activity."
       />
-      <div className="max-w-7xl mx-auto px-4 mt-8">
+      <div className="max-w-[1536px] mx-auto px-4 mt-8">
       
         {/* Toast Notification */}
         {toastMessage && (
           <div className="fixed top-24 right-6 bg-black text-white px-5 py-3.5 rounded shadow-2xl font-bold z-50 flex items-center gap-3 animate-bounce">
-            <CheckCircle className="h-5 w-5 text-[#84cc16]" />
+            <CheckCircle className="h-5 w-5 text-[#0fafb8]" />
             <span>{toastMessage}</span>
           </div>
         )}
