@@ -1,6 +1,6 @@
 .top-banner {
-  background: linear-gradient(90deg, #b08500 0%, #d4a373 50%, #b08500 100%);
-  background-color: #f7b500;
+  background: linear-gradient(90deg, #05282f 0%, #095260 50%, #05282f 100%);
+  background-color: #073b45;
   color: #ffffff;
   padding: 8px 16px;
   position: relative;
@@ -24,7 +24,7 @@
 .top-banner-close {
   position: absolute;
   right: 16px;
-  background-color: #b08500;
+  background-color: #05282f;
   border: none;
   color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
@@ -39,7 +39,7 @@
 
 .top-banner-close:hover {
   color: #ffffff;
-  background-color: #a37d04;
+  background-color: #041f24;
 }
 
 .top-banner-close svg {

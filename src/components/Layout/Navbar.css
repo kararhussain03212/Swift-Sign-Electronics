@@ -7,7 +7,10 @@
   width: 100%;
 }
 
-
+.dark .navbar-container {
+  background-color: #16171d;
+  border-bottom: 1px solid #2e303a;
+}
 
 .navbar-main-row {
   max-width: 1280px;
@@ -40,7 +43,7 @@
 .navbar-title {
   font-size: 22px;
   font-weight: 700;
-  color: #84cc16; /* Cohesive brand green */
+  color: #0fafb8; /* Cohesive brand teal */
   display: flex;
   align-items: center;
 }
@@ -50,7 +53,9 @@
   margin-left: 4px;
 }
 
-
+.dark .navbar-title-accent {
+  color: #f3f4f6;
+}
 
 /* Search bar design */
 .navbar-search-wrapper {
@@ -58,7 +63,7 @@
   max-width: 600px;
   display: flex;
   align-items: center;
-  border: 2px solid #84cc16;
+  border: 2px solid #0fafb8;
   border-radius: 4px;
   overflow: hidden;
   height: 40px;
@@ -76,7 +81,7 @@
 }
 
 .navbar-search-button {
-  background-color: #84cc16;
+  background-color: #0fafb8;
   border: none;
   height: 100%;
   width: 46px;
@@ -89,7 +94,7 @@
 }
 
 .navbar-search-button:hover {
-  background-color: #72b012;
+  background-color: #0a7981;
 }
 
 .navbar-search-button svg {
@@ -105,7 +110,9 @@
   color: #4b5563;
 }
 
-
+.dark .navbar-actions {
+  color: #d1d5db;
+}
 
 .navbar-action-item {
   display: flex;
@@ -120,7 +127,7 @@
 }
 
 .navbar-action-item:hover {
-  color: #84cc16;
+  color: #0fafb8;
 }
 
 .navbar-action-icon {
@@ -134,7 +141,10 @@
   background-color: #ffffff;
 }
 
-
+.dark .navbar-links-row {
+  border-top: 1px solid #1f2028;
+  background-color: #16171d;
+}
 
 .navbar-links-container {
   max-width: 1280px;
@@ -159,10 +169,12 @@
   transition: color 0.2s ease;
 }
 
-
+.dark .navbar-link {
+  color: #d1d5db;
+}
 
 .navbar-link:hover {
-  color: #84cc16;
+  color: #0fafb8;
 }
 
 .navbar-link svg {
@@ -177,7 +189,10 @@
   padding-right: 20px;
 }
 
-
+.dark .navbar-industry-link {
+  color: #ffffff;
+  border-right-color: #2e303a;
+}
 
 .navbar-nav-links {
   display: flex;
@@ -297,7 +312,11 @@
   margin-top: 8px;
 }
 
-
+.dark .navbar-dropdown-menu {
+  background-color: #1f2028;
+  border-color: #2e303a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
 
 .navbar-dropdown-item {
   background: none;
@@ -312,14 +331,19 @@
   transition: background-color 0.2s, color 0.2s;
 }
 
-
+.dark .navbar-dropdown-item {
+  color: #d1d5db;
+}
 
 .navbar-dropdown-item:hover {
   background-color: #f3f4f6;
-  color: #84cc16;
+  color: #0fafb8;
 }
 
-
+.dark .navbar-dropdown-item:hover {
+  background-color: #2e303a;
+  color: #0fafb8;
+}
 
 .navbar-dropdown-item.text-red-500 {
   color: #ef4444;
@@ -329,6 +353,8 @@
   background-color: #fef2f2;
 }
 
-
+.dark .navbar-dropdown-item.text-red-500:hover {
+  background-color: #3b1e1e;
+}
 
 

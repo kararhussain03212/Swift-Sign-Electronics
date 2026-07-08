@@ -129,9 +129,6 @@ export default function HeroSlider() {
 
   return (
     <div className="hero-slider-container">
-      {/* Background grid overlay */}
-      <div className="hero-slider-bg-overlay" />
-
       {/* Slides */}
       {slides.map((slide, idx) => {
         if (idx !== current) return null;
@@ -151,16 +148,6 @@ export default function HeroSlider() {
                 <p className="hero-tagline">{slide.tagline}</p>
               </div>
               
-              {/* Details list */}
-              <div className="hero-info-list">
-                {slide.details.map((item, dIdx) => (
-                  <div key={dIdx} className="hero-info-item">
-                    <div className="hero-info-icon-wrapper">{item.icon}</div>
-                    <span>{item.text}</span>
-                  </div>
-                ))}
-              </div>
-
               <button className="hero-action-btn">{slide.btnText}</button>
             </div>
 
