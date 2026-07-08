@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 export default function Footer() {
@@ -19,10 +20,10 @@ export default function Footer() {
         <div>
           <h3 className="footer-col-title">Quick Links</h3>
           <ul className="footer-links-list">
-            <li className="footer-link-item"><a href="#">Home Page</a></li>
-            <li className="footer-link-item"><a href="#">About Us</a></li>
-            <li className="footer-link-item"><a href="#">Contact Us</a></li>
-            <li className="footer-link-item"><a href="#">Support & FAQs</a></li>
+            <li className="footer-link-item"><Link to="/">Home Page</Link></li>
+            <li className="footer-link-item"><a href="#about">About Us</a></li>
+            <li className="footer-link-item"><Link to="/contact">Contact Us</Link></li>
+            <li className="footer-link-item"><a href="#faq">Support & FAQs</a></li>
           </ul>
         </div>
 
@@ -30,11 +31,10 @@ export default function Footer() {
         <div>
           <h3 className="footer-col-title">About Us</h3>
           <ul className="footer-links-list">
-            <li className="footer-link-item"><a href="/terms-and-conditions">Terms & Conditions</a></li>
-            <li className="footer-link-item"><a href="/privacy-policy">Privacy Policy</a></li>
-            <li className="footer-link-item"><a href="/return-policy">Return Policy</a></li>
-            <li className="footer-link-item"><a href="/shipping-policy">Shipping Policy</a></li>
-            <li className="footer-link-item"><a href="/certification">Certification</a></li>
+            <li className="footer-link-item"><Link to="/terms-and-conditions">Terms & Conditions</Link></li>
+            <li className="footer-link-item"><Link to="/privacy-policy">Privacy Policy</Link></li>
+            <li className="footer-link-item"><Link to="/return-policy">Return Policy</Link></li>
+            <li className="footer-link-item"><Link to="/shipping-policy">Shipping Policy</Link></li>
           </ul>
         </div>
 
