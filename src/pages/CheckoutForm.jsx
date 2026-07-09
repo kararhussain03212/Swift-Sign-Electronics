@@ -10,6 +10,7 @@ export default function CheckoutForm() {
   const navigate = useNavigate();
   const { cart, getCartTotal, clearCart } = useShop();
   
+  
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
   const step = 2; // Fixed at step 2 (Delivery) since Payment is removed
@@ -28,6 +29,17 @@ export default function CheckoutForm() {
       clearCart();
     }, 1500);
   };
+
+  const locationData = {
+  Punjab: { Lahore: "54000", Rawalpindi: "46000", Faisalabad: "38000" },
+  Sindh: { Karachi: "74200", Hyderabad: "71000" },
+  KPK: { Peshawar: "25000" },
+  Balochistan: { Quetta: "87300" }
+};
+const [selectedProvince, setSelectedProvince] = useState("");
+const [selectedCity, setSelectedCity] = useState("");
+const [postalCode, setPostalCode] = useState("");
+
 
   if (orderComplete) {
     return (
@@ -139,7 +151,7 @@ export default function CheckoutForm() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/*<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Province <span className="text-red-500">*</span></label>
                   <select required className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-500">
@@ -156,7 +168,7 @@ export default function CheckoutForm() {
                     <option value="">Select city first</option>
                     <option value="Lahore">Lahore</option>
                     <option value="Karachi">Karachi</option>
-                    <option value="Islamabad">Islamabad</option>
+                    <option value="Rawalpindi">Rawalpindi</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
@@ -164,7 +176,59 @@ export default function CheckoutForm() {
                   <input type="text" className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="e.g. 54000" />
                 </div>
               </div>
+*/}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  {/* Province */}
+  <div className="space-y-1.5">
+    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Province <span className="text-red-500">*</span></label>
+    <select 
+      required 
+      value={selectedProvince}
+      onChange={(e) => {
+        setSelectedProvince(e.target.value);
+        setSelectedCity(""); // Reset city
+        setPostalCode("");   // Reset postal code
+      }}
+      className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 outline-none text-slate-800"
+    >
+      <option value="">Select Province</option>
+      {Object.keys(locationData).map(p => <option key={p} value={p}>{p}</option>)}
+    </select>
+  </div>
 
+  {/* City */}
+  <div className="space-y-1.5">
+    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">City <span className="text-red-500">*</span></label>
+    <select 
+      required 
+      value={selectedCity}
+      disabled={!selectedProvince}
+      onChange={(e) => {
+        const city = e.target.value;
+        setSelectedCity(city);
+        setPostalCode(locationData[selectedProvince][city]); // Auto-fill code
+      }}
+      className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 outline-none text-slate-800"
+    >
+      <option value="">{selectedProvince ? "Select City" : "Select province first"}</option>
+      {selectedProvince && Object.keys(locationData[selectedProvince]).map(c => (
+        <option key={c} value={c}>{c}</option>
+      ))}
+    </select>
+  </div>
+
+  {/* Postal Code */}
+  <div className="space-y-1.5">
+    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Postal Code</label>
+    <input 
+      type="text" 
+      value={postalCode}
+      readOnly // User doesn't need to type it
+      className="w-full px-4 py-2.5 text-sm bg-slate-100 border border-slate-200 rounded-none text-slate-800 cursor-not-allowed" 
+      placeholder="e.g. 54000" 
+    />
+  </div>
+</div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Street Address <span className="text-red-500">*</span></label>
                 <div className="relative">
