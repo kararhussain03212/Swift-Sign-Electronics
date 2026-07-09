@@ -18,7 +18,8 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
       const filtered = products.filter(product =>
         product.name.toLowerCase().includes(query.toLowerCase()) ||
         product.category.toLowerCase().includes(query.toLowerCase()) ||
-        product.brand.toLowerCase().includes(query.toLowerCase())
+        product.brand.toLowerCase().includes(query.toLowerCase()) ||
+        product.model.toLowerCase().includes(query.toLowerCase())
       ).slice(0, 6);
       setSearchResults(filtered);
       setShowDropdown(true);

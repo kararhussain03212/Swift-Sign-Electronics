@@ -4,7 +4,7 @@ import { FiHeart, FiShoppingCart, FiEye, FiCheck, FiX, FiActivity } from 'react-
 import { useShop } from '../../context/ShopContext';
 import Rating from './Rating';
 
-export default function ProductCard({ product, viewMode = 'grid', onQuickView }) {
+export default function ProductCard({ product, viewMode = 'grid', onQuickView = () => {} }) {
   const {
     addToCart,
     toggleWishlist,
@@ -33,6 +33,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
             loading="lazy"
             className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
           />
+          <Link to={`/product/${product.slug}`} className="absolute inset-0 z-0" aria-label={`View ${product.name}`}></Link>
           {product.discount > 0 && (
             <span className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-none shadow-md z-10">
               -{product.discount}% OFF
@@ -60,6 +61,10 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
               </span>
               <span className="text-slate-500 font-medium">
                 Brand: <strong className="text-slate-700 font-semibold">{product.brand}</strong>
+              </span>
+              <span className="text-slate-500 font-medium">|</span>
+              <span className="text-slate-500 font-medium">
+                Model: <strong className="text-slate-700 font-semibold">{product.model}</strong>
               </span>
               <span className="text-slate-500 font-medium">|</span>
               <span className="text-slate-500 font-medium">
@@ -178,6 +183,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
           loading="lazy"
           className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
         />
+        <Link to={`/product/${product.slug}`} className="absolute inset-0 z-0" aria-label={`View ${product.name}`}></Link>
         
         {/* Discount & Out of Stock Badges */}
         <div className="absolute top-3.5 left-3.5 flex flex-col gap-1.5 z-10">
@@ -236,10 +242,15 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView })
       {/* Body Content */}
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div className="space-y-1">
-          {/* Brand */}
-          <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">
-            {product.brand}
-          </span>
+          {/* Brand & Model */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-500 font-bold uppercase tracking-wider">
+              {product.brand}
+            </span>
+            <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-semibold">
+              {product.model}
+            </span>
+          </div>
 
           {/* Name */}
           <Link to={`/product/${product.slug}`} className="block">
