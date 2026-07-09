@@ -22,12 +22,47 @@ export default function CheckoutForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsProcessing(true);
-    // Simulate API call processing delay
+
+    const formData = new FormData(e.target);
+    const fullName = formData.get('fullName');
+    const phoneNumber = formData.get('phoneNumber');
+    const email = formData.get('email') || 'N/A';
+    const streetAddress = formData.get('streetAddress');
+    const notes = formData.get('notes') || 'None';
+
+    let itemsText = '';
+    cart.forEach(({ product, quantity }) => {
+      const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
+      itemsText += `- ${product.name} (Qty: ${quantity}) - Rs. ${(discountedPrice * quantity).toFixed(2)}\n`;
+    });
+
+    const totalText = total.toFixed(2);
+
+    const message = `*NEW ORDER - SWIFT SIGN ELECTRONICS*\n\n` +
+      `*Customer Details:*\n` +
+      `- *Name:* ${fullName}\n` +
+      `- *Phone:* ${phoneNumber}\n` +
+      `- *Email:* ${email}\n\n` +
+      `*Delivery Address:*\n` +
+      `- *Street:* ${streetAddress}\n` +
+      `- *City:* ${selectedCity}\n` +
+      `- *Province:* ${selectedProvince}\n` +
+      `- *Postal Code:* ${postalCode}\n\n` +
+      `*Order Notes:*\n` +
+      `${notes}\n\n` +
+      `*Items:*\n` +
+      `${itemsText}\n` +
+      `*Shipping:* Rs. ${shipping.toFixed(2)}\n` +
+      `*Total Amount:* Rs. ${totalText}\n`;
+
+    const whatsappUrl = `https://wa.me/923338399480?text=${encodeURIComponent(message)}`;
+
     setTimeout(() => {
+      window.open(whatsappUrl, '_blank');
       setIsProcessing(false);
       setOrderComplete(true);
       clearCart();
-    }, 1500);
+    }, 1000);
   };
 
   const locationData = {
@@ -131,14 +166,14 @@ const [postalCode, setPostalCode] = useState("");
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Full Name <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input required type="text" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="e.g. Ali Raza" />
+                    <input required type="text" name="fullName" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="e.g. Ali Raza" />
                   </div>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Phone Number <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input required type="tel" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="+92 3XX XXXXXXX" />
+                    <input required type="tel" name="phoneNumber" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="+92 3XX XXXXXXX" />
                   </div>
                 </div>
               </div>
@@ -147,7 +182,7 @@ const [postalCode, setPostalCode] = useState("");
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Email Address (Optional)</label>
                 <div className="relative">
                   <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input type="email" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="ali@example.com" />
+                  <input type="email" name="email" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="ali@example.com" />
                 </div>
               </div>
 
@@ -233,13 +268,13 @@ const [postalCode, setPostalCode] = useState("");
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Street Address <span className="text-red-500">*</span></label>
                 <div className="relative">
                   <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input required type="text" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="House/Flat No., Street, Area" />
+                  <input required type="text" name="streetAddress" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="House/Flat No., Street, Area" />
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Order Notes <span className="text-slate-400 normal-case font-medium">(optional)</span></label>
-                <textarea rows="3" className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="Any special instructions for delivery..."></textarea>
+                <textarea rows="3" name="notes" className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="Any special instructions for delivery..."></textarea>
               </div>
             </div>
 

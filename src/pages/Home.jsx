@@ -8,6 +8,7 @@ import 'swiper/css/effect-fade';
 import { products } from '../data/products';
 import { BLOG_ARTICLES } from '../data/blogData';
 import { Link } from 'react-router-dom';
+import { useShop } from '../context/ShopContext';
 import { Clock, Calendar, ArrowRight, Heart, ShoppingCart, Eye, Check, X } from 'lucide-react';
 import { 
   BiGridAlt, 
@@ -448,6 +449,8 @@ function BlogCard({ blog }) {
 }
 
 function ProductCard({ product }) {
+  const { addToCart, toggleWishlist, isInWishlist } = useShop();
+  const inWishlist = isInWishlist(product.id);
   const finalPrice = product.price * (1 - (product.discount || 0) / 100);
   const isOutOfStock = product.stock <= 0;
 
@@ -487,10 +490,13 @@ function ProductCard({ product }) {
         <div className="absolute bottom-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-y-3 group-hover:translate-y-0 transition-all duration-300 z-10">
           {/* Wishlist */}
           <button
-            className="p-2.5 bg-white hover:bg-red-500 hover:text-white rounded-none shadow-lg border border-slate-200 transition-all cursor-pointer text-slate-600"
+            onClick={() => toggleWishlist(product)}
+            className={`p-2.5 bg-white hover:bg-red-500 hover:text-white rounded-none shadow-lg border border-slate-200 transition-all cursor-pointer ${
+              inWishlist ? 'text-red-500 bg-red-50' : 'text-slate-600'
+            }`}
             title="Wishlist"
           >
-            <Heart className="w-4 h-4" />
+            <Heart className={`w-4 h-4 ${inWishlist ? 'fill-current' : ''}`} />
           </button>
 
           {/* Quick View */}
@@ -563,6 +569,7 @@ function ProductCard({ product }) {
           {/* Add to Cart button */}
           <button
             disabled={isOutOfStock}
+            onClick={() => addToCart(product)}
             className={`p-2.5 rounded-none shadow-md cursor-pointer transition-all flex items-center justify-center ${
               isOutOfStock
                 ? 'bg-slate-200 text-slate-400 cursor-not-allowed shadow-none'
