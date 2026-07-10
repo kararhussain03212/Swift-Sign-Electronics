@@ -10,6 +10,7 @@ export default function CheckoutForm() {
   const navigate = useNavigate();
   const { cart, getCartTotal, clearCart } = useShop();
   
+  
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
   const step = 2; // Fixed at step 2 (Delivery) since Payment is removed
@@ -21,13 +22,59 @@ export default function CheckoutForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsProcessing(true);
-    // Simulate API call processing delay
+
+    const formData = new FormData(e.target);
+    const fullName = formData.get('fullName');
+    const phoneNumber = formData.get('phoneNumber');
+    const email = formData.get('email') || 'N/A';
+    const streetAddress = formData.get('streetAddress');
+    const notes = formData.get('notes') || 'None';
+
+    let itemsText = '';
+    cart.forEach(({ product, quantity }) => {
+      const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
+      itemsText += `- ${product.name} (Qty: ${quantity}) - Rs. ${(discountedPrice * quantity).toFixed(2)}\n`;
+    });
+
+    const totalText = total.toFixed(2);
+
+    const message = `*NEW ORDER - SWIFT SIGN ELECTRONICS*\n\n` +
+      `*Customer Details:*\n` +
+      `- *Name:* ${fullName}\n` +
+      `- *Phone:* ${phoneNumber}\n` +
+      `- *Email:* ${email}\n\n` +
+      `*Delivery Address:*\n` +
+      `- *Street:* ${streetAddress}\n` +
+      `- *City:* ${selectedCity}\n` +
+      `- *Province:* ${selectedProvince}\n` +
+      `- *Postal Code:* ${postalCode}\n\n` +
+      `*Order Notes:*\n` +
+      `${notes}\n\n` +
+      `*Items:*\n` +
+      `${itemsText}\n` +
+      `*Shipping:* Rs. ${shipping.toFixed(2)}\n` +
+      `*Total Amount:* Rs. ${totalText}\n`;
+
+    const whatsappUrl = `https://wa.me/923338399480?text=${encodeURIComponent(message)}`;
+
     setTimeout(() => {
+      window.open(whatsappUrl, '_blank');
       setIsProcessing(false);
       setOrderComplete(true);
       clearCart();
-    }, 1500);
+    }, 1000);
   };
+
+  const locationData = {
+  Punjab: { Lahore: "54000", Rawalpindi: "46000", Faisalabad: "38000" },
+  Sindh: { Karachi: "74200", Hyderabad: "71000" },
+  KPK: { Peshawar: "25000" },
+  Balochistan: { Quetta: "87300" }
+};
+const [selectedProvince, setSelectedProvince] = useState("");
+const [selectedCity, setSelectedCity] = useState("");
+const [postalCode, setPostalCode] = useState("");
+
 
   if (orderComplete) {
     return (
@@ -119,14 +166,14 @@ export default function CheckoutForm() {
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Full Name <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input required type="text" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="e.g. Ali Raza" />
+                    <input required type="text" name="fullName" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="e.g. Ali Raza" />
                   </div>
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Phone Number <span className="text-red-500">*</span></label>
                   <div className="relative">
                     <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                    <input required type="tel" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="+92 3XX XXXXXXX" />
+                    <input required type="tel" name="phoneNumber" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="+92 3XX XXXXXXX" />
                   </div>
                 </div>
               </div>
@@ -135,11 +182,11 @@ export default function CheckoutForm() {
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Email Address (Optional)</label>
                 <div className="relative">
                   <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input type="email" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="ali@example.com" />
+                  <input type="email" name="email" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="ali@example.com" />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/*<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Province <span className="text-red-500">*</span></label>
                   <select required className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-500">
@@ -156,7 +203,7 @@ export default function CheckoutForm() {
                     <option value="">Select city first</option>
                     <option value="Lahore">Lahore</option>
                     <option value="Karachi">Karachi</option>
-                    <option value="Islamabad">Islamabad</option>
+                    <option value="Rawalpindi">Rawalpindi</option>
                   </select>
                 </div>
                 <div className="space-y-1.5">
@@ -164,18 +211,70 @@ export default function CheckoutForm() {
                   <input type="text" className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="e.g. 54000" />
                 </div>
               </div>
+*/}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+  {/* Province */}
+  <div className="space-y-1.5">
+    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Province <span className="text-red-500">*</span></label>
+    <select 
+      required 
+      value={selectedProvince}
+      onChange={(e) => {
+        setSelectedProvince(e.target.value);
+        setSelectedCity(""); // Reset city
+        setPostalCode("");   // Reset postal code
+      }}
+      className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 outline-none text-slate-800"
+    >
+      <option value="">Select Province</option>
+      {Object.keys(locationData).map(p => <option key={p} value={p}>{p}</option>)}
+    </select>
+  </div>
 
+  {/* City */}
+  <div className="space-y-1.5">
+    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">City <span className="text-red-500">*</span></label>
+    <select 
+      required 
+      value={selectedCity}
+      disabled={!selectedProvince}
+      onChange={(e) => {
+        const city = e.target.value;
+        setSelectedCity(city);
+        setPostalCode(locationData[selectedProvince][city]); // Auto-fill code
+      }}
+      className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 outline-none text-slate-800"
+    >
+      <option value="">{selectedProvince ? "Select City" : "Select province first"}</option>
+      {selectedProvince && Object.keys(locationData[selectedProvince]).map(c => (
+        <option key={c} value={c}>{c}</option>
+      ))}
+    </select>
+  </div>
+
+  {/* Postal Code */}
+  <div className="space-y-1.5">
+    <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Postal Code</label>
+    <input 
+      type="text" 
+      value={postalCode}
+      readOnly // User doesn't need to type it
+      className="w-full px-4 py-2.5 text-sm bg-slate-100 border border-slate-200 rounded-none text-slate-800 cursor-not-allowed" 
+      placeholder="e.g. 54000" 
+    />
+  </div>
+</div>
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Street Address <span className="text-red-500">*</span></label>
                 <div className="relative">
                   <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input required type="text" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="House/Flat No., Street, Area" />
+                  <input required type="text" name="streetAddress" className="w-full pl-10 pr-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="House/Flat No., Street, Area" />
                 </div>
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Order Notes <span className="text-slate-400 normal-case font-medium">(optional)</span></label>
-                <textarea rows="3" className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="Any special instructions for delivery..."></textarea>
+                <textarea rows="3" name="notes" className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400" placeholder="Any special instructions for delivery..."></textarea>
               </div>
             </div>
 

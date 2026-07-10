@@ -8,6 +8,7 @@ import 'swiper/css/effect-fade';
 import { products } from '../data/products';
 import { BLOG_ARTICLES } from '../data/blogData';
 import { Link } from 'react-router-dom';
+import { useShop } from '../context/ShopContext';
 import { Clock, Calendar, ArrowRight, Heart, ShoppingCart, Eye, Check, X } from 'lucide-react';
 import ProductCard from '../components/Products/ProductCard';
 import { 
