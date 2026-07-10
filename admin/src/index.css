@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+:root {
+  font-family: "Source Sans 3", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  /* Arion Organic — dark panel, vibrant brand palette */
+  --admin-bg:             #0a0f0b;
+  --admin-bg-deep:        #060908;
+  --admin-sidebar:        #0d1410;
+  --admin-sidebar-hover:  #182419;
+  --admin-card:           #111a13;
+  --admin-card-elevated:  #182419;
+  --admin-ink:            #ffffff;
+  --admin-muted:          rgba(255,255,255,0.52);
+  /* Primary = vivid leaf green (readable on dark bg) */
+  --admin-primary:        #5cb96a;
+  --admin-primary-strong: #48a356;
+  --admin-primary-light:  rgba(92,185,106,0.14);
+  /* Accent = warm vibrant gold */
+  --admin-amber:          #e0b85c;
+  --admin-accent:         #e0b85c;
+  --admin-accent-strong:  #c99e40;
+  /* Borders */
+  --admin-border:         rgba(255,255,255,0.08);
+  --admin-border-amber:   rgba(224,184,92,0.38);
+  /* Brand green (dark, for gradients/backgrounds) */
+  --brand-green:          #496348;
+  --brand-green-deep:     #2e4030;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100svh;
+}
+
+body {
+  margin: 0;
+  background: var(--admin-bg-deep);
+  color: var(--admin-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.admin-theme .p-inputtext,
+.admin-theme .p-dropdown,
+.admin-theme .p-component {
+  font-size: 0.95rem;
+}
+
+.admin-theme .p-inputtext,
+.admin-theme .p-dropdown {
+  width: 100%;
+  border-color: var(--admin-border);
+  background: var(--admin-card);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-dropdown .p-dropdown-label,
+.admin-theme .p-dropdown .p-dropdown-trigger {
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-button {
+  border-radius: 0.65rem;
+}
+
+.admin-theme .p-inputtext:enabled:focus,
+.admin-theme .p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 1px var(--admin-primary);
+}
+
+.admin-quill .ql-toolbar.ql-snow {
+  border-color: var(--admin-border);
+  background: var(--admin-card-elevated);
+  border-radius: 0.6rem 0.6rem 0 0;
+}
+
+.admin-quill .ql-container.ql-snow {
+  border-color: var(--admin-border);
+  border-radius: 0 0 0.6rem 0.6rem;
+  min-height: 240px;
+}
+
+.admin-quill .ql-editor {
+  color: var(--admin-ink);
+  min-height: 220px;
+}
+
+.admin-quill .ql-editor.ql-blank::before {
+  color: rgba(255, 255, 255, 0.45);
+  font-style: normal;
+}
+
+.admin-quill .ql-snow .ql-stroke {
+  stroke: rgba(255, 255, 255, 0.78);
+}
+
+.admin-quill .ql-snow .ql-fill {
+  fill: rgba(255, 255, 255, 0.78);
+}
+
+.admin-quill .ql-snow .ql-picker {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.admin-calendar-panel.p-datepicker {
+  font-size: 0.82rem;
+  width: 18rem;
+}
+
+.admin-calendar-panel .p-datepicker-header {
+  padding: 0.45rem 0.6rem;
+}
+
+.admin-calendar-panel .p-datepicker-calendar th,
+.admin-calendar-panel .p-datepicker-calendar td {
+  padding: 0.2rem;
+}
+
+.admin-calendar-panel .p-datepicker-calendar td > span {
+  width: 1.75rem;
+  height: 1.75rem;
+}
