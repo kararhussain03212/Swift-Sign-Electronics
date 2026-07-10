@@ -5,7 +5,6 @@ import {
   FiFileText, FiPlus, FiMinus, FiCheck, FiChevronDown, FiAlertCircle,
   FiMail, FiPhone, FiInfo, FiActivity
 } from 'react-icons/fi';
-import { products } from '../data/products';
 import { useShop } from '../context/ShopContext';
 import ProductGallery from '../components/Products/ProductGallery';
 import ProductTabs from '../components/Products/ProductTabs';
@@ -16,6 +15,7 @@ export default function ProductDetails({ onQuickView }) {
   const { slug } = useParams();
   const navigate = useNavigate();
   const {
+    products,
     addToCart,
     toggleWishlist,
     isInWishlist,
@@ -35,7 +35,7 @@ export default function ProductDetails({ onQuickView }) {
   // 1. Fetch Product
   const product = useMemo(() => {
     return products.find((p) => p.slug === slug);
-  }, [slug]);
+  }, [products, slug]);
 
   // Redirect if product not found
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function ProductDetails({ onQuickView }) {
     // Reset page configurations
     setQuantity(1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [product]);
+  }, [product, products]);
 
   if (!product) return null;
 

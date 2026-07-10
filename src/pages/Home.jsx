@@ -5,8 +5,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
-import { products } from '../data/products';
-import { BLOG_ARTICLES } from '../data/blogData';
 import { Link } from 'react-router-dom';
 import { useShop } from '../context/ShopContext';
 import { Clock, Calendar, ArrowRight, Heart, ShoppingCart } from 'lucide-react';
@@ -237,6 +235,7 @@ function FeaturedCategoriesSection() {
 }
 
 function CategorySliderSection({ title, subtitle, category, bannerBgImage }) {
+  const { products } = useShop();
   const categoryProducts = products.filter(p => p.category === category).slice(0, 8);
   const categoryBanner = categoryProducts[0];
 
@@ -300,6 +299,7 @@ function CategorySliderSection({ title, subtitle, category, bannerBgImage }) {
 }
 
 function DiscoverSection() {
+  const { products } = useShop();
   return (
     <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-gray-50">
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 mb-12">
@@ -339,7 +339,8 @@ function DiscoverSection() {
 }
 
 function BlogSection() {
-  const recentBlogs = BLOG_ARTICLES.slice(0, 3);
+  const { blogs } = useShop();
+  const recentBlogs = blogs.slice(0, 3);
 
   return (
     <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-white">

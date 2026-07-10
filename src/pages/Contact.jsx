@@ -5,6 +5,7 @@ import {
  FiInstagram, FiYoutube, FiCheckCircle
 } from 'react-icons/fi';
 import { FaTiktok } from 'react-icons/fa';
+import { submitContact } from '../api/shopApi';
 
 export default function Contact() {
  // Contact Form State
@@ -30,12 +31,12 @@ export default function Contact() {
  }));
  };
 
- const handleSubmit = (e) => {
+ const handleSubmit = async (e) => {
  e.preventDefault();
  setFormStatus({ submitting: true, success: false, error: null });
 
- // Simulate API request
- setTimeout(() => {
+ try {
+ await submitContact(formData);
  setFormStatus({
  submitting: false,
  success: true,
@@ -49,7 +50,13 @@ export default function Contact() {
  subject: '',
  message: ''
  });
- }, 1200);
+ } catch (err) {
+ setFormStatus({
+ submitting: false,
+ success: false,
+ error: err.message || 'Failed to send message. Please try again.'
+ });
+ }
  };
 
  return (

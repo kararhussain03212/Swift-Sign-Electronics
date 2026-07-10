@@ -8,11 +8,12 @@ import {
   AlertCircle,
   ArrowRight
 } from "lucide-react";
-import { BLOG_ARTICLES } from "../data/blogData";
+import { useShop } from "../context/ShopContext";
 import "./Blog.css";
 
 // Main Blog Details Component
 export default function BlogDetails() {
+  const { blogs: BLOG_ARTICLES } = useShop();
   const { slug } = useParams();
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);

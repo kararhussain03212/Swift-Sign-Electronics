@@ -1,20 +1,22 @@
 import React, { useState, useMemo } from 'react';
 import { FiGrid, FiList, FiChevronDown, FiAlertCircle } from 'react-icons/fi';
-import { products } from '../data/products';
+import { useShop } from '../context/ShopContext';
 import ProductCard from '../components/Products/ProductCard';
 import SearchBar from '../components/Products/SearchBar';
 import Pagination from '../components/Products/Pagination';
 import QuickViewModal from '../components/Products/QuickViewModal';
 
-const maxPrice = (() => {
-  let highestPrice = 0;
-  products.forEach(p => {
-    if (p.price > highestPrice) highestPrice = p.price;
-  });
-  return Math.ceil(highestPrice);
-})();
-
 export default function Products() {
+  const { products } = useShop();
+
+  const maxPrice = useMemo(() => {
+    let highestPrice = 0;
+    products.forEach(p => {
+      if (p.price > highestPrice) highestPrice = p.price;
+    });
+    return Math.ceil(highestPrice) || 1000;
+  }, [products]);
+
   const [filters, setFilters] = useState({
     categories: [],
     brands: [],

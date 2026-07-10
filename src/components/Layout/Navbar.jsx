@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, ShoppingCart, Menu, X, Cpu } from 'lucide-react';
-import { products } from '../../data/products';
+import { useShop } from '../../context/ShopContext';
 
 export default function Navbar({ activeTab, onTabChange, cartCount }) {
+  const { products } = useShop();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);

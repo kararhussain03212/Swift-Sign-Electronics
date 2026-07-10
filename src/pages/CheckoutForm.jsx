@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useShop } from '../context/ShopContext';
-import { 
-  FiCheckCircle, FiShield, FiUser, FiPhone, FiMail, 
+import { submitOrder } from '../api/shopApi';
+import {
+  FiCheckCircle, FiShield, FiUser, FiPhone, FiMail,
   FiMapPin, FiTruck, FiChevronRight, FiTag, FiCheck
 } from 'react-icons/fi';
 
@@ -56,6 +57,24 @@ export default function CheckoutForm() {
       `*Total Amount:* Rs. ${totalText}\n`;
 
     const whatsappUrl = `https://wa.me/923338399480?text=${encodeURIComponent(message)}`;
+
+    // Persist the order in the backend (admin panel > Orders); WhatsApp remains
+    // the customer-facing confirmation, so a failed API call doesn't block it.
+    submitOrder({
+      customer_name: fullName,
+      customer_email: email === 'N/A' ? '' : email,
+      customer_phone: phoneNumber,
+      address: streetAddress,
+      city: selectedCity,
+      country: 'Pakistan',
+      notes: notes === 'None' ? '' : notes,
+      items: cart.map(({ product, quantity }) => ({
+        product_id: product.id,
+        name: product.name,
+        price: product.price * (1 - (product.discount || 0) / 100),
+        quantity,
+      })),
+    }).catch(() => {});
 
     setTimeout(() => {
       window.open(whatsappUrl, '_blank');

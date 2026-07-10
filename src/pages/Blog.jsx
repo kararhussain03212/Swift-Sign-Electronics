@@ -9,7 +9,8 @@ import {
   ArrowRight,
   Inbox
 } from "lucide-react";
-import { BLOG_ARTICLES, BLOG_CATEGORIES } from "../data/blogData";
+import { BLOG_CATEGORIES } from "../data/blogData";
+import { useShop } from "../context/ShopContext";
 import "./Blog.css";
 
 // Single Blog Card Component (similar to Lu in the original site)
@@ -77,6 +78,7 @@ const BlogCard = ({ blog }) => {
 };
 
 export default function Blog() {
+  const { blogs: BLOG_ARTICLES } = useShop();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [visibleCount, setVisibleCount] = useState(6);

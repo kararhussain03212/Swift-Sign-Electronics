@@ -1,8 +1,9 @@
 import React from 'react';
-import { products } from '../../data/products';
+import { useShop } from '../../context/ShopContext';
 import ProductCard from './ProductCard';
 
 export default function RelatedProducts({ relatedIds = [], currentProductId, onQuickView }) {
+  const { products } = useShop();
   // Find related products by ID, excluding the current product
   const relatedList = products.filter(
     (prod) => relatedIds.includes(prod.id) && prod.id !== currentProductId

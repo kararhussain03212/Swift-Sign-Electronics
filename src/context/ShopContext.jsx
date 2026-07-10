@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { products as staticProducts } from '../data/products';
+import { BLOG_ARTICLES as staticBlogs } from '../data/blogData';
+import { fetchProducts, fetchBlogs } from '../api/shopApi';
 
 const ShopContext = createContext();
 
@@ -11,6 +14,19 @@ export const useShop = () => {
 };
 
 export const ShopProvider = ({ children }) => {
+  // Catalog data — served from the API, static files as instant fallback
+  const [products, setProducts] = useState(staticProducts);
+  const [blogs, setBlogs] = useState(staticBlogs);
+
+  useEffect(() => {
+    fetchProducts()
+      .then((list) => { if (list.length) setProducts(list); })
+      .catch(() => {});
+    fetchBlogs()
+      .then((list) => { if (list.length) setBlogs(list); })
+      .catch(() => {});
+  }, []);
+
   // Cart State
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('electro_cart');
@@ -146,6 +162,8 @@ export const ShopProvider = ({ children }) => {
   return (
     <ShopContext.Provider
       value={{
+        products,
+        blogs,
         cart,
         wishlist,
         compareList,
