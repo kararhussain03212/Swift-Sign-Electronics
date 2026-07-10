@@ -28,19 +28,19 @@ export default function CartDrawer({ isOpen, onClose }) {
 
           {/* Drawer Panel */}
           <div
-            className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white dark:bg-slate-900 shadow-2xl flex flex-col h-full animate-slide-in-right"
+            className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl flex flex-col h-full animate-slide-in-right"
           >
             {/* Header */}
-            <div className="p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+            <div className="p-5 border-b border-slate-200 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <FiShoppingBag className="text-blue-500 w-5 h-5" />
-                <span className="font-bold text-slate-800 dark:text-slate-100">
+                <span className="font-bold text-slate-800">
                   Shopping Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})
                 </span>
               </div>
               <button
                 onClick={onClose}
-                className="p-1 rounded-none text-slate-400 hover:text-slate-650 dark:hover:text-slate-200"
+                className="p-1 rounded-none text-slate-400 hover:text-slate-650"
               >
                 <FiX className="w-5 h-5" />
               </button>
@@ -50,12 +50,12 @@ export default function CartDrawer({ isOpen, onClose }) {
             <div className="flex-1 overflow-y-auto p-5 space-y-4">
               {cart.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                  <div className="p-6 bg-slate-50 dark:bg-slate-950 text-slate-400 dark:text-slate-650 rounded-none">
+                  <div className="p-6 bg-slate-50 text-slate-400 rounded-none">
                     <FiShoppingBag className="w-12 h-12" />
                   </div>
                   <div className="space-y-1">
-                    <h3 className="font-bold text-slate-700 dark:text-slate-350">Your cart is empty</h3>
-                    <p className="text-slate-400 dark:text-slate-500 text-sm">
+                    <h3 className="font-bold text-slate-700">Your cart is empty</h3>
+                    <p className="text-slate-400 text-sm">
                       Browse our tools, instruments, and kits to add items.
                     </p>
                   </div>
@@ -66,39 +66,39 @@ export default function CartDrawer({ isOpen, onClose }) {
                   return (
                     <div
                       key={product.id}
-                      className="flex gap-4 p-3 bg-slate-100/40 dark:bg-slate-950/20 border border-slate-200/50 dark:border-slate-800/40 rounded-none"
+                      className="flex gap-4 p-3 bg-slate-100/40 border border-slate-200/50 rounded-none"
                     >
                       {/* Image */}
-                      <div className="h-20 w-20 rounded-none overflow-hidden bg-slate-50 dark:bg-slate-950 flex-shrink-0">
+                      <div className="h-20 w-20 rounded-none overflow-hidden bg-slate-50 flex-shrink-0">
                         <img src={product.thumbnail} alt={product.name} className="h-full w-full object-cover" />
                       </div>
 
                       {/* Info & Quantity controls */}
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
-                          <h4 className="font-bold text-slate-800 dark:text-slate-100 text-sm line-clamp-1">
+                          <h4 className="font-bold text-slate-800 text-sm line-clamp-1">
                             {product.name}
                           </h4>
-                          <span className="text-xs text-slate-400 dark:text-slate-500 font-medium">
+                          <span className="text-xs text-slate-400 font-medium">
                             {product.brand}
                           </span>
                         </div>
 
                         <div className="flex items-center justify-between">
                           {/* Qty controls */}
-                          <div className="flex items-center bg-slate-100 dark:bg-slate-850 rounded-none p-0.5">
+                          <div className="flex items-center bg-slate-100 rounded-none p-0.5">
                             <button
                               onClick={() => updateCartQuantity(product.id, quantity - 1)}
-                              className="p-1 text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer"
+                              className="p-1 text-slate-500 hover:text-slate-700 cursor-pointer"
                             >
                               <FiMinus className="w-3.5 h-3.5" />
                             </button>
-                            <span className="px-2.5 text-xs font-bold text-slate-700 dark:text-slate-300">
+                            <span className="px-2.5 text-xs font-bold text-slate-700">
                               {quantity}
                             </span>
                             <button
                               onClick={() => updateCartQuantity(product.id, quantity + 1)}
-                              className="p-1 text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer"
+                              className="p-1 text-slate-500 hover:text-slate-700 cursor-pointer"
                             >
                               <FiPlus className="w-3.5 h-3.5" />
                             </button>
@@ -106,7 +106,7 @@ export default function CartDrawer({ isOpen, onClose }) {
 
                           {/* Price details */}
                           <div className="flex items-center gap-2">
-                            <span className="font-extrabold text-slate-800 dark:text-slate-100 text-sm">
+                            <span className="font-extrabold text-slate-800 text-sm">
                               ${(discountedPrice * quantity).toFixed(2)}
                             </span>
                             <button
@@ -126,15 +126,15 @@ export default function CartDrawer({ isOpen, onClose }) {
 
             {/* Footer summary */}
             {cart.length > 0 && (
-              <div className="p-5 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 space-y-4">
+              <div className="p-5 border-t border-slate-200 bg-slate-50 space-y-4">
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between text-slate-500 dark:text-slate-400">
+                  <div className="flex justify-between text-slate-500">
                     <span>Subtotal</span>
-                    <span className="font-semibold text-slate-800 dark:text-slate-200">${subtotal.toFixed(2)}</span>
+                    <span className="font-semibold text-slate-800">${subtotal.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-slate-500 dark:text-slate-400">
+                  <div className="flex justify-between text-slate-500">
                     <span>Shipping</span>
-                    <span className="font-semibold text-slate-800 dark:text-slate-200">
+                    <span className="font-semibold text-slate-800">
                       {shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}
                     </span>
                   </div>
@@ -143,7 +143,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                       Add ${(150 - subtotal).toFixed(2)} more for FREE shipping!
                     </p>
                   )}
-                  <div className="border-t border-slate-200 dark:border-slate-800 pt-2.5 flex justify-between text-base font-black text-slate-850 dark:text-slate-100">
+                  <div className="border-t border-slate-200 pt-2.5 flex justify-between text-base font-black text-slate-850">
                     <span>Order Total</span>
                     <span>${total.toFixed(2)}</span>
                   </div>
@@ -152,7 +152,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                 <div className="flex gap-2">
                   <button
                     onClick={clearCart}
-                    className="px-4 py-3 border border-slate-200 dark:border-slate-800 text-slate-650 dark:text-slate-350 rounded-none hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-semibold transition-all cursor-pointer"
+                    className="px-4 py-3 border border-slate-200 text-slate-650 rounded-none hover:bg-slate-100 text-sm font-semibold transition-all cursor-pointer"
                   >
                     Clear All
                   </button>

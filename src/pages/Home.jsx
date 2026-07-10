@@ -10,6 +10,7 @@ import { BLOG_ARTICLES } from '../data/blogData';
 import { Link } from 'react-router-dom';
 import { useShop } from '../context/ShopContext';
 import { Clock, Calendar, ArrowRight, Heart, ShoppingCart, Eye, Check, X } from 'lucide-react';
+import CartDrawer from '../components/Cart/CartDrawer';
 import ProductCard from '../components/Products/ProductCard';
 import { 
   BiGridAlt, 
@@ -73,6 +74,9 @@ const HERO_SLIDES = [
 ];
 
 export default function Home({ onTabChange }) {
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { getCartCount } = useShop();
+
   return (
     <div className="w-full bg-gray-50 min-h-screen">
       {/* 1. HERO SLIDER SECTION */}
@@ -110,6 +114,38 @@ export default function Home({ onTabChange }) {
 
       {/* 8. BLOG SECTION */}
       <BlogSection />
+
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-8 right-8 flex items-center bg-white rounded-lg shadow-lg z-50">
+        {/* Wishlist Button */}
+        <Link
+          to="/wishlist"
+          className="flex items-center justify-center w-16 h-16 text-red-500 hover:bg-gray-50 rounded-l-lg transition-all duration-200"
+          title="View Wishlist"
+        >
+          <Heart className="w-8 h-8 fill-current" />
+        </Link>
+
+        {/* Divider */}
+        <div className="w-px h-12 bg-gray-200"></div>
+
+        {/* Cart Button */}
+        <button
+          onClick={() => setIsCartOpen(true)}
+          className="relative flex items-center justify-center w-16 h-16 text-blue-600 hover:bg-gray-50 rounded-r-lg transition-all duration-200"
+          title="Open Cart"
+        >
+          <ShoppingCart className="w-8 h-8" />
+          {getCartCount() > 0 && (
+            <span className="absolute -top-2 -right-2 flex items-center justify-center w-5 h-5 bg-orange-500 text-white text-xs font-bold rounded-full">
+              {getCartCount()}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {/* Cart Drawer */}
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </div>
   );
 }
