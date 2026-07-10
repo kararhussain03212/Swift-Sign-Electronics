@@ -45,7 +45,7 @@ final class Database
 
         $host = Env::get('DB_HOST', '127.0.0.1');
         $port = Env::get('DB_PORT', '3306');
-        $name = Env::get('DB_NAME', 'organic_food');
+        $name = Env::get('DB_NAME', 'swift_sign_electronic');
         $user = Env::get('DB_USER', 'root');
         $pass = Env::get('DB_PASS', '');
 
@@ -56,7 +56,7 @@ final class Database
                 // Keep production creds in .env, but allow local dev with XAMPP defaults.
                 $localHost = Env::get('DB_LOCAL_HOST', '127.0.0.1');
                 $localPort = Env::get('DB_LOCAL_PORT', '3306');
-                $localName = Env::get('DB_LOCAL_NAME', 'organic_food');
+                $localName = Env::get('DB_LOCAL_NAME', 'swift_sign_electronic');
                 $localUser = Env::get('DB_LOCAL_USER', 'root');
                 $localPass = Env::get('DB_LOCAL_PASS', '');
 

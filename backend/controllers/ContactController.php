@@ -183,15 +183,15 @@ final class ContactController extends BaseController
             $mail->clearAllRecipients();
             $mail->clearReplyTos();
             $mail->addAddress($email, $name);
-            $mail->Subject  = 'We received your message - Swift Sign Organic Foods';
+            $mail->Subject  = 'We received your message - Swift Sign Electronics';
             $mail->Body     = "
                 <h2>Thank you for contacting us</h2>
                 <p>Hi {$safeName},</p>
                 <p>We received your message and our team will get back to you soon.</p>
                 <p><strong>Your subject:</strong> {$safeSubject}</p>
-                <p>Best regards,<br>Swift Sign Organic Foods</p>
+                <p>Best regards,<br>Swift Sign Electronics</p>
             ";
-            $mail->AltBody = "Hi {$name},\n\nWe received your message and our team will get back to you soon.\nSubject: {$subject}\n\nBest regards,\nSwift Sign Organic Foods";
+            $mail->AltBody = "Hi {$name},\n\nWe received your message and our team will get back to you soon.\nSubject: {$subject}\n\nBest regards,\nSwift Sign Electronics";
             try { $mail->send(); } catch (\Throwable $e) { /* auto-reply failure is non-fatal */ }
             $mail->smtpClose();
         } catch (\Throwable $e) {

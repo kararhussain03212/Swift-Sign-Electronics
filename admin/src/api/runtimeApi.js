@@ -8,7 +8,7 @@ function getOrigin() {
 export function getBackendRoot() {
   const envApiBase = trimSlash(import.meta.env.VITE_API_URL);
   if (envApiBase) return envApiBase.replace(/\/api$/i, "");
-  if (import.meta.env.DEV) return "http://localhost/Organic%20Food/backend";
+  if (import.meta.env.DEV) return "http://localhost/Electronics/backend";
 
   const origin = getOrigin();
   if (!origin) return "/backend";
