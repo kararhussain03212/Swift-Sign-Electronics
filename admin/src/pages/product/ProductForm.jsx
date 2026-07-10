@@ -3,11 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import ImageUpload from "../../components/ImageUpload";
 import RichTextEditor from "../../components/RichTextEditor";
 import { createProduct, getProduct, updateProduct } from "../../api/productApi";
+import { getCategories } from "../../api/categoryApi";
 import { uploadImage } from "../../api/uploadApi";
 import { getBackendRoot } from "../../api/runtimeApi";
 
-const CATEGORIES = ["ghee", "honey", "herbal"];
-const BADGE_OPTIONS = ["Best Seller", "Organic", "Pure", "Limited Stock", "Premium Quality", "Gold Grade", "Trial Size", "New"];
+const FALLBACK_CATEGORIES = ["Tools", "Instruments", "Projects", "Components"];
 
 function parseJson(value, fallback) {
   if (Array.isArray(value)) return value;
@@ -23,23 +23,19 @@ function slugify(str) {
 }
 
 const getInitialForm = () => ({
-  name: "", slug: "", subtitle: "", category: "ghee", size: "",
-  price: "", original_price: "", discount: "", rating: "5", reviews: "0",
-  stock: true, featured: false,
-  variants: [""],
-  variant_prices: {},
-  variant_original_prices: {},
+  name: "", slug: "", category: "Tools", brand: "", model: "",
+  price: "", discount: "", rating: "5", reviews: "0", stock: "0",
   images: [],
   imageFiles: [],
-  imageAltTexts: [],
-  badges: [],
-  short_desc: "",
   description: "",
-  benefits: [""],
-  ingredients: "",
-  how_to_use: [{ step: "01", text: "" }],
-  faqs: [{ q: "", a: "" }],
-  tags: "",
+  overview: "",
+  purpose: "",
+  features: [""],
+  applications: [""],
+  advantages: [""],
+  specifications: [{ key: "", value: "" }],
+  shipping_list: [{ name: "", count: 1 }],
+  featured: false,
   sort_order: 0,
   is_active: true,
 });
@@ -49,10 +45,11 @@ export default function ProductForm() {
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
 
-  const [loading, setLoading]   = useState(isEditMode);
-  const [saving, setSaving]     = useState(false);
-  const [error, setError]       = useState("");
-  const [form, setForm]         = useState(getInitialForm);
+  const [loading, setLoading]     = useState(isEditMode);
+  const [saving, setSaving]       = useState(false);
+  const [error, setError]         = useState("");
+  const [form, setForm]           = useState(getInitialForm);
+  const [categories, setCategories] = useState(FALLBACK_CATEGORIES);
 
   const apiRoot = useMemo(() => getBackendRoot(), []);
 
@@ -67,85 +64,60 @@ export default function ProductForm() {
   const setField = (key, value) => setForm((p) => ({ ...p, [key]: value }));
 
   useEffect(() => {
+    getCategories()
+      .then((res) => {
+        const list = Array.isArray(res.data?.data) ? res.data.data : [];
+        if (list.length) setCategories(list.map((c) => c.name));
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
     if (!isEditMode) { setForm(getInitialForm()); setLoading(false); return; }
     (async () => {
       try {
         const res = await getProduct(id);
         const item = res?.data?.data ?? res?.data ?? {};
-        const variants    = parseJson(item.variants,    []);
-        const vPrices     = parseJson(item.variant_prices, {});
-        const vOrigPrices = parseJson(item.variant_original_prices, {});
-        const images      = parseJson(item.images, []);
-        const badges      = parseJson(item.badges, []);
-        const benefits    = parseJson(item.benefits, [""]);
-        const howToUse    = parseJson(item.how_to_use, [{ step: "01", text: "" }]);
-        const faqs        = parseJson(item.faqs, [{ q: "", a: "" }]);
-        const tags        = parseJson(item.tags, []);
+        const images       = parseJson(item.images, []);
+        const introduction = parseJson(item.introduction, {});
+        const specs        = parseJson(item.specifications, {});
+        const shipping     = parseJson(item.shipping_list, []);
 
-        const imageAltTexts = Array.isArray(images) ? images.map(img => {
-          if (typeof img === 'object' && img?.alt_text) return img.alt_text;
-          return '';
-        }) : [];
-        const imageUrls = Array.isArray(images) ? images.map(img => {
-          if (typeof img === 'object' && img?.url) return toImageUrl(img.url);
-          return toImageUrl(img);
-        }) : [];
+        const specRows = Object.entries(specs).map(([key, value]) => ({ key, value: String(value) }));
 
         setForm({
-          name:                   item.name         || "",
-          slug:                   item.slug         || "",
-          subtitle:               item.subtitle     || "",
-          category:               item.category     || "ghee",
-          size:                   item.size         || "",
-          price:                  item.price        != null ? String(item.price) : "",
-          original_price:         item.original_price != null ? String(item.original_price) : "",
-          discount:               item.discount     != null ? String(item.discount) : "",
-          rating:                 item.rating       != null ? String(item.rating) : "5",
-          reviews:                item.reviews      != null ? String(item.reviews) : "0",
-          stock:                  item.stock === 1  || item.stock === true,
-          featured:               item.featured === 1 || item.featured === true,
-          variants:               variants.length   ? variants : [""],
-          variant_prices:         vPrices,
-          variant_original_prices: vOrigPrices,
-          images:                 imageUrls,
-          imageAltTexts:          imageAltTexts,
-          imageFiles:             [],
-          badges,
-          short_desc:             item.short_desc   || "",
-          description:            item.description  || "",
-          benefits:               benefits.length   ? benefits : [""],
-          ingredients:            item.ingredients  || "",
-          how_to_use:             howToUse.length   ? howToUse : [{ step: "01", text: "" }],
-          faqs:                   faqs.length       ? faqs     : [{ q: "", a: "" }],
-          tags:                   Array.isArray(tags) ? tags.join(", ") : tags,
-          sort_order:             Number(item.sort_order || 0),
-          is_active:              item.is_active === 1 || item.is_active !== false,
+          name:         item.name  || "",
+          slug:         item.slug  || "",
+          category:     item.category || "Tools",
+          brand:        item.brand || "",
+          model:        item.model || "",
+          price:        item.price    != null ? String(item.price) : "",
+          discount:     item.discount != null ? String(item.discount) : "",
+          rating:       item.rating   != null ? String(item.rating) : "5",
+          reviews:      item.reviews  != null ? String(item.reviews) : "0",
+          stock:        item.stock    != null ? String(item.stock) : "0",
+          images:       (Array.isArray(images) ? images : []).map(toImageUrl),
+          imageFiles:   [],
+          description:  item.description || "",
+          overview:     introduction.overview || "",
+          purpose:      introduction.purpose || "",
+          features:     introduction.features?.length ? introduction.features : [""],
+          applications: introduction.applications?.length ? introduction.applications : [""],
+          advantages:   introduction.advantages?.length ? introduction.advantages : [""],
+          specifications: specRows.length ? specRows : [{ key: "", value: "" }],
+          shipping_list:  shipping.length ? shipping : [{ name: "", count: 1 }],
+          featured:     item.featured === 1 || item.featured === true,
+          sort_order:   Number(item.sort_order || 0),
+          is_active:    item.is_active === 1 || item.is_active !== false,
         });
       } catch { setError("Failed to load product."); }
       finally { setLoading(false); }
     })();
   }, [id, isEditMode, toImageUrl]);
 
-  // Auto-calculate discount percentage when price or original_price changes
-  useEffect(() => {
-    const price = Number(form.price || 0);
-    const originalPrice = Number(form.original_price || 0);
-
-    if (price > 0 && originalPrice > price) {
-      const calculatedDiscount = Math.round(((originalPrice - price) / originalPrice) * 100);
-      setField("discount", String(calculatedDiscount));
-    }
-  }, [form.price, form.original_price]);
-
   const handleNameChange = (val) => {
     setField("name", val);
     if (!isEditMode || !form.slug) setField("slug", slugify(val));
-  };
-
-  const handleVariantChange = (i, val) => {
-    const updated = [...form.variants];
-    updated[i] = val;
-    setField("variants", updated);
   };
 
   const handleImageSelect = (file) => {
@@ -154,7 +126,6 @@ export default function ProductForm() {
       ...p,
       images: [...p.images, blobUrl],
       imageFiles: [...p.imageFiles, file],
-      imageAltTexts: [...p.imageAltTexts, ""],
     }));
   };
 
@@ -167,23 +138,29 @@ export default function ProductForm() {
         ...p,
         images: p.images.filter((_, j) => j !== i),
         imageFiles: p.imageFiles.filter((_, j) => j !== blobsBefore),
-        imageAltTexts: p.imageAltTexts.filter((_, j) => j !== i),
       }));
     } else {
-      setForm((p) => ({
-        ...p,
-        images: p.images.filter((_, j) => j !== i),
-        imageAltTexts: p.imageAltTexts.filter((_, j) => j !== i),
-      }));
+      setForm((p) => ({ ...p, images: p.images.filter((_, j) => j !== i) }));
     }
   };
 
-  const handleImageAltTextChange = (i, altText) => {
-    setForm((p) => ({
-      ...p,
-      imageAltTexts: p.imageAltTexts.map((text, j) => j === i ? altText : text),
-    }));
-  };
+  /* string-array editor helper */
+  const listEditor = (key, placeholder) => (
+    <>
+      {form[key].map((v, i) => (
+        <div key={i} className="flex gap-2">
+          <input
+            value={v}
+            onChange={(e) => { const u = [...form[key]]; u[i] = e.target.value; setField(key, u); }}
+            placeholder={placeholder}
+            className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+          />
+          <button type="button" onClick={() => setField(key, form[key].filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
+        </div>
+      ))}
+      <button type="button" onClick={() => setField(key, [...form[key], ""])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add</button>
+    </>
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -194,50 +171,50 @@ export default function ProductForm() {
     try {
       setSaving(true);
 
-      // Upload new files; keep existing server URLs as-is, and bundle with alt text
+      // Upload new files; keep existing server URLs as-is
       let fileIdx = 0;
       const uploadedImages = [];
-      for (let i = 0; i < form.images.length; i++) {
-        const url = form.images[i];
-        const altText = form.imageAltTexts[i] || "";
+      for (const url of form.images) {
         if (url.startsWith("blob:")) {
           const serverUrl = await uploadImage(form.imageFiles[fileIdx++], "products", "");
-          uploadedImages.push({ url: serverUrl, alt_text: altText });
+          uploadedImages.push(serverUrl);
           URL.revokeObjectURL(url);
         } else {
-          uploadedImages.push({ url, alt_text: altText });
+          uploadedImages.push(url);
         }
       }
 
-      const variantArr = form.variants.filter((v) => v.trim());
+      const specifications = {};
+      for (const row of form.specifications) {
+        if (row.key.trim()) specifications[row.key.trim()] = row.value;
+      }
 
       const payload = {
-        name:          form.name.trim(),
-        slug:          form.slug.trim() || slugify(form.name),
-        subtitle:      form.subtitle.trim(),
-        category:      form.category,
-        size:          form.size.trim(),
-        price:         Number(form.price || 0),
-        original_price: form.original_price === "" ? null : Number(form.original_price),
-        discount:      form.discount === "" ? null : Number(form.discount),
-        rating:        Number(form.rating || 5),
-        reviews:       Number(form.reviews || 0),
-        stock:         form.stock ? 1 : 0,
-        featured:      form.featured ? 1 : 0,
-        variants:      JSON.stringify(variantArr),
-        variant_prices:           JSON.stringify(form.variant_prices),
-        variant_original_prices:  JSON.stringify(form.variant_original_prices),
-        images:        JSON.stringify(uploadedImages),
-        badges:        JSON.stringify(form.badges),
-        short_desc:    form.short_desc.trim(),
-        description:   form.description.trim(),
-        benefits:      JSON.stringify(form.benefits.filter((b) => b.trim())),
-        ingredients:   form.ingredients.trim(),
-        how_to_use:    JSON.stringify(form.how_to_use.filter((h) => h.text.trim())),
-        faqs:          JSON.stringify(form.faqs.filter((f) => f.q.trim())),
-        tags:          JSON.stringify(form.tags.split(",").map((t) => t.trim()).filter(Boolean)),
-        sort_order:    Number(form.sort_order || 0),
-        is_active:     form.is_active ? 1 : 0,
+        name:        form.name.trim(),
+        slug:        form.slug.trim() || slugify(form.name),
+        category:    form.category,
+        brand:       form.brand.trim(),
+        model:       form.model.trim(),
+        price:       Number(form.price || 0),
+        discount:    form.discount === "" ? null : Number(form.discount),
+        rating:      Number(form.rating || 5),
+        reviews:     Number(form.reviews || 0),
+        stock:       Number(form.stock || 0),
+        thumbnail:   uploadedImages[0] || "",
+        images:      JSON.stringify(uploadedImages),
+        description: form.description.trim(),
+        introduction: JSON.stringify({
+          overview:     form.overview.trim(),
+          purpose:      form.purpose.trim(),
+          features:     form.features.filter((v) => v.trim()),
+          applications: form.applications.filter((v) => v.trim()),
+          advantages:   form.advantages.filter((v) => v.trim()),
+        }),
+        specifications: JSON.stringify(specifications),
+        shipping_list:  JSON.stringify(form.shipping_list.filter((s) => s.name.trim()).map((s) => ({ name: s.name.trim(), count: Number(s.count || 1) }))),
+        featured:    form.featured ? 1 : 0,
+        sort_order:  Number(form.sort_order || 0),
+        is_active:   form.is_active ? 1 : 0,
       };
 
       if (isEditMode) await updateProduct(id, payload);
@@ -283,33 +260,29 @@ export default function ProductForm() {
               <input value={form.slug} onChange={(e) => setField("slug", e.target.value)} placeholder="auto-generated" className={inputCls} />
             </div>
             <div>
-              <label className={labelCls}>Subtitle</label>
-              <input value={form.subtitle} onChange={(e) => setField("subtitle", e.target.value)} className={inputCls} />
-            </div>
-            <div>
               <label className={labelCls}>Category</label>
               <select value={form.category} onChange={(e) => setField("category", e.target.value)} className={inputCls}>
-                {CATEGORIES.map((c) => <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>)}
+                {categories.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
             <div>
-              <label className={labelCls}>Size</label>
-              <input value={form.size} onChange={(e) => setField("size", e.target.value)} placeholder="500g" className={inputCls} />
+              <label className={labelCls}>Brand</label>
+              <input value={form.brand} onChange={(e) => setField("brand", e.target.value)} placeholder="e.g. Fluke, Rigol, Weller" className={inputCls} />
+            </div>
+            <div>
+              <label className={labelCls}>Model</label>
+              <input value={form.model} onChange={(e) => setField("model", e.target.value)} placeholder="e.g. WD-80" className={inputCls} />
             </div>
           </div>
         </div>
 
-        {/* ── Pricing ── */}
+        {/* ── Pricing & Stock ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Pricing</h3>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <h3 className="font-semibold text-white/90">Pricing & Stock</h3>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
             <div>
-              <label className={labelCls}>Price (Rs) *</label>
-              <input type="number" min="0" value={form.price} onChange={(e) => setField("price", e.target.value)} required className={inputCls} />
-            </div>
-            <div>
-              <label className={labelCls}>Original Price (Rs)</label>
-              <input type="number" min="0" value={form.original_price} onChange={(e) => setField("original_price", e.target.value)} className={inputCls} />
+              <label className={labelCls}>Price ($) *</label>
+              <input type="number" min="0" step="0.01" value={form.price} onChange={(e) => setField("price", e.target.value)} required className={inputCls} />
             </div>
             <div>
               <label className={labelCls}>Discount (%)</label>
@@ -323,93 +296,42 @@ export default function ProductForm() {
               <label className={labelCls}>Reviews Count</label>
               <input type="number" min="0" value={form.reviews} onChange={(e) => setField("reviews", e.target.value)} className={inputCls} />
             </div>
-          </div>
-          <div className="flex gap-6">
-            <label className="flex items-center gap-2 text-sm text-white/80 cursor-pointer">
-              <input type="checkbox" checked={form.stock} onChange={(e) => setField("stock", e.target.checked)} className="h-4 w-4" />
-              In Stock
-            </label>
-            <label className="flex items-center gap-2 text-sm text-white/80 cursor-pointer">
-              <input type="checkbox" checked={form.featured} onChange={(e) => setField("featured", e.target.checked)} className="h-4 w-4" />
-              Featured Product
-            </label>
-          </div>
-        </div>
-
-        {/* ── Variants ── */}
-        <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Variants (sizes / options)</h3>
-          <p className="text-xs text-white/50">Add each variant label (e.g. 500g, 1kg). Set per-variant prices below.</p>
-          {form.variants.map((v, i) => (
-            <div key={i} className="flex gap-2">
-              <input value={v} onChange={(e) => handleVariantChange(i, e.target.value)} placeholder="e.g. 500g" className={`${inputCls} flex-1`} />
-              <input
-                type="number" min="0"
-                value={form.variant_prices[v] ?? ""}
-                onChange={(e) => setField("variant_prices", { ...form.variant_prices, [v]: e.target.value })}
-                placeholder="Price"
-                className="w-28 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
-              />
-              <input
-                type="number" min="0"
-                value={form.variant_original_prices[v] ?? ""}
-                onChange={(e) => setField("variant_original_prices", { ...form.variant_original_prices, [v]: e.target.value })}
-                placeholder="Orig. Price"
-                className="w-32 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
-              />
-              <button type="button" onClick={() => setField("variants", form.variants.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
+            <div>
+              <label className={labelCls}>Stock (qty)</label>
+              <input type="number" min="0" value={form.stock} onChange={(e) => setField("stock", e.target.value)} className={inputCls} />
             </div>
-          ))}
-          <button type="button" onClick={() => setField("variants", [...form.variants, ""])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add Variant</button>
+          </div>
+          <label className="flex items-center gap-2 text-sm text-white/80 cursor-pointer">
+            <input type="checkbox" checked={form.featured} onChange={(e) => setField("featured", e.target.checked)} className="h-4 w-4" />
+            Featured Product
+          </label>
         </div>
 
         {/* ── Images ── */}
         <div className={sectionCls}>
           <h3 className="font-semibold text-white/90">Product Images</h3>
+          <p className="text-xs text-white/50">The first image is used as the thumbnail.</p>
 
           {form.images.length > 0 && (
-            <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {form.images.map((url, i) => (
-                <div key={i} className="rounded-lg border border-white/10 bg-white/5 p-3">
-                  <div className="mb-2 flex items-center justify-between">
-                    <span className="text-xs font-semibold text-white/70">Image #{i + 1}</span>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveImage(i)}
-                      className="rounded-lg bg-red-500/20 px-2 py-1 text-xs font-semibold text-red-400 hover:bg-red-500/30"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                  <div className="group relative mb-3 aspect-square overflow-hidden rounded-lg border border-white/10">
-                    <img
-                      src={url}
-                      alt={form.imageAltTexts[i] || "Product image"}
-                      className="h-full w-full object-cover"
-                      onError={(e) => { e.target.style.display = "none"; }}
-                    />
-                    {url.startsWith("blob:") && (
-                      <span className="absolute bottom-0 left-0 right-0 bg-black/60 py-0.5 text-center text-[10px] font-semibold text-amber-400">
-                        New — not saved yet
-                      </span>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-white/80 mb-1">
-                      Alt Text (SEO & Accessibility)
-                    </label>
-                    <input
-                      type="text"
-                      value={form.imageAltTexts[i] || ""}
-                      onChange={(e) => handleImageAltTextChange(i, e.target.value)}
-                      placeholder="Describe this image for accessibility..."
-                      maxLength="150"
-                      className="w-full rounded-lg border border-white/20 bg-white/10 px-3 py-2 text-sm text-white placeholder-white/40 focus:border-[var(--admin-primary)] focus:outline-none"
-                    />
-                    <p className="mt-1 text-[10px] text-white/50">
-                      {form.imageAltTexts[i]?.length || 0}/150 characters
-                    </p>
-                  </div>
+                <div key={i} className="group relative aspect-square overflow-hidden rounded-lg border border-white/10">
+                  <img src={url} alt={`Product ${i + 1}`} className="h-full w-full object-cover" onError={(e) => { e.target.style.display = "none"; }} />
+                  {i === 0 && (
+                    <span className="absolute left-1 top-1 rounded bg-[var(--admin-primary)] px-1.5 py-0.5 text-[10px] font-bold text-white">Thumbnail</span>
+                  )}
+                  {url.startsWith("blob:") && (
+                    <span className="absolute bottom-0 left-0 right-0 bg-black/60 py-0.5 text-center text-[10px] font-semibold text-amber-400">
+                      New — not saved yet
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(i)}
+                    className="absolute right-1 top-1 rounded-full bg-red-500/90 px-1.5 text-xs font-bold text-white opacity-0 transition group-hover:opacity-100"
+                  >
+                    ✕
+                  </button>
                 </div>
               ))}
             </div>
@@ -423,81 +345,86 @@ export default function ProductForm() {
           />
         </div>
 
-        {/* ── Badges ── */}
-        {/* <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Badges</h3>
-          <div className="flex flex-wrap gap-2">
-            {BADGE_OPTIONS.map((b) => (
-              <label key={b} className={`flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition ${form.badges.includes(b) ? "border-[var(--admin-border-amber)] bg-[var(--admin-primary)] text-black" : "border-white/20 text-white/70 hover:border-white/40"}`}>
-                <input type="checkbox" className="sr-only" checked={form.badges.includes(b)} onChange={(e) => setField("badges", e.target.checked ? [...form.badges, b] : form.badges.filter((x) => x !== b))} />
-                {b}
-              </label>
-            ))}
-          </div>
-        </div> */}
-
         {/* ── Description ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Content</h3>
+          <h3 className="font-semibold text-white/90">Description</h3>
           <div>
             <label className={labelCls}>Short Description</label>
-            <textarea rows={2} value={form.short_desc} onChange={(e) => setField("short_desc", e.target.value)} className={inputCls} />
+            <textarea rows={2} value={form.description} onChange={(e) => setField("description", e.target.value)} className={inputCls} />
           </div>
           <div>
-            <label className={labelCls}>Full Description</label>
-            <RichTextEditor value={form.description} onChange={(v) => setField("description", v)} />
+            <label className={labelCls}>Overview</label>
+            <RichTextEditor value={form.overview} onChange={(v) => setField("overview", v)} />
           </div>
           <div>
-            <label className={labelCls}>Ingredients</label>
-            <textarea rows={2} value={form.ingredients} onChange={(e) => setField("ingredients", e.target.value)} className={inputCls} />
+            <label className={labelCls}>Purpose</label>
+            <textarea rows={2} value={form.purpose} onChange={(e) => setField("purpose", e.target.value)} className={inputCls} />
           </div>
         </div>
 
-        {/* ── Benefits ── */}
+        {/* ── Features / Applications / Advantages ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Benefits</h3>
-          {form.benefits.map((b, i) => (
+          <h3 className="font-semibold text-white/90">Key Features</h3>
+          {listEditor("features", "Feature…")}
+        </div>
+        <div className={sectionCls}>
+          <h3 className="font-semibold text-white/90">Applications</h3>
+          {listEditor("applications", "Application…")}
+        </div>
+        <div className={sectionCls}>
+          <h3 className="font-semibold text-white/90">Advantages</h3>
+          {listEditor("advantages", "Advantage…")}
+        </div>
+
+        {/* ── Specifications ── */}
+        <div className={sectionCls}>
+          <h3 className="font-semibold text-white/90">Specifications</h3>
+          {form.specifications.map((row, i) => (
             <div key={i} className="flex gap-2">
-              <input value={b} onChange={(e) => { const u = [...form.benefits]; u[i] = e.target.value; setField("benefits", u); }} placeholder="Benefit…" className={`${inputCls} flex-1`} />
-              <button type="button" onClick={() => setField("benefits", form.benefits.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
+              <input
+                value={row.key}
+                onChange={(e) => { const u = [...form.specifications]; u[i] = { ...u[i], key: e.target.value }; setField("specifications", u); }}
+                placeholder="e.g. Operating Voltage"
+                className="w-2/5 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+              <input
+                value={row.value}
+                onChange={(e) => { const u = [...form.specifications]; u[i] = { ...u[i], value: e.target.value }; setField("specifications", u); }}
+                placeholder="e.g. 230V AC / 50Hz"
+                className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+              <button type="button" onClick={() => setField("specifications", form.specifications.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
             </div>
           ))}
-          <button type="button" onClick={() => setField("benefits", [...form.benefits, ""])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add Benefit</button>
+          <button type="button" onClick={() => setField("specifications", [...form.specifications, { key: "", value: "" }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add Specification</button>
         </div>
 
-        {/* ── How To Use ── */}
+        {/* ── Shipping List ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">How To Use</h3>
-          {form.how_to_use.map((h, i) => (
+          <h3 className="font-semibold text-white/90">What's in the Box</h3>
+          {form.shipping_list.map((row, i) => (
             <div key={i} className="flex gap-2">
-              <input value={h.step} onChange={(e) => { const u = [...form.how_to_use]; u[i] = { ...u[i], step: e.target.value }; setField("how_to_use", u); }} placeholder="01" className="w-16 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
-              <input value={h.text} onChange={(e) => { const u = [...form.how_to_use]; u[i] = { ...u[i], text: e.target.value }; setField("how_to_use", u); }} placeholder="Step description…" className={`${inputCls} flex-1`} />
-              <button type="button" onClick={() => setField("how_to_use", form.how_to_use.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
+              <input
+                value={row.name}
+                onChange={(e) => { const u = [...form.shipping_list]; u[i] = { ...u[i], name: e.target.value }; setField("shipping_list", u); }}
+                placeholder="Item name…"
+                className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+              <input
+                type="number" min="1"
+                value={row.count}
+                onChange={(e) => { const u = [...form.shipping_list]; u[i] = { ...u[i], count: e.target.value }; setField("shipping_list", u); }}
+                className="w-20 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+              <button type="button" onClick={() => setField("shipping_list", form.shipping_list.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
             </div>
           ))}
-          <button type="button" onClick={() => setField("how_to_use", [...form.how_to_use, { step: String(form.how_to_use.length + 1).padStart(2, "0"), text: "" }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add Step</button>
+          <button type="button" onClick={() => setField("shipping_list", [...form.shipping_list, { name: "", count: 1 }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add Item</button>
         </div>
 
-        {/* ── FAQs ── */}
+        {/* ── Visibility ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">FAQs</h3>
-          {form.faqs.map((f, i) => (
-            <div key={i} className="space-y-1.5 rounded-lg border border-white/10 p-3">
-              <input value={f.q} onChange={(e) => { const u = [...form.faqs]; u[i] = { ...u[i], q: e.target.value }; setField("faqs", u); }} placeholder="Question…" className={inputCls} />
-              <textarea rows={2} value={f.a} onChange={(e) => { const u = [...form.faqs]; u[i] = { ...u[i], a: e.target.value }; setField("faqs", u); }} placeholder="Answer…" className={inputCls} />
-              <button type="button" onClick={() => setField("faqs", form.faqs.filter((_, j) => j !== i))} className="text-xs text-red-400">Remove FAQ</button>
-            </div>
-          ))}
-          <button type="button" onClick={() => setField("faqs", [...form.faqs, { q: "", a: "" }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add FAQ</button>
-        </div>
-
-        {/* ── Tags & Sort ── */}
-        <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Tags & Visibility</h3>
-          <div>
-            <label className={labelCls}>Tags (comma-separated)</label>
-            <input value={form.tags} onChange={(e) => setField("tags", e.target.value)} placeholder="ghee, organic, desi, 500g" className={inputCls} />
-          </div>
+          <h3 className="font-semibold text-white/90">Visibility</h3>
           <div className="flex gap-4 items-center flex-wrap">
             <div>
               <label className={labelCls}>Sort Order</label>
@@ -512,7 +439,7 @@ export default function ProductForm() {
 
         {/* ── Submit ── */}
         <div className="flex flex-col gap-3 sm:flex-row">
-          <button type="submit" disabled={saving} className="rounded-lg bg-[var(--admin-primary)] px-5 py-2 text-black hover:bg-[var(--admin-primary-strong)] disabled:opacity-60">
+          <button type="submit" disabled={saving} className="rounded-lg bg-[var(--admin-primary)] px-5 py-2 text-white hover:bg-[var(--admin-primary-strong)] disabled:opacity-60">
             {saving ? "Saving…" : isEditMode ? "Update Product" : "Create Product"}
           </button>
           <button type="button" onClick={() => navigate("/products")} className="rounded-lg border border-white/20 px-5 py-2 text-white/90 hover:bg-white/10">

@@ -54,7 +54,8 @@ export default function ProductList() {
 
   const resolveImage = (images) => {
     const arr = parseJsonField(images);
-    const raw = arr[0];
+    let raw = arr[0];
+    if (raw && typeof raw === "object") raw = raw.url || "";
     if (!raw) return FALLBACK_IMG;
     if (raw.startsWith("http")) return raw;
     if (raw.startsWith("/product-images/")) return publicRoot + raw;
@@ -136,8 +137,6 @@ export default function ProductList() {
         <div className="grid gap-4">
           {products.map((item) => {
             const isActive = item.is_active === 1 || item.is_active === true;
-            const badges   = parseJsonField(item.badges);
-            const tags     = parseJsonField(item.tags);
 
             return (
               <article key={item.id} className="overflow-hidden rounded-2xl border border-white/10 bg-[var(--admin-bg)]">
@@ -158,31 +157,28 @@ export default function ProductList() {
                               {item.category}
                             </span>
                           )}
-                          {item.size && (
+                          {item.brand && (
                             <span className="rounded-full border border-white/20 px-2 py-0.5 text-xs text-white/60">
-                              {item.size}
+                              {item.brand}{item.model ? ` · ${item.model}` : ""}
                             </span>
                           )}
                         </div>
-                        {item.subtitle && (
-                          <p className="mt-0.5 text-sm text-white/50">{item.subtitle}</p>
-                        )}
                         <p className="mt-2 line-clamp-2 text-sm text-white/70">
-                          {decodeHtml(item.short_desc || item.description || "No description")}
+                          {decodeHtml(item.description || "No description")}
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2 text-xs">
                           <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
-                            PKR {Number(item.price || 0).toLocaleString()}
+                            ${Number(item.price || 0).toLocaleString()}
                           </span>
+                          {item.discount ? (
+                            <span className="rounded-md bg-amber-500/20 px-2 py-1 text-amber-300">-{item.discount}%</span>
+                          ) : null}
                           <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
                             Rating: {item.rating ?? "-"} ({item.reviews ?? 0} reviews)
                           </span>
-                          {badges[0] && (
-                            <span className="rounded-md bg-amber-500/20 px-2 py-1 text-amber-300">{badges[0]}</span>
-                          )}
-                          {tags[0] && (
-                            <span className="rounded-md bg-white/10 px-2 py-1 text-white/60">#{tags[0]}</span>
-                          )}
+                          <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
+                            Stock: {item.stock ?? 0}
+                          </span>
                           <span className="rounded-md bg-white/10 px-2 py-1 text-white/60">
                             Slug: {item.slug || "-"}
                           </span>

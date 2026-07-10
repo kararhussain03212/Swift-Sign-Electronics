@@ -8,30 +8,15 @@ import { getSettings } from "../api/settingApi";
 const NAV = [
   { path: "/dashboard",         label: "Dashboard" },
   { path: "/users",             label: "User Management", adminOnly: true },
-  { path: "/sliders",           label: "Hero Slides" },
+  { path: "/orders",            label: "Orders" },
   { path: "/products",          label: "Products" },
+  { path: "/categories",        label: "Categories" },
+  { path: "/section-banners",   label: "Section Banners" },
+  { path: "/sliders",           label: "Hero Slides" },
   { path: "/blogs",             label: "Blogs" },
-  { path: "/testimonials",      label: "Testimonials" },
+  { path: "/contact-messages",  label: "Contact Messages" },
   { path: "/settings/navbar",   label: "Navbar" },
   { path: "/settings/footer",   label: "Footer" },
-  // About Us
-  { path: "/about", label: "About Us", group: "about" },
-  { path: "/about/hero",          label: "Hero Section",    child: true, childGroup: "about" },
-  { path: "/about/story",         label: "Our Story",       child: true, childGroup: "about" },
-  { path: "/about/problems",      label: "Why We Exist",    child: true, childGroup: "about" },
-  { path: "/about/mission",       label: "Mission Section", child: true, childGroup: "about" },
-  { path: "/about/core-values",   label: "Core Values",     child: true, childGroup: "about" },
-  { path: "/about/comparison",    label: "Comparison",      child: true, childGroup: "about" },
-  { path: "/about/cta",           label: "CTA Section",     child: true, childGroup: "about" },
-  // Home Settings
-  { path: "/settings/home",              label: "Home" },
-  { path: "/settings/home-about",        label: "Home - Our Story",    child: true, childGroup: "home" },
-  { path: "/settings/home-company",      label: "Home - Collection",   child: true, childGroup: "home" },
-  { path: "/settings/home-commitment",   label: "Home - Commitment",   child: true, childGroup: "home" },
-  { path: "/settings/home-testimonials", label: "Home - Testimonials", child: true, childGroup: "home" },
-  { path: "/settings/home-authentic",    label: "Home - Authentic",    child: true, childGroup: "home" },
-  // Other Settings
-  { path: "/settings/product",  label: "Product Page" },
   { path: "/settings/blog",     label: "Blog Page" },
   { path: "/contact-settings",  label: "Contact Page" },
 ];
@@ -39,27 +24,21 @@ const NAV = [
 const PAGE_TITLES = {
   "/":                               "Dashboard",
   "/dashboard":                      "Dashboard",
+  "/orders":                         "Orders",
   "/sliders":                        "Hero Slides",
   "/sliders/new":                    "Add Hero Slide",
   "/products":                       "Products",
   "/products/new":                   "Add Product",
-  "/commitment":                     "Commitment Items",
-  "/commitment/new":                 "Add Commitment Item",
+  "/categories":                     "Categories",
+  "/categories/new":                 "Add Category",
+  "/section-banners":                "Section Banners",
+  "/section-banners/new":            "Add Section Banner",
   "/blogs":                          "Blogs",
   "/blogs/new":                      "Add Blog",
-  "/testimonials":                   "Testimonials",
-  "/testimonials/new":               "Add Testimonial",
   "/contact-messages":               "Contact Messages",
   "/contact-settings":               "Contact Page Settings",
   "/settings/navbar":                "Navbar Settings",
-  "/settings/home":                  "Home Settings",
-  "/settings/home-about":            "Home - Our Story",
-  "/settings/home-company":          "Home - Collection",
-  "/settings/home-commitment":       "Home - Commitment",
-  "/settings/home-testimonials":     "Home - Testimonials",
-  "/settings/home-authentic":        "Home - Authentic",
   "/settings/footer":                "Footer Settings",
-  "/settings/product":               "Product Page Settings",
   "/settings/blog":                  "Blog Page Settings",
   "/profile":                        "Admin Profile",
   "/users":                          "User Management",
@@ -90,8 +69,6 @@ const cls = {
 
 export default function Layout({ children }) {
   const [sidebarOpen,      setSidebarOpen]      = useState(false);
-  const [homeManual,       setHomeManual]        = useState(false);
-  const [aboutManual,      setAboutManual]       = useState(false);
   const [logoutOpen,       setLogoutOpen]        = useState(false);
   const [siteLogo,         setSiteLogo]          = useState(fallbackLogo);
 
@@ -99,10 +76,6 @@ export default function Layout({ children }) {
   const isAdmin  = user?.role === "admin";
   const location = useLocation();
   const navigate = useNavigate();
-
-  /* ── derive dropdown open state from route (no setState-in-effect) */
-  const homeOpen  = homeManual  || location.pathname.startsWith("/settings/home");
-  const aboutOpen = aboutManual || location.pathname.startsWith("/about/");
 
   /* ── fetch logo from site settings once ── */
   useEffect(() => {
@@ -131,22 +104,11 @@ export default function Layout({ children }) {
 
   const pageTitle = useMemo(() => {
     if (PAGE_TITLES[location.pathname]) return PAGE_TITLES[location.pathname];
-    if (location.pathname.startsWith("/sliders/edit"))           return "Edit Hero Slide";
-    if (location.pathname.startsWith("/products/edit"))          return "Edit Product";
-    if (location.pathname.startsWith("/commitment/edit"))        return "Edit Commitment Item";
-    if (location.pathname.startsWith("/blogs/edit"))             return "Edit Blog";
-    if (location.pathname.startsWith("/testimonials/edit"))      return "Edit Testimonial";
-    if (location.pathname.startsWith("/about/problems/edit"))    return "Edit Problem Card";
-    if (location.pathname.startsWith("/about/core-values/edit")) return "Edit Core Value";
-    if (location.pathname === "/about/hero")           return "About - Hero Section";
-    if (location.pathname === "/about/story")          return "About - Our Story";
-    if (location.pathname === "/about/problems")       return "About - Problem Cards";
-    if (location.pathname === "/about/problems/new")   return "Add Problem Card";
-    if (location.pathname === "/about/mission")        return "About - Mission Section";
-    if (location.pathname === "/about/core-values")    return "About - Core Values";
-    if (location.pathname === "/about/core-values/new")return "Add Core Value";
-    if (location.pathname === "/about/comparison")     return "About - Comparison";
-    if (location.pathname === "/about/cta")            return "About - CTA Section";
+    if (location.pathname.startsWith("/sliders/edit"))         return "Edit Hero Slide";
+    if (location.pathname.startsWith("/products/edit"))        return "Edit Product";
+    if (location.pathname.startsWith("/categories/edit"))      return "Edit Category";
+    if (location.pathname.startsWith("/section-banners/edit")) return "Edit Section Banner";
+    if (location.pathname.startsWith("/blogs/edit"))           return "Edit Blog";
     return "Dashboard";
   }, [location.pathname]);
 
@@ -196,8 +158,8 @@ export default function Layout({ children }) {
           >
             <div className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-[var(--brand-green)] to-[var(--brand-green-deep)] shadow-[0_4px_14px_rgba(73,99,72,0.5)]">
               <img
-                src="/public/logo/General trading white storke.png"
-                alt="Swift Sign"
+                src={siteLogo}
+                alt="Swift Sign Electronics"
                 className="h-full w-full object-cover"
                 onError={(e) => { e.currentTarget.src = fallbackLogo; }}
               />
@@ -205,7 +167,7 @@ export default function Layout({ children }) {
             <div className="min-w-0">
               <p className="text-[9px] font-bold uppercase tracking-[0.28em] text-[var(--admin-muted)]">Admin Panel</p>
               <p className="truncate text-sm font-bold text-white transition-colors group-hover:text-[var(--admin-accent)]">
-                Swift Sign
+                Swift Sign Electronics
               </p>
             </div>
           </Link>
@@ -227,63 +189,11 @@ export default function Layout({ children }) {
             Main
           </p>
 
-          {NAV.filter((item) => !item.adminOnly || isAdmin).map((item) => {
-            /* About Us dropdown */
-            if (item.group === "about") {
-              const active = location.pathname.startsWith("/about/");
-              return (
-                <div key="about-drop" className="mb-0.5">
-                  <button type="button" onClick={() => setAboutManual((p) => !p)} className={cls.drop(active)}>
-                    <span>{item.label}</span>
-                    <span className={`pi ${aboutOpen ? "pi-chevron-up" : "pi-chevron-down"} text-[10px] opacity-60`} />
-                  </button>
-                  {aboutOpen && (
-                    <div className="ml-3 mt-0.5 space-y-0.5">
-                      {NAV.filter((e) => e.child && e.childGroup === "about").map((e) => (
-                        <Link
-                          key={e.path}
-                          to={e.path}
-                          onClick={closeSidebar}
-                          className={cls.child(location.pathname === e.path || location.pathname.startsWith(e.path + "/"))}
-                        >
-                          {e.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
-            /* Home Settings dropdown */
-            if (item.path === "/settings/home") {
-              return (
-                <div key="home-drop" className="mb-0.5">
-                  <button type="button" onClick={() => setHomeManual((p) => !p)} className={cls.drop(isActive("/settings/home"))}>
-                    <span>{item.label}</span>
-                    <span className={`pi ${homeOpen ? "pi-chevron-up" : "pi-chevron-down"} text-[10px] opacity-60`} />
-                  </button>
-                  {homeOpen && (
-                    <div className="ml-3 mt-0.5 space-y-0.5">
-                      {NAV.filter((e) => e.child && e.childGroup === "home").map((e) => (
-                        <Link key={e.path} to={e.path} onClick={closeSidebar} className={cls.child(isActive(e.path))}>
-                          {e.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            }
-
-            if (item.child) return null;
-
-            return (
-              <Link key={item.path} to={item.path} onClick={closeSidebar} className={cls.link(isActive(item.path))}>
-                {item.label}
-              </Link>
-            );
-          })}
+          {NAV.filter((item) => !item.adminOnly || isAdmin).map((item) => (
+            <Link key={item.path} to={item.path} onClick={closeSidebar} className={cls.link(isActive(item.path))}>
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         {/* User footer */}

@@ -4,10 +4,6 @@ import { getSettings, updateSettings } from "../../api/settingApi";
 import NavbarSettingsSection from "./sections/NavbarSettingsSection";
 import HomeAboutSettingsSection from "./sections/HomeAboutSettingsSection";
 import HomeCompanySettingsSection from "./sections/HomeCompanySettingsSection";
-import HomeOfferSettingsSection from "./sections/HomeOfferSettingsSection";
-import HomeCommitmentSettingsSection from "./sections/HomeCommitmentSettingsSection";
-import HomeTestimonialsSettingsSection from "./sections/HomeTestimonialsSettingsSection";
-import HomeAuthenticSettingsSection from "./sections/HomeAuthenticSettingsSection";
 import HomeBlogSettingsSection from "./sections/HomeBlogSettingsSection";
 import FooterSettingsSection from "./sections/FooterSettingsSection";
 import ProductSettingsSection from "./sections/ProductSettingsSection";
@@ -911,44 +907,6 @@ export default function SiteSettings({ forcedMainSection = "", forcedHomeSection
             toLabel={toLabel}
             toImageUrl={toImageUrl}
             uploadToSetting={uploadToSetting}
-          />
-        ) : null}
-
-        {activeMainSection === "home" && activeHomeSection === "offer" ? (
-          <HomeOfferSettingsSection
-            fieldKeys={getKeysFor("home.offer")}
-            form={form}
-            setField={setField}
-            toLabel={toLabel}
-            toImageUrl={toImageUrl}
-            uploadToSetting={uploadToSetting}
-          />
-        ) : null}
-
-        {activeMainSection === "home" && activeHomeSection === "commitment" ? (
-          <HomeCommitmentSettingsSection
-            fieldKeys={getKeysFor("home.commitment")}
-            form={form}
-            setField={setField}
-            toLabel={toLabel}
-          />
-        ) : null}
-
-        {activeMainSection === "home" && activeHomeSection === "testimonials" ? (
-          <HomeTestimonialsSettingsSection
-            fieldKeys={getKeysFor("home.testimonials")}
-            form={form}
-            setField={setField}
-            toLabel={toLabel}
-          />
-        ) : null}
-
-        {activeMainSection === "home" && activeHomeSection === "authentic" ? (
-          <HomeAuthenticSettingsSection
-            fieldKeys={getKeysFor("home.authentic")}
-            form={form}
-            setField={setField}
-            toLabel={toLabel}
           />
         ) : null}
 

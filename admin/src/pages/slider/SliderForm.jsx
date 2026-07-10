@@ -5,7 +5,7 @@ import { uploadVideo } from "../../api/uploadApi";
 import VideoUpload from "../../components/VideoUpload";
 
 const getInitialForm = () => ({
-  kicker: "Arion Organic Food",
+  kicker: "Swift Sign Electronics",
   title: "",
   subtitle: "",
   button_text: "Shop Now",
@@ -37,7 +37,7 @@ export default function SliderForm() {
         const res = await getSlider(id);
         const item = res.data?.data ?? {};
         setForm({
-          kicker:                item.kicker               || "Arion Organic Food",
+          kicker:                item.kicker               || "Swift Sign Electronics",
           title:                 item.title                || "",
           subtitle:              item.subtitle             || "",
           button_text:           item.button_text          || "Shop Now",
@@ -69,7 +69,7 @@ export default function SliderForm() {
       setSaving(true);
 
       const payload = {
-        kicker:                form.kicker.trim() || "Arion Organic Food",
+        kicker:                form.kicker.trim() || "Swift Sign Electronics",
         title:                 form.title.trim(),
         subtitle:              form.subtitle.trim(),
         button_text:           form.button_text.trim() || "Shop Now",
@@ -119,7 +119,7 @@ export default function SliderForm() {
         {/* Kicker */}
         <div>
           <label className={labelCls}>Label / Kicker</label>
-          <input value={form.kicker} onChange={(e) => setField("kicker", e.target.value)} className={inputCls} placeholder="Arion Organic Food" />
+          <input value={form.kicker} onChange={(e) => setField("kicker", e.target.value)} className={inputCls} placeholder="Swift Sign Electronics" />
         </div>
 
         {/* Title */}
@@ -131,7 +131,7 @@ export default function SliderForm() {
         {/* Subtitle */}
         <div>
           <label className={labelCls}>Subtitle</label>
-          <textarea rows={3} value={form.subtitle} onChange={(e) => setField("subtitle", e.target.value)} className={inputCls} placeholder="Discover Natural Arion Honey, Ghee, and Shilajit." />
+          <textarea rows={3} value={form.subtitle} onChange={(e) => setField("subtitle", e.target.value)} className={inputCls} placeholder="Explore quality electronics, tools, and instruments." />
         </div>
 
         {/* Primary Button */}

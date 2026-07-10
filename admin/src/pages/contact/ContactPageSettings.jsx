@@ -126,7 +126,7 @@ export default function ContactPageSettings() {
               className={inputCls}
               value={form.seo_meta_description}
               onChange={(e) => setField("seo_meta_description", e.target.value)}
-              placeholder="e.g., Contact Arion Organic Food for pure honey, desi ghee, and shilajit. Call, WhatsApp, or visit us in Islamabad, Pakistan."
+              placeholder="e.g., Contact Swift Sign Electronics for tools, instruments, and project kits. Call, WhatsApp, or visit us in Islamabad, Pakistan."
             />
             <p className="mt-1 text-[10px] text-white/50">
               {form.seo_meta_description?.length || 0}/160 characters (recommended)
@@ -144,11 +144,11 @@ export default function ContactPageSettings() {
             </div>
             <div>
               <label className={labelCls}>Main Heading</label>
-              <input className={inputCls} value={form.hero_heading} onChange={(e) => setField("hero_heading", e.target.value)} placeholder="Contact Arion Organic" />
+              <input className={inputCls} value={form.hero_heading} onChange={(e) => setField("hero_heading", e.target.value)} placeholder="Contact Swift Sign Electronics" />
             </div>
             <div>
               <label className={labelCls}>Highlighted Word(s)</label>
-              <input className={inputCls} value={form.hero_highlight} onChange={(e) => setField("hero_highlight", e.target.value)} placeholder="Arion Organic" />
+              <input className={inputCls} value={form.hero_highlight} onChange={(e) => setField("hero_highlight", e.target.value)} placeholder="Swift Sign Electronics" />
             </div>
           </div>
           <div>
@@ -218,7 +218,7 @@ export default function ContactPageSettings() {
             </div>
             <div>
               <label className={labelCls}>Email Address</label>
-              <input type="email" className={inputCls} value={form.email} onChange={(e) => setField("email", e.target.value)} placeholder="info@arionorganic.com" />
+              <input type="email" className={inputCls} value={form.email} onChange={(e) => setField("email", e.target.value)} placeholder="info@swiftsignhre.com" />
             </div>
           </div>
           <div>

@@ -5,20 +5,18 @@ import axios from "../api/axios";
 import { getSettings } from "../api/settingApi";
 
 const QUICK = [
-  { label: "Add Product",      to: "/products/new",      icon: "pi-box",         color: "#5cb96a" },
+  { label: "Add Product",      to: "/products/new",      icon: "pi-box",         color: "#0fafb8" },
   { label: "New Hero Slide",   to: "/sliders/new",       icon: "pi-images",      color: "#e0b85c" },
-  { label: "New Blog Post",    to: "/blogs/new",         icon: "pi-file-edit",   color: "#5cb96a" },
-  { label: "New Testimonial",  to: "/testimonials/new",  icon: "pi-comments",    color: "#e0b85c" },
-  // { label: "Contact Messages", to: "/contact-messages",  icon: "pi-envelope",    color: "#5cb96a" },
+  { label: "New Blog Post",    to: "/blogs/new",         icon: "pi-file-edit",   color: "#0fafb8" },
+  { label: "View Orders",      to: "/orders",            icon: "pi-shopping-cart", color: "#e0b85c" },
   { label: "Site Settings",    to: "/settings/navbar",   icon: "pi-cog",         color: "#e0b85c" },
 ];
 
 const STAT_META = [
-  { key: "hero",           label: "Hero Slides",   to: "/sliders",         icon: "pi-images",   glow: "rgba(92,185,106,0.18)"  },
+  { key: "hero",           label: "Hero Slides",   to: "/sliders",         icon: "pi-images",   glow: "rgba(15,175,184,0.18)"  },
   { key: "products",       label: "Products",      to: "/products",        icon: "pi-box",      glow: "rgba(224,184,92,0.18)"  },
-  { key: "testimonials",   label: "Testimonials",  to: "/testimonials",    icon: "pi-comments", glow: "rgba(92,185,106,0.18)"  },
   { key: "blog",           label: "Blog Posts",    to: "/blogs",           icon: "pi-file-edit",glow: "rgba(224,184,92,0.18)"  },
-  // { key: "contact_unread", label: "Unread Msgs",   to: "/contact-messages",icon: "pi-envelope", glow: "rgba(92,185,106,0.18)"  },
+  { key: "contact_unread", label: "Unread Msgs",   to: "/contact-messages",icon: "pi-envelope", glow: "rgba(15,175,184,0.18)"  },
 ];
 
 function StatCard({ meta, value, loading }) {
@@ -57,8 +55,8 @@ export default function Dashboard() {
   const { user } = useAuth();
   const [loading,  setLoading]  = useState(true);
   const [error,    setError]    = useState("");
-  const [counts,   setCounts]   = useState({ hero: 0, products: 0, testimonials: 0, blog: 0, contact_unread: 0 });
-  const [siteName, setSiteName] = useState("Arion Organic");
+  const [counts,   setCounts]   = useState({ hero: 0, products: 0, blog: 0, contact_unread: 0 });
+  const [siteName, setSiteName] = useState("Swift Sign Electronics");
 
   useEffect(() => {
     axios.get("/admin/dashboard")
@@ -67,7 +65,6 @@ export default function Dashboard() {
         setCounts({
           hero:           Number(c.hero            ?? 0),
           products:       Number(c.products        ?? 0),
-          testimonials:   Number(c.testimonials    ?? 0),
           blog:           Number(c.blog            ?? 0),
           contact_unread: Number(c.contact_unread  ?? 0),
         });

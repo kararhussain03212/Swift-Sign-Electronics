@@ -114,9 +114,9 @@ export default function BlogList() {
               <article key={item.id} className="rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex min-w-0 gap-4">
-                    {item.image && (
+                    {item.cover && (
                       <img
-                        src={toImageUrl(item.image)}
+                        src={toImageUrl(item.cover)}
                         alt={item.title || "Blog"}
                         className="h-20 w-32 flex-shrink-0 rounded-lg object-cover"
                         onError={(e) => { e.currentTarget.style.display = "none"; }}
@@ -131,7 +131,7 @@ export default function BlogList() {
                         {item.excerpt || "No excerpt"}
                       </p>
                       <p className="mt-1 text-xs text-white/60">
-                        {item.read_time ? `${item.read_time} min read` : "Read time not set"}
+                        {item.read_time || "Read time not set"}
                       </p>
                     </div>
                   </div>

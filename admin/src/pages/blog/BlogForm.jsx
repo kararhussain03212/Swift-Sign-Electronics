@@ -12,14 +12,18 @@ import { hasPermission } from "../../modules/users/constants";
 const initialForm = {
   title: "",
   slug: "",
-  category: "shilajit-wellness",
+  category: "IoT",
+  categoryColor: "#0fafb8",
   excerpt: "",
   content: "",
-  author: "Arion Wellness Team",
+  author: "Swift Sign Team",
+  authorAvatar: "",
+  authorRole: "",
   publishedAt: null,
   readTime: null,
   sortOrder: 1,
   isPublished: true,
+  featured: false,
   imageFile: null,
   imagePreview: "",
   imageAltText: "",
@@ -112,20 +116,25 @@ export default function BlogForm() {
         const res = await getBlog(id);
         const item = res.data?.data || {};
         setSlugTouched(true);
+        const readTimeNum = parseInt(String(item.read_time || ""), 10);
         setForm({
-          title:       decodeHtmlEntities(item.title    || ""),
-          slug:        decodeHtmlEntities(item.slug     || ""),
-          category:    decodeHtmlEntities(item.category || "shilajit-wellness"),
-          excerpt:     decodeHtmlEntities(item.excerpt  || ""),
-          content:     decodeHtmlEntities(item.content  || ""),
-          author:      decodeHtmlEntities(item.author   || "Arion Wellness Team"),
-          publishedAt: toDateValue(item.published_at),
-          readTime:    item.read_time ? Number(item.read_time) : null,
-          sortOrder:   Number(item.sort_order ?? 1),
-          isPublished: item.is_published === 1 || item.is_published === true,
-          imageFile:   null,
-          imagePreview: toImageUrl(item.image || ""),
-          imageAltText: item.image_alt_text || "",
+          title:        decodeHtmlEntities(item.title    || ""),
+          slug:         decodeHtmlEntities(item.slug     || ""),
+          category:     decodeHtmlEntities(item.category || "IoT"),
+          categoryColor: item.category_color || "#0fafb8",
+          excerpt:      decodeHtmlEntities(item.excerpt  || ""),
+          content:      decodeHtmlEntities(item.body     || ""),
+          author:       decodeHtmlEntities(item.author_name || "Swift Sign Team"),
+          authorAvatar: item.author_avatar || "",
+          authorRole:   item.author_role || "",
+          publishedAt:  toDateValue(item.published_at),
+          readTime:     Number.isNaN(readTimeNum) ? null : readTimeNum,
+          sortOrder:    Number(item.sort_order ?? 1),
+          isPublished:  item.is_published === 1 || item.is_published === true,
+          featured:     item.featured === 1 || item.featured === true,
+          imageFile:    null,
+          imagePreview: toImageUrl(item.cover || ""),
+          imageAltText: "",
         });
       } catch (err) {
         console.error(err);
@@ -161,18 +170,21 @@ export default function BlogForm() {
       }
 
       const payload = {
-        title:         form.title.trim(),
-        slug:          form.slug.trim(),
-        category:      form.category.trim(),
-        excerpt:       form.excerpt.trim(),
-        content:       form.content,
-        image:         imagePath,
-        image_alt_text: form.imageAltText.trim(),
-        author:        form.author.trim(),
-        published_at:  toSqlDateTime(form.publishedAt),
-        read_time:     form.readTime ? Number(form.readTime) : null,
-        sort_order:    Number(form.sortOrder || 1),
-        is_published:  form.isPublished ? 1 : 0,
+        title:          form.title.trim(),
+        slug:           form.slug.trim(),
+        category:       form.category.trim(),
+        category_color: form.categoryColor,
+        excerpt:        form.excerpt.trim(),
+        body:           form.content,
+        cover:          imagePath,
+        author_name:    form.author.trim(),
+        author_avatar:  form.authorAvatar.trim(),
+        author_role:    form.authorRole.trim(),
+        published_at:   toSqlDateTime(form.publishedAt),
+        read_time:      form.readTime ? `${Number(form.readTime)} min read` : null,
+        featured:       form.featured ? 1 : 0,
+        sort_order:     Number(form.sortOrder || 1),
+        is_published:   form.isPublished ? 1 : 0,
       };
 
       if (isEditMode) await updateBlog(id, payload);
@@ -219,8 +231,20 @@ export default function BlogForm() {
             <input value={form.category} onChange={(e) => setField("category", e.target.value)} className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-white/80">Author</label>
+            <label className="mb-1 block text-sm text-white/80">Category Color</label>
+            <input type="color" value={form.categoryColor} onChange={(e) => setField("categoryColor", e.target.value)} className="h-10 w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-1 py-1" />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm text-white/80">Author Name</label>
             <input value={form.author} onChange={(e) => setField("author", e.target.value)} className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm text-white/80">Author Role</label>
+            <input value={form.authorRole} onChange={(e) => setField("authorRole", e.target.value)} placeholder="e.g. Senior IoT Architect" className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+          </div>
+          <div>
+            <label className="mb-1 block text-sm text-white/80">Author Avatar URL</label>
+            <input value={form.authorAvatar} onChange={(e) => setField("authorAvatar", e.target.value)} placeholder="https://…" className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
           </div>
           <div>
             <label className="mb-1 block text-sm text-white/80">Published At</label>
@@ -297,6 +321,15 @@ export default function BlogForm() {
                 className="h-4 w-4"
               />
               Publish
+            </label>
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-white/85">
+              <input
+                type="checkbox"
+                checked={form.featured}
+                onChange={(e) => setField("featured", e.target.checked)}
+                className="h-4 w-4"
+              />
+              Featured
             </label>
           </div>
         </div>

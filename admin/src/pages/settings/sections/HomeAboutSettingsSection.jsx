@@ -69,7 +69,7 @@ export default function HomeAboutSettingsSection({
           value={form.home_story_text || ""}
           onChange={(e) => setField("home_story_text", e.target.value)}
           className={inputClass}
-          placeholder="Our family has been dedicated to bringing you the purest, most authentic organic products…"
+          placeholder="Our family has been dedicated to bringing you the purest, most authentic electronic components…"
         />
       </Field>
 

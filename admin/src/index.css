@@ -3,29 +3,29 @@
 
 :root {
   font-family: "Source Sans 3", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  /* Arion Organic — dark panel, vibrant brand palette */
-  --admin-bg:             #0a0f0b;
-  --admin-bg-deep:        #060908;
-  --admin-sidebar:        #0d1410;
-  --admin-sidebar-hover:  #182419;
-  --admin-card:           #111a13;
-  --admin-card-elevated:  #182419;
+  /* Swift Sign Electronics — dark navy panel, teal brand palette */
+  --admin-bg:             #0a0f14;
+  --admin-bg-deep:        #060a0e;
+  --admin-sidebar:        #0d1420;
+  --admin-sidebar-hover:  #16222f;
+  --admin-card:           #111a24;
+  --admin-card-elevated:  #16222f;
   --admin-ink:            #ffffff;
   --admin-muted:          rgba(255,255,255,0.52);
-  /* Primary = vivid leaf green (readable on dark bg) */
-  --admin-primary:        #5cb96a;
-  --admin-primary-strong: #48a356;
-  --admin-primary-light:  rgba(92,185,106,0.14);
-  /* Accent = warm vibrant gold */
+  /* Primary = Swift Sign teal (matches storefront #0fafb8) */
+  --admin-primary:        #0fafb8;
+  --admin-primary-strong: #0c8f96;
+  --admin-primary-light:  rgba(15,175,184,0.14);
+  /* Accent = warm gold for highlights */
   --admin-amber:          #e0b85c;
-  --admin-accent:         #e0b85c;
-  --admin-accent-strong:  #c99e40;
+  --admin-accent:         #0fafb8;
+  --admin-accent-strong:  #0c8f96;
   /* Borders */
   --admin-border:         rgba(255,255,255,0.08);
-  --admin-border-amber:   rgba(224,184,92,0.38);
-  /* Brand green (dark, for gradients/backgrounds) */
-  --brand-green:          #496348;
-  --brand-green-deep:     #2e4030;
+  --admin-border-amber:   rgba(15,175,184,0.38);
+  /* Brand navy (dark, for gradients/backgrounds) */
+  --brand-green:          #123a44;
+  --brand-green-deep:     #0a2530;
 }
 
 *,
