@@ -302,6 +302,11 @@ abstract class BaseModel
             $params[':f_status'] = $query['status'];
         }
 
+        if ($this->hasColumn('category') && isset($query['category']) && trim((string) $query['category']) !== '') {
+            $where[] = 'category = :f_category';
+            $params[':f_category'] = trim((string) $query['category']);
+        }
+
         if (isset($query['search']) && trim((string) $query['search']) !== '') {
             $searchable = $this->searchableColumns();
             if ($searchable !== []) {

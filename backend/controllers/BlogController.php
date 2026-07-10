@@ -30,9 +30,9 @@ final class BlogController extends BaseCrudController
         $model = new BlogPost();
         $raw = $this->body();
         $payload = Validator::sanitizeInput($raw);
-        // Preserve raw HTML content without sanitization
-        if (isset($raw['content'])) {
-            $payload['content'] = trim((string) $raw['content']);
+        // Preserve raw HTML body without sanitization
+        if (isset($raw['body'])) {
+            $payload['body'] = trim((string) $raw['body']);
         }
 
         $errors = Validator::required($payload, $this->requiredCreateFields);
@@ -65,9 +65,9 @@ final class BlogController extends BaseCrudController
 
         $raw = $this->body();
         $payload = Validator::sanitizeInput($raw);
-        // Preserve raw HTML content without sanitization
-        if (array_key_exists('content', $raw)) {
-            $payload['content'] = trim((string) $raw['content']);
+        // Preserve raw HTML body without sanitization
+        if (array_key_exists('body', $raw)) {
+            $payload['body'] = trim((string) $raw['body']);
         }
 
         if (isset($payload['title']) && (!isset($payload['slug']) || trim((string) $payload['slug']) === '')) {

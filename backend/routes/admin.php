@@ -3,12 +3,14 @@
 declare(strict_types=1);
 
 use Backend\Controllers\BlogController;
+use Backend\Controllers\CategoryController;
 use Backend\Controllers\ContactController;
+use Backend\Controllers\OrderController;
+use Backend\Controllers\SectionBannerController;
 use Backend\Controllers\CustomerAddressController;
 use Backend\Controllers\DashboardController;
 use Backend\Controllers\HeroController;
 use Backend\Controllers\ProductController;
-use Backend\Controllers\ProductPageController;
 use Backend\Controllers\SettingController;
 use Backend\Controllers\UploadController;
 use Backend\Controllers\UserController;
@@ -16,8 +18,10 @@ use Backend\Middleware\AuthMiddleware;
 use Backend\Utils\Router;
 
 require_once __DIR__ . '/../controllers/HeroController.php';
+require_once __DIR__ . '/../controllers/CategoryController.php';
+require_once __DIR__ . '/../controllers/OrderController.php';
+require_once __DIR__ . '/../controllers/SectionBannerController.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
-require_once __DIR__ . '/../controllers/ProductPageController.php';
 require_once __DIR__ . '/../controllers/BlogController.php';
 require_once __DIR__ . '/../controllers/SettingController.php';
 require_once __DIR__ . '/../controllers/UploadController.php';
@@ -42,6 +46,26 @@ function registerAdminRoutes(Router $router): void
     $router->delete('/api/admin/hero/{id}', [HeroController::class, 'destroy'], $mw);
     $router->patch('/api/admin/hero/reorder', [HeroController::class, 'reorder'], $mw);
 
+    // Categories
+    $router->get('/api/admin/categories', [CategoryController::class, 'index'], $mw);
+    $router->get('/api/admin/categories/{id}', [CategoryController::class, 'show'], $mw);
+    $router->post('/api/admin/categories', [CategoryController::class, 'store'], $mw);
+    $router->put('/api/admin/categories/{id}', [CategoryController::class, 'update'], $mw);
+    $router->delete('/api/admin/categories/{id}', [CategoryController::class, 'destroy'], $mw);
+
+    // Section Banners
+    $router->get('/api/admin/section-banners', [SectionBannerController::class, 'index'], $mw);
+    $router->get('/api/admin/section-banners/{id}', [SectionBannerController::class, 'show'], $mw);
+    $router->post('/api/admin/section-banners', [SectionBannerController::class, 'store'], $mw);
+    $router->put('/api/admin/section-banners/{id}', [SectionBannerController::class, 'update'], $mw);
+    $router->delete('/api/admin/section-banners/{id}', [SectionBannerController::class, 'destroy'], $mw);
+
+    // Orders
+    $router->get('/api/admin/orders', [OrderController::class, 'index'], $mw);
+    $router->get('/api/admin/orders/{id}', [OrderController::class, 'show'], $mw);
+    $router->patch('/api/admin/orders/{id}/status', [OrderController::class, 'updateStatus'], $mw);
+    $router->delete('/api/admin/orders/{id}', [OrderController::class, 'destroy'], $mw);
+
     // Products
     $router->get('/api/admin/products', [ProductController::class, 'index'], $mw);
     $router->get('/api/admin/products/{id}', [ProductController::class, 'show'], $mw);
@@ -50,9 +74,6 @@ function registerAdminRoutes(Router $router): void
     $router->delete('/api/admin/products/{id}', [ProductController::class, 'destroy'], $mw);
     $router->patch('/api/admin/products/reorder', [ProductController::class, 'reorder'], $mw);
 
-    // Product Page Settings (admin)
-    $router->get('/api/admin/product-page', [ProductPageController::class, 'index'], $mw);
-    $router->put('/api/admin/product-page', [ProductPageController::class, 'update'], $mw);
 
     // Blog
     $router->get('/api/admin/blog', [BlogController::class, 'index'], $mw);

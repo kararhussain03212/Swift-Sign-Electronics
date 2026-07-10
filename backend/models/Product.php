@@ -10,14 +10,11 @@ final class Product extends BaseModel
 {
     protected string $table = 'products';
     protected array $fillable = [
-        'name', 'slug', 'subtitle', 'category', 'size',
-        'price', 'original_price', 'discount', 'rating', 'reviews',
-        'stock', 'featured',
-        'variants', 'variant_prices', 'variant_original_prices',
-        'images', 'badges',
-        'short_desc', 'description', 'benefits', 'ingredients',
-        'how_to_use', 'faqs', 'tags',
-        'sort_order', 'is_active',
+        'name', 'slug', 'category', 'brand', 'model',
+        'price', 'discount', 'rating', 'reviews', 'stock',
+        'thumbnail', 'images', 'description',
+        'introduction', 'specifications', 'shipping_list',
+        'featured', 'sort_order', 'is_active',
     ];
 
     protected function defaultOrderBy(): string
@@ -37,7 +34,7 @@ final class Product extends BaseModel
 
     private function normalizeRow(array $row): array
     {
-        $jsonCols = ['variants', 'variant_prices', 'variant_original_prices', 'images', 'badges', 'benefits', 'how_to_use', 'faqs', 'tags'];
+        $jsonCols = ['images', 'introduction', 'specifications', 'shipping_list'];
         foreach ($jsonCols as $col) {
             if (isset($row[$col]) && is_string($row[$col])) {
                 $decoded = json_decode($row[$col], true);

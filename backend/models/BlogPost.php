@@ -10,9 +10,11 @@ final class BlogPost extends BaseModel
 {
     protected string $table = 'blog_posts';
     protected array $fillable = [
-        'title', 'slug', 'category', 'excerpt',
-        'content', 'image', 'image_alt_text', 'author', 'tags',
-        'is_published', 'published_at', 'read_time', 'sort_order',
+        'title', 'slug', 'excerpt', 'body', 'cover',
+        'category', 'category_color',
+        'author_name', 'author_avatar', 'author_role',
+        'read_time', 'tags', 'featured',
+        'is_published', 'published_at', 'sort_order',
     ];
 
     public function search(string $query): array
@@ -20,7 +22,7 @@ final class BlogPost extends BaseModel
         $like = '%' . str_replace(['%', '_'], ['\\%', '\\_'], $query) . '%';
         $sql = 'SELECT * FROM blog_posts WHERE is_published = 1 AND (
             title LIKE :q1 OR excerpt LIKE :q2 OR category LIKE :q3 OR
-            author LIKE :q4 OR tags LIKE :q5
+            author_name LIKE :q4 OR tags LIKE :q5
         ) ORDER BY sort_order ASC, published_at DESC LIMIT 30';
 
         $stmt = $this->pdo->prepare($sql);
