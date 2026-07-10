@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "migrate": "c:/xampp/mysql/bin/mysql.exe -u root < backend/database/swift_sign_electronic.sql",
+    "seed": "node backend/database/generate_seed.mjs > backend/database/seed_data.sql && c:/xampp/mysql/bin/mysql.exe -u root --default-character-set=utf8mb4 < backend/database/seed_data.sql"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",
