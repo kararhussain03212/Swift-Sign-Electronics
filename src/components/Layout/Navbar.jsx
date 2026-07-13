@@ -1,9 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Menu, X, Cpu } from 'lucide-react';
 import { useShop } from '../../context/ShopContext';
+import { DEFAULT_SITE_SETTINGS, DEFAULT_NAV_LINKS } from '../../data/siteContent';
 
 export default function Navbar({ activeTab, onTabChange, cartCount }) {
-  const { products } = useShop();
+  const { products, siteSettings, navLinks: apiNavLinks } = useShop();
+  const brandName = siteSettings?.brand_name || DEFAULT_SITE_SETTINGS.brand_name;
+  const brandSubtitle = siteSettings?.brand_subtitle || DEFAULT_SITE_SETTINGS.brand_subtitle;
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -64,12 +69,17 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const navLinks = [
-    { id: 'home', label: 'Home' },
-    { id: 'products', label: 'Products' },
-    { id: 'blogs', label: 'Blog' },
-    { id: 'contact', label: 'Contact' }
-  ];
+  const navLinks = (apiNavLinks?.length ? apiNavLinks : DEFAULT_NAV_LINKS).filter(
+    (l) => l.is_active !== 0 && l.is_active !== false
+  );
+
+  const handleNavClick = (link) => {
+    if (link.link_key) {
+      onTabChange?.(link.link_key);
+    } else {
+      navigate(link.url);
+    }
+  };
 
   return (
     <header className="bg-white border-b border-gray-100 w-full shadow-md">
@@ -88,13 +98,13 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
               </div>
             </div>
             <div className="flex flex-col justify-center">
-              <span 
+              <span
                 className="font-sans text-[24px] font-extrabold tracking-tight leading-none text-gray-900"
               >
-                Swift Sign
+                {brandName}
               </span>
               <span className="text-[10px] font-bold text-[#0fafb8] tracking-[0.25em] uppercase mt-1">
-                Electronics
+                {brandSubtitle}
               </span>
             </div>
           </div>
@@ -105,10 +115,10 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
               {navLinks.map((link) => (
                 <button
                   key={link.id}
-                  onClick={() => onTabChange?.(link.id)}
+                  onClick={() => handleNavClick(link)}
                   className={`text-[15px] transition-colors ${
-                    activeTab === link.id 
-                    ? 'text-[#0fafb8] font-bold' 
+                    activeTab === link.link_key
+                    ? 'text-[#0fafb8] font-bold'
                     : 'text-gray-600 hover:text-[#0fafb8] font-semibold'
                   }`}
                 >
@@ -269,12 +279,12 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
               <button
                 key={link.id}
                 onClick={() => {
-                  onTabChange?.(link.id);
+                  handleNavClick(link);
                   setIsMobileMenuOpen(false);
                 }}
                 className={`text-left text-[16px] px-4 py-3 rounded-lg transition-colors ${
-                  activeTab === link.id 
-                  ? 'text-[#0fafb8] bg-[#0fafb8]/10 font-bold' 
+                  activeTab === link.link_key
+                  ? 'text-[#0fafb8] bg-[#0fafb8]/10 font-bold'
                   : 'text-gray-600 hover:bg-gray-50 font-semibold'
                 }`}
               >

@@ -17,6 +17,9 @@ import UserManagement from "./pages/users/UserManagement";
 import ContactMessages from "./pages/contact/ContactMessages";
 import ContactPageSettings from "./pages/contact/ContactPageSettings";
 import CustomerAddresses from "./pages/addresses/CustomerAddresses";
+import SiteContentSettings from "./pages/site/SiteContentSettings";
+import FooterManager from "./pages/site/FooterManager";
+import SocialLinkManager from "./pages/site/SocialLinkManager";
 import { useAuth } from "./context/useAuth";
 
 function Forbidden403() {
@@ -103,23 +106,39 @@ export default function App() {
             path="/settings"
             element={
               <ProtectedPage>
-                <Navigate to="/settings/navbar" replace />
+                <Navigate to="/settings/site-content" replace />
               </ProtectedPage>
             }
           />
           <Route
-            path="/settings/navbar"
+            path="/settings/site-content"
             element={
               <ProtectedPage>
-                <SiteSettings forcedMainSection="navbar" />
+                <SiteContentSettings />
               </ProtectedPage>
             }
           />
           <Route
-            path="/settings/footer"
+            path="/settings/nav-links"
             element={
               <ProtectedPage>
-                <SiteSettings forcedMainSection="footer" />
+                <Navigate to="/settings/site-content" replace />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/settings/footer-links"
+            element={
+              <ProtectedPage>
+                <FooterManager />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/settings/social-links"
+            element={
+              <ProtectedPage>
+                <SocialLinkManager />
               </ProtectedPage>
             }
           />

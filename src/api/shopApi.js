@@ -87,3 +87,7 @@ export const fetchHeroSlides = () => get("/public/hero");
 export const fetchSectionBanner = (key) => get(`/public/sections/${key}`);
 export const submitOrder = (order) => post("/public/orders", order);
 export const submitContact = (message) => post("/public/contact", message);
+export const fetchSiteSettings = () => get("/public/settings");
+export const fetchNavLinks = () => get("/public/nav-links");
+export const fetchFooterLinkGroups = () => get("/public/footer-link-groups");
+export const fetchSocialLinks = () => get("/public/social-links");

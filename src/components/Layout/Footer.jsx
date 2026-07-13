@@ -1,10 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, MapPin, Phone, ArrowRight } from 'lucide-react';
-import { FaGithub, FaDiscord, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import { Mail, MapPin, Phone } from 'lucide-react';
+import { FaGithub, FaDiscord, FaTwitter, FaLinkedin, FaFacebook, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { useShop } from '../../context/ShopContext';
+import {
+  DEFAULT_SITE_SETTINGS,
+  DEFAULT_FOOTER_LINK_GROUPS,
+  DEFAULT_SOCIAL_LINKS,
+} from '../../data/siteContent';
 import './Footer.css';
 
+const SOCIAL_ICONS = {
+  github: FaGithub,
+  discord: FaDiscord,
+  twitter: FaTwitter,
+  linkedin: FaLinkedin,
+  facebook: FaFacebook,
+  instagram: FaInstagram,
+  youtube: FaYoutube,
+};
+
 export default function Footer() {
+  const { siteSettings, footerLinkGroups, socialLinks } = useShop();
+  const settings = { ...DEFAULT_SITE_SETTINGS, ...siteSettings };
+  const groups = footerLinkGroups?.length ? footerLinkGroups : DEFAULT_FOOTER_LINK_GROUPS;
+  const socials = socialLinks?.length ? socialLinks : DEFAULT_SOCIAL_LINKS;
+
   return (
     <footer className="w-full bg-slate-950 border-t-4 border-[#0fafb8] text-slate-300 font-sans relative overflow-hidden">
       {/* Subtle background glow */}
@@ -18,51 +39,29 @@ export default function Footer() {
           <div className="flex flex-col gap-6 lg:col-span-1">
             <Link to="/" className="inline-block">
               <h2 className="text-2xl font-black text-white tracking-tight">
-                Swift Sign <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0fafb8] to-blue-400">Electronics</span>
+                {settings.brand_name} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0fafb8] to-blue-400">{settings.brand_subtitle}</span>
               </h2>
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed font-medium">
-              Empowering engineers, scholars, and makers with premium components, customizable final year projects, and diagnostic laboratory tools.
+              {settings.footer_description}
             </p>
           </div>
 
-          {/* Quick Links */}
-          <div className="flex flex-col gap-6">
-            <h3 className="text-sm font-bold text-white tracking-widest uppercase">Quick Links</h3>
-            <ul className="flex flex-col gap-3">
-              {[
-                { name: 'Home Page', path: '/' },
-                { name: 'About Us', path: '#about' },
-                { name: 'Contact Us', path: '/contact' },
-                { name: 'Support & FAQs', path: '#faq' },
-              ].map((link, i) => (
-                <li key={i}>
-                  <Link to={link.path} className="text-sm text-slate-400 hover:text-[#0fafb8] hover:translate-x-1 inline-block transition-all duration-200">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal / About */}
-          <div className="flex flex-col gap-6">
-            <h3 className="text-sm font-bold text-white tracking-widest uppercase">Legal Information</h3>
-            <ul className="flex flex-col gap-3">
-              {[
-                { name: 'Terms & Conditions', path: '/terms-and-conditions' },
-                { name: 'Privacy Policy', path: '/privacy-policy' },
-                { name: 'Return Policy', path: '/return-policy' },
-                { name: 'Shipping Policy', path: '/shipping-policy' },
-              ].map((link, i) => (
-                <li key={i}>
-                  <Link to={link.path} className="text-sm text-slate-400 hover:text-[#0fafb8] hover:translate-x-1 inline-block transition-all duration-200">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Footer link groups (Quick Links / Legal Information / admin-managed) */}
+          {groups.map((group) => (
+            <div key={group.id} className="flex flex-col gap-6">
+              <h3 className="text-sm font-bold text-white tracking-widest uppercase">{group.title}</h3>
+              <ul className="flex flex-col gap-3">
+                {(group.links || []).map((link) => (
+                  <li key={link.id}>
+                    <Link to={link.url} className="text-sm text-slate-400 hover:text-[#0fafb8] hover:translate-x-1 inline-block transition-all duration-200">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           {/* Contact & Socials */}
           <div className="flex flex-col gap-6">
@@ -71,36 +70,38 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Phone className="text-[#0fafb8] shrink-0 mt-0.5" size={20} />
                 <div className="flex flex-col">
-                  <span className="text-white font-medium text-base">+92 315 8399446</span>
+                  <span className="text-white font-medium text-base">{settings.contact_phone}</span>
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <Mail className="text-[#0fafb8] shrink-0 mt-0.5" size={20} />
                 <div className="flex flex-col">
-                  <span className="text-white font-medium text-base">info@it.swiftsignbm.com</span>
+                  <span className="text-white font-medium text-base">{settings.contact_email}</span>
                 </div>
               </li>
               <li className="flex items-start gap-3">
                 <MapPin className="text-[#0fafb8] shrink-0 mt-0.5" size={20} />
                 <div className="flex flex-col">
-                  <span className="text-slate-300 leading-relaxed">Office 22, 4th Floor, Pakland city center, I-8 Markaz, Islamabad, Pakistan.</span>
+                  <span className="text-slate-300 leading-relaxed">{settings.contact_address}</span>
                 </div>
               </li>
             </ul>
 
             <div className="flex items-center gap-3 mt-2">
-              <a href="#" className="w-10 h-10 bg-slate-900 hover:bg-[#0fafb8] border border-slate-800 hover:border-[#0fafb8] text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300">
-                <FaGithub size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 bg-slate-900 hover:bg-[#0fafb8] border border-slate-800 hover:border-[#0fafb8] text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300">
-                <FaDiscord size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 bg-slate-900 hover:bg-[#0fafb8] border border-slate-800 hover:border-[#0fafb8] text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300">
-                <FaTwitter size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 bg-slate-900 hover:bg-[#0fafb8] border border-slate-800 hover:border-[#0fafb8] text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300">
-                <FaLinkedin size={18} />
-              </a>
+              {socials.map((social) => {
+                const Icon = SOCIAL_ICONS[social.platform] || FaGithub;
+                return (
+                  <a
+                    key={social.id}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 bg-slate-900 hover:bg-[#0fafb8] border border-slate-800 hover:border-[#0fafb8] text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300"
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
@@ -111,10 +112,10 @@ export default function Footer() {
       <div className="border-t border-slate-800 bg-slate-950/80 backdrop-blur-sm relative z-10">
         <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-slate-500 font-medium">
-            © {new Date().getFullYear()} Swift Sign Electronics. All rights reserved.
+            © {new Date().getFullYear()} {settings.copyright_text}
           </p>
           <div className="flex items-center gap-6">
-            <span className="text-xs text-slate-600 font-medium">Designed by <a href="https://it.swiftsignbm.com/" target="_blank" rel="noopener noreferrer" className="text-[#0fafb8] hover:text-blue-400 font-bold transition-colors">swiftsign</a></span>
+            <span className="text-xs text-slate-600 font-medium">Designed by <a href={settings.designed_by_url} target="_blank" rel="noopener noreferrer" className="text-[#0fafb8] hover:text-blue-400 font-bold transition-colors">{settings.designed_by_text}</a></span>
           </div>
         </div>
       </div>

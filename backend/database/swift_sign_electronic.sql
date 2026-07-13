@@ -233,6 +233,100 @@ INSERT IGNORE INTO `contact_page_settings` (
 );
 
 -- ------------------------------------------------------------
+-- nav_links (main navbar links)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nav_links` (
+  `id`              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `link_key`        VARCHAR(80) DEFAULT NULL,
+  `label`           VARCHAR(120) NOT NULL,
+  `url`             VARCHAR(500) NOT NULL,
+  `sort_order`      SMALLINT NOT NULL DEFAULT 0,
+  `is_active`       TINYINT(1) NOT NULL DEFAULT 1,
+  `open_in_new_tab` TINYINT(1) NOT NULL DEFAULT 0,
+  `created_at`      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `nav_links` (`id`, `link_key`, `label`, `url`, `sort_order`) VALUES
+(1, 'home', 'Home', '/', 1),
+(2, 'products', 'Products', '/products', 2),
+(3, 'blogs', 'Blog', '/blog', 3),
+(4, 'contact', 'Contact', '/contact', 4);
+
+-- ------------------------------------------------------------
+-- footer_link_groups + footer_links (Quick Links / Legal Information columns)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `footer_link_groups` (
+  `id`         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `title`      VARCHAR(120) NOT NULL,
+  `sort_order` SMALLINT NOT NULL DEFAULT 0,
+  `is_active`  TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `footer_links` (
+  `id`         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `group_id`   INT UNSIGNED NOT NULL,
+  `label`      VARCHAR(120) NOT NULL,
+  `url`        VARCHAR(500) NOT NULL,
+  `sort_order` SMALLINT NOT NULL DEFAULT 0,
+  `is_active`  TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_footer_links_group` (`group_id`),
+  CONSTRAINT `fk_footer_links_group` FOREIGN KEY (`group_id`) REFERENCES `footer_link_groups`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `footer_link_groups` (`id`, `title`, `sort_order`) VALUES
+(1, 'Quick Links', 1),
+(2, 'Legal Information', 2);
+
+INSERT IGNORE INTO `footer_links` (`id`, `group_id`, `label`, `url`, `sort_order`) VALUES
+(1, 1, 'Home Page', '/', 1),
+(2, 1, 'About Us', '#about', 2),
+(3, 1, 'Contact Us', '/contact', 3),
+(4, 1, 'Support & FAQs', '#faq', 4),
+(5, 2, 'Terms & Conditions', '/terms-and-conditions', 1),
+(6, 2, 'Privacy Policy', '/privacy-policy', 2),
+(7, 2, 'Return Policy', '/return-policy', 3),
+(8, 2, 'Shipping Policy', '/shipping-policy', 4);
+
+-- ------------------------------------------------------------
+-- social_links (footer social icons) — placeholder URLs, replace with real ones
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `social_links` (
+  `id`         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `platform`   VARCHAR(40) NOT NULL,
+  `url`        VARCHAR(500) NOT NULL,
+  `sort_order` SMALLINT NOT NULL DEFAULT 0,
+  `is_active`  TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `social_links` (`id`, `platform`, `url`, `sort_order`) VALUES
+(1, 'github', 'https://github.com/', 1),
+(2, 'discord', 'https://discord.com/', 2),
+(3, 'twitter', 'https://twitter.com/', 3),
+(4, 'linkedin', 'https://linkedin.com/', 4);
+
+-- ------------------------------------------------------------
+-- site-wide settings (navbar/footer) — appended to generic settings key/value store
+-- ------------------------------------------------------------
+INSERT IGNORE INTO `settings` (`setting_key`, `setting_value`, `setting_type`, `order_position`) VALUES
+('brand_name', 'Swift Sign', 'text', 101),
+('brand_subtitle', 'Electronics', 'text', 102),
+('footer_description', 'Empowering engineers, scholars, and makers with premium components, customizable final year projects, and diagnostic laboratory tools.', 'text', 103),
+('contact_phone', '+92 333 8399480', 'text', 104),
+('contact_email', 'info@it.swiftsignbm.com', 'text', 105),
+('contact_address', 'Office 22, 4th Floor, Pakland city center, I-8 Markaz, Islamabad, Pakistan.', 'text', 106),
+('copyright_text', 'Swift Sign Electronics. All rights reserved.', 'text', 107),
+('designed_by_text', 'swiftsign', 'text', 108),
+('designed_by_url', 'https://it.swiftsignbm.com/', 'text', 109),
+('topbar_messages', '[{\"text\":\"100% Genuine Electronic Components\"},{\"text\":\"Nationwide Fast Delivery\"},{\"text\":\"Tech Support: +92 333 8399480\"}]', 'json', 110);
+
+-- ------------------------------------------------------------
 -- addresses (customer addresses)
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `addresses` (

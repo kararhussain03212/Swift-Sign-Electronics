@@ -295,6 +295,8 @@ abstract class BaseModel
         if ($onlyActive && $this->hasColumn('status')) {
             $where[] = 'status = :status';
             $params[':status'] = 'active';
+        } elseif ($onlyActive && $this->hasColumn('is_active')) {
+            $where[] = 'is_active = 1';
         }
 
         if ($this->hasColumn('status') && isset($query['status']) && in_array($query['status'], ['active', 'inactive'], true)) {

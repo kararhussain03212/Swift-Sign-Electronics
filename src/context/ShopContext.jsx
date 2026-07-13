@@ -1,7 +1,20 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { products as staticProducts } from '../data/products';
 import { BLOG_ARTICLES as staticBlogs } from '../data/blogData';
-import { fetchProducts, fetchBlogs } from '../api/shopApi';
+import {
+  DEFAULT_SITE_SETTINGS,
+  DEFAULT_NAV_LINKS,
+  DEFAULT_FOOTER_LINK_GROUPS,
+  DEFAULT_SOCIAL_LINKS,
+} from '../data/siteContent';
+import {
+  fetchProducts,
+  fetchBlogs,
+  fetchSiteSettings,
+  fetchNavLinks,
+  fetchFooterLinkGroups,
+  fetchSocialLinks,
+} from '../api/shopApi';
 
 const ShopContext = createContext();
 
@@ -18,12 +31,30 @@ export const ShopProvider = ({ children }) => {
   const [products, setProducts] = useState(staticProducts);
   const [blogs, setBlogs] = useState(staticBlogs);
 
+  // Site content (navbar/footer) — served from the API, fallback defaults if unreachable
+  const [siteSettings, setSiteSettings] = useState(DEFAULT_SITE_SETTINGS);
+  const [navLinks, setNavLinks] = useState(DEFAULT_NAV_LINKS);
+  const [footerLinkGroups, setFooterLinkGroups] = useState(DEFAULT_FOOTER_LINK_GROUPS);
+  const [socialLinks, setSocialLinks] = useState(DEFAULT_SOCIAL_LINKS);
+
   useEffect(() => {
     fetchProducts()
       .then((list) => { if (list.length) setProducts(list); })
       .catch(() => {});
     fetchBlogs()
       .then((list) => { if (list.length) setBlogs(list); })
+      .catch(() => {});
+    fetchSiteSettings()
+      .then((data) => { if (data && Object.keys(data).length) setSiteSettings((prev) => ({ ...prev, ...data })); })
+      .catch(() => {});
+    fetchNavLinks()
+      .then((list) => { if (list.length) setNavLinks(list); })
+      .catch(() => {});
+    fetchFooterLinkGroups()
+      .then((list) => { if (list.length) setFooterLinkGroups(list); })
+      .catch(() => {});
+    fetchSocialLinks()
+      .then((list) => { if (list.length) setSocialLinks(list); })
       .catch(() => {});
   }, []);
 
@@ -164,6 +195,10 @@ export const ShopProvider = ({ children }) => {
       value={{
         products,
         blogs,
+        siteSettings,
+        navLinks,
+        footerLinkGroups,
+        socialLinks,
         cart,
         wishlist,
         compareList,
