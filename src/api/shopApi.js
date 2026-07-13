@@ -4,6 +4,13 @@
 
 const API_BASE =
   import.meta.env.VITE_API_URL || "http://localhost/Electronics/backend/api";
+const BACKEND_ROOT = API_BASE.replace(/\/api\/?$/, "");
+
+const resolveUploadUrl = (path) => {
+  if (!path) return "";
+  if (/^https?:\/\//i.test(path)) return path;
+  return path.startsWith("/") ? `${BACKEND_ROOT}${path}` : `${BACKEND_ROOT}/uploads/${path}`;
+};
 
 async function get(path) {
   const res = await fetch(`${API_BASE}${path}`);
@@ -78,12 +85,22 @@ export function normalizeBlog(row) {
   };
 }
 
+export function normalizeHeroSlide(row) {
+  return {
+    id: row.id,
+    title: row.title,
+    subtitle: row.subtitle || "",
+    image: resolveUploadUrl(row.image),
+    sortOrder: Number(row.sort_order ?? 0),
+  };
+}
+
 export const fetchProducts = async () => (await get("/public/products")).map(normalizeProduct);
 export const fetchProductBySlug = async (slug) => normalizeProduct(await get(`/public/products/${slug}`));
 export const fetchBlogs = async () => (await get("/public/blog")).map(normalizeBlog);
 export const fetchBlogBySlug = async (slug) => normalizeBlog(await get(`/public/blog/${slug}`));
 export const fetchCategories = () => get("/public/categories");
-export const fetchHeroSlides = () => get("/public/hero");
+export const fetchHeroSlides = async () => (await get("/public/hero")).map(normalizeHeroSlide);
 export const fetchSectionBanner = (key) => get(`/public/sections/${key}`);
 export const submitOrder = (order) => post("/public/orders", order);
 export const submitContact = (message) => post("/public/contact", message);

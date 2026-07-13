@@ -195,25 +195,25 @@ export default function Products() {
 
       {/* Main Catalog Section */}
       <div id="products-section" className="flex flex-col gap-8 text-left scroll-mt-24">
-        
+
         {/* Product Catalog Board */}
         <main className="flex-1 space-y-6">
-          
-          {/* Header Controls (Desktop top-bar) */}
-          <div className="hidden lg:flex items-center justify-between gap-4 p-4 bg-white border border-slate-200 rounded-none shadow-sm">
-            <div className="text-sm font-semibold text-slate-600">
+
+          {/* Header Controls - Responsive */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-3 md:p-4 bg-white border border-slate-200 rounded-none shadow-sm">
+            <div className="text-xs md:text-sm font-semibold text-slate-600">
               Showing <span className="text-slate-800 font-extrabold">{sortedProducts.length}</span> components
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 flex-wrap">
               {/* Sort Selector */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase">Sort by:</span>
-                <div className="relative">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase whitespace-nowrap">Sort:</span>
+                <div className="relative flex-1 sm:flex-auto">
                   <select
                     value={sortOption}
                     onChange={(e) => setSortOption(e.target.value)}
-                    className="appearance-none bg-white text-sm font-bold text-slate-700 py-2 pl-3.5 pr-9 rounded-none border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                    className="appearance-none bg-white text-xs md:text-sm font-bold text-slate-700 py-2 pl-3 md:pl-3.5 pr-8 md:pr-9 rounded-none border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer w-full"
                   >
                     <option value="featured">Featured</option>
                     <option value="newest">Newest</option>
@@ -221,7 +221,7 @@ export default function Products() {
                     <option value="price-desc">Price: High to Low</option>
                     <option value="best-selling">Best Selling</option>
                   </select>
-                  <FiChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-450 pointer-events-none" />
+                  <FiChevronDown className="absolute right-2.5 md:right-3.5 top-1/2 -translate-y-1/2 text-slate-450 pointer-events-none w-4 h-4" />
                 </div>
               </div>
 
@@ -229,25 +229,25 @@ export default function Products() {
               <div className="flex items-center bg-slate-100 p-1 rounded-none">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-none transition-all cursor-pointer ${
+                  className={`p-1.5 md:p-2 rounded-none transition-all cursor-pointer ${
                     viewMode === 'grid'
                       ? 'bg-white text-blue-600 shadow-xs'
                       : 'text-slate-400 hover:text-slate-600'
                   }`}
                   title="Grid View"
                 >
-                  <FiGrid className="w-4 h-4" />
+                  <FiGrid className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-2 rounded-none transition-all cursor-pointer ${
+                  className={`p-1.5 md:p-2 rounded-none transition-all cursor-pointer ${
                     viewMode === 'list'
                       ? 'bg-white text-blue-600 shadow-xs'
                       : 'text-slate-400 hover:text-slate-600'
                   }`}
                   title="List View"
                 >
-                  <FiList className="w-4 h-4" />
+                  <FiList className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
               </div>
             </div>
@@ -291,8 +291,8 @@ export default function Products() {
               <div
                 className={
                   viewMode === 'grid'
-                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                    : "flex flex-col gap-5"
+                    ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6"
+                    : "flex flex-col gap-4 md:gap-5"
                 }
               >
                 <>

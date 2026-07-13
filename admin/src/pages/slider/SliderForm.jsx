@@ -1,21 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createSlider, getSlider, updateSlider } from "../../api/sliderApi";
-import { uploadVideo } from "../../api/uploadApi";
+import { uploadImage } from "../../api/uploadApi";
 import VideoUpload from "../../components/VideoUpload";
 
 const getInitialForm = () => ({
-  kicker: "Swift Sign Electronics",
   title: "",
   subtitle: "",
-  button_text: "Shop Now",
-  button_link: "/products",
-  secondary_button_text: "Our Story",
-  secondary_button_link: "/about",
   sort_order: 1,
   is_active: true,
-  videoFile: null,
-  videoPreview: "",
+  imageFile: null,
+  imagePreview: "",
 });
 
 export default function SliderForm() {
@@ -37,17 +32,12 @@ export default function SliderForm() {
         const res = await getSlider(id);
         const item = res.data?.data ?? {};
         setForm({
-          kicker:                item.kicker               || "Swift Sign Electronics",
           title:                 item.title                || "",
           subtitle:              item.subtitle             || "",
-          button_text:           item.button_text          || "Shop Now",
-          button_link:           item.button_link          || "/products",
-          secondary_button_text: item.secondary_button_text || "Our Story",
-          secondary_button_link: item.secondary_button_link || "/about",
           sort_order:            Number(item.sort_order ?? 1),
           is_active:             item.is_active === 1 || item.is_active === true,
-          videoFile:             null,
-          videoPreview:          item.video_url || "",
+          imageFile:             null,
+          imagePreview:          item.image || "",
         });
       } catch {
         setError("Failed to load slider.");
@@ -61,30 +51,25 @@ export default function SliderForm() {
     e.preventDefault();
     setError("");
     if (!form.title.trim()) { setError("Title is required."); return; }
-    if (!form.videoFile && !form.videoPreview) {
-      setError("Please upload a video."); return;
+    if (!form.imageFile && !form.imagePreview) {
+      setError("Please upload a background image."); return;
     }
 
     try {
       setSaving(true);
 
       const payload = {
-        kicker:                form.kicker.trim() || "Swift Sign Electronics",
         title:                 form.title.trim(),
         subtitle:              form.subtitle.trim(),
-        button_text:           form.button_text.trim() || "Shop Now",
-        button_link:           form.button_link.trim() || "/products",
-        secondary_button_text: form.secondary_button_text.trim() || "Our Story",
-        secondary_button_link: form.secondary_button_link.trim() || "/about",
         sort_order:            Number(form.sort_order || 1),
         is_active:             form.is_active ? 1 : 0,
       };
 
-      if (form.videoFile) {
-        const oldPath = isEditMode && form.videoPreview ? form.videoPreview.replace(/^.*\/uploads\//, "") : "";
-        payload.video_url = await uploadVideo(form.videoFile, "hero", oldPath);
-      } else if (form.videoPreview) {
-        payload.video_url = form.videoPreview.replace(/.*\/uploads\//, "");
+      if (form.imageFile) {
+        const oldPath = isEditMode && form.imagePreview ? form.imagePreview.replace(/^.*\/uploads\//, "") : "";
+        payload.image = await uploadImage(form.imageFile, "hero", oldPath);
+      } else if (form.imagePreview) {
+        payload.image = form.imagePreview.replace(/.*\/uploads\//, "");
       }
 
       if (isEditMode) await updateSlider(id, payload);
@@ -116,12 +101,6 @@ export default function SliderForm() {
 
       <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-6">
 
-        {/* Kicker */}
-        <div>
-          <label className={labelCls}>Label / Kicker</label>
-          <input value={form.kicker} onChange={(e) => setField("kicker", e.target.value)} className={inputCls} placeholder="Swift Sign Electronics" />
-        </div>
-
         {/* Title */}
         <div>
           <label className={labelCls}>Title *</label>
@@ -132,30 +111,6 @@ export default function SliderForm() {
         <div>
           <label className={labelCls}>Subtitle</label>
           <textarea rows={3} value={form.subtitle} onChange={(e) => setField("subtitle", e.target.value)} className={inputCls} placeholder="Explore quality electronics, tools, and instruments." />
-        </div>
-
-        {/* Primary Button */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <label className={labelCls}>Primary Button Text</label>
-            <input value={form.button_text} onChange={(e) => setField("button_text", e.target.value)} className={inputCls} placeholder="Shop Now" />
-          </div>
-          <div>
-            <label className={labelCls}>Primary Button Link</label>
-            <input value={form.button_link} onChange={(e) => setField("button_link", e.target.value)} className={inputCls} placeholder="/products" />
-          </div>
-        </div>
-
-        {/* Secondary Button */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <label className={labelCls}>Secondary Button Text</label>
-            <input value={form.secondary_button_text} onChange={(e) => setField("secondary_button_text", e.target.value)} className={inputCls} placeholder="Our Story" />
-          </div>
-          <div>
-            <label className={labelCls}>Secondary Button Link</label>
-            <input value={form.secondary_button_link} onChange={(e) => setField("secondary_button_link", e.target.value)} className={inputCls} placeholder="/about" />
-          </div>
         </div>
 
         {/* Sort & Active */}
@@ -170,12 +125,13 @@ export default function SliderForm() {
           </label>
         </div>
 
-        {/* Video Upload */}
+        {/* Background Image Upload */}
         <VideoUpload
-          value={form.videoPreview}
-          onFileSelect={(file) => setField("videoFile", file)}
-          label="Upload Background Video"
-          helperText={isEditMode ? "Upload to replace the current background video" : "MP4, WebM, or other video formats"}
+          value={form.imagePreview}
+          onFileSelect={(file) => setField("imageFile", file)}
+          label="Upload Background Image"
+          helperText={isEditMode ? "Upload to replace the current background image" : "PNG, JPG, WebP, or other image formats"}
+          accept="image/*"
         />
 
         {/* Submit */}

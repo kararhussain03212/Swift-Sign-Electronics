@@ -14,6 +14,7 @@ import {
   fetchNavLinks,
   fetchFooterLinkGroups,
   fetchSocialLinks,
+  fetchHeroSlides,
 } from '../api/shopApi';
 
 const ShopContext = createContext();
@@ -36,6 +37,7 @@ export const ShopProvider = ({ children }) => {
   const [navLinks, setNavLinks] = useState(DEFAULT_NAV_LINKS);
   const [footerLinkGroups, setFooterLinkGroups] = useState(DEFAULT_FOOTER_LINK_GROUPS);
   const [socialLinks, setSocialLinks] = useState(DEFAULT_SOCIAL_LINKS);
+  const [heroSlides, setHeroSlides] = useState([]);
 
   useEffect(() => {
     fetchProducts()
@@ -55,6 +57,9 @@ export const ShopProvider = ({ children }) => {
       .catch(() => {});
     fetchSocialLinks()
       .then((list) => { if (list.length) setSocialLinks(list); })
+      .catch(() => {});
+    fetchHeroSlides()
+      .then((list) => { if (list.length) setHeroSlides(list); })
       .catch(() => {});
   }, []);
 
@@ -199,6 +204,7 @@ export const ShopProvider = ({ children }) => {
         navLinks,
         footerLinkGroups,
         socialLinks,
+        heroSlides,
         cart,
         wishlist,
         compareList,

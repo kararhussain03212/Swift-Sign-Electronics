@@ -10,9 +10,14 @@ const VideoUpload = ({
   required = false,
 }) => {
   const [objectUrl, setObjectUrl] = useState("");
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
+  const [objectUrlIsImage, setObjectUrlIsImage] = useState(false);
+  const [mediaLoaded, setMediaLoaded] = useState(false);
+  const [mediaError, setMediaError] = useState(false);
   const apiRoot = useMemo(() => getBackendRoot(), []);
+
+  const isImage = (url) => objectUrl && url === objectUrl
+    ? objectUrlIsImage
+    : /\.(png|jpg|jpeg|gif|webp)$/i.test(url);
 
   const resolveVideoUrl = (url) => {
     if (!url) return "";
@@ -45,6 +50,9 @@ const VideoUpload = ({
 
     const nextUrl = URL.createObjectURL(file);
     setObjectUrl(nextUrl);
+    setObjectUrlIsImage(file.type.startsWith("image/"));
+    setMediaLoaded(false);
+    setMediaError(false);
 
     if (typeof onFileSelect === "function") {
       onFileSelect(file);
@@ -69,19 +77,29 @@ const VideoUpload = ({
         className="mt-3 block w-full text-sm text-white file:mr-3 file:rounded-md file:border-0 file:bg-[var(--admin-primary)] file:px-3 file:py-2 file:text-black hover:file:bg-[var(--admin-primary-strong)]"
       />
 
-      {preview && !videoError ? (
-        <video
-          src={preview}
-          controls
-          className="mt-4 h-36 w-full rounded-lg object-cover"
-          onLoadedMetadata={() => setVideoLoaded(true)}
-          onError={() => setVideoError(true)}
-          style={{ display: videoLoaded ? "block" : "block" }}
-        />
+      {preview && !mediaError ? (
+        isImage(preview) ? (
+          <img
+            src={preview}
+            alt="Preview"
+            className="mt-4 h-36 w-full rounded-lg object-cover"
+            onLoad={() => setMediaLoaded(true)}
+            onError={() => setMediaError(true)}
+          />
+        ) : (
+          <video
+            src={preview}
+            controls
+            className="mt-4 h-36 w-full rounded-lg object-cover"
+            onLoadedMetadata={() => setMediaLoaded(true)}
+            onError={() => setMediaError(true)}
+            style={{ display: mediaLoaded ? "block" : "block" }}
+          />
+        )
       ) : null}
-      {videoError && preview ? (
+      {mediaError && preview ? (
         <div className="mt-4 flex h-36 w-full items-center justify-center rounded-lg border border-dashed border-red-500/50 bg-red-500/10 text-sm text-red-400">
-          Failed to load video: {preview.slice(0, 50)}...
+          Failed to load: {preview.slice(0, 50)}...
         </div>
       ) : null}
     </label>

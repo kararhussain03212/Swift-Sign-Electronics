@@ -51,8 +51,8 @@ const FEATURED_CATEGORIES = [
   { id: 'wearables', name: 'Wearables', icon: FiWatch }
 ];
 
-// Hero Slider Data
-const HERO_SLIDES = [
+// Hero Slider Data — static fallback used until the API-backed slides load
+const DEFAULT_HERO_SLIDES = [
   {
     id: 1,
     title: 'Premium Electronics',
@@ -151,6 +151,9 @@ export default function Home() {
 }
 
 function HeroSliderSection() {
+  const { heroSlides } = useShop();
+  const slides = heroSlides?.length ? heroSlides : DEFAULT_HERO_SLIDES;
+
   return (
     <div className="w-full">
       <Swiper
@@ -162,7 +165,7 @@ function HeroSliderSection() {
         className="w-full"
         style={SWIPER_STYLE}
       >
-        {HERO_SLIDES.map((slide) => (
+        {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div
               className={`relative w-full h-[500px] md:h-[650px] flex items-center justify-center overflow-hidden bg-cover bg-center`}

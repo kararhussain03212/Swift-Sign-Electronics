@@ -1,0 +1,367 @@
+/* Comprehensive Responsive Design Improvements */
+
+/* ============================
+   MOBILE FIRST APPROACH
+   ============================ */
+
+/* Extra Small Screens (< 375px) */
+@media (max-width: 374px) {
+  body {
+    font-size: 13px;
+  }
+
+  h1 {
+    font-size: 1.5rem !important;
+  }
+
+  h2 {
+    font-size: 1.25rem !important;
+  }
+
+  .px-4 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+
+  .gap-8 {
+    gap: 1rem !important;
+  }
+
+  .max-w-6xl {
+    padding: 0 0.75rem !important;
+  }
+}
+
+/* Small Screens (375px - 639px) - Mobile */
+@media (max-width: 639px) {
+  /* Ensure text doesn't overflow */
+  .truncate {
+    max-width: 100%;
+  }
+
+  /* Responsive padding for mobile */
+  .p-6 {
+    padding: 1rem !important;
+  }
+
+  .p-8 {
+    padding: 1.25rem !important;
+  }
+
+  .p-10 {
+    padding: 1.5rem !important;
+  }
+
+  /* Responsive gap sizes */
+  .gap-12 {
+    gap: 1rem !important;
+  }
+
+  .gap-8 {
+    gap: 0.75rem !important;
+  }
+
+  /* Full width buttons on mobile */
+  button:not(.icon) {
+    width: 100%;
+  }
+
+  /* Responsive grid */
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+
+  /* Product cards stack better */
+  .flex-col {
+    flex-direction: column;
+  }
+
+  /* Text scaling */
+  .text-lg {
+    font-size: 1rem !important;
+  }
+
+  .text-xl {
+    font-size: 1.1rem !important;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+
+  .text-3xl {
+    font-size: 1.5rem !important;
+  }
+
+  .text-4xl {
+    font-size: 1.75rem !important;
+  }
+
+  .text-5xl {
+    font-size: 2rem !important;
+  }
+
+  /* Responsive spacing */
+  .py-16 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .py-20 {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+
+  /* Responsive width for forms */
+  input,
+  textarea,
+  select {
+    width: 100% !important;
+  }
+
+  /* Image responsiveness */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Responsive hero height */
+  .h-\[500px\] {
+    height: 300px !important;
+  }
+
+  .h-\[650px\] {
+    height: 400px !important;
+  }
+
+  /* Tables become cards on mobile */
+  table {
+    display: block;
+  }
+
+  tbody {
+    display: block;
+  }
+
+  tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #e2e8f0;
+  }
+
+  td {
+    display: block;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  /* Flexbox improvements */
+  .flex {
+    flex-wrap: wrap;
+  }
+
+  /* Responsive containers */
+  .max-w-\[1536px\] {
+    width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .max-w-6xl {
+    width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Medium Screens (640px - 1023px) - Tablet */
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Tablet optimizations */
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  /* Responsive gap */
+  .gap-12 {
+    gap: 1.5rem !important;
+  }
+
+  /* Text scaling for tablets */
+  .text-5xl {
+    font-size: 2.5rem !important;
+  }
+
+  /* Padding adjustments */
+  .p-10 {
+    padding: 2rem !important;
+  }
+}
+
+/* Large Screens (1024px+) - Desktop */
+@media (min-width: 1024px) {
+  /* Optimal desktop spacing */
+  .gap-12 {
+    gap: 3rem !important;
+  }
+
+  /* Desktop layout optimizations */
+  .grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+/* ============================
+   ORIENTATION HANDLING
+   ============================ */
+
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Reduce vertical padding for landscape mode on small screens */
+  .py-10 {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .py-16 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .py-20 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  /* Reduce hero height in landscape */
+  .h-\[500px\] {
+    height: 280px !important;
+  }
+
+  .h-\[650px\] {
+    height: 320px !important;
+  }
+}
+
+/* ============================
+   ACCESSIBILITY IMPROVEMENTS
+   ============================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  button {
+    border-width: 2px !important;
+  }
+
+  input,
+  textarea {
+    border-width: 2px !important;
+  }
+}
+
+/* ============================
+   PRINT STYLES
+   ============================ */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  .shadow-md {
+    box-shadow: none !important;
+  }
+}
+
+/* ============================
+   COMMON FIXES
+   ============================ */
+
+/* Ensure content doesn't overflow on small screens */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Better touch targets on mobile */
+@media (max-width: 639px) {
+  button,
+  a,
+  input[type='checkbox'],
+  input[type='radio'] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Responsive containers */
+.container-responsive {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Image responsiveness */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Responsive video containers */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure modals are responsive */
+@media (max-width: 639px) {
+  .modal-dialog {
+    max-width: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+}

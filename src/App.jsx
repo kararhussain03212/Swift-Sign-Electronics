@@ -16,6 +16,7 @@ import ReturnPolicy from "./pages/ReturnPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import Wishlist from "./pages/Wishlist";
 import "./App.css";
+import "./styles/responsive-improvements.css";
 
 function App() {
   const appState = useAppState();
