@@ -176,7 +176,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView = 
       className="group relative flex flex-col justify-between bg-white border border-slate-200 hover:border-blue-500/50 rounded-none hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300"
     >
       {/* Product Image Panel */}
-      <div className="relative w-full h-48 rounded-none overflow-hidden bg-slate-50 flex items-center justify-center p-3">
+      <div className="relative w-full h-72 shrink-0 rounded-none overflow-hidden bg-slate-50 flex items-center justify-center p-3">
         <img
           src={product.thumbnail}
           alt={product.name}
@@ -240,7 +240,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView = 
       </div>
 
       {/* Body Content */}
-      <div className="p-4 flex-1 flex flex-col justify-between">
+      <div className="p-4 flex-1 flex flex-col justify-between h-48">
         <div className="space-y-1">
           {/* Brand & Model */}
           <div className="flex items-center gap-2">

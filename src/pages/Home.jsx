@@ -266,7 +266,7 @@ function CategorySliderSection({ title, subtitle, category, bannerBgImage }) {
         </div>
       )}
 
-      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         {categoryProducts.length === 0 ? (
           <div className="flex items-center justify-center h-64 bg-gray-50 rounded-lg">
             <p className="text-gray-500">No products available in this category</p>
@@ -306,7 +306,7 @@ function DiscoverSection() {
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Discover</h2>
         <p className="text-gray-600 text-lg">Explore our complete collection of electronics</p>
       </div>
-      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         {products.length === 0 ? (
           <div className="flex items-center justify-center h-64 bg-gray-50 rounded-lg">
             <p className="text-gray-500">No products available</p>

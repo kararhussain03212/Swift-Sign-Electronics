@@ -5,8 +5,6 @@ import { AuthProvider } from "./context/AuthContext.jsx";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
-import ProductList from "./pages/product/ProductList";
-import ProductForm from "./pages/product/ProductForm";
 import SliderList from "./pages/slider/SliderList";
 import SliderForm from "./pages/slider/SliderForm";
 import CategoryList from "./pages/category/CategoryList";
@@ -15,8 +13,6 @@ import SectionBannerList from "./pages/sections/SectionBannerList";
 import SectionBannerForm from "./pages/sections/SectionBannerForm";
 import OrderList from "./pages/orders/OrderList";
 import SiteSettings from "./pages/settings/SiteSettings";
-import BlogList from "./pages/blog/BlogList";
-import BlogForm from "./pages/blog/BlogForm";
 import UserManagement from "./pages/users/UserManagement";
 import ContactMessages from "./pages/contact/ContactMessages";
 import ContactPageSettings from "./pages/contact/ContactPageSettings";
@@ -79,9 +75,9 @@ export default function App() {
           <Route path="/" element={<ProtectedPage><Dashboard /></ProtectedPage>} />
           <Route path="/dashboard" element={<ProtectedPage><Dashboard /></ProtectedPage>} />
 
-          <Route path="/products" element={<ProtectedPage><ProductList /></ProtectedPage>} />
+          {/* <Route path="/products" element={<ProtectedPage><ProductList /></ProtectedPage>} />
           <Route path="/products/new" element={<ProtectedPage><ProductForm /></ProtectedPage>} />
-          <Route path="/products/edit/:id" element={<ProtectedPage><ProductForm /></ProtectedPage>} />
+          <Route path="/products/edit/:id" element={<ProtectedPage><ProductForm /></ProtectedPage>} /> */}
 
           <Route path="/categories" element={<ProtectedPage><CategoryList /></ProtectedPage>} />
           <Route path="/categories/new" element={<ProtectedPage><CategoryForm /></ProtectedPage>} />
@@ -97,9 +93,9 @@ export default function App() {
           <Route path="/sliders/new" element={<ProtectedPage><SliderForm /></ProtectedPage>} />
           <Route path="/sliders/edit/:id" element={<ProtectedPage><SliderForm /></ProtectedPage>} />
 
-          <Route path="/blogs" element={<ProtectedPage><BlogList /></ProtectedPage>} />
+          {/* <Route path="/blogs" element={<ProtectedPage><BlogList /></ProtectedPage>} />
           <Route path="/blogs/new" element={<ProtectedPage><BlogForm /></ProtectedPage>} />
-          <Route path="/blogs/edit/:id" element={<ProtectedPage><BlogForm /></ProtectedPage>} />
+          <Route path="/blogs/edit/:id" element={<ProtectedPage><BlogForm /></ProtectedPage>} /> */}
 
           <Route path="/profile" element={<ProtectedPage><Admin /></ProtectedPage>} />
 
