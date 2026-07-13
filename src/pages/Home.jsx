@@ -73,9 +73,43 @@ const DEFAULT_HERO_SLIDES = [
   }
 ];
 
+const DEFAULT_SECTION_BANNERS = {
+  tools: {
+    category: 'Tools',
+    sectionTitle: 'Tools',
+    kicker: 'Tools Essentials',
+    title: 'Professional-Grade Tools',
+    subtitle: 'Essential tools for electronics projects',
+    description: 'Precision hand tools and workstations for soldering, cutting, and assembly.',
+    bgImage: '/image.png',
+  },
+  instruments: {
+    category: 'Instruments',
+    sectionTitle: 'Instruments',
+    kicker: 'Instruments Essentials',
+    title: 'Precision Test Instruments',
+    subtitle: 'Precision measurement and diagnostic devices',
+    description: 'Multimeters, oscilloscopes, and power supplies for accurate diagnostics.',
+    bgImage: '/image copy.png',
+  },
+  projects: {
+    category: 'Projects',
+    sectionTitle: 'Projects',
+    kicker: 'Projects Essentials',
+    title: 'Complete Project Kits',
+    subtitle: 'Complete project kits and components',
+    description: 'Everything you need to build, learn, and prototype your next project.',
+    bgImage: '/image copy 2.png',
+  },
+};
+
 export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const { getCartCount } = useShop();
+  const { getCartCount, sectionBanners } = useShop();
+
+  const toolsBanner = sectionBanners.tools || DEFAULT_SECTION_BANNERS.tools;
+  const instrumentsBanner = sectionBanners.instruments || DEFAULT_SECTION_BANNERS.instruments;
+  const projectsBanner = sectionBanners.projects || DEFAULT_SECTION_BANNERS.projects;
 
   return (
     <div className="w-full bg-gray-50 min-h-screen">
@@ -89,28 +123,13 @@ export default function Home() {
       <DiscoverSection />
 
       {/* 3. TOOLS CATEGORY SLIDER */}
-      <CategorySliderSection
-        title="Tools"
-        subtitle="Essential tools for electronics projects"
-        category="Tools"
-        bannerBgImage="/image.png"
-      />
+      <CategorySliderSection sectionName="Tools" banner={toolsBanner} />
 
       {/* 4. INSTRUMENTS CATEGORY SLIDER */}
-      <CategorySliderSection
-        title="Instruments"
-        subtitle="Precision measurement and diagnostic devices"
-        category="Instruments"
-        bannerBgImage="/image copy.png"
-      />
+      <CategorySliderSection sectionName="Instruments" banner={instrumentsBanner} />
 
       {/* 5. PROJECTS CATEGORY SLIDER */}
-      <CategorySliderSection
-        title="Projects"
-        subtitle="Complete project kits and components"
-        category="Projects"
-        bannerBgImage="/image copy 2.png"
-      />
+      <CategorySliderSection sectionName="Projects" banner={projectsBanner} />
 
       {/* 8. BLOG SECTION */}
       <BlogSection />
@@ -237,32 +256,34 @@ function FeaturedCategoriesSection() {
   );
 }
 
-function CategorySliderSection({ title, subtitle, category, bannerBgImage }) {
+function CategorySliderSection({ sectionName, banner }) {
   const { products } = useShop();
-  const categoryProducts = products.filter(p => p.category === category).slice(0, 8);
-  const categoryBanner = categoryProducts[0];
+  const activeCategory = banner.category || sectionName;
+  const categoryProducts = products.filter(p => p.category === activeCategory).slice(0, 8);
 
   return (
     <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-gray-50">
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{title}</h2>
-        <p className="text-gray-600 text-lg">{subtitle}</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{banner.sectionTitle || sectionName}</h2>
+        <p className="text-gray-600 text-lg">{banner.subtitle}</p>
       </div>
 
-      {categoryBanner && (
+      {banner && (
         <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 mb-12">
           <div
             className="rounded-lg overflow-hidden relative bg-blue-600 bg-cover bg-center"
-            style={bannerBgImage ? { backgroundImage: `url('${bannerBgImage}')` } : {}}
+            style={banner.bgImage ? { backgroundImage: `url('${banner.bgImage}')` } : {}}
           >
-            {bannerBgImage && <div className="absolute inset-0 bg-black/60 z-0" />}
+            {banner.bgImage && <div className="absolute inset-0 bg-black/60 z-0" />}
             <div className="flex flex-col md:flex-row items-center justify-between gap-8 p-10 md:p-14 relative z-10">
               <div className="flex-1 text-white max-w-3xl">
-                <div className="mb-2 text-sm font-bold text-blue-200 uppercase tracking-wider">
-                  {category} Essentials
-                </div>
-                <h3 className="text-3xl md:text-4xl font-bold mb-4">{categoryBanner.name}</h3>
-                <p className="text-blue-100 text-lg mb-6 line-clamp-3">{categoryBanner.description}</p>
+                {banner.kicker && (
+                  <div className="mb-2 text-sm font-bold text-blue-200 uppercase tracking-wider">
+                    {banner.kicker}
+                  </div>
+                )}
+                <h3 className="text-3xl md:text-4xl font-bold mb-4">{banner.title}</h3>
+                <p className="text-blue-100 text-lg mb-6 line-clamp-3">{banner.description}</p>
               </div>
             </div>
           </div>

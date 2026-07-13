@@ -2,6 +2,11 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import ProductList from "./pages/product/ProductList";
+import ProductForm from "./pages/product/ProductForm";
+import BlogList from "./pages/blog/BlogList";
+import BlogForm from "./pages/blog/BlogForm";
+
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
@@ -78,9 +83,9 @@ export default function App() {
           <Route path="/" element={<ProtectedPage><Dashboard /></ProtectedPage>} />
           <Route path="/dashboard" element={<ProtectedPage><Dashboard /></ProtectedPage>} />
 
-          {/* <Route path="/products" element={<ProtectedPage><ProductList /></ProtectedPage>} />
+          <Route path="/products" element={<ProtectedPage><ProductList /></ProtectedPage>} />
           <Route path="/products/new" element={<ProtectedPage><ProductForm /></ProtectedPage>} />
-          <Route path="/products/edit/:id" element={<ProtectedPage><ProductForm /></ProtectedPage>} /> */}
+          <Route path="/products/edit/:id" element={<ProtectedPage><ProductForm /></ProtectedPage>} />
 
           <Route path="/categories" element={<ProtectedPage><CategoryList /></ProtectedPage>} />
           <Route path="/categories/new" element={<ProtectedPage><CategoryForm /></ProtectedPage>} />
@@ -96,9 +101,9 @@ export default function App() {
           <Route path="/sliders/new" element={<ProtectedPage><SliderForm /></ProtectedPage>} />
           <Route path="/sliders/edit/:id" element={<ProtectedPage><SliderForm /></ProtectedPage>} />
 
-          {/* <Route path="/blogs" element={<ProtectedPage><BlogList /></ProtectedPage>} />
+          <Route path="/blogs" element={<ProtectedPage><BlogList /></ProtectedPage>} />
           <Route path="/blogs/new" element={<ProtectedPage><BlogForm /></ProtectedPage>} />
-          <Route path="/blogs/edit/:id" element={<ProtectedPage><BlogForm /></ProtectedPage>} /> */}
+          <Route path="/blogs/edit/:id" element={<ProtectedPage><BlogForm /></ProtectedPage>} />
 
           <Route path="/profile" element={<ProtectedPage><Admin /></ProtectedPage>} />
 

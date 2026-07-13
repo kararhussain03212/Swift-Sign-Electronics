@@ -15,7 +15,10 @@ import {
   fetchFooterLinkGroups,
   fetchSocialLinks,
   fetchHeroSlides,
+  fetchSectionBanner,
 } from '../api/shopApi';
+
+const SECTION_BANNER_KEYS = ['tools', 'instruments', 'projects'];
 
 const ShopContext = createContext();
 
@@ -38,6 +41,7 @@ export const ShopProvider = ({ children }) => {
   const [footerLinkGroups, setFooterLinkGroups] = useState(DEFAULT_FOOTER_LINK_GROUPS);
   const [socialLinks, setSocialLinks] = useState(DEFAULT_SOCIAL_LINKS);
   const [heroSlides, setHeroSlides] = useState([]);
+  const [sectionBanners, setSectionBanners] = useState({});
 
   useEffect(() => {
     fetchProducts()
@@ -61,6 +65,11 @@ export const ShopProvider = ({ children }) => {
     fetchHeroSlides()
       .then((list) => { if (list.length) setHeroSlides(list); })
       .catch(() => {});
+    SECTION_BANNER_KEYS.forEach((key) => {
+      fetchSectionBanner(key)
+        .then((banner) => setSectionBanners((prev) => ({ ...prev, [key]: banner })))
+        .catch(() => {});
+    });
   }, []);
 
   // Cart State
@@ -205,6 +214,7 @@ export const ShopProvider = ({ children }) => {
         footerLinkGroups,
         socialLinks,
         heroSlides,
+        sectionBanners,
         cart,
         wishlist,
         compareList,

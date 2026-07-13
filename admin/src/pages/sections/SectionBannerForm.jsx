@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createSectionBanner, getSectionBanner, updateSectionBanner } from "../../api/sectionBannerApi";
+import { getCategories } from "../../api/categoryApi";
 import { uploadImage } from "../../api/uploadApi";
 import ImageUpload from "../../components/ImageUpload";
 
 const EMPTY = {
   section_key: "",
+  category: "",
+  section_title: "",
   kicker: "",
   title: "",
   subtitle: "",
@@ -14,6 +17,12 @@ const EMPTY = {
   sort_order: 0,
   is_active: 1,
 };
+
+// Fallback only, used if the categories API is unreachable or returns nothing.
+const BASE_CATEGORIES = ["Tools", "Instruments", "Projects"];
+
+const slugify = (value = "") =>
+  value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
 export default function SectionBannerForm() {
   const navigate = useNavigate();
@@ -25,6 +34,17 @@ export default function SectionBannerForm() {
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [categoryNames, setCategoryNames] = useState(BASE_CATEGORIES);
+
+  useEffect(() => {
+    getCategories()
+      .then((res) => {
+        const list = Array.isArray(res.data?.data) ? res.data.data : [];
+        const names = [...new Set(list.map((c) => c.name).filter(Boolean))];
+        if (names.length) setCategoryNames(names);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -39,8 +59,8 @@ export default function SectionBannerForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!form.section_key.trim() || !form.title.trim()) {
-      setError("Section key and title are required.");
+    if (!form.section_key.trim() || !form.title.trim() || !form.category.trim() || !form.section_title.trim()) {
+      setError("Section key, product category, heading title, and promo title are required.");
       return;
     }
 
@@ -88,31 +108,56 @@ export default function SectionBannerForm() {
             <span className="mb-1 block text-sm font-semibold text-white">Section key *</span>
             <select value={form.section_key} onChange={set("section_key")} className={inputCls}>
               <option value="">Select section…</option>
-              <option value="tools">tools</option>
-              <option value="instruments">instruments</option>
-              <option value="projects">projects</option>
+              {categoryNames.map((cat) => (
+                <option key={cat} value={slugify(cat)}>{slugify(cat)}</option>
+              ))}
             </select>
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-white">Kicker</span>
-            <input value={form.kicker || ""} onChange={set("kicker")} className={inputCls} placeholder="e.g. TOOLS ESSENTIALS" />
+            <span className="mb-1 block text-sm font-semibold text-white">Product category *</span>
+            <select value={form.category || ""} onChange={set("category")} className={inputCls}>
+              <option value="">Select category…</option>
+              {categoryNames.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-white/50">Products shown in the carousel below this banner. Pulled live from Categories — add a new one there and it appears here.</p>
           </label>
         </div>
 
-        <label className="block">
-          <span className="mb-1 block text-sm font-semibold text-white">Title *</span>
-          <input value={form.title} onChange={set("title")} className={inputCls} placeholder="e.g. Professional Digital Soldering Station" />
-        </label>
+        <div className="rounded-xl border border-white/10 p-4">
+          <p className="mb-3 text-sm font-bold text-white/90">Page heading</p>
+          <p className="mb-3 text-xs text-white/50">The plain heading shown above the promo banner (e.g. "Tools").</p>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <label className="block">
+              <span className="mb-1 block text-sm font-semibold text-white">Heading title</span>
+              <input value={form.section_title || ""} onChange={set("section_title")} className={inputCls} placeholder="e.g. Tools" />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-sm font-semibold text-white">Heading subtitle</span>
+              <input value={form.subtitle || ""} onChange={set("subtitle")} className={inputCls} placeholder="e.g. Essential tools for electronics projects" />
+            </label>
+          </div>
+        </div>
 
-        <label className="block">
-          <span className="mb-1 block text-sm font-semibold text-white">Subtitle</span>
-          <input value={form.subtitle || ""} onChange={set("subtitle")} className={inputCls} />
-        </label>
+        <div className="rounded-xl border border-white/10 p-4">
+          <p className="mb-3 text-sm font-bold text-white/90">Promo banner</p>
+          <p className="mb-3 text-xs text-white/50">The dark image card with a spotlight product/message.</p>
+          <label className="mb-4 block">
+            <span className="mb-1 block text-sm font-semibold text-white">Kicker</span>
+            <input value={form.kicker || ""} onChange={set("kicker")} className={inputCls} placeholder="e.g. TOOLS ESSENTIALS" />
+          </label>
 
-        <label className="block">
-          <span className="mb-1 block text-sm font-semibold text-white">Description</span>
-          <textarea value={form.description || ""} onChange={set("description")} rows={3} className={inputCls} />
-        </label>
+          <label className="mb-4 block">
+            <span className="mb-1 block text-sm font-semibold text-white">Title *</span>
+            <input value={form.title} onChange={set("title")} className={inputCls} placeholder="e.g. Professional Digital Soldering Station" />
+          </label>
+
+          <label className="block">
+            <span className="mb-1 block text-sm font-semibold text-white">Description</span>
+            <textarea value={form.description || ""} onChange={set("description")} rows={3} className={inputCls} />
+          </label>
+        </div>
 
         <div>
           <span className="mb-1 block text-sm font-semibold text-white">Background image</span>

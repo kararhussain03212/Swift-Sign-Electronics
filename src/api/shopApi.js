@@ -95,13 +95,27 @@ export function normalizeHeroSlide(row) {
   };
 }
 
+export function normalizeSectionBanner(row) {
+  return {
+    id: row.id,
+    sectionKey: row.section_key,
+    category: row.category || "",
+    sectionTitle: row.section_title || "",
+    kicker: row.kicker || "",
+    title: row.title,
+    subtitle: row.subtitle || "",
+    description: row.description || "",
+    bgImage: resolveUploadUrl(row.bg_image),
+  };
+}
+
 export const fetchProducts = async () => (await get("/public/products")).map(normalizeProduct);
 export const fetchProductBySlug = async (slug) => normalizeProduct(await get(`/public/products/${slug}`));
 export const fetchBlogs = async () => (await get("/public/blog")).map(normalizeBlog);
 export const fetchBlogBySlug = async (slug) => normalizeBlog(await get(`/public/blog/${slug}`));
 export const fetchCategories = () => get("/public/categories");
 export const fetchHeroSlides = async () => (await get("/public/hero")).map(normalizeHeroSlide);
-export const fetchSectionBanner = (key) => get(`/public/sections/${key}`);
+export const fetchSectionBanner = async (key) => normalizeSectionBanner(await get(`/public/sections/${key}`));
 export const submitOrder = (order) => post("/public/orders", order);
 export const submitContact = (message) => post("/public/contact", message);
 export const fetchSiteSettings = () => get("/public/settings");

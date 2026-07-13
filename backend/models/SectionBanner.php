@@ -10,7 +10,7 @@ final class SectionBanner extends BaseModel
 {
     protected string $table = 'section_banners';
     protected array $fillable = [
-        'section_key', 'kicker', 'title', 'subtitle', 'description',
+        'section_key', 'category', 'section_title', 'kicker', 'title', 'subtitle', 'description',
         'bg_image', 'sort_order', 'is_active',
     ];
 
