@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Backend\Controllers\BlogCategoryController;
 use Backend\Controllers\BlogController;
 use Backend\Controllers\CategoryController;
 use Backend\Controllers\ContactController;
@@ -27,6 +28,7 @@ require_once __DIR__ . '/../controllers/OrderController.php';
 require_once __DIR__ . '/../controllers/SectionBannerController.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
 require_once __DIR__ . '/../controllers/BlogController.php';
+require_once __DIR__ . '/../controllers/BlogCategoryController.php';
 require_once __DIR__ . '/../controllers/SettingController.php';
 require_once __DIR__ . '/../controllers/UploadController.php';
 require_once __DIR__ . '/../controllers/UserController.php';
@@ -91,6 +93,14 @@ function registerAdminRoutes(Router $router): void
     $router->put('/api/admin/blog/{id}', [BlogController::class, 'update'], $mw);
     $router->delete('/api/admin/blog/{id}', [BlogController::class, 'destroy'], $mw);
     $router->patch('/api/admin/blog/reorder', [BlogController::class, 'reorder'], $mw);
+
+    // Blog Categories
+    $router->get('/api/admin/blog-categories', [BlogCategoryController::class, 'index'], $mw);
+    $router->get('/api/admin/blog-categories/{id}', [BlogCategoryController::class, 'show'], $mw);
+    $router->post('/api/admin/blog-categories', [BlogCategoryController::class, 'store'], $mw);
+    $router->put('/api/admin/blog-categories/{id}', [BlogCategoryController::class, 'update'], $mw);
+    $router->delete('/api/admin/blog-categories/{id}', [BlogCategoryController::class, 'destroy'], $mw);
+    $router->patch('/api/admin/blog-categories/reorder', [BlogCategoryController::class, 'reorder'], $mw);
 
     // Settings
     $router->get('/api/admin/settings', [SettingController::class, 'index'], $mw);

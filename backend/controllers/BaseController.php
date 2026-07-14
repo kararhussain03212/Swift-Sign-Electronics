@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Backend\Controllers;
 
 use Backend\Middleware\AuthMiddleware;
+use Backend\Utils\Response;
 
 require_once __DIR__ . '/../middleware/auth.php';
+require_once __DIR__ . '/../utils/Response.php';
 
 abstract class BaseController
 {

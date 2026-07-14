@@ -16,15 +16,21 @@ USE `swift_sign_electronic`;
 -- admins
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `admins` (
-  `id`            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  `name`          VARCHAR(120) NOT NULL,
-  `email`         VARCHAR(180) NOT NULL UNIQUE,
-  `password`      VARCHAR(255) NOT NULL,
-  `role`          ENUM('admin','editor') NOT NULL DEFAULT 'editor',
-  `profile_photo` VARCHAR(255) DEFAULT NULL,
-  `last_login_at` DATETIME DEFAULT NULL,
-  `created_at`    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at`    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `id`                INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `name`              VARCHAR(120) NOT NULL,
+  `email`             VARCHAR(180) NOT NULL UNIQUE,
+  `password`          VARCHAR(255) NOT NULL,
+  `role`              ENUM('admin','editor') NOT NULL DEFAULT 'editor',
+  `status`            ENUM('active','inactive') NOT NULL DEFAULT 'active',
+  `designation`       VARCHAR(120) DEFAULT NULL,
+  `phone`             VARCHAR(50) DEFAULT NULL,
+  `location`          VARCHAR(255) DEFAULT NULL,
+  `bio`               TEXT DEFAULT NULL,
+  `profile_photo`     VARCHAR(255) DEFAULT NULL,
+  `permissions_json`  JSON DEFAULT NULL,
+  `last_login_at`     DATETIME DEFAULT NULL,
+  `created_at`        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Seed admin — PLACEHOLDER PASSWORD 'SwiftSign@2026', CHANGE AFTER FIRST LOGIN
@@ -160,6 +166,27 @@ CREATE TABLE IF NOT EXISTS `blog_posts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ------------------------------------------------------------
+-- blog_categories (filter chips + admin-managed category list)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `blog_categories` (
+  `id`         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `name`       VARCHAR(120) NOT NULL,
+  `slug`       VARCHAR(120) NOT NULL UNIQUE,
+  `sort_order` SMALLINT NOT NULL DEFAULT 0,
+  `is_active`  TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `blog_categories` (`id`, `name`, `slug`, `sort_order`) VALUES
+(1, 'IoT', 'iot', 1),
+(2, 'Robotics', 'robotics', 2),
+(3, 'Artificial Intelligence', 'artificial-intelligence', 3),
+(4, 'Hardware Design', 'hardware-design', 4),
+(5, 'Firmware Development', 'firmware-development', 5),
+(6, 'Smart Home', 'smart-home', 6);
+
+-- ------------------------------------------------------------
 -- settings (generic key/value site settings)
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `settings` (
@@ -223,13 +250,25 @@ CREATE TABLE IF NOT EXISTS `contact_page_settings` (
 
 INSERT IGNORE INTO `contact_page_settings` (
   `id`, `hero_badge`, `hero_heading`, `hero_highlight`, `hero_description`,
-  `form_title`, `submit_button_text`, `contact_heading`,
-  `phone_number`, `email`, `address`
+  `seo_meta_description`,
+  `form_title`, `name_placeholder`, `email_placeholder`, `phone_placeholder`,
+  `subject_placeholder`, `message_placeholder`, `submit_button_text`,
+  `availability_text`, `contact_heading`, `contact_description`,
+  `whatsapp_number`, `phone_number`, `email`, `address`, `google_map_url`, `locations`,
+  `facebook_url`, `instagram_url`, `youtube_url`, `tiktok_url`
 ) VALUES (
-  1, 'GET IN TOUCH', 'Contact Swift Sign Electronics', 'Swift Sign Electronics',
-  'Questions about components, tools, or project kits? We''re here to help.',
-  'Send us a message', 'Send Message', 'Reach us directly',
-  '+92 315 8399446', 'info@swiftsignhre.com', 'Office 12, 4th Floor, Pakland City Center, Islamabad'
+  1, 'GET IN TOUCH', 'Contact', 'Swift Sign Electronics',
+  'Questions about our products? Bulk orders? Feedback? We''re here for you — always.',
+  'Contact Swift Sign Electronics for tools, components, and project kits. Call, WhatsApp, or email us — we typically reply within one business day.',
+  'Send Us A Message', 'Full Name', 'Email Address', 'Phone Number',
+  'Subject', 'Your Message', 'Send Message',
+  'Available Mon - Sat, 9am - 6pm', 'We''d love to hear from you',
+  'Reach out through any channel below and our dedicated team will respond promptly.',
+  '+92 333 8399480', '+92 333 8399480', 'info@swiftsigngeneraltrading.com',
+  'Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan',
+  'https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan',
+  '[{"address":"Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan","google_map_url":"https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan"}]',
+  '#', '#', '#', '#'
 );
 
 -- ------------------------------------------------------------

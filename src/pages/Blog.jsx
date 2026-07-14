@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { 
-  Search, 
-  BookOpen, 
-  Clock, 
-  Calendar, 
-  ChevronRight, 
+import {
+  Search,
+  BookOpen,
+  Clock,
+  Calendar,
+  ChevronRight,
   ArrowRight,
-  Inbox
+  Inbox,
+  Loader2
 } from "lucide-react";
-import { BLOG_CATEGORIES } from "../data/blogData";
 import { useShop } from "../context/ShopContext";
+import { fetchBlogPosts } from "../api/shopApi";
 import "./Blog.css";
+
+const GRID_PAGE_SIZE = 6;
 
 // Single Blog Card Component (similar to Lu in the original site)
 const BlogCard = ({ blog }) => {
@@ -78,38 +81,62 @@ const BlogCard = ({ blog }) => {
 };
 
 export default function Blog() {
-  const { blogs: BLOG_ARTICLES } = useShop();
+  const { blogs: BLOG_ARTICLES, blogCategories, blogPageSettings } = useShop();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [visibleCount, setVisibleCount] = useState(6);
 
-  // Compute category counts
-  const categoryCounts = BLOG_CATEGORIES.map((cat) => {
-    return {
-      name: cat,
-      count:
-        cat === "All"
-          ? BLOG_ARTICLES.length
-          : BLOG_ARTICLES.filter((article) => article.category === cat).length,
-    };
-  });
+  // Main grid: real search/category/pagination against the backend
+  const [gridItems, setGridItems] = useState([]);
+  const [gridMeta, setGridMeta] = useState({ page: 1, total_pages: 1, total: 0 });
+  const [gridLoading, setGridLoading] = useState(true);
+  const [gridError, setGridError] = useState("");
 
-  // Extract featured post
+  const loadGridPage = useCallback(async (page, { search, category, append }) => {
+    setGridLoading(true);
+    setGridError("");
+    try {
+      const { items, meta } = await fetchBlogPosts({ search, category, page, limit: GRID_PAGE_SIZE });
+      setGridItems((prev) => (append ? [...prev, ...items] : items));
+      setGridMeta(meta);
+    } catch (err) {
+      setGridError("Failed to load articles. Please try again.");
+    } finally {
+      setGridLoading(false);
+    }
+  }, []);
+
+  // Debounce search input; category clicks re-trigger this effect immediately too
+  useEffect(() => {
+    const t = setTimeout(() => {
+      loadGridPage(1, { search: searchQuery, category: selectedCategory, append: false });
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchQuery, selectedCategory, loadGridPage]);
+
+  const handleLoadMore = () => {
+    loadGridPage(gridMeta.page + 1, { search: searchQuery, category: selectedCategory, append: true });
+  };
+
+  // Category chip list — dynamic, admin-managed
+  const categoryNames = ["All", ...blogCategories.map((cat) => cat.name)];
+
+  // Compute category counts against the full published list
+  const categoryCounts = categoryNames.map((cat) => ({
+    name: cat,
+    count:
+      cat === "All"
+        ? BLOG_ARTICLES.length
+        : BLOG_ARTICLES.filter((article) => article.category === cat).length,
+  }));
+
+  // Extract featured post (from the full list, independent of grid pagination)
   const featuredArticle = BLOG_ARTICLES.find((article) => article.featured);
 
-  // Filter remaining articles (excluding featured article)
-  const filteredArticles = BLOG_ARTICLES.filter(
-    (article) => !article.featured
-  )
-    .filter(
-      (article) =>
-        selectedCategory === "All" || article.category === selectedCategory
-    )
-    .filter(
-      (article) =>
-        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        article.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  // The grid already excludes nothing server-side, so drop the featured post client-side
+  // to avoid showing it twice, same as before.
+  const filteredArticles = gridItems.filter(
+    (article) => !featuredArticle || article.id !== featuredArticle.id
+  );
 
   return (
     <main className="bg-slate-50/50 min-h-screen pb-16 font-sans">
@@ -164,11 +191,11 @@ export default function Blog() {
             className="font-extrabold mb-3 leading-tight"
             style={{ fontSize: "clamp(28px, 5vw, 48px)", lineHeight: 1.15 }}
           >
-            Tech Articles &{" "}
-            <span style={{ color: "#EAFBFC" }}>Electronics Guides</span>
+            {blogPageSettings.blog_hero_title}{" "}
+            <span style={{ color: "#EAFBFC" }}>{blogPageSettings.blog_hero_title_accent}</span>
           </h1>
           <p className="text-white/70 max-w-xl mx-auto text-sm sm:text-base leading-relaxed mb-8">
-            Expert-written guides on microcontrollers, firmware development, robotics, IoT, and custom PCB routing design.
+            {blogPageSettings.blog_hero_description}
           </p>
 
           {/* Header Search Input */}
@@ -181,7 +208,7 @@ export default function Blog() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search articles..."
+              placeholder={blogPageSettings.blog_search_placeholder}
               className="flex-1 px-3 text-sm text-gray-700 outline-none bg-transparent min-w-0"
             />
           </div>
@@ -197,13 +224,10 @@ export default function Blog() {
       >
         <div className="max-w-[1280px] mx-auto px-4 sm:px-5">
           <div className="flex gap-2 overflow-x-auto scrollbar-hide py-1">
-            {BLOG_CATEGORIES.map((cat) => (
+            {categoryNames.map((cat) => (
               <button
                 key={cat}
-                onClick={() => {
-                  setSelectedCategory(cat);
-                  setVisibleCount(6); // Reset visible pagination count
-                }}
+                onClick={() => setSelectedCategory(cat)}
                 className={`flex-shrink-0 rounded-full px-5 py-1.5 text-xs sm:text-sm font-semibold border transition-all duration-200 whitespace-nowrap cursor-pointer ${
                   selectedCategory === cat
                     ? "bg-[#0042d7] text-white border-[#0042d7] shadow-sm"
@@ -313,12 +337,21 @@ export default function Blog() {
                 {selectedCategory === "All" ? "All Guides" : selectedCategory}
               </span>
               <span className="text-xs text-gray-400">
-                ({filteredArticles.length} {filteredArticles.length === 1 ? "article" : "articles"} found)
+                ({gridMeta.total} {gridMeta.total === 1 ? "article" : "articles"} found)
               </span>
               <div className="flex-1 h-[1px] bg-gray-200" />
             </div>
 
-            {filteredArticles.length === 0 ? (
+            {gridError ? (
+              <div className="text-center py-16 bg-white border border-red-100 rounded-2xl shadow-sm">
+                <p className="font-semibold text-red-500 text-lg">{gridError}</p>
+              </div>
+            ) : gridLoading && gridItems.length === 0 ? (
+              <div className="text-center py-16 bg-white border border-gray-100 rounded-2xl shadow-sm">
+                <Loader2 size={40} className="mx-auto mb-3 text-[#0042d7] animate-spin" />
+                <p className="font-semibold text-gray-500">Loading articles...</p>
+              </div>
+            ) : filteredArticles.length === 0 ? (
               <div className="text-center py-16 bg-white border border-gray-100 rounded-2xl shadow-sm">
                 <Inbox size={48} className="mx-auto mb-3 text-gray-300" />
                 <p className="font-semibold text-gray-600 text-lg">No articles found</p>
@@ -327,19 +360,28 @@ export default function Blog() {
             ) : (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {filteredArticles.slice(0, visibleCount).map((article) => (
+                  {filteredArticles.map((article) => (
                     <BlogCard key={article.id} blog={article} />
                   ))}
                 </div>
 
                 {/* Pagination Load More Button */}
-                {visibleCount < filteredArticles.length && (
+                {gridMeta.page < gridMeta.total_pages && (
                   <div className="text-center mt-10">
                     <button
-                      onClick={() => setVisibleCount((prev) => prev + 6)}
-                      className="inline-flex items-center gap-2 border-2 border-[#0042d7] text-[#0042d7] hover:bg-[#0042d7] hover:text-white font-bold rounded-full px-8 py-3 text-sm transition-all cursor-pointer shadow-sm btn-pulse"
+                      onClick={handleLoadMore}
+                      disabled={gridLoading}
+                      className="inline-flex items-center gap-2 border-2 border-[#0042d7] text-[#0042d7] hover:bg-[#0042d7] hover:text-white font-bold rounded-full px-8 py-3 text-sm transition-all cursor-pointer shadow-sm btn-pulse disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      Load More Articles <ChevronRight size={16} />
+                      {gridLoading ? (
+                        <>
+                          Loading... <Loader2 size={16} className="animate-spin" />
+                        </>
+                      ) : (
+                        <>
+                          Load More Articles <ChevronRight size={16} />
+                        </>
+                      )}
                     </button>
                   </div>
                 )}
@@ -359,10 +401,7 @@ export default function Blog() {
                 {categoryCounts.map((cat) => (
                   <li key={cat.name}>
                     <button
-                      onClick={() => {
-                        setSelectedCategory(cat.name);
-                        setVisibleCount(6);
-                      }}
+                      onClick={() => setSelectedCategory(cat.name)}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-[13px] font-medium transition-all cursor-pointer ${
                         selectedCategory === cat.name
                           ? "bg-[#0042d7] text-white"

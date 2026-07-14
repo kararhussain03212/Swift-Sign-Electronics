@@ -55,3 +55,50 @@ export const DEFAULT_SOCIAL_LINKS = [
   { id: 3, platform: 'twitter', url: 'https://twitter.com/' },
   { id: 4, platform: 'linkedin', url: 'https://linkedin.com/' },
 ];
+
+export const DEFAULT_CONTACT_PAGE = {
+  hero_badge: 'GET IN TOUCH',
+  hero_heading: 'Contact',
+  hero_highlight: 'Swift Sign Electronics',
+  hero_description: "Questions about our products? Bulk orders? Feedback? We're here for you — always.",
+  form_title: 'Send Us A Message',
+  name_placeholder: 'Full Name',
+  email_placeholder: 'Email Address',
+  phone_placeholder: 'Phone Number',
+  subject_placeholder: 'Subject',
+  message_placeholder: 'Your Message',
+  submit_button_text: 'Send Message',
+  availability_text: 'Available Mon - Sat, 9am - 6pm',
+  contact_heading: "We'd love to hear from you",
+  contact_description: 'Reach out through any channel below and our dedicated team will respond promptly.',
+  whatsapp_number: '+92 333 8399480',
+  phone_number: '+92 333 8399480',
+  email: 'info@swiftsigngeneraltrading.com',
+  address: 'Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan',
+  google_map_url: 'https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan',
+  locations: [{
+    address: 'Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan',
+    google_map_url: 'https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan',
+  }],
+  facebook_url: '#',
+  instagram_url: '#',
+  youtube_url: '#',
+  tiktok_url: '#',
+};
+
+export const DEFAULT_BLOG_PAGE_SETTINGS = {
+  blog_hero_title: 'Tech Articles &',
+  blog_hero_title_accent: 'Electronics Guides',
+  blog_hero_description:
+    'Expert-written guides on microcontrollers, firmware development, robotics, IoT, and custom PCB routing design.',
+  blog_search_placeholder: 'Search articles...',
+};
+
+export const DEFAULT_BLOG_CATEGORIES = [
+  { id: 1, name: 'IoT', slug: 'iot' },
+  { id: 2, name: 'Artificial Intelligence', slug: 'artificial-intelligence' },
+  { id: 3, name: 'Robotics', slug: 'robotics' },
+  { id: 4, name: 'Smart Home', slug: 'smart-home' },
+  { id: 5, name: 'Hardware Design', slug: 'hardware-design' },
+  { id: 6, name: 'Firmware Development', slug: 'firmware-development' },
+];

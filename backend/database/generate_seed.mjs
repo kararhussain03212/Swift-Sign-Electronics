@@ -11,6 +11,23 @@ const q = (v) => {
 };
 const j = (v) => (v == null ? "NULL" : q(JSON.stringify(v)));
 
+// Converts the static articles' plain "\n\n"-delimited body text into the same
+// kind of HTML the admin's Quill rich-text editor produces, so BlogDetails.jsx
+// can render post bodies with dangerouslySetInnerHTML consistently either way.
+const escapeHtml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const toHtmlBody = (text) => {
+  const paragraphs = String(text || "").split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+  return paragraphs
+    .map((p, i) => {
+      if (i === 2) {
+        const sentence = p.split(".")[0] + ".";
+        return `<p>${escapeHtml(p)}</p>\n<blockquote><p>${escapeHtml(sentence)}</p></blockquote>`;
+      }
+      return `<p>${escapeHtml(p)}</p>`;
+    })
+    .join("\n");
+};
+
 const out = [];
 out.push("USE `swift_sign_electronic`;");
 out.push("SET NAMES utf8mb4;");
@@ -93,7 +110,7 @@ for (const [i, b] of BLOG_ARTICLES.entries()) {
   out.push(
     `INSERT INTO blog_posts (title, slug, excerpt, body, cover, category, category_color, author_name, author_avatar, author_role, read_time, tags, featured, is_published, published_at, sort_order) VALUES (` +
       [
-        q(b.title), q(b.slug), q(b.excerpt), q(b.body), q(b.cover),
+        q(b.title), q(b.slug), q(b.excerpt), q(toHtmlBody(b.body)), q(b.cover),
         q(b.category), q(b.categoryColor || ""),
         q(b.author?.name || ""), q(b.author?.avatar || ""), q(b.author?.role || ""),
         q(b.readTime || ""), j(b.tags || []),
@@ -101,5 +118,23 @@ for (const [i, b] of BLOG_ARTICLES.entries()) {
       ].join(", ") + ");"
   );
 }
+
+// ── blog categories (filter chips) ──
+const BLOG_CATEGORY_NAMES = [...new Set(BLOG_ARTICLES.map((b) => b.category).filter(Boolean))];
+out.push("DELETE FROM blog_categories;");
+BLOG_CATEGORY_NAMES.forEach((name, i) => {
+  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  out.push(`INSERT INTO blog_categories (name, slug, sort_order, is_active) VALUES (${q(name)}, ${q(slug)}, ${i + 1}, 1);`);
+});
+
+// ── blog page hero settings ──
+out.push("DELETE FROM settings WHERE setting_key IN ('blog_hero_title', 'blog_hero_title_accent', 'blog_hero_description', 'blog_search_placeholder');");
+out.push(
+  `INSERT INTO settings (setting_key, setting_value, setting_type, order_position) VALUES ` +
+    `('blog_hero_title', ${q("Tech Articles &")}, 'text', 201), ` +
+    `('blog_hero_title_accent', ${q("Electronics Guides")}, 'text', 202), ` +
+    `('blog_hero_description', ${q("Expert-written guides on microcontrollers, firmware development, robotics, IoT, and custom PCB routing design.")}, 'text', 203), ` +
+    `('blog_search_placeholder', ${q("Search articles...")}, 'text', 204);`
+);
 
 console.log(out.join("\n"));

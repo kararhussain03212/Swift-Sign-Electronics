@@ -6,6 +6,9 @@ import {
   DEFAULT_NAV_LINKS,
   DEFAULT_FOOTER_LINK_GROUPS,
   DEFAULT_SOCIAL_LINKS,
+  DEFAULT_CONTACT_PAGE,
+  DEFAULT_BLOG_PAGE_SETTINGS,
+  DEFAULT_BLOG_CATEGORIES,
 } from '../data/siteContent';
 import {
   fetchProducts,
@@ -16,6 +19,9 @@ import {
   fetchSocialLinks,
   fetchHeroSlides,
   fetchSectionBanner,
+  fetchContactPage,
+  fetchBlogCategories,
+  fetchBlogPageSettings,
 } from '../api/shopApi';
 
 const SECTION_BANNER_KEYS = ['tools', 'instruments', 'projects'];
@@ -42,6 +48,9 @@ export const ShopProvider = ({ children }) => {
   const [socialLinks, setSocialLinks] = useState(DEFAULT_SOCIAL_LINKS);
   const [heroSlides, setHeroSlides] = useState([]);
   const [sectionBanners, setSectionBanners] = useState({});
+  const [contactPage, setContactPage] = useState(DEFAULT_CONTACT_PAGE);
+  const [blogPageSettings, setBlogPageSettings] = useState(DEFAULT_BLOG_PAGE_SETTINGS);
+  const [blogCategories, setBlogCategories] = useState(DEFAULT_BLOG_CATEGORIES);
 
   useEffect(() => {
     fetchProducts()
@@ -64,6 +73,15 @@ export const ShopProvider = ({ children }) => {
       .catch(() => {});
     fetchHeroSlides()
       .then((list) => { if (list.length) setHeroSlides(list); })
+      .catch(() => {});
+    fetchContactPage()
+      .then((data) => { if (data && Object.keys(data).length) setContactPage((prev) => ({ ...prev, ...data })); })
+      .catch(() => {});
+    fetchBlogPageSettings()
+      .then((data) => { if (data && Object.keys(data).length) setBlogPageSettings((prev) => ({ ...prev, ...data })); })
+      .catch(() => {});
+    fetchBlogCategories()
+      .then((list) => { if (list.length) setBlogCategories(list); })
       .catch(() => {});
     SECTION_BANNER_KEYS.forEach((key) => {
       fetchSectionBanner(key)
@@ -215,6 +233,9 @@ export const ShopProvider = ({ children }) => {
         socialLinks,
         heroSlides,
         sectionBanners,
+        contactPage,
+        blogPageSettings,
+        blogCategories,
         cart,
         wishlist,
         compareList,

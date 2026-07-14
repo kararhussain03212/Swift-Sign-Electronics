@@ -325,7 +325,7 @@ abstract class BaseModel
         return [$where, $params];
     }
 
-    private function normalizeUploadColumns(array $row): array
+    protected function normalizeUploadColumns(array $row): array
     {
         foreach ($row as $key => $value) {
             if (!is_string($value)) {

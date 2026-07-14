@@ -1,40 +1,71 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { 
-  Clock, 
-  Calendar, 
-  Heart, 
-  BookOpen, 
+import {
+  Clock,
+  Calendar,
+  Heart,
+  BookOpen,
   AlertCircle,
-  ArrowRight
+  ArrowRight,
+  Loader2
 } from "lucide-react";
 import { useShop } from "../context/ShopContext";
+import { fetchBlogBySlug } from "../api/shopApi";
 import "./Blog.css";
 
 // Main Blog Details Component
 export default function BlogDetails() {
   const { blogs: BLOG_ARTICLES } = useShop();
   const { slug } = useParams();
+  const [article, setArticle] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const [showNotification, setShowNotification] = useState("");
-
-  const article = BLOG_ARTICLES.find((art) => art.slug === slug);
 
   // Scroll to top on page mount or slug change
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [slug]);
 
-  // Set random starting likes once when article is loaded
+  // Fetch the post directly by slug rather than relying on the bulk blogs list,
+  // so unpublished/removed posts correctly 404 instead of silently vanishing.
   useEffect(() => {
-    if (article) {
-      setLikesCount(Math.floor(Math.random() * 80) + 30);
-      setLiked(false);
-    }
-  }, [slug, article]);
+    let cancelled = false;
+    setLoading(true);
+    setNotFound(false);
+    setArticle(null);
 
-  if (!article) {
+    fetchBlogBySlug(slug)
+      .then((data) => {
+        if (cancelled) return;
+        setArticle(data);
+        setLikesCount(Math.floor(Math.random() * 80) + 30);
+        setLiked(false);
+      })
+      .catch(() => {
+        if (!cancelled) setNotFound(true);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-5 font-sans bg-slate-50">
+        <Loader2 size={40} className="text-[#0042d7] animate-spin mb-3" />
+        <p className="font-semibold text-gray-500">Loading article...</p>
+      </div>
+    );
+  }
+
+  if (notFound || !article) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-5 font-sans bg-slate-50">
         <AlertCircle size={56} className="text-red-400 mb-4" />
@@ -68,8 +99,13 @@ export default function BlogDetails() {
     }
   };
 
-  const paragraphs = article.body.split("\n\n");
-  const relatedArticles = BLOG_ARTICLES.filter((art) => art.slug !== slug).slice(0, 3);
+  const sameCategory = BLOG_ARTICLES.filter(
+    (art) => art.slug !== slug && art.category === article.category
+  );
+  const others = BLOG_ARTICLES.filter(
+    (art) => art.slug !== slug && art.category !== article.category
+  );
+  const relatedArticles = [...sameCategory, ...others].slice(0, 3);
 
   return (
     <div className="font-sans bg-white pb-1">
@@ -166,28 +202,11 @@ export default function BlogDetails() {
           </div>
         </div>
 
-        <div className="prose-article space-y-6">
-          {paragraphs.map((pText, index) => {
-            if (index === 0) {
-              return (
-                <p key={index} className="text-base sm:text-lg leading-[1.85] text-gray-800 font-medium border-l-4 pl-5" style={{ borderColor: article.categoryColor }}>
-                  {pText}
-                </p>
-              );
-            }
-            if (index === 2) {
-              return (
-                <div key={index}>
-                  <p className="text-gray-700">{pText}</p>
-                  <blockquote className="relative border-l-4 rounded-r-3xl px-8 py-5 my-8 shadow-sm bg-gradient-to-r from-slate-50 to-transparent" style={{ borderColor: article.categoryColor }}>
-                    <p className="text-[17px] leading-[1.8] font-semibold italic text-gray-800 mb-0">“{pText.split(".")[0]}.”</p>
-                  </blockquote>
-                </div>
-              );
-            }
-            return <p key={index} className="text-gray-700">{pText}</p>;
-          })}
-        </div>
+        <div
+          className="prose-article space-y-6"
+          style={{ "--accent": article.categoryColor }}
+          dangerouslySetInnerHTML={{ __html: article.body }}
+        />
       </div>
 
       {/* 3. Related Articles */}

@@ -14,6 +14,7 @@ const NAV = [
   { path: "/section-banners",   label: "Section Banners" },
   { path: "/sliders",           label: "Hero Slides" },
   { path: "/blogs",             label: "Blogs" },
+  { path: "/blog-categories",   label: "Blog Categories" },
   { path: "/contact-messages",  label: "Contact Messages" },
   { path: "/settings/site-content", label: "Navbar" },
   { path: "/settings/footer-links", label: "Footer Manager" },
@@ -36,6 +37,8 @@ const PAGE_TITLES = {
   "/section-banners/new":            "Add Section Banner",
   "/blogs":                          "Blogs",
   "/blogs/new":                      "Add Blog",
+  "/blog-categories":                "Blog Categories",
+  "/blog-categories/new":            "Add Blog Category",
   "/contact-messages":               "Contact Messages",
   "/contact-settings":               "Contact Page Settings",
   "/settings/site-content":          "Navbar",
@@ -111,6 +114,7 @@ export default function Layout({ children }) {
     if (location.pathname.startsWith("/categories/edit"))      return "Edit Category";
     if (location.pathname.startsWith("/section-banners/edit")) return "Edit Section Banner";
     if (location.pathname.startsWith("/blogs/edit"))           return "Edit Blog";
+    if (location.pathname.startsWith("/blog-categories/edit")) return "Edit Blog Category";
     return "Dashboard";
   }, [location.pathname]);
 

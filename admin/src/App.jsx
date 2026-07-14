@@ -6,6 +6,8 @@ import ProductList from "./pages/product/ProductList";
 import ProductForm from "./pages/product/ProductForm";
 import BlogList from "./pages/blog/BlogList";
 import BlogForm from "./pages/blog/BlogForm";
+import BlogCategoryList from "./pages/blogCategory/BlogCategoryList";
+import BlogCategoryForm from "./pages/blogCategory/BlogCategoryForm";
 
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
@@ -104,6 +106,10 @@ export default function App() {
           <Route path="/blogs" element={<ProtectedPage><BlogList /></ProtectedPage>} />
           <Route path="/blogs/new" element={<ProtectedPage><BlogForm /></ProtectedPage>} />
           <Route path="/blogs/edit/:id" element={<ProtectedPage><BlogForm /></ProtectedPage>} />
+
+          <Route path="/blog-categories" element={<ProtectedPage><BlogCategoryList /></ProtectedPage>} />
+          <Route path="/blog-categories/new" element={<ProtectedPage><BlogCategoryForm /></ProtectedPage>} />
+          <Route path="/blog-categories/edit/:id" element={<ProtectedPage><BlogCategoryForm /></ProtectedPage>} />
 
           <Route path="/profile" element={<ProtectedPage><Admin /></ProtectedPage>} />
 

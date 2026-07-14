@@ -25,6 +25,42 @@ final class BlogController extends BaseCrudController
     protected string $resourceName = 'blog';
     protected array $requiredCreateFields = ['title'];
 
+    /**
+     * Public listing. Only ever returns published posts whose published_at
+     * has already passed (or is unset, meaning "publish immediately").
+     *
+     * With no page/limit/search/category params, returns the full published
+     * list as a flat array (used by the frontend's bulk context load, same
+     * shape as before). With any of those params present, returns a
+     * paginated {data, meta} shape supporting composable search + category
+     * filtering, for the Blog listing page's grid + "Load More".
+     */
+    public function publicIndex(array $params = []): void
+    {
+        $query = $this->query();
+        $hasListParams = isset($query['page']) || isset($query['limit'])
+            || isset($query['per_page']) || trim((string) ($query['search'] ?? '')) !== ''
+            || trim((string) ($query['category'] ?? '')) !== '';
+
+        $cacheKey = 'public:blog:list:' . http_build_query($query);
+        $result = Cache::remember($cacheKey, function () use ($query, $hasListParams) {
+            $model = new BlogPost();
+
+            if ($hasListParams) {
+                $page     = max(1, (int) ($query['page'] ?? 1));
+                $perPage  = max(1, min(50, (int) ($query['limit'] ?? $query['per_page'] ?? 9)));
+                $search   = trim((string) ($query['search'] ?? ''));
+                $category = trim((string) ($query['category'] ?? ''));
+
+                return $model->paginatePublished($page, $perPage, $search, $category);
+            }
+
+            return $model->allPublished();
+        });
+
+        Response::success($result, 'Fetched successfully');
+    }
+
     public function store(array $params = []): void
     {
         $model = new BlogPost();
@@ -97,7 +133,10 @@ final class BlogController extends BaseCrudController
             return $model->findBySlug($slug);
         });
 
-        if (!$post || !($post['is_published'] ?? 0)) {
+        $publishedAt = $post['published_at'] ?? null;
+        $isFuturePublish = $publishedAt !== null && strtotime((string) $publishedAt) > time();
+
+        if (!$post || !($post['is_published'] ?? 0) || $isFuturePublish) {
             Response::error('Blog post not found', 404);
         }
 

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Calendar } from "primereact/calendar";
 import { createBlog, getBlog, updateBlog } from "../../api/blogApi";
+import { getBlogCategories } from "../../api/blogCategoryApi";
 import ImageUpload from "../../components/ImageUpload";
 import RichTextEditor from "../../components/RichTextEditor";
 import { uploadImage } from "../../api/uploadApi";
@@ -76,6 +77,13 @@ export default function BlogForm() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    getBlogCategories()
+      .then((res) => setCategories(Array.isArray(res.data?.data) ? res.data.data : []))
+      .catch(() => {});
+  }, []);
 
   const toImageUrl = useCallback(
     (value) => {
@@ -228,7 +236,15 @@ export default function BlogForm() {
           </div>
           <div>
             <label className="mb-1 block text-sm text-white/80">Category</label>
-            <input value={form.category} onChange={(e) => setField("category", e.target.value)} className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+            <select value={form.category} onChange={(e) => setField("category", e.target.value)} className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white">
+              {!categories.some((c) => c.name === form.category) && form.category && (
+                <option value={form.category}>{form.category} (unlisted)</option>
+              )}
+              {categories.map((c) => (
+                <option key={c.id} value={c.name}>{c.name}</option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-white/50">Manage the list under Blog Categories.</p>
           </div>
           <div>
             <label className="mb-1 block text-sm text-white/80">Category Color</label>

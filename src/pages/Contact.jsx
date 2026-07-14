@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
-import { 
- FiMail, FiPhone, FiMapPin, FiSend, FiMessageSquare, 
- FiUser, FiBookmark, FiMessageCircle, FiFacebook, 
+import {
+ FiMail, FiPhone, FiMapPin, FiSend, FiMessageSquare,
+ FiUser, FiBookmark, FiMessageCircle, FiFacebook,
  FiInstagram, FiYoutube, FiCheckCircle
 } from 'react-icons/fi';
 import { FaTiktok } from 'react-icons/fa';
 import { submitContact } from '../api/shopApi';
+import { useShop } from '../context/ShopContext';
 
 export default function Contact() {
+ const { contactPage } = useShop();
+ const whatsappDigits = (contactPage.whatsapp_number || '').replace(/[^\d]/g, '');
+ const telDigits = (contactPage.phone_number || '').replace(/[^\d+]/g, '');
+ const primaryLocation = Array.isArray(contactPage.locations) && contactPage.locations.length > 0
+ ? contactPage.locations[0]
+ : { address: contactPage.address, google_map_url: contactPage.google_map_url };
+
  // Contact Form State
  const [formData, setFormData] = useState({
  name: '',
@@ -65,13 +73,13 @@ export default function Contact() {
  {/* Hero Title Section */}
  <div className="text-center space-y-4 max-w-3xl mx-auto">
  <span className="inline-block px-3 py-1 bg-[#0fafb8]/10 text-[#0fafb8] text-[10px] font-black tracking-widest rounded-none border border-[#0fafb8]/30 uppercase">
- + GET IN TOUCH
+ + {contactPage.hero_badge}
  </span>
  <h1 className="text-3xl md:text-5xl font-black text-slate-900 uppercase tracking-wide">
- Contact <span className="text-[#0fafb8] ">Swift Sign Electronics</span>
+ {contactPage.hero_heading} <span className="text-[#0fafb8] ">{contactPage.hero_highlight}</span>
  </h1>
  <p className="text-sm md:text-base text-slate-500 leading-relaxed font-semibold">
- Questions about our products? Bulk orders? Feedback? We're here for you — always.
+ {contactPage.hero_description}
  </p>
  </div>
 
@@ -85,7 +93,7 @@ export default function Contact() {
  {/* Form Title */}
  <div className="flex items-center gap-2 text-slate-600 font-bold text-xs uppercase tracking-wider">
  <FiMessageSquare className="w-4 h-4 text-[#0fafb8]" />
- <span>Send Us A Message</span>
+ <span>{contactPage.form_title}</span>
  </div>
 
  {formStatus.success ? (
@@ -121,7 +129,7 @@ export default function Contact() {
  value={formData.name}
  onChange={handleInputChange}
  required
- placeholder="Full Name *"
+ placeholder={`${contactPage.name_placeholder} *`}
  className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-none text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0fafb8] focus:ring-1 focus:ring-[#0fafb8]/25 transition-all text-sm"
  />
  </div>
@@ -137,7 +145,7 @@ export default function Contact() {
  value={formData.email}
  onChange={handleInputChange}
  required
- placeholder="Email Address *"
+ placeholder={`${contactPage.email_placeholder} *`}
  className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-none text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0fafb8] focus:ring-1 focus:ring-[#0fafb8]/25 transition-all text-sm"
  />
  </div>
@@ -152,7 +160,7 @@ export default function Contact() {
  name="phone"
  value={formData.phone}
  onChange={handleInputChange}
- placeholder="Phone Number"
+ placeholder={contactPage.phone_placeholder}
  className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-none text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0fafb8] focus:ring-1 focus:ring-[#0fafb8]/25 transition-all text-sm"
  />
  </div>
@@ -168,7 +176,7 @@ export default function Contact() {
  value={formData.subject}
  onChange={handleInputChange}
  required
- placeholder="Subject *"
+ placeholder={`${contactPage.subject_placeholder} *`}
  className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-none text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0fafb8] focus:ring-1 focus:ring-[#0fafb8]/25 transition-all text-sm"
  />
  </div>
@@ -186,7 +194,7 @@ export default function Contact() {
  onChange={handleInputChange}
  required
  rows="6"
- placeholder="Your Message *"
+ placeholder={`${contactPage.message_placeholder} *`}
  className="w-full pl-11 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-none text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#0fafb8] focus:ring-1 focus:ring-[#0fafb8]/25 transition-all text-sm resize-none"
  ></textarea>
  </div>
@@ -207,7 +215,7 @@ export default function Contact() {
  </>
  ) : (
  <>
- <span>Send Message</span>
+ <span>{contactPage.submit_button_text}</span>
  <FiSend className="w-3.5 h-3.5" />
  </>
  )}
@@ -226,28 +234,28 @@ export default function Contact() {
  {/* Availability Badge */}
  <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-50 text-slate-600 text-[10px] font-black tracking-widest rounded-none border border-slate-200 uppercase">
  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
- <span>Available Mon - Sat, 9am - 6pm</span>
+ <span>{contactPage.availability_text}</span>
  </div>
 
  {/* Header Text */}
  <div className="space-y-2">
- <h2 className="text-xl md:text-2xl font-black uppercase tracking-wide">We'd love to hear from you</h2>
+ <h2 className="text-xl md:text-2xl font-black uppercase tracking-wide">{contactPage.contact_heading}</h2>
  <p className="text-xs text-slate-400 leading-relaxed font-semibold">
- Reach out through any channel below and our dedicated team will respond promptly.
+ {contactPage.contact_description}
  </p>
  </div>
 
  {/* Support Cards Stack */}
  <div className="space-y-4">
- 
+
  {/* Whatsapp */}
- <a href="https://wa.me/923338399480" target="_blank" rel="noopener noreferrer" className="block p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-none flex items-start gap-4 transition-all group">
+ <a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noopener noreferrer" className="block p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-none flex items-start gap-4 transition-all group">
  <div className="w-10 h-10 rounded-none bg-[#0fafb8]/10 text-[#0fafb8] flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-[#0fafb8]/20 group-hover:text-[#0a8d95] transition-colors">
  <FiMessageCircle className="w-5 h-5" />
  </div>
  <div className="space-y-1">
  <span className="block text-[9px] font-black text-slate-500 tracking-wider uppercase">Whatsapp</span>
- <strong className="block text-sm font-bold text-slate-900 tracking-wide">+92 333 8399480</strong>
+ <strong className="block text-sm font-bold text-slate-900 tracking-wide">{contactPage.whatsapp_number}</strong>
  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#0fafb8] group-hover:bg-[#0fafb8]/100 text-white text-[10px] font-black rounded-none transition-colors mt-2">
  <FiMessageCircle className="w-3 h-3" />
  <span>Chat on WhatsApp</span>
@@ -256,36 +264,36 @@ export default function Contact() {
  </a>
 
  {/* Phone */}
- <a href="tel:+923338399480" className="block p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-none flex items-start gap-4 transition-all group">
+ <a href={`tel:${telDigits}`} className="block p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-none flex items-start gap-4 transition-all group">
  <div className="w-10 h-10 rounded-none bg-[#0fafb8]/10 text-[#0fafb8] flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-[#0fafb8]/20 group-hover:text-[#0a8d95] transition-colors">
  <FiPhone className="w-4.5 h-4.5" />
  </div>
  <div className="space-y-1">
  <span className="block text-[9px] font-black text-slate-500 tracking-wider uppercase">Phone</span>
- <strong className="block text-sm font-bold text-slate-900 tracking-wide">+92 333 8399480</strong>
+ <strong className="block text-sm font-bold text-slate-900 tracking-wide">{contactPage.phone_number}</strong>
  </div>
  </a>
 
  {/* Email */}
- <a href="mailto:info@swiftsigngeneraltrading.com" className="block p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-none flex items-start gap-4 transition-all group">
+ <a href={`mailto:${contactPage.email}`} className="block p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-none flex items-start gap-4 transition-all group">
  <div className="w-10 h-10 rounded-none bg-[#0fafb8]/10 text-[#0fafb8] flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-[#0fafb8]/20 group-hover:text-[#0a8d95] transition-colors">
  <FiMail className="w-4.5 h-4.5" />
  </div>
  <div className="space-y-1">
  <span className="block text-[9px] font-black text-slate-500 tracking-wider uppercase">Email</span>
- <strong className="block text-xs font-bold text-slate-900 tracking-wide break-all">info@swiftsigngeneraltrading.com</strong>
+ <strong className="block text-xs font-bold text-slate-900 tracking-wide break-all">{contactPage.email}</strong>
  </div>
  </a>
 
  {/* Address */}
- <a href="https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan" target="_blank" rel="noopener noreferrer" className="block p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-none flex items-start gap-4 transition-all group">
+ <a href={primaryLocation.google_map_url} target="_blank" rel="noopener noreferrer" className="block p-4 bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-slate-300 rounded-none flex items-start gap-4 transition-all group">
  <div className="w-10 h-10 rounded-none bg-[#0fafb8]/10 text-[#0fafb8] flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-[#0fafb8]/20 group-hover:text-[#0a8d95] transition-colors">
  <FiMapPin className="w-4.5 h-4.5" />
  </div>
  <div className="space-y-1">
  <span className="block text-[9px] font-black text-slate-500 tracking-wider uppercase">Address</span>
  <p className="text-xs text-slate-900 leading-relaxed font-semibold">
- Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan
+ {primaryLocation.address}
  </p>
  </div>
  </a>
@@ -297,16 +305,16 @@ export default function Contact() {
  <div className="pt-5 border-t border-slate-200 flex items-center justify-between">
  <span className="text-[10px] font-black text-slate-500 tracking-widest uppercase">Follow Us</span>
  <div className="flex gap-2.5">
- <a href="#" className="w-[37px] h-[37px] rounded-none bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors" title="Facebook">
+ <a href={contactPage.facebook_url || '#'} className="w-[37px] h-[37px] rounded-none bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors" title="Facebook">
  <FiFacebook className="w-[17px] h-[17px]" />
  </a>
- <a href="#" className="w-[37px] h-[37px] rounded-none bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors" title="Instagram">
+ <a href={contactPage.instagram_url || '#'} className="w-[37px] h-[37px] rounded-none bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors" title="Instagram">
  <FiInstagram className="w-[17px] h-[17px]" />
  </a>
- <a href="#" className="w-[37px] h-[37px] rounded-none bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors" title="YouTube">
+ <a href={contactPage.youtube_url || '#'} className="w-[37px] h-[37px] rounded-none bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors" title="YouTube">
  <FiYoutube className="w-[17px] h-[17px]" />
  </a>
- <a href="#" className="w-[37px] h-[37px] rounded-none bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors" title="TikTok">
+ <a href={contactPage.tiktok_url || '#'} className="w-[37px] h-[37px] rounded-none bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition-colors" title="TikTok">
  <FaTiktok className="w-[17px] h-[17px]" />
  </a>
  </div>

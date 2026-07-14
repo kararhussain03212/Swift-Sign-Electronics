@@ -68,7 +68,7 @@ export function normalizeBlog(row) {
     title: row.title,
     excerpt: row.excerpt || "",
     body: row.body || "",
-    cover: row.cover || "",
+    cover: resolveUploadUrl(row.cover || ""),
     category: row.category || "",
     categoryColor: row.category_color || "#0fafb8",
     author: {
@@ -113,6 +113,18 @@ export const fetchProducts = async () => (await get("/public/products")).map(nor
 export const fetchProductBySlug = async (slug) => normalizeProduct(await get(`/public/products/${slug}`));
 export const fetchBlogs = async () => (await get("/public/blog")).map(normalizeBlog);
 export const fetchBlogBySlug = async (slug) => normalizeBlog(await get(`/public/blog/${slug}`));
+export const fetchBlogCategories = () => get("/public/blog-categories");
+export const fetchBlogPageSettings = () => get("/public/blog/settings");
+export const fetchBlogPosts = async ({ search = "", category = "", page = 1, limit = 6 } = {}) => {
+  const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+  if (search) params.set("search", search);
+  if (category && category !== "All") params.set("category", category);
+  const result = await get(`/public/blog?${params.toString()}`);
+  return {
+    items: (result.data || []).map(normalizeBlog),
+    meta: result.meta || { page: 1, per_page: limit, total: 0, total_pages: 1 },
+  };
+};
 export const fetchCategories = () => get("/public/categories");
 export const fetchHeroSlides = async () => (await get("/public/hero")).map(normalizeHeroSlide);
 export const fetchSectionBanner = async (key) => normalizeSectionBanner(await get(`/public/sections/${key}`));
@@ -122,3 +134,4 @@ export const fetchSiteSettings = () => get("/public/settings");
 export const fetchNavLinks = () => get("/public/nav-links");
 export const fetchFooterLinkGroups = () => get("/public/footer-link-groups");
 export const fetchSocialLinks = () => get("/public/social-links");
+export const fetchContactPage = () => get("/public/contact-page");
