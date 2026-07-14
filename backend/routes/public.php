@@ -38,6 +38,7 @@ function registerPublicRoutes(Router $router): void
 {
     $router->get('/api/public/hero', [HeroController::class, 'publicIndex']);
     $router->get('/api/public/categories', [CategoryController::class, 'publicIndex']);
+    $router->get('/api/public/sections', [SectionBannerController::class, 'publicIndex']);
     $router->get('/api/public/sections/{key}', [SectionBannerController::class, 'publicShowByKey']);
     $router->post('/api/public/orders', [OrderController::class, 'publicStore']);
     $router->get('/api/public/products', [ProductController::class, 'publicIndex']);

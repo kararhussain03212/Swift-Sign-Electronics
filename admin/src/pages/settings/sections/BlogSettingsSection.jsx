@@ -26,16 +26,6 @@ export default function BlogSettingsSection({ form, setField, toImageUrl, upload
         Hero Section
       </h3>
 
-      <Field label="Badge Text" hint='Small tag above the heading — e.g. "Wellness Journal"'>
-        <input
-          type="text"
-          value={form.blog_badge_text || ""}
-          onChange={(e) => setField("blog_badge_text", e.target.value)}
-          className={inputClass}
-          placeholder="Wellness Journal"
-        />
-      </Field>
-
       <Field label="Hero Title" hint="First part of the large heading">
         <input
           type="text"

@@ -94,7 +94,7 @@ final class ProductController extends BaseCrudController
 
     private function encodeJsonFields(array $payload): array
     {
-        $jsonFields = ['images', 'introduction', 'specifications', 'shipping_list'];
+        $jsonFields = ['images', 'introduction', 'specifications', 'shipping_list', 'documents', 'faqs'];
         foreach ($jsonFields as $field) {
             if (!array_key_exists($field, $payload)) {
                 continue;

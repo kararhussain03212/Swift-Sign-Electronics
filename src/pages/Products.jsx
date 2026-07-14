@@ -7,7 +7,7 @@ import Pagination from '../components/Products/Pagination';
 import QuickViewModal from '../components/Products/QuickViewModal';
 
 export default function Products() {
-  const { products } = useShop();
+  const { products, productCategories } = useShop();
 
   const maxPrice = useMemo(() => {
     let highestPrice = 0;
@@ -80,7 +80,7 @@ export default function Products() {
 
       return true;
     });
-  }, [filters]);
+  }, [products, filters]);
 
   // Sorting Logic
   const sortedProducts = useMemo(() => {
@@ -173,19 +173,19 @@ export default function Products() {
             <span>All Products</span>
             {filters.categories.length === 0 && <span className="h-2 w-2 rounded-full bg-white animate-pulse"></span>}
           </button>
-          {['Tools', 'Instruments', 'Projects'].map((cat) => {
-            const isSelected = filters.categories.includes(cat);
+          {productCategories.filter(cat => cat.cat_key !== 'all').map((cat) => {
+            const isSelected = filters.categories.includes(cat.name);
             return (
               <button
-                key={cat}
-                onClick={() => handleCategoryNavClick(cat)}
+                key={cat.id}
+                onClick={() => handleCategoryNavClick(cat.name)}
                 className={`px-6 py-3 rounded-none font-bold text-sm transition-all cursor-pointer border flex items-center gap-2 ${
                   isSelected
                     ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/10'
                     : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'
                 }`}
               >
-                <span>{cat}</span>
+                <span>{cat.name}</span>
                 {isSelected && <span className="h-2 w-2 rounded-full bg-white animate-pulse"></span>}
               </button>
             );

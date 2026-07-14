@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { products as staticProducts } from '../data/products';
 import { BLOG_ARTICLES as staticBlogs } from '../data/blogData';
 import {
   DEFAULT_SITE_SETTINGS,
@@ -18,13 +17,12 @@ import {
   fetchFooterLinkGroups,
   fetchSocialLinks,
   fetchHeroSlides,
-  fetchSectionBanner,
+  fetchSectionBanners,
   fetchContactPage,
   fetchBlogCategories,
   fetchBlogPageSettings,
+  fetchCategories,
 } from '../api/shopApi';
-
-const SECTION_BANNER_KEYS = ['tools', 'instruments', 'projects'];
 
 const ShopContext = createContext();
 
@@ -37,8 +35,8 @@ export const useShop = () => {
 };
 
 export const ShopProvider = ({ children }) => {
-  // Catalog data — served from the API, static files as instant fallback
-  const [products, setProducts] = useState(staticProducts);
+  // Catalog data — products come directly from the database (no static fallback)
+  const [products, setProducts] = useState([]);
   const [blogs, setBlogs] = useState(staticBlogs);
 
   // Site content (navbar/footer) — served from the API, fallback defaults if unreachable
@@ -48,14 +46,21 @@ export const ShopProvider = ({ children }) => {
   const [socialLinks, setSocialLinks] = useState(DEFAULT_SOCIAL_LINKS);
   const [heroSlides, setHeroSlides] = useState([]);
   const [sectionBanners, setSectionBanners] = useState({});
+  const [sectionBannersList, setSectionBannersList] = useState([]);
   const [contactPage, setContactPage] = useState(DEFAULT_CONTACT_PAGE);
   const [blogPageSettings, setBlogPageSettings] = useState(DEFAULT_BLOG_PAGE_SETTINGS);
   const [blogCategories, setBlogCategories] = useState(DEFAULT_BLOG_CATEGORIES);
+  const [productCategories, setProductCategories] = useState([]);
 
   useEffect(() => {
     fetchProducts()
-      .then((list) => { if (list.length) setProducts(list); })
-      .catch(() => {});
+      .then((list) => {
+        console.log('[ShopContext] Fetched products:', Array.isArray(list) ? list.length : 'not array');
+        setProducts(Array.isArray(list) ? list : []);
+      })
+      .catch((err) => {
+        console.error('[ShopContext] Failed to fetch products:', err);
+      });
     fetchBlogs()
       .then((list) => { if (list.length) setBlogs(list); })
       .catch(() => {});
@@ -83,11 +88,19 @@ export const ShopProvider = ({ children }) => {
     fetchBlogCategories()
       .then((list) => { if (list.length) setBlogCategories(list); })
       .catch(() => {});
-    SECTION_BANNER_KEYS.forEach((key) => {
-      fetchSectionBanner(key)
-        .then((banner) => setSectionBanners((prev) => ({ ...prev, [key]: banner })))
-        .catch(() => {});
-    });
+    fetchCategories()
+      .then((list) => { if (list.length) setProductCategories(list); })
+      .catch(() => {});
+    fetchSectionBanners()
+      .then((list) => {
+        setSectionBannersList(Array.isArray(list) ? list : []);
+        setSectionBanners((prev) => {
+          const byKey = { ...prev };
+          (list || []).forEach((banner) => { byKey[banner.sectionKey] = banner; });
+          return byKey;
+        });
+      })
+      .catch(() => {});
   }, []);
 
   // Cart State
@@ -233,9 +246,11 @@ export const ShopProvider = ({ children }) => {
         socialLinks,
         heroSlides,
         sectionBanners,
+        sectionBannersList,
         contactPage,
         blogPageSettings,
         blogCategories,
+        productCategories,
         cart,
         wishlist,
         compareList,

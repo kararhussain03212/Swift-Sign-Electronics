@@ -276,34 +276,32 @@ export default function ProductDetails({ onQuickView }) {
 
 
       {/* Accordion FAQ Area */}
-      <section className="space-y-6">
-        <h3 className="text-xl md:text-2xl font-black text-slate-800 text-slate-800">
-          Frequently Asked Questions
-        </h3>
-        
-        <div className="border border-slate-200 border-slate-200 rounded-none overflow-hidden bg-white bg-white shadow-xs divide-y divide-slate-100">
-          {[
-            { q: "Is this component certified for industrial application?", a: "Yes, this component matches industrial performance targets and is fully ESD-safe (Electrostatic Discharge protected) where noted in the specifications sheet." },
-            { q: "Where can I find drivers or software libraries for this device?", a: "You can find downloadable programming codes, MQTT server templates, and pinout datasheets under the 'Documents' tab on this page." },
-            { q: "What is your warranty return policy on burnt components?", a: "We provide 30-day coverage on genuine defects. However, warranty coverage does not protect components burned by improper voltage settings, reversing polarity, or excessive solder thermal stress." }
-          ].map((faq, idx) => (
-            <div key={idx} className="p-5 space-y-2">
-              <button
-                onClick={() => toggleFaq(idx)}
-                className="w-full flex items-center justify-between font-bold text-slate-800 text-slate-700 hover:text-blue-500 text-sm md:text-base cursor-pointer text-left"
-              >
-                <span>{faq.q}</span>
-                <FiChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${faqOpen[idx] ? 'rotate-180 text-blue-500' : ''}`} />
-              </button>
-              {faqOpen[idx] && (
-                <p className="text-sm text-slate-500 text-slate-600 leading-relaxed pt-1.5 border-t border-slate-100 border-slate-200/40">
-                  {faq.a}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
+      {product.faqs && product.faqs.length > 0 && (
+        <section className="space-y-6">
+          <h3 className="text-xl md:text-2xl font-black text-slate-800 text-slate-800">
+            Frequently Asked Questions
+          </h3>
+
+          <div className="border border-slate-200 border-slate-200 rounded-none overflow-hidden bg-white bg-white shadow-xs divide-y divide-slate-100">
+            {product.faqs.map((faq, idx) => (
+              <div key={idx} className="p-5 space-y-2">
+                <button
+                  onClick={() => toggleFaq(idx)}
+                  className="w-full flex items-center justify-between font-bold text-slate-800 text-slate-700 hover:text-blue-500 text-sm md:text-base cursor-pointer text-left"
+                >
+                  <span>{faq.q}</span>
+                  <FiChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${faqOpen[idx] ? 'rotate-180 text-blue-500' : ''}`} />
+                </button>
+                {faqOpen[idx] && (
+                  <p className="text-sm text-slate-500 text-slate-600 leading-relaxed pt-1.5 border-t border-slate-100 border-slate-200/40">
+                    {faq.a}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
 
       {/* Related Products list */}

@@ -73,8 +73,9 @@ const DEFAULT_HERO_SLIDES = [
   }
 ];
 
-const DEFAULT_SECTION_BANNERS = {
-  tools: {
+const DEFAULT_SECTION_BANNERS = [
+  {
+    sectionKey: 'tools',
     category: 'Tools',
     sectionTitle: 'Tools',
     kicker: 'Tools Essentials',
@@ -83,7 +84,8 @@ const DEFAULT_SECTION_BANNERS = {
     description: 'Precision hand tools and workstations for soldering, cutting, and assembly.',
     bgImage: '/image.png',
   },
-  instruments: {
+  {
+    sectionKey: 'instruments',
     category: 'Instruments',
     sectionTitle: 'Instruments',
     kicker: 'Instruments Essentials',
@@ -92,7 +94,8 @@ const DEFAULT_SECTION_BANNERS = {
     description: 'Multimeters, oscilloscopes, and power supplies for accurate diagnostics.',
     bgImage: '/image copy.png',
   },
-  projects: {
+  {
+    sectionKey: 'projects',
     category: 'Projects',
     sectionTitle: 'Projects',
     kicker: 'Projects Essentials',
@@ -101,15 +104,13 @@ const DEFAULT_SECTION_BANNERS = {
     description: 'Everything you need to build, learn, and prototype your next project.',
     bgImage: '/image copy 2.png',
   },
-};
+];
 
 export default function Home() {
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const { getCartCount, sectionBanners } = useShop();
+  const { getCartCount, sectionBannersList } = useShop();
 
-  const toolsBanner = sectionBanners.tools || DEFAULT_SECTION_BANNERS.tools;
-  const instrumentsBanner = sectionBanners.instruments || DEFAULT_SECTION_BANNERS.instruments;
-  const projectsBanner = sectionBanners.projects || DEFAULT_SECTION_BANNERS.projects;
+  const banners = sectionBannersList.length ? sectionBannersList : DEFAULT_SECTION_BANNERS;
 
   return (
     <div className="w-full bg-gray-50 min-h-screen">
@@ -122,14 +123,14 @@ export default function Home() {
       {/* 6. DISCOVER ALL PRODUCTS SLIDER */}
       <DiscoverSection />
 
-      {/* 3. TOOLS CATEGORY SLIDER */}
-      <CategorySliderSection sectionName="Tools" banner={toolsBanner} />
-
-      {/* 4. INSTRUMENTS CATEGORY SLIDER */}
-      <CategorySliderSection sectionName="Instruments" banner={instrumentsBanner} />
-
-      {/* 5. PROJECTS CATEGORY SLIDER */}
-      <CategorySliderSection sectionName="Projects" banner={projectsBanner} />
+      {/* 3-5. DYNAMIC CATEGORY SLIDERS — one per active section banner */}
+      {banners.map((banner) => (
+        <CategorySliderSection
+          key={banner.sectionKey}
+          sectionName={banner.sectionTitle || banner.category}
+          banner={banner}
+        />
+      ))}
 
       {/* 8. BLOG SECTION */}
       <BlogSection />

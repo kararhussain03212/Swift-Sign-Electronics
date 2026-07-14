@@ -88,7 +88,6 @@ export default function BlogCategoryList() {
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Slug</th>
                 <th className="px-4 py-3">Order</th>
-                <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
@@ -99,16 +98,16 @@ export default function BlogCategoryList() {
                   <td className="px-4 py-3">{item.slug}</td>
                   <td className="px-4 py-3">{Number(item.sort_order || 0)}</td>
                   <td className="px-4 py-3">
-                    <button
-                      type="button"
-                      onClick={() => handleToggleActive(item)}
-                      className={`rounded-lg px-3 py-1 text-xs ${item.is_active ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}
-                    >
-                      {item.is_active ? "Active" : "Inactive"}
-                    </button>
-                  </td>
-                  <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
+                      {canEdit && (
+                        <button
+                          type="button"
+                          onClick={() => handleToggleActive(item)}
+                          className={`rounded-lg px-3 py-1.5 text-xs ${item.is_active ? "bg-green-600 text-white hover:bg-green-700" : "bg-red-600 text-white hover:bg-red-700"}`}
+                        >
+                          {item.is_active ? "Active" : "Inactive"}
+                        </button>
+                      )}
                       {canEdit && (
                         <button
                           type="button"

@@ -50,12 +50,14 @@ export function normalizeProduct(row) {
     rating: row.rating != null ? Number(row.rating) : 0,
     reviews: Number(row.reviews || 0),
     stock: Number(row.stock || 0),
-    thumbnail: row.thumbnail || "",
-    images: parseMaybeJson(row.images, []),
+    thumbnail: resolveUploadUrl(row.thumbnail || ""),
+    images: parseMaybeJson(row.images, []).map(resolveUploadUrl),
     description: row.description || "",
     introduction: parseMaybeJson(row.introduction, {}),
     specifications: parseMaybeJson(row.specifications, {}),
     shippingList: parseMaybeJson(row.shipping_list, []),
+    documents: parseMaybeJson(row.documents, []),
+    faqs: parseMaybeJson(row.faqs, []),
     featured: row.featured === 1 || row.featured === true,
   };
 }
@@ -109,7 +111,25 @@ export function normalizeSectionBanner(row) {
   };
 }
 
-export const fetchProducts = async () => (await get("/public/products")).map(normalizeProduct);
+export const fetchProducts = async () => {
+  try {
+    const raw = await get("/public/products");
+    console.log('[shopApi] fetchProducts raw count:', raw.length);
+    const normalized = raw.map((row, idx) => {
+      try {
+        return normalizeProduct(row);
+      } catch (err) {
+        console.error(`[shopApi] normalizeProduct error on index ${idx}:`, row, err);
+        throw err;
+      }
+    });
+    console.log('[shopApi] fetchProducts normalized count:', normalized.length);
+    return normalized;
+  } catch (err) {
+    console.error('[shopApi] fetchProducts error:', err);
+    throw err;
+  }
+};
 export const fetchProductBySlug = async (slug) => normalizeProduct(await get(`/public/products/${slug}`));
 export const fetchBlogs = async () => (await get("/public/blog")).map(normalizeBlog);
 export const fetchBlogBySlug = async (slug) => normalizeBlog(await get(`/public/blog/${slug}`));
@@ -128,6 +148,7 @@ export const fetchBlogPosts = async ({ search = "", category = "", page = 1, lim
 export const fetchCategories = () => get("/public/categories");
 export const fetchHeroSlides = async () => (await get("/public/hero")).map(normalizeHeroSlide);
 export const fetchSectionBanner = async (key) => normalizeSectionBanner(await get(`/public/sections/${key}`));
+export const fetchSectionBanners = async () => (await get("/public/sections")).map(normalizeSectionBanner);
 export const submitOrder = (order) => post("/public/orders", order);
 export const submitContact = (message) => post("/public/contact", message);
 export const fetchSiteSettings = () => get("/public/settings");

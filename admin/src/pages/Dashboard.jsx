@@ -159,8 +159,26 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {QUICK.map((q) => (
+          <div className="space-y-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {QUICK.slice(0, 4).map((q) => (
+                <Link
+                  key={q.to}
+                  to={q.to}
+                  className="group flex items-center gap-3 rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-4 py-3 text-sm font-medium text-white transition-all hover:border-[var(--admin-border-amber)] hover:bg-[var(--admin-sidebar-hover)]"
+                >
+                  <div
+                    className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors"
+                    style={{ background: `${q.color}18` }}
+                  >
+                    <span className={`pi ${q.icon} text-sm`} style={{ color: q.color }} />
+                  </div>
+                  <span className="flex-1 text-sm">{q.label}</span>
+                  <span className="pi pi-arrow-right text-[10px] text-[var(--admin-muted)] transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              ))}
+            </div>
+            {QUICK.slice(4).map((q) => (
               <Link
                 key={q.to}
                 to={q.to}

@@ -4,7 +4,6 @@ import {
   createSocialLink,
   updateSocialLink,
   deleteSocialLink,
-  reorderSocialLinks,
 } from "../../api/socialLinkApi";
 import { useAuth } from "../../context/useAuth";
 import { hasPermission } from "../../modules/users/constants";
@@ -97,21 +96,6 @@ export default function SocialLinkManager() {
     }
   };
 
-  const move = async (index, dir) => {
-    const target = index + dir;
-    if (target < 0 || target >= links.length) return;
-    const next = [...links];
-    [next[index], next[target]] = [next[target], next[index]];
-    setLinks(next);
-    const saved = next.filter((l) => l.id);
-    try {
-      await reorderSocialLinks(saved.map((l, i) => ({ id: l.id, sort_order: i + 1 })));
-    } catch (err) {
-      console.error(err);
-      setError("Failed to save new order.");
-    }
-  };
-
   if (loading) return <p className="text-white/70">Loading social links...</p>;
 
   return (
@@ -139,7 +123,6 @@ export default function SocialLinkManager() {
         <table className="w-full text-left text-sm text-white/80">
           <thead className="border-b border-white/10 text-xs uppercase tracking-wider text-white/50">
             <tr>
-              <th className="px-4 py-3">Order</th>
               <th className="px-4 py-3">Platform</th>
               <th className="px-4 py-3">URL</th>
               <th className="px-4 py-3">Status</th>
@@ -149,12 +132,6 @@ export default function SocialLinkManager() {
           <tbody>
             {links.map((link, index) => (
               <tr key={link.id ?? `new-${index}`} className="border-b border-white/5 last:border-0">
-                <td className="px-4 py-3">
-                  <div className="flex gap-1">
-                    <button type="button" onClick={() => move(index, -1)} disabled={index === 0} className="rounded border border-white/15 px-2 py-0.5 text-xs disabled:opacity-30">↑</button>
-                    <button type="button" onClick={() => move(index, 1)} disabled={index === links.length - 1} className="rounded border border-white/15 px-2 py-0.5 text-xs disabled:opacity-30">↓</button>
-                  </div>
-                </td>
                 <td className="px-4 py-3">
                   <select
                     value={link.platform}

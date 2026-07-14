@@ -114,6 +114,8 @@ CREATE TABLE IF NOT EXISTS `products` (
   `introduction`   JSON DEFAULT NULL,
   `specifications` JSON DEFAULT NULL,
   `shipping_list`  JSON DEFAULT NULL,
+  `documents`      JSON DEFAULT NULL,
+  `faqs`           JSON DEFAULT NULL,
   `featured`       TINYINT(1) NOT NULL DEFAULT 0,
   `sort_order`     SMALLINT NOT NULL DEFAULT 0,
   `is_active`      TINYINT(1) NOT NULL DEFAULT 1,

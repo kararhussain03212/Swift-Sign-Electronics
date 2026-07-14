@@ -167,15 +167,6 @@ export default function SiteContentSettings() {
 
   const addMessage = () => setMessages((prev) => [...prev, ""]);
   const removeMessage = (index) => setMessages((prev) => (prev.length > 1 ? prev.filter((_, i) => i !== index) : prev));
-  const moveMessage = (index, dir) => {
-    const target = index + dir;
-    if (target < 0 || target >= messages.length) return;
-    setMessages((prev) => {
-      const next = [...prev];
-      [next[index], next[target]] = [next[target], next[index]];
-      return next;
-    });
-  };
 
   const handleSave = async () => {
     if (!loadedOk) {
@@ -252,10 +243,6 @@ export default function SiteContentSettings() {
           </div>
           {messages.map((msg, index) => (
             <div key={index} className="flex items-center gap-2">
-              <div className="flex gap-1">
-                <button type="button" onClick={() => moveMessage(index, -1)} disabled={index === 0} className="rounded border border-white/15 px-2 py-0.5 text-xs disabled:opacity-30">↑</button>
-                <button type="button" onClick={() => moveMessage(index, 1)} disabled={index === messages.length - 1} className="rounded border border-white/15 px-2 py-0.5 text-xs disabled:opacity-30">↓</button>
-              </div>
               <input
                 type="text"
                 value={msg}

@@ -1,7 +1,6 @@
 // Generates seed SQL for swift_sign_electronic from the frontend's static data
 // so the dynamic site looks identical to the static mockup on first run.
 // Usage: node backend/database/generate_seed.mjs > backend/database/seed_data.sql
-import { products } from "../../src/data/products.js";
 import { BLOG_ARTICLES } from "../../src/data/blogData.js";
 
 const q = (v) => {
@@ -69,7 +68,6 @@ HERO.forEach(([title, subtitle, image], i) => {
 });
 
 // ── section banners (Tools / Instruments / Projects) ──
-const firstOf = (cat) => products.find((p) => p.category === cat);
 const BANNERS = [
   ["tools",       "Tools",       "Essential tools for electronics projects",       "/image.png"],
   ["instruments", "Instruments", "Precision measurement and diagnostic devices",   "/image copy.png"],
@@ -77,28 +75,14 @@ const BANNERS = [
 ];
 out.push("DELETE FROM section_banners;");
 BANNERS.forEach(([key, label, subtitle, bg], i) => {
-  const p = firstOf(label);
   out.push(
     `INSERT INTO section_banners (section_key, kicker, title, subtitle, description, bg_image, sort_order, is_active) VALUES (` +
-      `${q(key)}, ${q(label.toUpperCase() + " ESSENTIALS")}, ${q(p?.name || label)}, ${q(subtitle)}, ${q(p?.description || "")}, ${q(bg)}, ${i}, 1);`
+      `${q(key)}, ${q(label.toUpperCase() + " ESSENTIALS")}, ${q(label)}, ${q(subtitle)}, ${q("")}, ${q(bg)}, ${i}, 1);`
   );
 });
 
-// ── products ──
-out.push("DELETE FROM products;");
-for (const [i, p] of products.entries()) {
-  out.push(
-    `INSERT INTO products (name, slug, category, brand, model, price, discount, rating, reviews, stock, thumbnail, images, description, introduction, specifications, shipping_list, featured, sort_order, is_active) VALUES (` +
-      [
-        q(p.name), q(p.slug), q(p.category), q(p.brand || ""), q(p.model || ""),
-        Number(p.price || 0), p.discount != null ? Number(p.discount) : "NULL",
-        p.rating != null ? Number(p.rating) : "NULL", Number(p.reviews || 0), Number(p.stock || 0),
-        q(p.thumbnail || ""), j(p.images || []), q(p.description || ""),
-        j(p.introduction || {}), j(p.specifications || {}), j(p.shippingList || []),
-        0, i, 1,
-      ].join(", ") + ");"
-  );
-}
+// Products are managed entirely through the admin panel / live database —
+// no longer regenerated from static frontend data on every seed run.
 
 // ── blog posts ──
 out.push("DELETE FROM blog_posts;");

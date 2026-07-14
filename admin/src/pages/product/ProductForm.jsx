@@ -35,6 +35,8 @@ const getInitialForm = () => ({
   advantages: [""],
   specifications: [{ key: "", value: "" }],
   shipping_list: [{ name: "", count: 1 }],
+  documents: [{ name: "", url: "", size: "" }],
+  faqs: [{ q: "", a: "" }],
   featured: false,
   sort_order: 0,
   is_active: true,
@@ -82,6 +84,8 @@ export default function ProductForm() {
         const introduction = parseJson(item.introduction, {});
         const specs        = parseJson(item.specifications, {});
         const shipping     = parseJson(item.shipping_list, []);
+        const documents    = parseJson(item.documents, []);
+        const faqs         = parseJson(item.faqs, []);
 
         const specRows = Object.entries(specs).map(([key, value]) => ({ key, value: String(value) }));
 
@@ -106,6 +110,8 @@ export default function ProductForm() {
           advantages:   introduction.advantages?.length ? introduction.advantages : [""],
           specifications: specRows.length ? specRows : [{ key: "", value: "" }],
           shipping_list:  shipping.length ? shipping : [{ name: "", count: 1 }],
+          documents:    documents.length ? documents : [{ name: "", url: "", size: "" }],
+          faqs:         faqs.length ? faqs : [{ q: "", a: "" }],
           featured:     item.featured === 1 || item.featured === true,
           sort_order:   Number(item.sort_order || 0),
           is_active:    item.is_active === 1 || item.is_active !== false,
@@ -212,6 +218,8 @@ export default function ProductForm() {
         }),
         specifications: JSON.stringify(specifications),
         shipping_list:  JSON.stringify(form.shipping_list.filter((s) => s.name.trim()).map((s) => ({ name: s.name.trim(), count: Number(s.count || 1) }))),
+        documents:   JSON.stringify(form.documents.filter((d) => d.name.trim()).map((d) => ({ name: d.name.trim(), url: d.url.trim(), size: d.size.trim() }))),
+        faqs:        JSON.stringify(form.faqs.filter((f) => f.q.trim()).map((f) => ({ q: f.q.trim(), a: f.a.trim() }))),
         featured:    form.featured ? 1 : 0,
         sort_order:  Number(form.sort_order || 0),
         is_active:   form.is_active ? 1 : 0,
@@ -420,6 +428,61 @@ export default function ProductForm() {
             </div>
           ))}
           <button type="button" onClick={() => setField("shipping_list", [...form.shipping_list, { name: "", count: 1 }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add Item</button>
+        </div>
+
+        {/* ── Documents ── */}
+        <div className={sectionCls}>
+          <h3 className="font-semibold text-white/90">Datasheets & Manuals</h3>
+          {form.documents.map((row, i) => (
+            <div key={i} className="flex gap-2">
+              <input
+                value={row.name}
+                onChange={(e) => { const u = [...form.documents]; u[i] = { ...u[i], name: e.target.value }; setField("documents", u); }}
+                placeholder="Document name…"
+                className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+              <input
+                value={row.url}
+                onChange={(e) => { const u = [...form.documents]; u[i] = { ...u[i], url: e.target.value }; setField("documents", u); }}
+                placeholder="File URL…"
+                className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+              <input
+                value={row.size}
+                onChange={(e) => { const u = [...form.documents]; u[i] = { ...u[i], size: e.target.value }; setField("documents", u); }}
+                placeholder="e.g. 1.8 MB"
+                className="w-28 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+              <button type="button" onClick={() => setField("documents", form.documents.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
+            </div>
+          ))}
+          <button type="button" onClick={() => setField("documents", [...form.documents, { name: "", url: "", size: "" }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add Document</button>
+        </div>
+
+        {/* ── FAQs ── */}
+        <div className={sectionCls}>
+          <h3 className="font-semibold text-white/90">Frequently Asked Questions</h3>
+          {form.faqs.map((row, i) => (
+            <div key={i} className="space-y-2 rounded-lg border border-white/10 p-3">
+              <div className="flex gap-2">
+                <input
+                  value={row.q}
+                  onChange={(e) => { const u = [...form.faqs]; u[i] = { ...u[i], q: e.target.value }; setField("faqs", u); }}
+                  placeholder="Question…"
+                  className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                />
+                <button type="button" onClick={() => setField("faqs", form.faqs.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
+              </div>
+              <textarea
+                rows={2}
+                value={row.a}
+                onChange={(e) => { const u = [...form.faqs]; u[i] = { ...u[i], a: e.target.value }; setField("faqs", u); }}
+                placeholder="Answer…"
+                className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+            </div>
+          ))}
+          <button type="button" onClick={() => setField("faqs", [...form.faqs, { q: "", a: "" }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add FAQ</button>
         </div>
 
         {/* ── Visibility ── */}
