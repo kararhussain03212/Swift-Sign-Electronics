@@ -58,6 +58,7 @@ export function normalizeProduct(row) {
     shippingList: parseMaybeJson(row.shipping_list, []),
     documents: parseMaybeJson(row.documents, []),
     faqs: parseMaybeJson(row.faqs, []),
+    project_links: parseMaybeJson(row.project_links, []),
     featured: row.featured === 1 || row.featured === true,
   };
 }

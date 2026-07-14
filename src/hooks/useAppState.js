@@ -20,7 +20,6 @@ export function useAppState() {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     const handleScroll = () => {
       if (window.scrollY > 300) {
         setShowScrollTop(true);
@@ -31,6 +30,11 @@ export function useAppState() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Scroll to top only on route/pathname changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   const [projectsList, setProjectsList] = useState(() => {
     const saved = localStorage.getItem('swift-sign-projects');

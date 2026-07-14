@@ -117,7 +117,7 @@ export default function ProductDetails({ onQuickView }) {
               </span>
               <span className="text-slate-300">|</span>
               <span className="text-sm text-slate-400 font-medium">
-                SKU: <strong className="text-slate-700">{product.SKU}</strong>
+                Model: <strong className="text-slate-700">{product.model}</strong>
               </span>
             </div>
 

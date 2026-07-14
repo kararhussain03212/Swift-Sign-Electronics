@@ -169,21 +169,6 @@ export default function ProductForm() {
     }
   };
 
-  const handleRemoveImage = (i) => {
-    const url = form.images[i];
-    if (url.startsWith("blob:")) {
-      URL.revokeObjectURL(url);
-      const blobsBefore = form.images.slice(0, i).filter((u) => u.startsWith("blob:")).length;
-      setForm((p) => ({
-        ...p,
-        images: p.images.filter((_, j) => j !== i),
-        imageFiles: p.imageFiles.filter((_, j) => j !== blobsBefore),
-      }));
-    } else {
-      setForm((p) => ({ ...p, images: p.images.filter((_, j) => j !== i) }));
-    }
-  };
-
   /* string-array editor helper */
   const listEditor = (key, placeholder) => (
     <>
@@ -508,10 +493,10 @@ export default function ProductForm() {
           <button type="button" onClick={() => setField("faqs", [...form.faqs, { q: "", a: "" }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add FAQ</button>
         </div>
 
-        {/* ── Project Links ── */}
+        {/* ── Code Links ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Project Links</h3>
-          <p className="text-xs text-white/50 mb-3">Links to GitHub, documentation, demo, or other project resources</p>
+          <h3 className="font-semibold text-white/90">Code Link</h3>
+          <p className="text-xs text-white/50 mb-3">Links to GitHub, documentation, demo, or other code/project resources</p>
           {form.project_links.map((row, i) => (
             <div key={i} className="space-y-2 rounded-lg border border-white/10 p-3 mb-3">
               <div className="flex gap-2">

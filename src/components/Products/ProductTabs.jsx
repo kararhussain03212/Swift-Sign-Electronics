@@ -13,7 +13,7 @@ export default function ProductTabs({ product }) {
     { id: 'specs', label: 'Specifications', icon: <FiSliders /> },
     { id: 'shipping', label: 'Shipping List', icon: <FiPackage /> },
     { id: 'docs', label: 'Documents', icon: <FiFileText /> },
-    { id: 'links', label: 'Project Links', icon: <FiLink /> },
+    ...(product.project_links?.length > 0 ? [{ id: 'links', label: 'Code Link', icon: <FiLink /> }] : []),
   ];
 
   return (
@@ -171,7 +171,7 @@ export default function ProductTabs({ product }) {
 
             {activeTab === 'links' && (
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-slate-800 mb-4">Project Links</h3>
+                <h3 className="text-xl font-bold text-slate-800 mb-4">Code Link</h3>
                 <div className="grid grid-cols-1 gap-3.5">
                   {product.project_links?.map((link, idx) => {
                     const isGithub = link.url?.includes('github');
@@ -198,7 +198,7 @@ export default function ProductTabs({ product }) {
                     );
                   })}
                   {(!product.project_links || product.project_links.length === 0) && (
-                    <p className="text-slate-500 text-sm">No project links listed.</p>
+                    <p className="text-slate-500 text-sm">No code links listed.</p>
                   )}
                 </div>
               </div>
