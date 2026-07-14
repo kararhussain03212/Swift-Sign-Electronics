@@ -61,8 +61,8 @@
     gap: 0.75rem !important;
   }
 
-  /* Full width buttons on mobile */
-  button:not(.icon) {
+  /* Full-width action buttons helper */
+  .btn-full-mobile {
     width: 100%;
   }
 
@@ -156,10 +156,6 @@
     position: relative;
   }
 
-  /* Flexbox improvements */
-  .flex {
-    flex-wrap: wrap;
-  }
 
   /* Responsive containers */
   .max-w-\[1536px\] {

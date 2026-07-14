@@ -107,18 +107,18 @@ export default function SectionBannerForm() {
           <label className="block">
             <span className="mb-1 block text-sm font-semibold text-white">Section key *</span>
             <select value={form.section_key} onChange={set("section_key")} className={inputCls}>
-              <option value="">Select section…</option>
+              <option value="" className="bg-[var(--admin-bg)] text-white">Select section…</option>
               {categoryNames.map((cat) => (
-                <option key={cat} value={slugify(cat)}>{slugify(cat)}</option>
+                <option key={cat} value={slugify(cat)} className="bg-[var(--admin-bg)] text-white">{slugify(cat)}</option>
               ))}
             </select>
           </label>
           <label className="block">
             <span className="mb-1 block text-sm font-semibold text-white">Product category *</span>
             <select value={form.category || ""} onChange={set("category")} className={inputCls}>
-              <option value="">Select category…</option>
+              <option value="" className="bg-[var(--admin-bg)] text-white">Select category…</option>
               {categoryNames.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat} className="bg-[var(--admin-bg)] text-white">{cat}</option>
               ))}
             </select>
             <p className="mt-1 text-xs text-white/50">Products shown in the carousel below this banner. Pulled live from Categories — add a new one there and it appears here.</p>

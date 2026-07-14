@@ -84,19 +84,19 @@ export default function ProductDetails({ onQuickView }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 lg:px-8 py-10 min-h-screen space-y-16 text-left">
+    <div className="max-w-5xl mx-auto px-3 sm:px-4 lg:px-8 py-5 sm:py-8 md:py-10 min-h-screen space-y-8 sm:space-y-12 md:space-y-16 text-left">
       
       {/* Breadcrumbs */}
-      <div className="text-sm font-semibold text-slate-400">
+      <div className="text-xs sm:text-sm font-semibold text-slate-400">
         <Link to="/" className="hover:text-blue-500 transition-colors">Catalog</Link>
-        <span className="mx-2">/</span>
+        <span className="mx-1.5 sm:mx-2">/</span>
         <span className="text-slate-500">{product.category}</span>
-        <span className="mx-2">/</span>
-        <span className="text-slate-700 text-slate-700 line-clamp-1 inline-block align-bottom max-w-xs">{product.name}</span>
+        <span className="mx-1.5 sm:mx-2">/</span>
+        <span className="text-slate-700 line-clamp-1 inline-block align-bottom max-w-[140px] sm:max-w-xs md:max-w-sm">{product.name}</span>
       </div>
 
       {/* Main Details Panel */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10">
         
         {/* Left Side: Product Image & Gallery (Span 6) */}
         <div className="lg:col-span-6 space-y-6">
@@ -122,7 +122,7 @@ export default function ProductDetails({ onQuickView }) {
             </div>
 
             {/* Product Title */}
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800 leading-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-800 leading-tight">
               {product.name}
             </h1>
 
@@ -173,9 +173,9 @@ export default function ProductDetails({ onQuickView }) {
           </div>
 
           {/* Action Row */}
-          <div className="pt-6 border-t border-slate-200 border-slate-200 space-y-4">
-            
-            <div className="flex flex-wrap items-center gap-4">
+          <div className="pt-4 sm:pt-6 border-t border-slate-200 space-y-3 sm:space-y-4">
+
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 md:gap-4">
               {/* Qty Selector */}
               {!isOutOfStock && (
                 <div className="flex items-center bg-slate-100 p-1 rounded-none border border-slate-200/50 border-slate-200/40">
@@ -268,8 +268,8 @@ export default function ProductDetails({ onQuickView }) {
 
       </section>
 
-      {/* Tabs description section */}
-      <section className="bg-white bg-white border border-slate-200/80 border-slate-200/80 rounded-none p-6 md:p-10 shadow-xs">
+      {/* Tabs section */}
+      <section className="bg-white border border-slate-200/80 rounded-none p-4 sm:p-6 md:p-10 shadow-xs">
         <ProductTabs product={product} />
       </section>
 

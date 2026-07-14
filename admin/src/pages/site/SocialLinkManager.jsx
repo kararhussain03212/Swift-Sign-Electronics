@@ -47,32 +47,37 @@ export default function SocialLinkManager() {
 
   const handleAdd = () => setLinks((prev) => [...prev, emptyLink()]);
 
-  const handleSaveRow = async (index) => {
-    const link = links[index];
-    if (!link.url.trim()) {
-      setError("URL is required.");
+  const handleSaveAll = async () => {
+    const missingUrl = links.some((l) => !l.url.trim());
+    if (missingUrl) {
+      setError("Every social link needs a URL.");
       return;
     }
     setSaving(true);
     setError("");
     try {
-      const payload = {
-        platform: link.platform,
-        url: link.url.trim(),
-        is_active: link.is_active ? 1 : 0,
-        sort_order: link.sort_order ?? index + 1,
-      };
-      if (link.id) {
-        const { data } = await updateSocialLink(link.id, payload);
-        setLinks((prev) => prev.map((l, i) => (i === index ? { ...data.data, dirty: false } : l)));
-      } else {
-        const { data } = await createSocialLink(payload);
-        setLinks((prev) => prev.map((l, i) => (i === index ? { ...data.data, dirty: false } : l)));
+      const next = [];
+      for (let i = 0; i < links.length; i += 1) {
+        const link = links[i];
+        const payload = {
+          platform: link.platform,
+          url: link.url.trim(),
+          is_active: link.is_active ? 1 : 0,
+          sort_order: link.sort_order ?? i + 1,
+        };
+        if (link.id) {
+          const { data } = await updateSocialLink(link.id, payload);
+          next.push({ ...data.data, dirty: false });
+        } else {
+          const { data } = await createSocialLink(payload);
+          next.push({ ...data.data, dirty: false });
+        }
       }
-      flash("Saved.");
+      setLinks(next);
+      flash("All changes saved.");
     } catch (err) {
       console.error(err);
-      setError(err?.response?.data?.message || "Failed to save link.");
+      setError(err?.response?.data?.message || "Failed to save changes.");
     } finally {
       setSaving(false);
     }
@@ -137,10 +142,10 @@ export default function SocialLinkManager() {
                     value={link.platform}
                     onChange={(e) => updateField(index, "platform", e.target.value)}
                     disabled={!canEdit}
-                    className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-white outline-none focus:border-[var(--admin-primary)]"
+                    className="rounded-lg border border-white/10 bg-[var(--admin-bg)] px-2 py-1.5 text-white outline-none focus:border-[var(--admin-primary)]"
                   >
                     {PLATFORMS.map((p) => (
-                      <option key={p} value={p}>{p}</option>
+                      <option key={p} value={p} className="bg-[var(--admin-bg)] text-white">{p}</option>
                     ))}
                   </select>
                 </td>
@@ -166,16 +171,6 @@ export default function SocialLinkManager() {
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex justify-end gap-2">
-                    {canEdit && (
-                      <button
-                        type="button"
-                        onClick={() => handleSaveRow(index)}
-                        disabled={saving || !link.dirty}
-                        className="rounded-lg bg-[var(--admin-primary)] px-3 py-1.5 text-xs text-white hover:bg-[var(--admin-primary-strong)] disabled:opacity-40"
-                      >
-                        Save
-                      </button>
-                    )}
                     {canDelete && (
                       <button
                         type="button"
@@ -192,6 +187,19 @@ export default function SocialLinkManager() {
           </tbody>
         </table>
       </div>
+
+      {canEdit && (
+        <div className="sticky bottom-4 z-10 flex justify-end">
+          <button
+            type="button"
+            onClick={handleSaveAll}
+            disabled={saving || links.length === 0}
+            className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-white shadow-sm hover:bg-[var(--admin-primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+      )}
     </section>
   );
 }

@@ -215,13 +215,8 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* 2. Sticky Category Filter Row */}
-      <div
-        className="bg-white sticky z-30 border-b border-gray-200/80 py-3 shadow-sm"
-        style={{
-          top: "var(--navbar-height, 100px)", // Fallback style. AppLayout sets top position dynamically based on header heights
-        }}
-      >
+      {/* 2. Category Filter Row */}
+      <div className="bg-white border-b border-gray-200/80 py-3 shadow-sm">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-5">
           <div className="flex gap-2 overflow-x-auto scrollbar-hide py-1">
             {categoryNames.map((cat) => (

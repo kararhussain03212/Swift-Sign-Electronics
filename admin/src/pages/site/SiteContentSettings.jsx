@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getSettings, updateSettings } from "../../api/settingApi";
+import { uploadImage } from "../../api/uploadApi";
+import { getBackendRoot } from "../../api/runtimeApi";
+import ImageUpload from "../../components/ImageUpload";
 import {
   getNavLinks,
   createNavLink,
@@ -14,7 +17,9 @@ const NAVBAR_FIELDS = [
   { key: "brand_subtitle", label: "Brand Subtitle" },
 ];
 
-const TEXT_FIELDS = NAVBAR_FIELDS;
+const LOGO_FIELDS = ["nav_logo", "nav_logo_alt"];
+
+const TEXT_FIELDS = [...NAVBAR_FIELDS, ...LOGO_FIELDS.map((key) => ({ key }))];
 
 const emptyForm = () => TEXT_FIELDS.reduce((acc, f) => ({ ...acc, [f.key]: "" }), {});
 
@@ -66,6 +71,16 @@ export default function SiteContentSettings() {
 
   const [navLinks, setNavLinks] = useState([]);
   const [navLinksLoading, setNavLinksLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+
+  const apiRoot = useMemo(() => getBackendRoot(), []);
+
+  const toImageUrl = (value) => {
+    if (!value) return "";
+    if (value.startsWith("http")) return value;
+    if (value.startsWith("/")) return apiRoot + value;
+    return apiRoot + "/uploads/" + value;
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -161,6 +176,19 @@ export default function SiteContentSettings() {
     if (success) setSuccess("");
   };
 
+  const uploadLogo = async (file) => {
+    try {
+      setUploading(true);
+      const path = await uploadImage(file, "settings", form.nav_logo);
+      if (path) setField("nav_logo", path);
+    } catch (err) {
+      console.error(err);
+      setError("Logo upload failed.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const updateMessage = (index, value) => {
     setMessages((prev) => prev.map((m, i) => (i === index ? value : m)));
   };
@@ -235,6 +263,26 @@ export default function SiteContentSettings() {
 
       <div className="space-y-3 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-4 sm:p-5">
         <FieldGroup fields={NAVBAR_FIELDS} form={form} setField={setField} canEdit={canEdit} title="Navbar Settings" />
+
+        <div className="mt-4 grid grid-cols-1 gap-2 border-t border-white/10 pt-4 md:grid-cols-[220px_1fr] md:items-start">
+          <label className="pt-2 text-sm font-semibold text-white/80">Navbar Logo</label>
+          <div className="space-y-3">
+            <ImageUpload
+              value={toImageUrl(form.nav_logo)}
+              onFileSelect={uploadLogo}
+              label="Upload Navbar Logo"
+              helperText="PNG, JPG, or SVG shown at the top-left of the storefront"
+            />
+            <input
+              type="text"
+              placeholder="Navbar logo alt text"
+              value={form.nav_logo_alt || ""}
+              onChange={(e) => setField("nav_logo_alt", e.target.value)}
+              disabled={!canEdit}
+              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+            />
+          </div>
+        </div>
 
         <div className="mt-4 space-y-3 border-t border-white/10 pt-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -350,10 +398,10 @@ export default function SiteContentSettings() {
           <button
             type="button"
             onClick={handleSave}
-            disabled={saving || !loadedOk}
+            disabled={saving || uploading || !loadedOk}
             className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-white shadow-sm hover:bg-[var(--admin-primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {saving ? "Saving..." : !loadedOk ? "Save Disabled" : "Save Changes"}
+            {saving ? "Saving..." : uploading ? "Uploading..." : !loadedOk ? "Save Disabled" : "Save Changes"}
           </button>
         </div>
       )}

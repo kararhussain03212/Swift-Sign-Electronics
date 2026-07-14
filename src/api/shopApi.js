@@ -6,7 +6,7 @@ const API_BASE =
   import.meta.env.VITE_API_URL || "http://localhost/Electronics/backend/api";
 const BACKEND_ROOT = API_BASE.replace(/\/api\/?$/, "");
 
-const resolveUploadUrl = (path) => {
+export const resolveUploadUrl = (path) => {
   if (!path) return "";
   if (/^https?:\/\//i.test(path)) return path;
   return path.startsWith("/") ? `${BACKEND_ROOT}${path}` : `${BACKEND_ROOT}/uploads/${path}`;

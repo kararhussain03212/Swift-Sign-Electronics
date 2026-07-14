@@ -9,7 +9,8 @@ import {
 
 export default function CheckoutForm() {
   const navigate = useNavigate();
-  const { cart, getCartTotal, clearCart } = useShop();
+  const { cart, getCartTotal, clearCart, contactPage } = useShop();
+  const whatsappDigits = (contactPage?.whatsapp_number || contactPage?.phone_number || '').replace(/[^\d]/g, '');
   
   
   const [isProcessing, setIsProcessing] = useState(false);
@@ -56,7 +57,7 @@ export default function CheckoutForm() {
       `*Shipping:* Rs. ${shipping.toFixed(2)}\n` +
       `*Total Amount:* Rs. ${totalText}\n`;
 
-    const whatsappUrl = `https://wa.me/923338399480?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(message)}`;
 
     // Persist the order in the backend (admin panel > Orders); WhatsApp remains
     // the customer-facing confirmation, so a failed API call doesn't block it.

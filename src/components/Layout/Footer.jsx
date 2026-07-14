@@ -8,6 +8,7 @@ import {
   DEFAULT_FOOTER_LINK_GROUPS,
   DEFAULT_SOCIAL_LINKS,
 } from '../../data/siteContent';
+import { resolveUploadUrl } from '../../api/shopApi';
 import './Footer.css';
 
 const SOCIAL_ICONS = {
@@ -25,6 +26,10 @@ export default function Footer() {
   const settings = { ...DEFAULT_SITE_SETTINGS, ...siteSettings };
   const groups = footerLinkGroups?.length ? footerLinkGroups : DEFAULT_FOOTER_LINK_GROUPS;
   const socials = socialLinks?.length ? socialLinks : DEFAULT_SOCIAL_LINKS;
+  const footerLogoUrl = siteSettings?.footer_logo
+    ? resolveUploadUrl(siteSettings.footer_logo)
+    : DEFAULT_SITE_SETTINGS.footer_logo;
+  const footerLogoAlt = siteSettings?.footer_logo_alt || DEFAULT_SITE_SETTINGS.footer_logo_alt || settings.brand_name;
 
   return (
     <footer className="w-full bg-slate-950 border-t-4 border-[#0fafb8] text-slate-300 font-sans relative overflow-hidden">
@@ -32,15 +37,19 @@ export default function Footer() {
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#0fafb8]/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+      <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 md:py-20 relative z-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-8 lg:gap-8">
           
           {/* Brand */}
-          <div className="flex flex-col gap-6 lg:col-span-1">
+          <div className="flex flex-col gap-3.5 sm:gap-6 lg:col-span-1">
             <Link to="/" className="inline-block">
-              <h2 className="text-2xl font-black text-white tracking-tight">
-                {settings.brand_name} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0fafb8] to-blue-400">{settings.brand_subtitle}</span>
-              </h2>
+              {footerLogoUrl ? (
+                <img src={footerLogoUrl} alt={footerLogoAlt} className="h-10 w-auto object-contain" />
+              ) : (
+                <h2 className="text-2xl font-black text-white tracking-tight">
+                  {settings.brand_name} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0fafb8] to-blue-400">{settings.brand_subtitle}</span>
+                </h2>
+              )}
             </Link>
             <p className="text-sm text-slate-400 leading-relaxed font-medium">
               {settings.footer_description}
@@ -49,12 +58,12 @@ export default function Footer() {
 
           {/* Footer link groups (Quick Links / Legal Information / admin-managed) */}
           {groups.map((group) => (
-            <div key={group.id} className="flex flex-col gap-6">
-              <h3 className="text-sm font-bold text-white tracking-widest uppercase">{group.title}</h3>
-              <ul className="flex flex-col gap-3">
+            <div key={group.id} className="flex flex-col gap-3.5 sm:gap-6">
+              <h3 className="text-sm lg:text-base font-bold text-white tracking-widest uppercase">{group.title}</h3>
+              <ul className="space-y-2.5 sm:space-y-4 lg:space-y-5">
                 {(group.links || []).map((link) => (
-                  <li key={link.id}>
-                    <Link to={link.url} className="text-sm text-slate-400 hover:text-[#0fafb8] hover:translate-x-1 inline-block transition-all duration-200">
+                  <li key={link.id} className="m-0 p-0">
+                    <Link to={link.url} className="text-xs sm:text-sm lg:text-base text-slate-400 hover:text-[#0fafb8] hover:translate-x-1 block py-0.5 sm:py-1 transition-all duration-200">
                       {link.label}
                     </Link>
                   </li>
@@ -64,25 +73,25 @@ export default function Footer() {
           ))}
 
           {/* Contact & Socials */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-3.5 sm:gap-6">
             <h3 className="text-sm font-bold text-white tracking-widest uppercase">Get in Touch</h3>
-            <ul className="flex flex-col gap-5 text-sm text-slate-400">
-              <li className="flex items-start gap-3">
-                <Phone className="text-[#0fafb8] shrink-0 mt-0.5" size={20} />
+            <ul className="flex flex-col gap-2.5 sm:gap-4 text-sm text-slate-400">
+              <li className="flex items-start gap-2 sm:gap-3">
+                <Phone className="text-[#0fafb8] shrink-0 mt-0.5" size={16} />
                 <div className="flex flex-col">
-                  <span className="text-white font-medium text-base">{settings.contact_phone}</span>
+                  <span className="text-white font-medium text-sm sm:text-base">{settings.contact_phone}</span>
                 </div>
               </li>
-              <li className="flex items-start gap-3">
-                <Mail className="text-[#0fafb8] shrink-0 mt-0.5" size={20} />
+              <li className="flex items-start gap-2 sm:gap-3">
+                <Mail className="text-[#0fafb8] shrink-0 mt-0.5" size={16} />
                 <div className="flex flex-col">
-                  <span className="text-white font-medium text-base">{settings.contact_email}</span>
+                  <span className="text-white font-medium text-sm sm:text-base break-all">{settings.contact_email}</span>
                 </div>
               </li>
-              <li className="flex items-start gap-3">
-                <MapPin className="text-[#0fafb8] shrink-0 mt-0.5" size={20} />
+              <li className="flex items-start gap-2 sm:gap-3">
+                <MapPin className="text-[#0fafb8] shrink-0 mt-0.5" size={16} />
                 <div className="flex flex-col">
-                  <span className="text-slate-300 leading-relaxed">{settings.contact_address}</span>
+                  <span className="text-slate-300 text-sm leading-relaxed">{settings.contact_address}</span>
                 </div>
               </li>
             </ul>

@@ -4,6 +4,10 @@
 export const DEFAULT_SITE_SETTINGS = {
   brand_name: 'Swift Sign',
   brand_subtitle: 'Electronics',
+  nav_logo: '/logo.png',
+  nav_logo_alt: 'Swift Sign Electronics',
+  footer_logo: '/logo.png',
+  footer_logo_alt: 'Swift Sign Electronics',
   footer_description:
     'Empowering engineers, scholars, and makers with premium components, customizable final year projects, and diagnostic laboratory tools.',
   contact_phone: '+92 333 8399480',

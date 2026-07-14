@@ -37,6 +37,7 @@ const getInitialForm = () => ({
   shipping_list: [{ name: "", count: 1 }],
   documents: [{ name: "", url: "", size: "" }],
   faqs: [{ q: "", a: "" }],
+  project_links: [{ name: "", url: "", description: "" }],
   featured: false,
   sort_order: 0,
   is_active: true,
@@ -50,6 +51,7 @@ export default function ProductForm() {
   const [loading, setLoading]     = useState(isEditMode);
   const [saving, setSaving]       = useState(false);
   const [error, setError]         = useState("");
+  const [uploadingDocIndex, setUploadingDocIndex] = useState(null);
   const [form, setForm]           = useState(getInitialForm);
   const [categories, setCategories] = useState(FALLBACK_CATEGORIES);
 
@@ -86,6 +88,7 @@ export default function ProductForm() {
         const shipping     = parseJson(item.shipping_list, []);
         const documents    = parseJson(item.documents, []);
         const faqs         = parseJson(item.faqs, []);
+        const projectLinks = parseJson(item.project_links, []);
 
         const specRows = Object.entries(specs).map(([key, value]) => ({ key, value: String(value) }));
 
@@ -112,6 +115,7 @@ export default function ProductForm() {
           shipping_list:  shipping.length ? shipping : [{ name: "", count: 1 }],
           documents:    documents.length ? documents : [{ name: "", url: "", size: "" }],
           faqs:         faqs.length ? faqs : [{ q: "", a: "" }],
+          project_links: projectLinks.length ? projectLinks : [{ name: "", url: "", description: "" }],
           featured:     item.featured === 1 || item.featured === true,
           sort_order:   Number(item.sort_order || 0),
           is_active:    item.is_active === 1 || item.is_active !== false,
@@ -128,11 +132,41 @@ export default function ProductForm() {
 
   const handleImageSelect = (file) => {
     const blobUrl = URL.createObjectURL(file);
-    setForm((p) => ({
-      ...p,
-      images: [...p.images, blobUrl],
-      imageFiles: [...p.imageFiles, file],
-    }));
+    setForm((p) => {
+      // Revoke old blob URLs to prevent memory leaks
+      p.images.forEach((url) => {
+        if (url.startsWith("blob:")) URL.revokeObjectURL(url);
+      });
+      return {
+        ...p,
+        images: [blobUrl],
+        imageFiles: [file],
+      };
+    });
+  };
+
+  const handleDocumentUpload = async (file, docIndex) => {
+    try {
+      setUploadingDocIndex(docIndex);
+      const uploaded = await uploadImage(file, "documents");
+      if (uploaded) {
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        setForm((p) => {
+          const docs = [...p.documents];
+          docs[docIndex] = {
+            ...docs[docIndex],
+            url: uploaded,
+            size: `${sizeMB} MB`,
+          };
+          return { ...p, documents: docs };
+        });
+      }
+    } catch (err) {
+      console.error("Document upload failed:", err);
+      setError("Failed to upload document: " + (err?.message || "Unknown error"));
+    } finally {
+      setUploadingDocIndex(null);
+    }
   };
 
   const handleRemoveImage = (i) => {
@@ -218,8 +252,9 @@ export default function ProductForm() {
         }),
         specifications: JSON.stringify(specifications),
         shipping_list:  JSON.stringify(form.shipping_list.filter((s) => s.name.trim()).map((s) => ({ name: s.name.trim(), count: Number(s.count || 1) }))),
-        documents:   JSON.stringify(form.documents.filter((d) => d.name.trim()).map((d) => ({ name: d.name.trim(), url: d.url.trim(), size: d.size.trim() }))),
+        documents:   JSON.stringify(form.documents.filter((d) => d.name.trim() && d.url.trim()).map((d) => ({ name: d.name.trim(), url: d.url.trim(), size: d.size.trim() }))),
         faqs:        JSON.stringify(form.faqs.filter((f) => f.q.trim()).map((f) => ({ q: f.q.trim(), a: f.a.trim() }))),
+        project_links: JSON.stringify(form.project_links.filter((l) => l.name.trim() && l.url.trim()).map((l) => ({ name: l.name.trim(), url: l.url.trim(), description: l.description?.trim() || "" }))),
         featured:    form.featured ? 1 : 0,
         sort_order:  Number(form.sort_order || 0),
         is_active:   form.is_active ? 1 : 0,
@@ -317,39 +352,14 @@ export default function ProductForm() {
 
         {/* ── Images ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Product Images</h3>
-          <p className="text-xs text-white/50">The first image is used as the thumbnail.</p>
-
-          {form.images.length > 0 && (
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {form.images.map((url, i) => (
-                <div key={i} className="group relative aspect-square overflow-hidden rounded-lg border border-white/10">
-                  <img src={url} alt={`Product ${i + 1}`} className="h-full w-full object-cover" onError={(e) => { e.target.style.display = "none"; }} />
-                  {i === 0 && (
-                    <span className="absolute left-1 top-1 rounded bg-[var(--admin-primary)] px-1.5 py-0.5 text-[10px] font-bold text-white">Thumbnail</span>
-                  )}
-                  {url.startsWith("blob:") && (
-                    <span className="absolute bottom-0 left-0 right-0 bg-black/60 py-0.5 text-center text-[10px] font-semibold text-amber-400">
-                      New — not saved yet
-                    </span>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(i)}
-                    className="absolute right-1 top-1 rounded-full bg-red-500/90 px-1.5 text-xs font-bold text-white opacity-0 transition group-hover:opacity-100"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+          <h3 className="font-semibold text-white/90">Product Image</h3>
+          <p className="text-xs text-white/50">Upload a product image (used as thumbnail). Uploading a new image replaces the previous one.</p>
 
           <ImageUpload
-            value=""
+            value={form.images[0] || ""}
             onFileSelect={handleImageSelect}
             label="Upload Product Image"
-            helperText="PNG, JPG — upload one at a time, add as many as needed"
+            helperText="PNG, JPG — upload to replace the current image"
           />
         </div>
 
@@ -434,26 +444,39 @@ export default function ProductForm() {
         <div className={sectionCls}>
           <h3 className="font-semibold text-white/90">Datasheets & Manuals</h3>
           {form.documents.map((row, i) => (
-            <div key={i} className="flex gap-2">
-              <input
-                value={row.name}
-                onChange={(e) => { const u = [...form.documents]; u[i] = { ...u[i], name: e.target.value }; setField("documents", u); }}
-                placeholder="Document name…"
-                className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
-              />
-              <input
-                value={row.url}
-                onChange={(e) => { const u = [...form.documents]; u[i] = { ...u[i], url: e.target.value }; setField("documents", u); }}
-                placeholder="File URL…"
-                className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
-              />
-              <input
-                value={row.size}
-                onChange={(e) => { const u = [...form.documents]; u[i] = { ...u[i], size: e.target.value }; setField("documents", u); }}
-                placeholder="e.g. 1.8 MB"
-                className="w-28 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
-              />
-              <button type="button" onClick={() => setField("documents", form.documents.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
+            <div key={i} className="space-y-2 rounded-lg border border-white/10 p-3">
+              <div className="flex gap-2">
+                <input
+                  value={row.name}
+                  onChange={(e) => { const u = [...form.documents]; u[i] = { ...u[i], name: e.target.value }; setField("documents", u); }}
+                  placeholder="Document name…"
+                  className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                />
+                {row.size && (
+                  <div className="rounded-lg border border-white/10 bg-[var(--admin-bg)] px-3 py-2 text-xs text-white/70 flex items-center">
+                    {row.size}
+                  </div>
+                )}
+                <button type="button" onClick={() => setField("documents", form.documents.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
+              </div>
+              <label className={`flex items-center justify-center gap-2 rounded-lg border-2 border-dashed px-4 py-3 cursor-pointer transition-colors ${
+                uploadingDocIndex === i
+                  ? "border-white/40 bg-[var(--admin-primary)]/20"
+                  : "border-white/20 bg-[var(--admin-bg)]/50 hover:border-white/40"
+              }`}>
+                <span className="text-sm font-semibold text-white/80">
+                  {uploadingDocIndex === i ? "Uploading..." : row.url ? "Change File" : "Upload File"}
+                </span>
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleDocumentUpload(file, i);
+                  }}
+                  disabled={uploadingDocIndex === i}
+                  className="hidden"
+                />
+              </label>
             </div>
           ))}
           <button type="button" onClick={() => setField("documents", [...form.documents, { name: "", url: "", size: "" }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add Document</button>
@@ -483,6 +506,39 @@ export default function ProductForm() {
             </div>
           ))}
           <button type="button" onClick={() => setField("faqs", [...form.faqs, { q: "", a: "" }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add FAQ</button>
+        </div>
+
+        {/* ── Project Links ── */}
+        <div className={sectionCls}>
+          <h3 className="font-semibold text-white/90">Project Links</h3>
+          <p className="text-xs text-white/50 mb-3">Links to GitHub, documentation, demo, or other project resources</p>
+          {form.project_links.map((row, i) => (
+            <div key={i} className="space-y-2 rounded-lg border border-white/10 p-3 mb-3">
+              <div className="flex gap-2">
+                <input
+                  value={row.name}
+                  onChange={(e) => { const u = [...form.project_links]; u[i] = { ...u[i], name: e.target.value }; setField("project_links", u); }}
+                  placeholder="e.g. GitHub, Documentation, Live Demo"
+                  className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                />
+                <button type="button" onClick={() => setField("project_links", form.project_links.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
+              </div>
+              <input
+                type="url"
+                value={row.url}
+                onChange={(e) => { const u = [...form.project_links]; u[i] = { ...u[i], url: e.target.value }; setField("project_links", u); }}
+                placeholder="https://github.com/example/project"
+                className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+              <input
+                value={row.description}
+                onChange={(e) => { const u = [...form.project_links]; u[i] = { ...u[i], description: e.target.value }; setField("project_links", u); }}
+                placeholder="Optional description"
+                className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              />
+            </div>
+          ))}
+          <button type="button" onClick={() => setField("project_links", [...form.project_links, { name: "", url: "", description: "" }])} className="rounded-lg border border-[var(--admin-border-amber)] bg-[var(--admin-primary)]/15 px-3 py-2 text-sm font-semibold text-[var(--admin-primary)]">+ Add Project Link</button>
         </div>
 
         {/* ── Visibility ── */}

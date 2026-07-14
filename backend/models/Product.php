@@ -14,7 +14,7 @@ final class Product extends BaseModel
         'price', 'discount', 'rating', 'reviews', 'stock',
         'thumbnail', 'images', 'description',
         'introduction', 'specifications', 'shipping_list',
-        'documents', 'faqs',
+        'documents', 'faqs', 'project_links',
         'featured', 'sort_order', 'is_active',
     ];
 
@@ -35,7 +35,7 @@ final class Product extends BaseModel
 
     private function normalizeRow(array $row): array
     {
-        $jsonCols = ['images', 'introduction', 'specifications', 'shipping_list', 'documents', 'faqs'];
+        $jsonCols = ['images', 'introduction', 'specifications', 'shipping_list', 'documents', 'faqs', 'project_links'];
         foreach ($jsonCols as $col) {
             if (isset($row[$col]) && is_string($row[$col])) {
                 $decoded = json_decode($row[$col], true);

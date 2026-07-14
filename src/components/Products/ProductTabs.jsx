@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { FiInfo, FiSliders, FiPackage, FiFileText } from 'react-icons/fi';
+import { FiInfo, FiSliders, FiPackage, FiFileText, FiLink } from 'react-icons/fi';
+import { FaGithub } from 'react-icons/fa';
 import SpecificationTable from './SpecificationTable';
 import ShippingList from './ShippingList';
+import { resolveUploadUrl } from '../../api/shopApi';
 
 export default function ProductTabs({ product }) {
   const [activeTab, setActiveTab] = useState('intro');
@@ -11,6 +13,7 @@ export default function ProductTabs({ product }) {
     { id: 'specs', label: 'Specifications', icon: <FiSliders /> },
     { id: 'shipping', label: 'Shipping List', icon: <FiPackage /> },
     { id: 'docs', label: 'Documents', icon: <FiFileText /> },
+    { id: 'links', label: 'Project Links', icon: <FiLink /> },
   ];
 
   return (
@@ -142,7 +145,7 @@ export default function ProductTabs({ product }) {
                   {product.documents?.map((doc, idx) => (
                     <a
                       key={idx}
-                      href={doc.url || '#'}
+                      href={resolveUploadUrl(doc.url) || '#'}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:shadow-md hover:border-blue-300 transition cursor-pointer group"
@@ -161,6 +164,41 @@ export default function ProductTabs({ product }) {
                   ))}
                   {(!product.documents || product.documents.length === 0) && (
                     <p className="text-slate-500 text-sm">No documents listed.</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'links' && (
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-slate-800 mb-4">Project Links</h3>
+                <div className="grid grid-cols-1 gap-3.5">
+                  {product.project_links?.map((link, idx) => {
+                    const isGithub = link.url?.includes('github');
+                    const Icon = isGithub ? FaGithub : FiLink;
+                    return (
+                      <a
+                        key={idx}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between p-4 border border-slate-200 rounded-lg hover:shadow-md hover:border-blue-300 transition cursor-pointer group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className="text-blue-600 text-xl group-hover:scale-110 transition" />
+                          <div>
+                            <p className="font-bold text-slate-800 group-hover:text-blue-600 transition">{link.name}</p>
+                            {link.description && <p className="text-xs text-slate-500">{link.description}</p>}
+                          </div>
+                        </div>
+                        <svg className="w-5 h-5 text-slate-400 group-hover:text-blue-600 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </a>
+                    );
+                  })}
+                  {(!product.project_links || product.project_links.length === 0) && (
+                    <p className="text-slate-500 text-sm">No project links listed.</p>
                   )}
                 </div>
               </div>

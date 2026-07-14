@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   getFooterLinkGroups,
   createFooterLinkGroup,
@@ -10,6 +10,9 @@ import {
   deleteFooterLink,
 } from "../../api/footerLinkApi";
 import { getSettings, updateSettings } from "../../api/settingApi";
+import { uploadImage } from "../../api/uploadApi";
+import { getBackendRoot } from "../../api/runtimeApi";
+import ImageUpload from "../../components/ImageUpload";
 import { useAuth } from "../../context/useAuth";
 import { hasPermission } from "../../modules/users/constants";
 
@@ -22,6 +25,8 @@ const FOOTER_SETTINGS_FIELDS = [
   { key: "designed_by_text", label: "Designed By (text)" },
   { key: "designed_by_url", label: "Designed By (URL)" },
 ];
+
+const FOOTER_LOGO_FIELDS = ["footer_logo", "footer_logo_alt"];
 
 const emptyLink = (groupId) => ({ id: null, group_id: groupId, label: "", url: "", is_active: 1 });
 
@@ -111,17 +116,30 @@ function FooterGroupCard({ group, onTitleChange, onLinkChange, onAddLink, onDele
 export default function FooterManager() {
   const { user } = useAuth();
   const [groups, setGroups] = useState([]);
-  const [footerSettings, setFooterSettings] = useState(FOOTER_SETTINGS_FIELDS.reduce((acc, f) => ({ ...acc, [f.key]: "" }), {}));
+  const [footerSettings, setFooterSettings] = useState(() => ({
+    ...FOOTER_SETTINGS_FIELDS.reduce((acc, f) => ({ ...acc, [f.key]: "" }), {}),
+    ...FOOTER_LOGO_FIELDS.reduce((acc, key) => ({ ...acc, [key]: "" }), {}),
+  }));
   const [loading, setLoading] = useState(true);
   const [loadedSettingsOk, setLoadedSettingsOk] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [newGroupTitle, setNewGroupTitle] = useState("");
 
   const canEdit = hasPermission(user, "edit_content");
   const canDelete = hasPermission(user, "delete_content");
   const canAdd = hasPermission(user, "create_content");
+
+  const apiRoot = useMemo(() => getBackendRoot(), []);
+
+  const toImageUrl = (value) => {
+    if (!value) return "";
+    if (value.startsWith("http")) return value;
+    if (value.startsWith("/")) return apiRoot + value;
+    return apiRoot + "/uploads/" + value;
+  };
 
   const load = async () => {
     try {
@@ -161,6 +179,19 @@ export default function FooterManager() {
   const setFooterSettingField = (key, value) => {
     setFooterSettings((prev) => ({ ...prev, [key]: value }));
     if (success) setSuccess("");
+  };
+
+  const uploadLogo = async (file) => {
+    try {
+      setUploading(true);
+      const path = await uploadImage(file, "settings", footerSettings.footer_logo);
+      if (path) setFooterSettingField("footer_logo", path);
+    } catch (err) {
+      console.error(err);
+      setError("Logo upload failed.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const setGroupTitle = (groupIndex, value) => {
@@ -339,6 +370,26 @@ export default function FooterManager() {
               )}
             </div>
           ))}
+
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-[220px_1fr] md:items-start">
+            <label className="pt-2 text-sm font-semibold text-white/80">Footer Logo</label>
+            <div className="space-y-3">
+              <ImageUpload
+                value={toImageUrl(footerSettings.footer_logo)}
+                onFileSelect={uploadLogo}
+                label="Upload Footer Logo"
+                helperText="PNG, JPG, or SVG shown in the footer brand column"
+              />
+              <input
+                type="text"
+                placeholder="Footer logo alt text"
+                value={footerSettings.footer_logo_alt || ""}
+                onChange={(e) => setFooterSettingField("footer_logo_alt", e.target.value)}
+                disabled={!canEdit}
+                className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+              />
+            </div>
+          </div>
         </div>
       </div>
 
@@ -384,10 +435,10 @@ export default function FooterManager() {
           <button
             type="button"
             onClick={saveAll}
-            disabled={saving || !loadedSettingsOk}
+            disabled={saving || uploading || !loadedSettingsOk}
             className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-white shadow-sm hover:bg-[var(--admin-primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {saving ? "Saving..." : "Save Changes"}
+            {saving ? "Saving..." : uploading ? "Uploading..." : "Save Changes"}
           </button>
         </div>
       )}
