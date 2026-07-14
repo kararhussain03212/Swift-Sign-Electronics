@@ -23,7 +23,6 @@ final class DashboardController extends BaseController
 {
     public function stats(array $params = []): void
     {
-        $this->requirePermission('view_dashboard');
         $contactModel = new ContactMessage();
 
         $counts = [
