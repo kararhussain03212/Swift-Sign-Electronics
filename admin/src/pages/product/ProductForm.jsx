@@ -151,10 +151,12 @@ export default function ProductForm() {
       const uploaded = await uploadImage(file, "documents");
       if (uploaded) {
         const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        const fallbackName = file.name.replace(/\.[^/.]+$/, "");
         setForm((p) => {
           const docs = [...p.documents];
           docs[docIndex] = {
             ...docs[docIndex],
+            name: docs[docIndex].name.trim() || fallbackName,
             url: uploaded,
             size: `${sizeMB} MB`,
           };
@@ -237,7 +239,7 @@ export default function ProductForm() {
         }),
         specifications: JSON.stringify(specifications),
         shipping_list:  JSON.stringify(form.shipping_list.filter((s) => s.name.trim()).map((s) => ({ name: s.name.trim(), count: Number(s.count || 1) }))),
-        documents:   JSON.stringify(form.documents.filter((d) => d.name.trim() && d.url.trim()).map((d) => ({ name: d.name.trim(), url: d.url.trim(), size: d.size.trim() }))),
+        documents:   JSON.stringify(form.documents.filter((d) => d.url.trim()).map((d) => ({ name: d.name.trim() || "Document", url: d.url.trim(), size: (d.size || "").trim() }))),
         faqs:        JSON.stringify(form.faqs.filter((f) => f.q.trim()).map((f) => ({ q: f.q.trim(), a: f.a.trim() }))),
         project_links: JSON.stringify(form.project_links.filter((l) => l.name.trim() && l.url.trim()).map((l) => ({ name: l.name.trim(), url: l.url.trim(), description: l.description?.trim() || "" }))),
         featured:    form.featured ? 1 : 0,

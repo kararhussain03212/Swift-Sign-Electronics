@@ -6,21 +6,34 @@ import { getBackendRoot } from "../api/runtimeApi";
 import { getSettings } from "../api/settingApi";
 
 const NAV = [
+  // Overview
   { path: "/dashboard",         label: "Dashboard" },
-  { path: "/users",             label: "User Management", adminOnly: true },
-  { path: "/orders",            label: "Orders" },
+
+  // Shop Management
   { path: "/products",          label: "Products" },
   { path: "/categories",        label: "Categories" },
-  { path: "/section-banners",   label: "Section Banners" },
+  { path: "/orders",            label: "Orders" },
+
+  // Content & Display
   { path: "/sliders",           label: "Hero Slides" },
+  { path: "/section-banners",   label: "Section Banners" },
+
+  // Blog Management
   { path: "/blogs",             label: "Blogs" },
   { path: "/blog-categories",   label: "Blog Categories" },
+  { path: "/settings/blog",     label: "Blog Page" },
+
+  // Pages & Messages
+  { path: "/contact-settings",  label: "Contact Page" },
   { path: "/contact-messages",  label: "Contact Messages" },
+
+  // Site Configuration
   { path: "/settings/site-content", label: "Navbar" },
   { path: "/settings/footer-links", label: "Footer Manager" },
   { path: "/settings/social-links", label: "Social Links" },
-  { path: "/settings/blog",     label: "Blog Page" },
-  { path: "/contact-settings",  label: "Contact Page" },
+
+  // User Management
+  { path: "/users",             label: "User Management", adminOnly: true },
 ];
 
 const PAGE_TITLES = {

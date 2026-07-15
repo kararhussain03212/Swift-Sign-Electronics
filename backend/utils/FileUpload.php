@@ -8,7 +8,7 @@ use RuntimeException;
 
 final class FileUpload
 {
-    private const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'svg', 'mp4', 'webm', 'mov', 'avi', 'mkv', 'flv', 'm4v'];
+    private const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp', 'avif', 'svg', 'mp4', 'webm', 'mov', 'avi', 'mkv', 'flv', 'm4v', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', 'zip'];
     private const ALLOWED_MIME = [
         'image/jpeg',
         'image/pjpeg',
@@ -25,7 +25,14 @@ final class FileUpload
         'video/x-msvideo',
         'video/x-matroska',
         'video/x-flv',
-        'video/mp4',
+        'application/pdf',
+        'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'text/plain',
+        'application/zip',
+        'application/x-zip-compressed',
     ];
     private const MAX_SIZE = 104857600;
     private const ALLOWED_FOLDERS = [
@@ -37,6 +44,7 @@ final class FileUpload
         'settings',
         'icons',
         'profiles',
+        'documents',
     ];
     private const WEBP_QUALITY = 82;
 
@@ -62,7 +70,7 @@ final class FileUpload
         $tmpPath = (string) ($file['tmp_name'] ?? '');
         $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
         if (!in_array($ext, self::ALLOWED_EXTENSIONS, true)) {
-            Response::error('Invalid file extension. Allowed: jpg, jpeg, png, webp, avif, svg, mp4, webm, mov, avi, mkv, flv, m4v', 422);
+            Response::error('Invalid file extension. Allowed: jpg, jpeg, png, webp, avif, svg, mp4, webm, mov, avi, mkv, flv, m4v, pdf, doc, docx, xls, xlsx, txt, zip', 422);
         }
 
         if ($tmpPath === '' || !is_file($tmpPath)) {
