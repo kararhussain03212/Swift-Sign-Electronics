@@ -15,7 +15,7 @@ export default function UserFilters({
           value={searchValue}
           onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search by name or email..."
-          className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+          className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-2.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
         />
       </label>
       <label className="space-y-2">
@@ -23,7 +23,7 @@ export default function UserFilters({
         <select
           value={role}
           onChange={(e) => onRoleChange(e.target.value)}
-          className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+          className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-2.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
         >
           <option value="">All Roles</option>
           <option value="admin">Admin</option>
@@ -35,7 +35,7 @@ export default function UserFilters({
         <select
           value={status}
           onChange={(e) => onStatusChange(e.target.value)}
-          className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+          className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-2.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
         >
           <option value="">All Statuses</option>
           <option value="active">Active</option>

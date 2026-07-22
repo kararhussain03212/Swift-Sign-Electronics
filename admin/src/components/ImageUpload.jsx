@@ -62,8 +62,8 @@ const ImageUpload = ({
       <div className="flex flex-col items-center justify-center gap-3">
         <span className="pi pi-cloud-upload text-3xl text-[var(--admin-muted)]" />
         <div className="text-center">
-          <p className="text-sm font-semibold text-white">{label}</p>
-          <p className="text-xs text-white/60">{helperText}</p>
+          <p className="text-sm font-semibold text-[var(--admin-ink)]">{label}</p>
+          <p className="text-xs text-[var(--admin-ink)]/60">{helperText}</p>
         </div>
       </div>
 
@@ -72,7 +72,7 @@ const ImageUpload = ({
         accept={accept}
         onChange={handleChange}
         required={required}
-        className="mt-3 block w-full text-sm text-white file:mr-3 file:rounded-md file:border-0 file:bg-[var(--admin-primary)] file:px-3 file:py-2 file:text-black hover:file:bg-[var(--admin-primary-strong)]"
+        className="mt-3 block w-full text-sm text-[var(--admin-ink)] file:mr-3 file:rounded-md file:border-0 file:bg-[var(--admin-primary)] file:px-3 file:py-2 file:text-black hover:file:bg-[var(--admin-primary-strong)]"
       />
 
       {preview && !imageError ? (
@@ -93,7 +93,7 @@ const ImageUpload = ({
 
       {includeAltText && (
         <div className="mt-3 space-y-1">
-          <label className="block text-xs font-semibold text-white/80">
+          <label className="block text-xs font-semibold text-[var(--admin-ink)]/80">
             Alt Text for SEO & Accessibility
           </label>
           <input
@@ -102,9 +102,9 @@ const ImageUpload = ({
             onChange={(e) => onAltTextChange?.(e.target.value)}
             placeholder="Describe what's in the image..."
             maxLength="150"
-            className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-sm text-white placeholder-white/40 focus:border-[var(--admin-primary)] focus:outline-none"
+            className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-sm text-[var(--admin-ink)] placeholder-white/40 focus:border-[var(--admin-primary)] focus:outline-none"
           />
-          <p className="text-[10px] text-white/50">
+          <p className="text-[10px] text-[var(--admin-muted-light)]">
             {altText?.length || 0}/150 characters
           </p>
         </div>

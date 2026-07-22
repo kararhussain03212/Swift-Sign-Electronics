@@ -1,18 +1,51 @@
+Options -Indexes -MultiViews
+
 RewriteEngine On
+
+# Force HTTPS (skip for local dev hosts)
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} !^localhost [NC]
+RewriteCond %{HTTP_HOST} !^127\.0\.0\.1
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 RewriteCond %{HTTP:Authorization} ^(.*)$
 RewriteRule ^ - [E=HTTP_AUTHORIZATION:%1]
 SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 
-# Serve existing files directly
+# Only the uploads folder (and index.php itself) may be served as static files.
+# Everything else — .env, storage/, config/, controllers/, models/, database/,
+# seeders/, utils/, middleware/ — must go through the router or be denied,
+# even though the files physically exist on disk.
+RewriteCond %{REQUEST_URI} ^/backend/uploads/ [OR]
+RewriteCond %{REQUEST_URI} ^/backend/index\.php$
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Route all API requests to index.php
+# Route all other API requests to index.php
 RewriteRule ^ index.php [QSA,L]
+
+# Belt-and-braces: explicitly deny sensitive files/extensions even if the
+# rewrite rules above are ever bypassed (e.g. DirectoryIndex, symlinks).
+<IfModule mod_authz_core.c>
+  <FilesMatch "(^\.env|\.env\.|\.sql$|\.log$|\.json$|\.md$|composer\.(json|lock)$|\.git)">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "(^\.env|\.env\.|\.sql$|\.log$|\.json$|\.md$|composer\.(json|lock)$|\.git)">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
 
 <IfModule mod_headers.c>
   Header always unset Content-Security-Policy
-  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; frame-ancestors 'self'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com https://maps.google.com; object-src 'none'; script-src 'self' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https:; worker-src 'self' blob:; manifest-src 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; frame-ancestors 'self'; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com https://maps.google.com; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https:; worker-src 'self' blob:; manifest-src 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 </IfModule>
 

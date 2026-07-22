@@ -74,7 +74,7 @@ export default function ContactMessages() {
       {/* Header */}
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-2xl font-bold text-white">Contact Messages</h2>
+          <h2 className="text-2xl font-bold text-[var(--admin-ink)]">Contact Messages</h2>
           <p className="mt-0.5 text-sm text-[var(--admin-muted)]">Messages submitted via the Contact Us form.</p>
         </div>
         <div className="flex items-center gap-2">
@@ -85,7 +85,7 @@ export default function ContactMessages() {
               className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition ${
                 filter === s
                   ? "border-[var(--admin-border-amber)] bg-[var(--admin-primary)] text-black"
-                  : "border-[var(--admin-border)] bg-[var(--admin-card)] text-[var(--admin-muted)] hover:text-white"
+                  : "border-[var(--admin-border)] bg-[var(--admin-card)] text-[var(--admin-muted)] hover:text-[var(--admin-ink)]"
               }`}
             >
               {s === "" ? "All" : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -125,7 +125,7 @@ export default function ContactMessages() {
                     key={msg.id}
                     className={`border-b border-[var(--admin-border)] transition hover:bg-[var(--admin-bg)] ${msg.status === "unread" ? "font-semibold" : ""}`}
                   >
-                    <td className="px-4 py-3 text-white">
+                    <td className="px-4 py-3 text-[var(--admin-ink)]">
                       <button className="text-left hover:text-[var(--admin-primary)]" onClick={() => setExpanded(expanded === msg.id ? null : msg.id)}>
                         {msg.name}
                       </button>
@@ -141,7 +141,7 @@ export default function ContactMessages() {
                         {msg.status === "unread" && (
                           <button
                             onClick={() => handleMarkRead(msg.id)}
-                            className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-bg)] px-2.5 py-1 text-xs font-medium text-[var(--admin-muted)] hover:text-white"
+                            className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-bg)] px-2.5 py-1 text-xs font-medium text-[var(--admin-muted)] hover:text-[var(--admin-ink)]"
                             title="Mark as read"
                           >
                             <span className="pi pi-eye" />
@@ -162,9 +162,9 @@ export default function ContactMessages() {
                     <tr key={`${msg.id}-expanded`} className="border-b border-[var(--admin-border)] bg-[var(--admin-bg)]">
                       <td colSpan={6} className="px-5 py-4">
                         <div className="space-y-2 text-sm">
-                          {msg.phone && <p className="text-[var(--admin-muted)]"><strong className="text-white">Phone:</strong> {msg.phone}</p>}
-                          <p className="text-[var(--admin-muted)]"><strong className="text-white">Subject:</strong> {msg.subject}</p>
-                          <p className="whitespace-pre-wrap text-[var(--admin-muted)]"><strong className="text-white">Message:</strong><br />{msg.message}</p>
+                          {msg.phone && <p className="text-[var(--admin-muted)]"><strong className="text-[var(--admin-ink)]">Phone:</strong> {msg.phone}</p>}
+                          <p className="text-[var(--admin-muted)]"><strong className="text-[var(--admin-ink)]">Subject:</strong> {msg.subject}</p>
+                          <p className="whitespace-pre-wrap text-[var(--admin-muted)]"><strong className="text-[var(--admin-ink)]">Message:</strong><br />{msg.message}</p>
                           <p className="text-xs text-[var(--admin-muted)]">
                             Received: {msg.created_at ? new Date(msg.created_at).toLocaleString("en-PK") : "—"}
                           </p>
@@ -203,7 +203,7 @@ export default function ContactMessages() {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-1.5 text-sm text-[var(--admin-muted)] disabled:opacity-40 hover:text-white"
+            className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-1.5 text-sm text-[var(--admin-muted)] disabled:opacity-40 hover:text-[var(--admin-ink)]"
           >
             ← Prev
           </button>
@@ -211,7 +211,7 @@ export default function ContactMessages() {
           <button
             onClick={() => setPage((p) => Math.min(meta.total_pages, p + 1))}
             disabled={page === meta.total_pages}
-            className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-1.5 text-sm text-[var(--admin-muted)] disabled:opacity-40 hover:text-white"
+            className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-1.5 text-sm text-[var(--admin-muted)] disabled:opacity-40 hover:text-[var(--admin-ink)]"
           >
             Next →
           </button>

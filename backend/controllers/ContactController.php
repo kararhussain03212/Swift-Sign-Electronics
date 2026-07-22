@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Backend\Controllers;
 
 use Backend\Config\Database;
+use Backend\Config\Env;
 use Backend\Models\ContactMessage;
 use Backend\Models\ContactPageSetting;
 use Backend\Utils\Cache;
@@ -13,6 +14,7 @@ use Backend\Utils\Validator;
 
 require_once __DIR__ . '/BaseController.php';
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../config/env.php';
 require_once __DIR__ . '/../models/ContactMessage.php';
 require_once __DIR__ . '/../models/ContactPageSetting.php';
 require_once __DIR__ . '/../utils/Cache.php';
@@ -117,26 +119,9 @@ final class ContactController extends BaseController
             return;
         }
 
-        $configCandidates = [
-            __DIR__ . '/../../public/api/mail-config.php',    // local: project-root/public/api
-            __DIR__ . '/../../api/mail-config.php',           // cPanel: public_html/api (sibling of backend/)
-            __DIR__ . '/../../../public/api/mail-config.php',
-            __DIR__ . '/../../../api/mail-config.php',
-        ];
-        $configPath = null;
-        foreach ($configCandidates as $candidate) {
-            if (file_exists($candidate)) {
-                $configPath = $candidate;
-                break;
-            }
-        }
-        if ($configPath === null) {
-            $this->logMailFailure('mail-config.php not found. Checked: ' . implode(' | ', $configCandidates));
-            return;
-        }
-
         require_once $autoloadPath;
-        $config = require $configPath;
+
+        $config = $this->getMailConfig();
 
         try {
             $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
@@ -198,6 +183,40 @@ final class ContactController extends BaseController
             // Email failure is non-fatal — message is already saved to DB
             $this->logMailFailure('PHPMailer error: ' . $e->getMessage());
         }
+    }
+
+    private function getMailConfig(): array
+    {
+        $smtpHost = Env::get('MAIL_SMTP_HOST');
+        if ($smtpHost !== null) {
+            return [
+                'smtp_host'    => $smtpHost,
+                'smtp_port'    => (int) (Env::get('MAIL_SMTP_PORT') ?? 465),
+                'smtp_secure'  => Env::get('MAIL_SMTP_SECURE') ?? 'ssl',
+                'smtp_user'    => Env::get('MAIL_SMTP_USER') ?? '',
+                'smtp_pass'    => Env::get('MAIL_SMTP_PASS') ?? '',
+                'smtp_timeout' => (int) (Env::get('MAIL_SMTP_TIMEOUT') ?? 20),
+                'from_email'   => Env::get('MAIL_FROM_EMAIL') ?? 'noreply@example.com',
+                'from_name'    => Env::get('MAIL_FROM_NAME') ?? 'Website',
+                'to_email'     => Env::get('MAIL_TO_EMAIL') ?? 'admin@example.com',
+                'to_name'      => Env::get('MAIL_TO_NAME') ?? 'Administrator',
+            ];
+        }
+
+        $configCandidates = [
+            __DIR__ . '/../../public/api/mail-config.php',
+            __DIR__ . '/../../api/mail-config.php',
+            __DIR__ . '/../../../public/api/mail-config.php',
+            __DIR__ . '/../../../api/mail-config.php',
+        ];
+        foreach ($configCandidates as $candidate) {
+            if (file_exists($candidate)) {
+                return require $candidate;
+            }
+        }
+
+        $this->logMailFailure('No MAIL_SMTP_HOST in env and no mail-config.php found');
+        return [];
     }
 
     private function logMailFailure(string $line): void

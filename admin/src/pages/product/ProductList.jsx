@@ -101,14 +101,14 @@ export default function ProductList() {
     }
   };
 
-  if (loading) return <p className="text-white/70">Loading products…</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading products…</p>;
 
   return (
     <section className="space-y-5">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-white">Products</h2>
-          <p className="text-sm text-white/65">Manage products shown on website.</p>
+          <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Products</h2>
+          <p className="text-sm text-[var(--admin-ink)]/65">Manage products shown on website.</p>
         </div>
         <button
           type="button"
@@ -130,7 +130,7 @@ export default function ProductList() {
       )}
 
       {products.length === 0 ? (
-        <div className="rounded-xl border border-white/10 bg-[var(--admin-bg)] p-6 text-white/70">
+        <div className="rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6 text-[var(--admin-muted)]">
           No products found. Add your first product.
         </div>
       ) : (
@@ -139,7 +139,7 @@ export default function ProductList() {
             const isActive = item.is_active === 1 || item.is_active === true;
 
             return (
-              <article key={item.id} className="overflow-hidden rounded-2xl border border-white/10 bg-[var(--admin-bg)]">
+              <article key={item.id} className="overflow-hidden rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)]">
                 <div className="grid grid-cols-1 md:grid-cols-[200px_1fr]">
                   <img
                     src={resolveImage(item.images)}
@@ -151,35 +151,35 @@ export default function ProductList() {
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="text-xl font-bold text-white">{item.name || "Untitled"}</h3>
+                          <h3 className="text-xl font-bold text-[var(--admin-ink)]">{item.name || "Untitled"}</h3>
                           {item.category && (
                             <span className="rounded-full bg-[var(--admin-primary)]/20 px-2 py-0.5 text-xs font-medium text-[var(--admin-primary)]">
                               {item.category}
                             </span>
                           )}
                           {item.brand && (
-                            <span className="rounded-full border border-white/20 px-2 py-0.5 text-xs text-white/60">
+                            <span className="rounded-full border border-[var(--admin-border)] px-2 py-0.5 text-xs text-[var(--admin-ink)]/60">
                               {item.brand}{item.model ? ` · ${item.model}` : ""}
                             </span>
                           )}
                         </div>
-                        <p className="mt-2 line-clamp-2 text-sm text-white/70">
+                        <p className="mt-2 line-clamp-2 text-sm text-[var(--admin-muted)]">
                           {decodeHtml(item.description || "No description")}
                         </p>
                         <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                          <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
+                          <span className="rounded-md bg-[var(--admin-bg-deep)] px-2 py-1 text-[var(--admin-ink)]/80">
                             ${Number(item.price || 0).toLocaleString()}
                           </span>
                           {item.discount ? (
-                            <span className="rounded-md bg-amber-500/20 px-2 py-1 text-amber-300">-{item.discount}%</span>
+                            <span className="rounded-md bg-[#f59e0b]/20 px-2 py-1 text-[#d97706]">-{item.discount}%</span>
                           ) : null}
-                          <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
+                          <span className="rounded-md bg-[var(--admin-bg-deep)] px-2 py-1 text-[var(--admin-ink)]/80">
                             Rating: {item.rating ?? "-"} ({item.reviews ?? 0} reviews)
                           </span>
-                          <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
+                          <span className="rounded-md bg-[var(--admin-bg-deep)] px-2 py-1 text-[var(--admin-ink)]/80">
                             Stock: {item.stock ?? 0}
                           </span>
-                          <span className="rounded-md bg-white/10 px-2 py-1 text-white/60">
+                          <span className="rounded-md bg-[var(--admin-bg-deep)] px-2 py-1 text-[var(--admin-ink)]/60">
                             Slug: {item.slug || "-"}
                           </span>
                         </div>
@@ -198,7 +198,7 @@ export default function ProductList() {
                         <button
                           type="button"
                           onClick={() => canEdit ? navigate(`/products/edit/${item.id}`) : showNoPerm("edit products")}
-                          className={`rounded-lg px-4 py-2 text-sm ${canEdit ? "bg-[#1f8b4c] text-white hover:bg-[var(--admin-primary-strong)]" : "border border-white/20 bg-white/10 text-white/60"}`}
+                          className={`rounded-lg px-4 py-2 text-sm ${canEdit ? "bg-[#1f8b4c] text-white hover:bg-[var(--admin-primary-strong)]" : "border border-[var(--admin-border)] bg-[var(--admin-bg-deep)] text-[var(--admin-ink)]/60"}`}
                         >
                           Edit
                         </button>

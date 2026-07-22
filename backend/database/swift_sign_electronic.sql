@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
 
 -- Seed admin — PLACEHOLDER PASSWORD 'SwiftSign@2026', CHANGE AFTER FIRST LOGIN
 INSERT IGNORE INTO `admins` (`name`, `email`, `password`, `role`) VALUES
-('Swift Sign Admin', 'admin@swiftsignelectronics.com', '$2y$10$y97wngfdhpyFd84yGDM3o.eWE5goD3KzypzMxKMzsuhi/1ErE4MvG', 'admin');
+('Swift Sign Admin', 'info@sstechnologies.pk', '$2y$10$y97wngfdhpyFd84yGDM3o.eWE5goD3KzypzMxKMzsuhi/1ErE4MvG', 'admin');
 
 -- ------------------------------------------------------------
 -- users
@@ -266,7 +266,7 @@ INSERT IGNORE INTO `contact_page_settings` (
   'Subject', 'Your Message', 'Send Message',
   'Available Mon - Sat, 9am - 6pm', 'We''d love to hear from you',
   'Reach out through any channel below and our dedicated team will respond promptly.',
-  '+92 333 8399480', '+92 333 8399480', 'info@swiftsigngeneraltrading.com',
+  '+92 333 8399480', '+92 333 8399480', 'info@sstechnologies.pk',
   'Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan',
   'https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan',
   '[{"address":"Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan","google_map_url":"https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan"}]',
@@ -360,7 +360,7 @@ INSERT IGNORE INTO `settings` (`setting_key`, `setting_value`, `setting_type`, `
 ('brand_subtitle', 'Electronics', 'text', 102),
 ('footer_description', 'Empowering engineers, scholars, and makers with premium components, customizable final year projects, and diagnostic laboratory tools.', 'text', 103),
 ('contact_phone', '+92 333 8399480', 'text', 104),
-('contact_email', 'info@it.swiftsignbm.com', 'text', 105),
+('contact_email', 'info@sstechnologies.pk', 'text', 105),
 ('contact_address', 'Office 22, 4th Floor, Pakland city center, I-8 Markaz, Islamabad, Pakistan.', 'text', 106),
 ('copyright_text', 'Swift Sign Electronics. All rights reserved.', 'text', 107),
 ('designed_by_text', 'swiftsign', 'text', 108),

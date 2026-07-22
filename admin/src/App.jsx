@@ -36,8 +36,8 @@ function Forbidden403() {
         🔒
       </div>
       <div>
-        <h1 className="text-3xl font-bold text-white">403 — Forbidden</h1>
-        <p className="mt-2 max-w-sm text-white/60">
+        <h1 className="text-3xl font-bold text-[var(--admin-ink)]">403 — Forbidden</h1>
+        <p className="mt-2 max-w-sm text-[var(--admin-ink)]/60">
           You don't have permission to access this page. Contact your administrator to request access.
         </p>
       </div>

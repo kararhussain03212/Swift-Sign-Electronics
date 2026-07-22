@@ -180,7 +180,7 @@ export default function ProductForm() {
             value={v}
             onChange={(e) => { const u = [...form[key]]; u[i] = e.target.value; setField(key, u); }}
             placeholder={placeholder}
-            className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+            className="flex-1 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
           />
           <button type="button" onClick={() => setField(key, form[key].filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
         </div>
@@ -259,15 +259,15 @@ export default function ProductForm() {
     }
   };
 
-  if (loading) return <div className="text-white/70">Loading product…</div>;
+  if (loading) return <div className="text-[var(--admin-muted)]">Loading product…</div>;
 
-  const inputCls = "w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white";
-  const labelCls = "mb-1 block text-sm text-white/80";
-  const sectionCls = "rounded-xl border border-white/10 bg-[var(--admin-bg)] p-4 space-y-3";
+  const inputCls = "w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]";
+  const labelCls = "mb-1 block text-sm text-[var(--admin-ink)]/80";
+  const sectionCls = "rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-4 space-y-3";
 
   return (
     <section className="mx-auto max-w-4xl">
-      <h2 className="mb-4 text-2xl font-bold text-white">
+      <h2 className="mb-4 text-2xl font-bold text-[var(--admin-ink)]">
         {isEditMode ? "Edit Product" : "Add Product"}
       </h2>
 
@@ -275,11 +275,11 @@ export default function ProductForm() {
         <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-300">{error}</div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-6">
+      <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6">
 
         {/* ── Basic Info ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Basic Info</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Basic Info</h3>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label className={labelCls}>Name *</label>
@@ -308,7 +308,7 @@ export default function ProductForm() {
 
         {/* ── Pricing & Stock ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Pricing & Stock</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Pricing & Stock</h3>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
             <div>
               <label className={labelCls}>Price ($) *</label>
@@ -331,7 +331,7 @@ export default function ProductForm() {
               <input type="number" min="0" value={form.stock} onChange={(e) => setField("stock", e.target.value)} className={inputCls} />
             </div>
           </div>
-          <label className="flex items-center gap-2 text-sm text-white/80 cursor-pointer">
+          <label className="flex items-center gap-2 text-sm text-[var(--admin-ink)]/80 cursor-pointer">
             <input type="checkbox" checked={form.featured} onChange={(e) => setField("featured", e.target.checked)} className="h-4 w-4" />
             Featured Product
           </label>
@@ -339,8 +339,8 @@ export default function ProductForm() {
 
         {/* ── Images ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Product Image</h3>
-          <p className="text-xs text-white/50">Upload a product image (used as thumbnail). Uploading a new image replaces the previous one.</p>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Product Image</h3>
+          <p className="text-xs text-[var(--admin-muted-light)]">Upload a product image (used as thumbnail). Uploading a new image replaces the previous one.</p>
 
           <ImageUpload
             value={form.images[0] || ""}
@@ -352,7 +352,7 @@ export default function ProductForm() {
 
         {/* ── Description ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Description</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Description</h3>
           <div>
             <label className={labelCls}>Short Description</label>
             <textarea rows={2} value={form.description} onChange={(e) => setField("description", e.target.value)} className={inputCls} />
@@ -369,34 +369,34 @@ export default function ProductForm() {
 
         {/* ── Features / Applications / Advantages ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Key Features</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Key Features</h3>
           {listEditor("features", "Feature…")}
         </div>
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Applications</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Applications</h3>
           {listEditor("applications", "Application…")}
         </div>
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Advantages</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Advantages</h3>
           {listEditor("advantages", "Advantage…")}
         </div>
 
         {/* ── Specifications ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Specifications</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Specifications</h3>
           {form.specifications.map((row, i) => (
             <div key={i} className="flex gap-2">
               <input
                 value={row.key}
                 onChange={(e) => { const u = [...form.specifications]; u[i] = { ...u[i], key: e.target.value }; setField("specifications", u); }}
                 placeholder="e.g. Operating Voltage"
-                className="w-2/5 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                className="w-2/5 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
               />
               <input
                 value={row.value}
                 onChange={(e) => { const u = [...form.specifications]; u[i] = { ...u[i], value: e.target.value }; setField("specifications", u); }}
                 placeholder="e.g. 230V AC / 50Hz"
-                className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                className="flex-1 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
               />
               <button type="button" onClick={() => setField("specifications", form.specifications.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
             </div>
@@ -406,20 +406,20 @@ export default function ProductForm() {
 
         {/* ── Shipping List ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">What's in the Box</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">What's in the Box</h3>
           {form.shipping_list.map((row, i) => (
             <div key={i} className="flex gap-2">
               <input
                 value={row.name}
                 onChange={(e) => { const u = [...form.shipping_list]; u[i] = { ...u[i], name: e.target.value }; setField("shipping_list", u); }}
                 placeholder="Item name…"
-                className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                className="flex-1 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
               />
               <input
                 type="number" min="1"
                 value={row.count}
                 onChange={(e) => { const u = [...form.shipping_list]; u[i] = { ...u[i], count: e.target.value }; setField("shipping_list", u); }}
-                className="w-20 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                className="w-20 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
               />
               <button type="button" onClick={() => setField("shipping_list", form.shipping_list.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
             </div>
@@ -429,18 +429,18 @@ export default function ProductForm() {
 
         {/* ── Documents ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Datasheets & Manuals</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Datasheets & Manuals</h3>
           {form.documents.map((row, i) => (
-            <div key={i} className="space-y-2 rounded-lg border border-white/10 p-3">
+            <div key={i} className="space-y-2 rounded-lg border border-[var(--admin-border)] p-3">
               <div className="flex gap-2">
                 <input
                   value={row.name}
                   onChange={(e) => { const u = [...form.documents]; u[i] = { ...u[i], name: e.target.value }; setField("documents", u); }}
                   placeholder="Document name…"
-                  className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                  className="flex-1 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
                 />
                 {row.size && (
-                  <div className="rounded-lg border border-white/10 bg-[var(--admin-bg)] px-3 py-2 text-xs text-white/70 flex items-center">
+                  <div className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-2 text-xs text-[var(--admin-muted)] flex items-center">
                     {row.size}
                   </div>
                 )}
@@ -449,9 +449,9 @@ export default function ProductForm() {
               <label className={`flex items-center justify-center gap-2 rounded-lg border-2 border-dashed px-4 py-3 cursor-pointer transition-colors ${
                 uploadingDocIndex === i
                   ? "border-white/40 bg-[var(--admin-primary)]/20"
-                  : "border-white/20 bg-[var(--admin-bg)]/50 hover:border-white/40"
+                  : "border-[var(--admin-border)] bg-[var(--admin-bg)]/50 hover:border-white/40"
               }`}>
-                <span className="text-sm font-semibold text-white/80">
+                <span className="text-sm font-semibold text-[var(--admin-ink)]/80">
                   {uploadingDocIndex === i ? "Uploading..." : row.url ? "Change File" : "Upload File"}
                 </span>
                 <input
@@ -471,15 +471,15 @@ export default function ProductForm() {
 
         {/* ── FAQs ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Frequently Asked Questions</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Frequently Asked Questions</h3>
           {form.faqs.map((row, i) => (
-            <div key={i} className="space-y-2 rounded-lg border border-white/10 p-3">
+            <div key={i} className="space-y-2 rounded-lg border border-[var(--admin-border)] p-3">
               <div className="flex gap-2">
                 <input
                   value={row.q}
                   onChange={(e) => { const u = [...form.faqs]; u[i] = { ...u[i], q: e.target.value }; setField("faqs", u); }}
                   placeholder="Question…"
-                  className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                  className="flex-1 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
                 />
                 <button type="button" onClick={() => setField("faqs", form.faqs.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
               </div>
@@ -488,7 +488,7 @@ export default function ProductForm() {
                 value={row.a}
                 onChange={(e) => { const u = [...form.faqs]; u[i] = { ...u[i], a: e.target.value }; setField("faqs", u); }}
                 placeholder="Answer…"
-                className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
               />
             </div>
           ))}
@@ -497,16 +497,16 @@ export default function ProductForm() {
 
         {/* ── Code Links ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Code Link</h3>
-          <p className="text-xs text-white/50 mb-3">Links to GitHub, documentation, demo, or other code/project resources</p>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Code Link</h3>
+          <p className="text-xs text-[var(--admin-muted-light)] mb-3">Links to GitHub, documentation, demo, or other code/project resources</p>
           {form.project_links.map((row, i) => (
-            <div key={i} className="space-y-2 rounded-lg border border-white/10 p-3 mb-3">
+            <div key={i} className="space-y-2 rounded-lg border border-[var(--admin-border)] p-3 mb-3">
               <div className="flex gap-2">
                 <input
                   value={row.name}
                   onChange={(e) => { const u = [...form.project_links]; u[i] = { ...u[i], name: e.target.value }; setField("project_links", u); }}
                   placeholder="e.g. GitHub, Documentation, Live Demo"
-                  className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                  className="flex-1 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
                 />
                 <button type="button" onClick={() => setField("project_links", form.project_links.filter((_, j) => j !== i))} className="rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-red-300 text-sm">✕</button>
               </div>
@@ -515,13 +515,13 @@ export default function ProductForm() {
                 value={row.url}
                 onChange={(e) => { const u = [...form.project_links]; u[i] = { ...u[i], url: e.target.value }; setField("project_links", u); }}
                 placeholder="https://github.com/example/project"
-                className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
               />
               <input
                 value={row.description}
                 onChange={(e) => { const u = [...form.project_links]; u[i] = { ...u[i], description: e.target.value }; setField("project_links", u); }}
                 placeholder="Optional description"
-                className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
               />
             </div>
           ))}
@@ -530,13 +530,13 @@ export default function ProductForm() {
 
         {/* ── Visibility ── */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Visibility</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Visibility</h3>
           <div className="flex gap-4 items-center flex-wrap">
             <div>
               <label className={labelCls}>Sort Order</label>
-              <input type="number" min="0" value={form.sort_order} onChange={(e) => setField("sort_order", Number(e.target.value))} className="w-24 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+              <input type="number" min="0" value={form.sort_order} onChange={(e) => setField("sort_order", Number(e.target.value))} className="w-24 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
             </div>
-            <label className="flex items-center gap-2 text-sm text-white/80 cursor-pointer mt-5">
+            <label className="flex items-center gap-2 text-sm text-[var(--admin-ink)]/80 cursor-pointer mt-5">
               <input type="checkbox" checked={form.is_active} onChange={(e) => setField("is_active", e.target.checked)} className="h-4 w-4" />
               Active (visible on frontend)
             </label>
@@ -545,10 +545,10 @@ export default function ProductForm() {
 
         {/* ── Submit ── */}
         <div className="flex flex-col gap-3 sm:flex-row">
-          <button type="submit" disabled={saving} className="rounded-lg bg-[var(--admin-primary)] px-5 py-2 text-white hover:bg-[var(--admin-primary-strong)] disabled:opacity-60">
+          <button type="submit" disabled={saving} className="rounded-lg bg-[var(--admin-primary)] px-5 py-2 text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)] disabled:opacity-60">
             {saving ? "Saving…" : isEditMode ? "Update Product" : "Create Product"}
           </button>
-          <button type="button" onClick={() => navigate("/products")} className="rounded-lg border border-white/20 px-5 py-2 text-white/90 hover:bg-white/10">
+          <button type="button" onClick={() => navigate("/products")} className="rounded-lg border border-[var(--admin-border)] px-5 py-2 text-[var(--admin-ink)] hover:bg-[var(--admin-bg-deep)]">
             Cancel
           </button>
         </div>

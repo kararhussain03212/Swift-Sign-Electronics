@@ -6,7 +6,7 @@ import { hasPermission } from "../../modules/users/constants";
 const STATUSES = ["pending", "confirmed", "shipped", "delivered", "cancelled"];
 
 const STATUS_COLORS = {
-  pending: "bg-yellow-500/20 text-yellow-300",
+  pending: "bg-[#fcd34d]/20 text-[#d97706]",
   confirmed: "bg-blue-500/20 text-blue-300",
   shipped: "bg-purple-500/20 text-purple-300",
   delivered: "bg-green-500/20 text-green-300",
@@ -63,13 +63,13 @@ export default function OrderList() {
     }
   };
 
-  if (loading) return <p className="text-white/70">Loading orders...</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading orders...</p>;
 
   return (
     <section className="space-y-5">
       <header>
-        <h2 className="text-3xl font-bold text-white">Orders</h2>
-        <p className="text-sm text-white/65">Checkout submissions from the store.</p>
+        <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Orders</h2>
+        <p className="text-sm text-[var(--admin-ink)]/65">Checkout submissions from the store.</p>
       </header>
 
       {error ? (
@@ -77,13 +77,13 @@ export default function OrderList() {
       ) : null}
 
       {orders.length === 0 ? (
-        <div className="rounded-xl border border-white/10 bg-[var(--admin-bg)] p-6 text-white/70">
+        <div className="rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6 text-[var(--admin-muted)]">
           No orders yet.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[var(--admin-bg)]">
-          <table className="w-full text-left text-sm text-white/80">
-            <thead className="border-b border-white/10 text-xs uppercase tracking-wider text-white/50">
+        <div className="overflow-x-auto rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)]">
+          <table className="w-full text-left text-sm text-[var(--admin-ink)]/80">
+            <thead className="border-b border-[var(--admin-border)] text-xs uppercase tracking-wider text-[var(--admin-muted-light)]">
               <tr>
                 <th className="px-4 py-3">Order #</th>
                 <th className="px-4 py-3">Customer</th>
@@ -95,26 +95,26 @@ export default function OrderList() {
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr key={order.id} className="border-b border-white/5 last:border-0">
-                  <td className="px-4 py-3 font-mono text-white">{order.order_number}</td>
+                <tr key={order.id} className="border-b border-[var(--admin-border)] last:border-0">
+                  <td className="px-4 py-3 font-mono text-[var(--admin-ink)]">{order.order_number}</td>
                   <td className="px-4 py-3">
-                    <p className="font-semibold text-white">{order.customer_name}</p>
-                    <p className="text-xs text-white/50">{order.customer_email || order.customer_phone || ""}</p>
+                    <p className="font-semibold text-[var(--admin-ink)]">{order.customer_name}</p>
+                    <p className="text-xs text-[var(--admin-muted-light)]">{order.customer_email || order.customer_phone || ""}</p>
                   </td>
-                  <td className="px-4 py-3 font-semibold text-white">${Number(order.total).toFixed(2)}</td>
+                  <td className="px-4 py-3 font-semibold text-[var(--admin-ink)]">${Number(order.total).toFixed(2)}</td>
                   <td className="px-4 py-3">
                     {canEdit ? (
                       <select
                         value={order.status}
                         onChange={(e) => handleStatusChange(order, e.target.value)}
-                        className={`rounded-lg border-0 px-2 py-1 text-xs outline-none ${STATUS_COLORS[order.status] || "bg-white/10"}`}
+                        className={`rounded-lg border-0 px-2 py-1 text-xs outline-none ${STATUS_COLORS[order.status] || "bg-[var(--admin-bg-deep)]"}`}
                       >
                         {STATUSES.map((s) => (
-                          <option key={s} value={s} className="bg-neutral-900 text-white">{s}</option>
+                          <option key={s} value={s} className="bg-neutral-900 text-[var(--admin-ink)]">{s}</option>
                         ))}
                       </select>
                     ) : (
-                      <span className={`rounded-lg px-2 py-1 text-xs ${STATUS_COLORS[order.status] || "bg-white/10"}`}>
+                      <span className={`rounded-lg px-2 py-1 text-xs ${STATUS_COLORS[order.status] || "bg-[var(--admin-bg-deep)]"}`}>
                         {order.status}
                       </span>
                     )}
@@ -125,7 +125,7 @@ export default function OrderList() {
                       <button
                         type="button"
                         onClick={() => openDetail(order.id)}
-                        className="rounded-lg bg-[var(--admin-primary)] px-3 py-1.5 text-xs text-white hover:bg-[var(--admin-primary-strong)]"
+                        className="rounded-lg bg-[var(--admin-primary)] px-3 py-1.5 text-xs text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)]"
                       >
                         View
                       </button>
@@ -150,25 +150,25 @@ export default function OrderList() {
       {detail && (
         <div className="fixed inset-0 z-[140] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm" onClick={() => setDetail(null)}>
           <div
-            className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/15 bg-[var(--admin-card)] p-6 shadow-2xl"
+            className="max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-card)] p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-white">Order {detail.order_number}</h3>
-              <button type="button" onClick={() => setDetail(null)} className="rounded-lg p-1.5 text-white/60 hover:bg-white/10 hover:text-white">
+              <h3 className="text-lg font-bold text-[var(--admin-ink)]">Order {detail.order_number}</h3>
+              <button type="button" onClick={() => setDetail(null)} className="rounded-lg p-1.5 text-[var(--admin-ink)]/60 hover:bg-[var(--admin-bg-deep)] hover:text-[var(--admin-ink)]">
                 <span className="pi pi-times" />
               </button>
             </div>
-            <div className="space-y-2 text-sm text-white/80">
-              <p><span className="text-white/50">Customer:</span> {detail.customer_name}</p>
-              {detail.customer_email && <p><span className="text-white/50">Email:</span> {detail.customer_email}</p>}
-              {detail.customer_phone && <p><span className="text-white/50">Phone:</span> {detail.customer_phone}</p>}
-              {detail.address && <p><span className="text-white/50">Address:</span> {detail.address}{detail.city ? `, ${detail.city}` : ""}{detail.country ? `, ${detail.country}` : ""}</p>}
-              {detail.notes && <p><span className="text-white/50">Notes:</span> {detail.notes}</p>}
+            <div className="space-y-2 text-sm text-[var(--admin-ink)]/80">
+              <p><span className="text-[var(--admin-muted-light)]">Customer:</span> {detail.customer_name}</p>
+              {detail.customer_email && <p><span className="text-[var(--admin-muted-light)]">Email:</span> {detail.customer_email}</p>}
+              {detail.customer_phone && <p><span className="text-[var(--admin-muted-light)]">Phone:</span> {detail.customer_phone}</p>}
+              {detail.address && <p><span className="text-[var(--admin-muted-light)]">Address:</span> {detail.address}{detail.city ? `, ${detail.city}` : ""}{detail.country ? `, ${detail.country}` : ""}</p>}
+              {detail.notes && <p><span className="text-[var(--admin-muted-light)]">Notes:</span> {detail.notes}</p>}
             </div>
-            <div className="mt-4 overflow-hidden rounded-xl border border-white/10">
-              <table className="w-full text-left text-sm text-white/80">
-                <thead className="border-b border-white/10 bg-white/5 text-xs uppercase text-white/50">
+            <div className="mt-4 overflow-hidden rounded-xl border border-[var(--admin-border)]">
+              <table className="w-full text-left text-sm text-[var(--admin-ink)]/80">
+                <thead className="border-b border-[var(--admin-border)] bg-white/5 text-xs uppercase text-[var(--admin-muted-light)]">
                   <tr>
                     <th className="px-3 py-2">Item</th>
                     <th className="px-3 py-2">Qty</th>
@@ -177,7 +177,7 @@ export default function OrderList() {
                 </thead>
                 <tbody>
                   {(detail.items || []).map((item) => (
-                    <tr key={item.id} className="border-b border-white/5 last:border-0">
+                    <tr key={item.id} className="border-b border-[var(--admin-border)] last:border-0">
                       <td className="px-3 py-2">{item.product_name}</td>
                       <td className="px-3 py-2">{item.quantity}</td>
                       <td className="px-3 py-2 text-right">${Number(item.line_total).toFixed(2)}</td>
@@ -186,7 +186,7 @@ export default function OrderList() {
                 </tbody>
               </table>
             </div>
-            <p className="mt-3 text-right text-base font-bold text-white">Total: ${Number(detail.total).toFixed(2)}</p>
+            <p className="mt-3 text-right text-base font-bold text-[var(--admin-ink)]">Total: ${Number(detail.total).toFixed(2)}</p>
           </div>
         </div>
       )}

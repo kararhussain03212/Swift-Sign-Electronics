@@ -32,14 +32,14 @@ const emptyLink = (groupId) => ({ id: null, group_id: groupId, label: "", url: "
 
 function FooterLinkRow({ link, index, onChange, onDelete, canEdit, canDelete }) {
   return (
-    <div className="grid grid-cols-1 gap-2 rounded-lg border border-white/10 bg-white/5 p-2 md:grid-cols-[1fr_1fr_auto_auto] md:items-center">
+    <div className="grid grid-cols-1 gap-2 rounded-lg border border-[var(--admin-border)] bg-white/5 p-2 md:grid-cols-[1fr_1fr_auto_auto] md:items-center">
       <input
         type="text"
         placeholder="Label"
         value={link.label}
         onChange={(e) => onChange(index, "label", e.target.value)}
         disabled={!canEdit}
-        className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-white outline-none focus:border-[var(--admin-primary)]"
+        className="rounded-lg border border-[var(--admin-border)] bg-white/5 px-2 py-1.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
       />
       <input
         type="text"
@@ -47,13 +47,13 @@ function FooterLinkRow({ link, index, onChange, onDelete, canEdit, canDelete }) 
         value={link.url}
         onChange={(e) => onChange(index, "url", e.target.value)}
         disabled={!canEdit}
-        className="rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-white outline-none focus:border-[var(--admin-primary)]"
+        className="rounded-lg border border-[var(--admin-border)] bg-white/5 px-2 py-1.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
       />
       <button
         type="button"
         onClick={() => onChange(index, "is_active", link.is_active ? 0 : 1)}
         disabled={!canEdit}
-        className={`rounded-lg px-3 py-1 text-xs ${link.is_active ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}
+        className={`rounded-lg px-3 py-1 text-xs ${link.is_active ? "bg-green-600 text-[var(--admin-ink)]" : "bg-red-600 text-[var(--admin-ink)]"}`}
       >
         {link.is_active ? "Active" : "Inactive"}
       </button>
@@ -74,14 +74,14 @@ function FooterGroupCard({ group, onTitleChange, onLinkChange, onAddLink, onDele
   const links = group.links || [];
 
   return (
-    <div className="space-y-3 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-4">
+    <div className="space-y-3 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-4">
       <div className="flex flex-wrap items-center gap-2">
         <input
           type="text"
           value={group.title}
           onChange={(e) => onTitleChange(e.target.value)}
           disabled={!canEdit}
-          className="flex-1 min-w-[200px] rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-lg font-bold text-white outline-none focus:border-[var(--admin-primary)]"
+          className="flex-1 min-w-[200px] rounded-lg border border-[var(--admin-border)] bg-white/5 px-3 py-2 text-lg font-bold text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
         />
         {canDelete && (
           <button type="button" onClick={onDeleteGroup} className="rounded-lg bg-red-500 px-3 py-2 text-xs text-white hover:bg-red-600">
@@ -105,7 +105,7 @@ function FooterGroupCard({ group, onTitleChange, onLinkChange, onAddLink, onDele
       </div>
 
       {canAdd && (
-        <button type="button" onClick={onAddLink} className="rounded-lg bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">
+        <button type="button" onClick={onAddLink} className="rounded-lg bg-[var(--admin-bg-deep)] px-3 py-2 text-sm text-[var(--admin-ink)] hover:bg-white/20">
           + Add Link
         </button>
       )}
@@ -333,31 +333,31 @@ export default function FooterManager() {
     }
   };
 
-  if (loading) return <p className="text-white/70">Loading footer link groups...</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading footer link groups...</p>;
 
   return (
     <section className="space-y-5 pb-20">
       <header>
-        <h2 className="text-3xl font-bold text-white">Footer Manager</h2>
-        <p className="text-sm text-white/65">Manage the footer link columns (e.g. Quick Links, Legal Information) and their links.</p>
+        <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Footer Manager</h2>
+        <p className="text-sm text-[var(--admin-ink)]/65">Manage the footer link columns (e.g. Quick Links, Legal Information) and their links.</p>
       </header>
 
       {error ? <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-300">{error}</div> : null}
       {success ? <div className="rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-green-300">{success}</div> : null}
 
-      <div className="space-y-3 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-4 sm:p-5">
-        <h3 className="mb-4 text-lg font-bold text-white">Footer Information</h3>
+      <div className="space-y-3 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-4 sm:p-5">
+        <h3 className="mb-4 text-lg font-bold text-[var(--admin-ink)]">Footer Information</h3>
         <div className="space-y-3">
           {FOOTER_SETTINGS_FIELDS.map((field) => (
             <div key={field.key} className="grid grid-cols-1 gap-2 md:grid-cols-[220px_1fr] md:items-start">
-              <label className="pt-2 text-sm font-semibold text-white/80">{field.label}</label>
+              <label className="pt-2 text-sm font-semibold text-[var(--admin-ink)]/80">{field.label}</label>
               {field.multiline ? (
                 <textarea
                   rows={3}
                   value={footerSettings[field.key] || ""}
                   onChange={(e) => setFooterSettingField(field.key, e.target.value)}
                   disabled={!canEdit}
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+                  className="w-full rounded-xl border border-[var(--admin-border)] bg-white/5 px-3 py-2.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
                 />
               ) : (
                 <input
@@ -365,14 +365,14 @@ export default function FooterManager() {
                   value={footerSettings[field.key] || ""}
                   onChange={(e) => setFooterSettingField(field.key, e.target.value)}
                   disabled={!canEdit}
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+                  className="w-full rounded-xl border border-[var(--admin-border)] bg-white/5 px-3 py-2.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
                 />
               )}
             </div>
           ))}
 
           <div className="grid grid-cols-1 gap-2 md:grid-cols-[220px_1fr] md:items-start">
-            <label className="pt-2 text-sm font-semibold text-white/80">Footer Logo</label>
+            <label className="pt-2 text-sm font-semibold text-[var(--admin-ink)]/80">Footer Logo</label>
             <div className="space-y-3">
               <ImageUpload
                 value={toImageUrl(footerSettings.footer_logo)}
@@ -386,7 +386,7 @@ export default function FooterManager() {
                 value={footerSettings.footer_logo_alt || ""}
                 onChange={(e) => setFooterSettingField("footer_logo_alt", e.target.value)}
                 disabled={!canEdit}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+                className="w-full rounded-xl border border-[var(--admin-border)] bg-white/5 px-3 py-2.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
               />
             </div>
           </div>
@@ -394,15 +394,15 @@ export default function FooterManager() {
       </div>
 
       {canAdd && (
-        <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-4">
+        <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-4">
           <input
             type="text"
             placeholder="New column title (e.g. Support)"
             value={newGroupTitle}
             onChange={(e) => setNewGroupTitle(e.target.value)}
-            className="flex-1 min-w-[220px] rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-white outline-none focus:border-[var(--admin-primary)]"
+            className="flex-1 min-w-[220px] rounded-lg border border-[var(--admin-border)] bg-white/5 px-3 py-2 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
           />
-          <button type="button" onClick={addGroup} disabled={saving} className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-white hover:bg-[var(--admin-primary-strong)]">
+          <button type="button" onClick={addGroup} disabled={saving} className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)]">
             + Add Column
           </button>
         </div>
@@ -412,8 +412,8 @@ export default function FooterManager() {
         {groups.map((group, index) => (
           <div key={group.id} className="space-y-2">
             <div className="flex justify-end gap-1">
-              <button type="button" onClick={() => moveGroup(index, -1)} disabled={index === 0} className="rounded border border-white/15 px-2 py-0.5 text-xs disabled:opacity-30">← Move Left</button>
-              <button type="button" onClick={() => moveGroup(index, 1)} disabled={index === groups.length - 1} className="rounded border border-white/15 px-2 py-0.5 text-xs disabled:opacity-30">Move Right →</button>
+              <button type="button" onClick={() => moveGroup(index, -1)} disabled={index === 0} className="rounded border border-[var(--admin-border)] px-2 py-0.5 text-xs disabled:opacity-30">← Move Left</button>
+              <button type="button" onClick={() => moveGroup(index, 1)} disabled={index === groups.length - 1} className="rounded border border-[var(--admin-border)] px-2 py-0.5 text-xs disabled:opacity-30">Move Right →</button>
             </div>
             <FooterGroupCard
               group={group}
@@ -436,7 +436,7 @@ export default function FooterManager() {
             type="button"
             onClick={saveAll}
             disabled={saving || uploading || !loadedSettingsOk}
-            className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-white shadow-sm hover:bg-[var(--admin-primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-[var(--admin-ink)] shadow-sm hover:bg-[var(--admin-primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {saving ? "Saving..." : uploading ? "Uploading..." : "Save Changes"}
           </button>

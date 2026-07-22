@@ -1,3 +1,22 @@
+Options -Indexes -ExecCGI
+AddHandler default-handler .php .php3 .php4 .php5 .php7 .phtml .phar
+
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(php|php3|php4|php5|php7|phtml|phar|cgi|pl|py|sh|exe)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "\.(php|php3|php4|php5|php7|phtml|phar|cgi|pl|py|sh|exe)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
 RewriteEngine On
 
 # Backward compatibility for old nested upload paths:

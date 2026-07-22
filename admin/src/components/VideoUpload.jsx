@@ -64,8 +64,8 @@ const VideoUpload = ({
       <div className="flex flex-col items-center justify-center gap-3">
         <span className="pi pi-cloud-upload text-3xl text-[var(--admin-muted)]" />
         <div className="text-center">
-          <p className="text-sm font-semibold text-white">{label}</p>
-          <p className="text-xs text-white/60">{helperText}</p>
+          <p className="text-sm font-semibold text-[var(--admin-ink)]">{label}</p>
+          <p className="text-xs text-[var(--admin-ink)]/60">{helperText}</p>
         </div>
       </div>
 
@@ -74,7 +74,7 @@ const VideoUpload = ({
         accept={accept}
         onChange={handleChange}
         required={required}
-        className="mt-3 block w-full text-sm text-white file:mr-3 file:rounded-md file:border-0 file:bg-[var(--admin-primary)] file:px-3 file:py-2 file:text-black hover:file:bg-[var(--admin-primary-strong)]"
+        className="mt-3 block w-full text-sm text-[var(--admin-ink)] file:mr-3 file:rounded-md file:border-0 file:bg-[var(--admin-primary)] file:px-3 file:py-2 file:text-black hover:file:bg-[var(--admin-primary-strong)]"
       />
 
       {preview && !mediaError ? (

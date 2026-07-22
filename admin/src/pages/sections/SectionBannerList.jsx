@@ -53,20 +53,20 @@ export default function SectionBannerList() {
     }
   };
 
-  if (loading) return <p className="text-white/70">Loading section banners...</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading section banners...</p>;
 
   return (
     <section className="space-y-5">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-white">Section Banners</h2>
-          <p className="text-sm text-white/65">Featured banners for home page sections (Tools, Instruments, Projects).</p>
+          <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Section Banners</h2>
+          <p className="text-sm text-[var(--admin-ink)]/65">Featured banners for home page sections (Tools, Instruments, Projects).</p>
         </div>
         {canAdd && (
           <button
             type="button"
             onClick={() => navigate("/section-banners/new")}
-            className="inline-flex w-fit rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-white hover:bg-[var(--admin-primary-strong)]"
+            className="inline-flex w-fit rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)]"
           >
             + Add Banner
           </button>
@@ -78,18 +78,18 @@ export default function SectionBannerList() {
       ) : null}
 
       {banners.length === 0 ? (
-        <div className="rounded-xl border border-white/10 bg-[var(--admin-bg)] p-6 text-white/70">
+        <div className="rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6 text-[var(--admin-muted)]">
           No section banners found.
         </div>
       ) : (
         <div className="grid gap-4">
           {banners.map((item) => (
-            <article key={item.id} className="overflow-hidden rounded-2xl border border-white/10 bg-[var(--admin-bg)]">
+            <article key={item.id} className="overflow-hidden rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)]">
               <div className="grid grid-cols-1 md:grid-cols-[220px_1fr]">
                 {item.bg_image ? (
                   <img src={resolveImage(item.bg_image)} alt={item.title} className="h-36 w-full object-cover md:h-full" />
                 ) : (
-                  <div className="flex h-36 items-center justify-center bg-white/5 text-white/40 md:h-full">No image</div>
+                  <div className="flex h-36 items-center justify-center bg-white/5 text-[var(--admin-ink)]/40 md:h-full">No image</div>
                 )}
                 <div className="p-4 sm:p-5">
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -97,14 +97,14 @@ export default function SectionBannerList() {
                       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--admin-accent)]">
                         {item.section_key}
                       </p>
-                      <h3 className="mt-1 break-words text-xl font-bold text-white">{item.title}</h3>
-                      <p className="mt-2 break-words text-sm text-white/70">{item.description || item.subtitle || "—"}</p>
+                      <h3 className="mt-1 break-words text-xl font-bold text-[var(--admin-ink)]">{item.title}</h3>
+                      <p className="mt-2 break-words text-sm text-[var(--admin-muted)]">{item.description || item.subtitle || "—"}</p>
                     </div>
                     <div className="flex w-full flex-wrap gap-2 sm:w-auto">
                       <button
                         type="button"
                         onClick={() => handleToggleActive(item)}
-                        className={`rounded-lg px-4 py-2 text-sm text-white ${item.is_active ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}`}
+                        className={`rounded-lg px-4 py-2 text-sm text-[var(--admin-ink)] ${item.is_active ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}`}
                       >
                         {item.is_active ? "Active" : "Inactive"}
                       </button>
@@ -112,7 +112,7 @@ export default function SectionBannerList() {
                         <button
                           type="button"
                           onClick={() => navigate(`/section-banners/edit/${item.id}`)}
-                          className="rounded-lg bg-[var(--admin-primary)] px-4 py-2 text-sm text-white hover:bg-[var(--admin-primary-strong)]"
+                          className="rounded-lg bg-[var(--admin-primary)] px-4 py-2 text-sm text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)]"
                         >
                           Edit
                         </button>

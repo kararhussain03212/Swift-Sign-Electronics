@@ -84,14 +84,14 @@ export default function SliderForm() {
     }
   };
 
-  if (loading) return <div className="text-white/70">Loading slider…</div>;
+  if (loading) return <div className="text-[var(--admin-muted)]">Loading slider…</div>;
 
-  const inputCls = "w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white";
-  const labelCls = "mb-1 block text-sm text-white/80";
+  const inputCls = "w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]";
+  const labelCls = "mb-1 block text-sm text-[var(--admin-ink)]/80";
 
   return (
     <section className="mx-auto max-w-3xl">
-      <h2 className="mb-4 text-2xl font-bold text-white">
+      <h2 className="mb-4 text-2xl font-bold text-[var(--admin-ink)]">
         {isEditMode ? "Edit Hero Slide" : "Add Hero Slide"}
       </h2>
 
@@ -99,7 +99,7 @@ export default function SliderForm() {
         <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-300">{error}</div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-6">
+      <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6">
 
         {/* Title */}
         <div>
@@ -117,9 +117,9 @@ export default function SliderForm() {
         <div className="flex items-center gap-6">
           <div>
             <label className={labelCls}>Sort Order</label>
-            <input type="number" min="1" value={form.sort_order} onChange={(e) => setField("sort_order", Number(e.target.value))} className="w-24 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+            <input type="number" min="1" value={form.sort_order} onChange={(e) => setField("sort_order", Number(e.target.value))} className="w-24 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
           </div>
-          <label className="flex cursor-pointer items-center gap-2 text-sm text-white/80 mt-5">
+          <label className="flex cursor-pointer items-center gap-2 text-sm text-[var(--admin-ink)]/80 mt-5">
             <input type="checkbox" checked={form.is_active} onChange={(e) => setField("is_active", e.target.checked)} className="h-4 w-4" />
             Show on frontend
           </label>
@@ -139,7 +139,7 @@ export default function SliderForm() {
           <button type="submit" disabled={saving} className="rounded-lg bg-[var(--admin-primary)] px-5 py-2 text-black hover:bg-[var(--admin-primary-strong)] disabled:opacity-60">
             {saving ? "Saving…" : isEditMode ? "Update Slide" : "Create Slide"}
           </button>
-          <button type="button" onClick={() => navigate("/sliders")} className="rounded-lg border border-white/20 px-5 py-2 text-white/90 hover:bg-white/10">
+          <button type="button" onClick={() => navigate("/sliders")} className="rounded-lg border border-[var(--admin-border)] px-5 py-2 text-[var(--admin-ink)] hover:bg-[var(--admin-bg-deep)]">
             Cancel
           </button>
         </div>

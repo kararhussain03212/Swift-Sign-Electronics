@@ -74,14 +74,14 @@ export default function BlogList() {
     }
   };
 
-  if (loading) return <p className="text-white/70">Loading blogs…</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading blogs…</p>;
 
   return (
     <section className="space-y-5">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-white">Blog Posts</h2>
-          <p className="text-sm text-white/65">Manage blog content for Home, Blog list, and Blog detail pages.</p>
+          <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Blog Posts</h2>
+          <p className="text-sm text-[var(--admin-ink)]/65">Manage blog content for Home, Blog list, and Blog detail pages.</p>
         </div>
         <button
           type="button"
@@ -103,7 +103,7 @@ export default function BlogList() {
       )}
 
       {blogs.length === 0 ? (
-        <div className="rounded-xl border border-white/10 bg-[var(--admin-bg)] p-6 text-white/70">
+        <div className="rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6 text-[var(--admin-muted)]">
           No blog posts yet. Add your first post.
         </div>
       ) : (
@@ -111,7 +111,7 @@ export default function BlogList() {
           {blogs.map((item) => {
             const published = item.is_published === 1 || item.is_published === true;
             return (
-              <article key={item.id} className="rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-5">
+              <article key={item.id} className="rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-5">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex min-w-0 gap-4">
                     {item.cover && (
@@ -123,14 +123,14 @@ export default function BlogList() {
                       />
                     )}
                     <div className="min-w-0">
-                      <h3 className="text-xl font-bold text-white">{item.title || "Untitled Blog"}</h3>
-                      <p className="mt-1 text-sm text-white/65">
+                      <h3 className="text-xl font-bold text-[var(--admin-ink)]">{item.title || "Untitled Blog"}</h3>
+                      <p className="mt-1 text-sm text-[var(--admin-ink)]/65">
                         {item.category || "Blog"} • {item.slug || "-"}
                       </p>
-                      <p className="mt-2 line-clamp-2 text-sm text-white/70">
+                      <p className="mt-2 line-clamp-2 text-sm text-[var(--admin-muted)]">
                         {item.excerpt || "No excerpt"}
                       </p>
-                      <p className="mt-1 text-xs text-white/60">
+                      <p className="mt-1 text-xs text-[var(--admin-ink)]/60">
                         {item.read_time || "Read time not set"}
                       </p>
                     </div>

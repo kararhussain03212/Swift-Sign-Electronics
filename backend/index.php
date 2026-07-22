@@ -17,6 +17,16 @@ CorsMiddleware::handle();
 Env::load(__DIR__ . '/.env');
 
 $appEnv = Env::get('APP_ENV', 'local');
+if ($appEnv === 'production') {
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
+    error_reporting(E_ALL);
+    ini_set('log_errors', '1');
+} else {
+    ini_set('display_errors', '1');
+    error_reporting(E_ALL);
+}
+
 $host = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
 $host = trim(explode(':', $host)[0] ?? '');
 $isLocalHost = in_array($host, ['localhost', '127.0.0.1', '::1'], true);

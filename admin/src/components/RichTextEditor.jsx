@@ -48,10 +48,10 @@ export default function RichTextEditor({ value = "", onChange, label = "Content"
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm text-white/80">{label}</label>
-      <div className="rounded-xl border border-white/20 bg-[var(--admin-card)] p-3">
+      <label className="block text-sm text-[var(--admin-ink)]/80">{label}</label>
+      <div className="rounded-xl border border-[var(--admin-border)] bg-[var(--admin-card)] p-3">
         <div className="admin-quill">
-          <div ref={wrapperRef} className="min-h-[260px] bg-[var(--admin-bg)] text-white" />
+          <div ref={wrapperRef} className="min-h-[260px] bg-[var(--admin-bg)] text-[var(--admin-ink)]" />
         </div>
       </div>
     </div>

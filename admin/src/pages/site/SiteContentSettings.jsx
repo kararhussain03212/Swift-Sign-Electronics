@@ -28,17 +28,17 @@ const emptyNavLink = () => ({ id: null, label: "", url: "", is_active: 1, open_i
 function FieldGroup({ fields, form, setField, canEdit, title }) {
   return (
     <div className="space-y-3">
-      {title && <h3 className="text-sm font-bold uppercase tracking-widest text-white/70">{title}</h3>}
+      {title && <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--admin-muted)]">{title}</h3>}
       {fields.map((field) => (
         <div key={field.key} className="grid grid-cols-1 gap-2 md:grid-cols-[220px_1fr] md:items-start">
-          <label className="pt-2 text-sm font-semibold text-white/80">{field.label}</label>
+          <label className="pt-2 text-sm font-semibold text-[var(--admin-ink)]/80">{field.label}</label>
           {field.multiline ? (
             <textarea
               rows={3}
               value={form[field.key] || ""}
               onChange={(e) => setField(field.key, e.target.value)}
               disabled={!canEdit}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+              className="w-full rounded-xl border border-[var(--admin-border)] bg-white/5 px-3 py-2.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
             />
           ) : (
             <input
@@ -46,7 +46,7 @@ function FieldGroup({ fields, form, setField, canEdit, title }) {
               value={form[field.key] || ""}
               onChange={(e) => setField(field.key, e.target.value)}
               disabled={!canEdit}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+              className="w-full rounded-xl border border-[var(--admin-border)] bg-white/5 px-3 py-2.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
             />
           )}
         </div>
@@ -249,23 +249,23 @@ export default function SiteContentSettings() {
     }
   };
 
-  if (loading) return <p className="text-white/70">Loading navbar settings...</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading navbar settings...</p>;
 
   return (
     <section className="space-y-4">
       <header>
-        <h2 className="text-3xl font-bold text-white">Navbar</h2>
-        <p className="text-sm text-white/65">Navbar branding, topbar scrolling messages, and the main navbar links shown on the storefront.</p>
+        <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Navbar</h2>
+        <p className="text-sm text-[var(--admin-ink)]/65">Navbar branding, topbar scrolling messages, and the main navbar links shown on the storefront.</p>
       </header>
 
       {error ? <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-300">{error}</div> : null}
       {success ? <div className="rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-green-300">{success}</div> : null}
 
-      <div className="space-y-3 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-4 sm:p-5">
+      <div className="space-y-3 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-4 sm:p-5">
         <FieldGroup fields={NAVBAR_FIELDS} form={form} setField={setField} canEdit={canEdit} title="Navbar Settings" />
 
-        <div className="mt-4 grid grid-cols-1 gap-2 border-t border-white/10 pt-4 md:grid-cols-[220px_1fr] md:items-start">
-          <label className="pt-2 text-sm font-semibold text-white/80">Navbar Logo</label>
+        <div className="mt-4 grid grid-cols-1 gap-2 border-t border-[var(--admin-border)] pt-4 md:grid-cols-[220px_1fr] md:items-start">
+          <label className="pt-2 text-sm font-semibold text-[var(--admin-ink)]/80">Navbar Logo</label>
           <div className="space-y-3">
             <ImageUpload
               value={toImageUrl(form.nav_logo)}
@@ -279,15 +279,15 @@ export default function SiteContentSettings() {
               value={form.nav_logo_alt || ""}
               onChange={(e) => setField("nav_logo_alt", e.target.value)}
               disabled={!canEdit}
-              className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+              className="w-full rounded-xl border border-[var(--admin-border)] bg-white/5 px-3 py-2.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
             />
           </div>
         </div>
 
-        <div className="mt-4 space-y-3 border-t border-white/10 pt-4">
+        <div className="mt-4 space-y-3 border-t border-[var(--admin-border)] pt-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h4 className="text-sm font-semibold text-white/80">Topbar Scrolling Messages</h4>
-            <span className="text-xs text-white/50">Add, remove, or reorder — any number of messages</span>
+            <h4 className="text-sm font-semibold text-[var(--admin-ink)]/80">Topbar Scrolling Messages</h4>
+            <span className="text-xs text-[var(--admin-muted-light)]">Add, remove, or reorder — any number of messages</span>
           </div>
           {messages.map((msg, index) => (
             <div key={index} className="flex items-center gap-2">
@@ -296,7 +296,7 @@ export default function SiteContentSettings() {
                 value={msg}
                 onChange={(e) => updateMessage(index, e.target.value)}
                 disabled={!canEdit}
-                className="flex-1 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none focus:border-[var(--admin-primary)]"
+                className="flex-1 rounded-lg border border-[var(--admin-border)] bg-white/5 px-3 py-2 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
               />
               {canEdit && (
                 <button type="button" onClick={() => removeMessage(index)} className="rounded-lg bg-red-500 px-3 py-2 text-xs text-white hover:bg-red-600">
@@ -306,21 +306,21 @@ export default function SiteContentSettings() {
             </div>
           ))}
           {canEdit && (
-            <button type="button" onClick={addMessage} className="rounded-lg bg-white/10 px-3 py-2 text-sm text-white hover:bg-white/20">
+            <button type="button" onClick={addMessage} className="rounded-lg bg-[var(--admin-bg-deep)] px-3 py-2 text-sm text-[var(--admin-ink)] hover:bg-white/20">
               + Add Message
             </button>
           )}
         </div>
       </div>
 
-      <div className="space-y-3 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-4 sm:p-5">
+      <div className="space-y-3 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-4 sm:p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h4 className="text-sm font-semibold text-white/80">Navigation Links</h4>
+          <h4 className="text-sm font-semibold text-[var(--admin-ink)]/80">Navigation Links</h4>
           {canAdd && (
             <button
               type="button"
               onClick={addNavLink}
-              className="rounded-lg bg-[var(--admin-primary)] px-3 py-2 text-xs text-white hover:bg-[var(--admin-primary-strong)]"
+              className="rounded-lg bg-[var(--admin-primary)] px-3 py-2 text-xs text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)]"
             >
               + Add Link
             </button>
@@ -328,11 +328,11 @@ export default function SiteContentSettings() {
         </div>
 
         {navLinksLoading ? (
-          <p className="text-white/70">Loading navigation links...</p>
+          <p className="text-[var(--admin-muted)]">Loading navigation links...</p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-white/10">
-            <table className="w-full text-left text-sm text-white/80">
-              <thead className="border-b border-white/10 text-xs uppercase tracking-wider text-white/50">
+          <div className="overflow-x-auto rounded-xl border border-[var(--admin-border)]">
+            <table className="w-full text-left text-sm text-[var(--admin-ink)]/80">
+              <thead className="border-b border-[var(--admin-border)] text-xs uppercase tracking-wider text-[var(--admin-muted-light)]">
                 <tr>
                   <th className="px-4 py-3">Label</th>
                   <th className="px-4 py-3">URL</th>
@@ -342,14 +342,14 @@ export default function SiteContentSettings() {
               </thead>
               <tbody>
                 {navLinks.map((link, index) => (
-                  <tr key={link.id ?? `new-${index}`} className="border-b border-white/5 last:border-0">
+                  <tr key={link.id ?? `new-${index}`} className="border-b border-[var(--admin-border)] last:border-0">
                     <td className="px-4 py-3">
                       <input
                         type="text"
                         value={link.label}
                         onChange={(e) => updateNavLinkField(index, "label", e.target.value)}
                         disabled={!canEdit}
-                        className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-white outline-none focus:border-[var(--admin-primary)]"
+                        className="w-full rounded-lg border border-[var(--admin-border)] bg-white/5 px-2 py-1.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
                       />
                     </td>
                     <td className="px-4 py-3">
@@ -359,7 +359,7 @@ export default function SiteContentSettings() {
                         onChange={(e) => updateNavLinkField(index, "url", e.target.value)}
                         disabled={!canEdit}
                         placeholder="/products or https://example.com"
-                        className="w-full rounded-lg border border-white/10 bg-white/5 px-2 py-1.5 text-white outline-none focus:border-[var(--admin-primary)]"
+                        className="w-full rounded-lg border border-[var(--admin-border)] bg-white/5 px-2 py-1.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
                       />
                     </td>
                     <td className="px-4 py-3">
@@ -367,7 +367,7 @@ export default function SiteContentSettings() {
                         type="button"
                         onClick={() => updateNavLinkField(index, "is_active", link.is_active ? 0 : 1)}
                         disabled={!canEdit}
-                        className={`rounded-lg px-3 py-1 text-xs ${link.is_active ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}
+                        className={`rounded-lg px-3 py-1 text-xs ${link.is_active ? "bg-green-600 text-[var(--admin-ink)]" : "bg-red-600 text-[var(--admin-ink)]"}`}
                       >
                         {link.is_active ? "Active" : "Inactive"}
                       </button>
@@ -399,7 +399,7 @@ export default function SiteContentSettings() {
             type="button"
             onClick={handleSave}
             disabled={saving || uploading || !loadedOk}
-            className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-white shadow-sm hover:bg-[var(--admin-primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-[var(--admin-ink)] shadow-sm hover:bg-[var(--admin-primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {saving ? "Saving..." : uploading ? "Uploading..." : !loadedOk ? "Save Disabled" : "Save Changes"}
           </button>

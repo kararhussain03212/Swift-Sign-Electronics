@@ -176,15 +176,15 @@ export default function UserManagement() {
     <section className="space-y-4">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-4xl font-bold tracking-tight text-white">User Management</h1>
-          <p className="mt-1 text-lg text-white/75">Manage users, role permissions, account status and activity logs.</p>
+          <h1 className="text-4xl font-bold tracking-tight text-[var(--admin-ink)]">User Management</h1>
+          <p className="mt-1 text-lg text-[var(--admin-ink)]/75">Manage users, role permissions, account status and activity logs.</p>
         </div>
 
         <button
           type="button"
           onClick={openCreateModal}
           disabled={!canCreateUsers}
-          className="rounded-2xl bg-[#ffc107] px-6 py-3 text-base font-semibold text-black disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-2xl bg-[#0fafb8] px-6 py-3 text-base font-semibold text-white hover:bg-[#0d9aa6] disabled:cursor-not-allowed disabled:opacity-50"
         >
           Add User
         </button>

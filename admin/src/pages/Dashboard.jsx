@@ -43,8 +43,8 @@ function StatCard({ meta, value, loading }) {
         <span className="pi pi-arrow-right text-xs text-[var(--admin-muted)] opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
       </div>
 
-      <p className="mt-4 text-3xl font-extrabold tracking-tight text-white">
-        {loading ? <span className="inline-block h-8 w-10 animate-pulse rounded-lg bg-white/10" /> : value}
+      <p className="mt-4 text-3xl font-extrabold tracking-tight text-[var(--admin-ink)]">
+        {loading ? <span className="inline-block h-8 w-10 animate-pulse rounded-lg bg-[var(--admin-bg-deep)]" /> : value}
       </p>
       <p className="mt-1 text-sm font-medium text-[var(--admin-muted)]">{meta.label}</p>
     </Link>
@@ -87,9 +87,9 @@ export default function Dashboard() {
     <div className="space-y-6">
 
       {/* ── HERO BANNER ──────────────────────────────────────── */}
-      <div className="relative overflow-hidden rounded-2xl border border-[var(--admin-border-amber)]/40 bg-gradient-to-br from-[var(--brand-green-deep)] via-[var(--brand-green)] to-[#2a4a32]">
+      <div className="relative overflow-hidden rounded-2xl border border-[var(--admin-border-amber)]/40 bg-gradient-to-br from-teal-50 via-white to-emerald-50">
         {/* decorative circles */}
-        <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(224,184,92,0.22)_0%,transparent_65%)]" />
+        <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(15,175,184,0.15)_0%,transparent_65%)]" />
         <div className="pointer-events-none absolute -bottom-12 left-8 h-40 w-40 rounded-full bg-[radial-gradient(circle,rgba(92,185,106,0.18)_0%,transparent_70%)]" />
         <div className="pointer-events-none absolute right-48 bottom-0 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.04)_0%,transparent_70%)]" />
 
@@ -102,12 +102,12 @@ export default function Dashboard() {
                 Control Center
               </span>
             </div>
-            <h2 className="text-2xl font-extrabold leading-tight text-white sm:text-3xl lg:text-4xl">
+            <h2 className="text-2xl font-extrabold leading-tight text-[var(--admin-ink)] sm:text-3xl lg:text-4xl">
               {greeting},{" "}
               <span className="text-[var(--admin-accent)]">{user?.name?.split(" ")[0] || "Admin"}</span>
             </h2>
-            <p className="mt-2 max-w-lg text-sm leading-relaxed text-white/65 sm:text-base">
-              Welcome to the <span className="font-semibold text-white/90">{siteName}</span> admin panel.
+            <p className="mt-2 max-w-lg text-sm leading-relaxed text-[var(--admin-ink)]/65 sm:text-base">
+              Welcome to the <span className="font-semibold text-[var(--admin-ink)]">{siteName}</span> admin panel.
               Manage your products, content, settings and more from one place.
             </p>
 
@@ -118,10 +118,10 @@ export default function Dashboard() {
                 { label: "Blog Posts",   val: counts.blog,         icon: "pi-file-edit" },
                 // { label: "Unread",       val: counts.contact_unread, icon: "pi-envelope" },
               ].map(({ label, val, icon }) => (
-                <div key={label} className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3.5 py-2 backdrop-blur-sm">
+                <div key={label} className="flex items-center gap-2 rounded-xl border border-[var(--admin-border)] bg-white/5 px-3.5 py-2 backdrop-blur-sm">
                   <span className={`pi ${icon} text-sm text-[var(--admin-accent)]`} />
-                  <span className="text-lg font-bold text-white">{loading ? "–" : val}</span>
-                  <span className="text-xs text-white/50">{label}</span>
+                  <span className="text-lg font-bold text-[var(--admin-ink)]">{loading ? "–" : val}</span>
+                  <span className="text-xs text-[var(--admin-muted-light)]">{label}</span>
                 </div>
               ))}
             </div>
@@ -151,7 +151,7 @@ export default function Dashboard() {
         <div className="rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-card)] p-5">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white">Quick Actions</h3>
+              <h3 className="text-lg font-bold text-[var(--admin-ink)]">Quick Actions</h3>
               <p className="text-sm text-[var(--admin-muted)]">Jump to common tasks instantly.</p>
             </div>
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--admin-primary-light)]">
@@ -165,7 +165,7 @@ export default function Dashboard() {
                 <Link
                   key={q.to}
                   to={q.to}
-                  className="group flex items-center gap-3 rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-4 py-3 text-sm font-medium text-white transition-all hover:border-[var(--admin-border-amber)] hover:bg-[var(--admin-sidebar-hover)]"
+                  className="group flex items-center gap-3 rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-4 py-3 text-sm font-medium text-[var(--admin-ink)] transition-all hover:border-[var(--admin-border-amber)] hover:bg-[var(--admin-sidebar-hover)]"
                 >
                   <div
                     className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors"
@@ -173,7 +173,7 @@ export default function Dashboard() {
                   >
                     <span className={`pi ${q.icon} text-sm`} style={{ color: q.color }} />
                   </div>
-                  <span className="flex-1 text-sm">{q.label}</span>
+                  <span className="flex-1 text-sm text-[var(--admin-ink)]">{q.label}</span>
                   <span className="pi pi-arrow-right text-[10px] text-[var(--admin-muted)] transition-transform group-hover:translate-x-0.5" />
                 </Link>
               ))}
@@ -182,7 +182,7 @@ export default function Dashboard() {
               <Link
                 key={q.to}
                 to={q.to}
-                className="group flex items-center gap-3 rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-4 py-3 text-sm font-medium text-white transition-all hover:border-[var(--admin-border-amber)] hover:bg-[var(--admin-sidebar-hover)]"
+                className="group flex items-center gap-3 rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-4 py-3 text-sm font-medium text-[var(--admin-ink)] transition-all hover:border-[var(--admin-border-amber)] hover:bg-[var(--admin-sidebar-hover)]"
               >
                 <div
                   className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg transition-colors"
@@ -190,7 +190,7 @@ export default function Dashboard() {
                 >
                   <span className={`pi ${q.icon} text-sm`} style={{ color: q.color }} />
                 </div>
-                <span className="flex-1 text-sm">{q.label}</span>
+                <span className="flex-1 text-sm text-[var(--admin-ink)]">{q.label}</span>
                 <span className="pi pi-arrow-right text-[10px] text-[var(--admin-muted)] transition-transform group-hover:translate-x-0.5" />
               </Link>
             ))}
@@ -201,7 +201,7 @@ export default function Dashboard() {
         <div className="rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-card)] p-5">
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold text-white">Content Overview</h3>
+              <h3 className="text-lg font-bold text-[var(--admin-ink)]">Content Overview</h3>
               <p className="text-sm text-[var(--admin-muted)]">Live totals across all modules.</p>
             </div>
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[var(--admin-primary-light)]">
@@ -227,7 +227,7 @@ export default function Dashboard() {
                       style={{ width: `${pct}%`, background: barColor }}
                     />
                   </div>
-                  <span className="w-6 flex-shrink-0 text-right text-sm font-bold text-white">
+                  <span className="w-6 flex-shrink-0 text-right text-sm font-bold text-[var(--admin-ink)]">
                     {loading ? "–" : val}
                   </span>
                 </div>
@@ -237,7 +237,7 @@ export default function Dashboard() {
 
           {/* Status info */}
           <div className="mt-5 rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] px-4 py-3">
-            <p className="text-sm font-semibold text-white">{siteName}</p>
+            <p className="text-sm font-semibold text-[var(--admin-ink)]">{siteName}</p>
             <p className="mt-1 text-xs text-[var(--admin-muted)]">Admin panel · all systems operational</p>
             <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[var(--admin-primary)]/30 bg-[var(--admin-primary-light)] px-2.5 py-1 text-[10px] font-semibold text-[var(--admin-primary)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[var(--admin-primary)]" />

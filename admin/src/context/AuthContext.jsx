@@ -13,7 +13,7 @@ const normalizeEmail = (value) =>
     .toLowerCase();
 
 const SUPER_ADMIN_EMAIL = normalizeEmail(
-  ADMIN_ID || "info@mafoodstufftrading.com",
+  ADMIN_ID || "info@sstechnologies.pk",
 );
 
 const getLoginErrorMessage = (error) => {

@@ -59,56 +59,56 @@ export default function BlogCategoryForm() {
     }
   };
 
-  if (loading) return <p className="text-white/70">Loading category...</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading category...</p>;
 
   return (
     <section className="mx-auto max-w-2xl space-y-5">
       <header>
-        <h2 className="text-3xl font-bold text-white">{isEdit ? "Edit Blog Category" : "Add Blog Category"}</h2>
-        <p className="text-sm text-white/65">Categories power the filter chips on the Blog page.</p>
+        <h2 className="text-3xl font-bold text-[var(--admin-ink)]">{isEdit ? "Edit Blog Category" : "Add Blog Category"}</h2>
+        <p className="text-sm text-[var(--admin-ink)]/65">Categories power the filter chips on the Blog page.</p>
       </header>
 
       {error ? (
         <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-300">{error}</div>
       ) : null}
 
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-5">
+      <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-5">
         <label className="block">
-          <span className="mb-1 block text-sm font-semibold text-white">Name *</span>
+          <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Name *</span>
           <input
             value={form.name}
             onChange={set("name")}
-            className="w-full rounded-xl border border-white/15 bg-black/30 px-4 py-2.5 text-white outline-none focus:border-[var(--admin-primary)]"
+            className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-2.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
             placeholder="e.g. Robotics"
           />
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-sm font-semibold text-white">Slug</span>
+          <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Slug</span>
           <input
             value={form.slug}
             onChange={set("slug")}
-            className="w-full rounded-xl border border-white/15 bg-black/30 px-4 py-2.5 text-white outline-none focus:border-[var(--admin-primary)]"
+            className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-2.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
             placeholder="auto-generated from name if empty"
           />
         </label>
 
         <div className="grid grid-cols-2 gap-4">
           <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-white">Sort order</span>
+            <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Sort order</span>
             <input
               type="number"
               value={form.sort_order}
               onChange={set("sort_order")}
-              className="w-full rounded-xl border border-white/15 bg-black/30 px-4 py-2.5 text-white outline-none focus:border-[var(--admin-primary)]"
+              className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-2.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
             />
           </label>
           <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-white">Status</span>
+            <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Status</span>
             <select
               value={String(form.is_active)}
               onChange={set("is_active")}
-              className="w-full rounded-xl border border-white/15 bg-black/30 px-4 py-2.5 text-white outline-none focus:border-[var(--admin-primary)]"
+              className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-2.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
             >
               <option value="1">Active</option>
               <option value="0">Inactive</option>
@@ -120,14 +120,14 @@ export default function BlogCategoryForm() {
           <button
             type="submit"
             disabled={saving}
-            className="rounded-xl bg-[var(--admin-primary)] px-6 py-2.5 font-semibold text-white hover:bg-[var(--admin-primary-strong)] disabled:opacity-50"
+            className="rounded-xl bg-[var(--admin-primary)] px-6 py-2.5 font-semibold text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)] disabled:opacity-50"
           >
             {saving ? "Saving..." : isEdit ? "Update Category" : "Create Category"}
           </button>
           <button
             type="button"
             onClick={() => navigate("/blog-categories")}
-            className="rounded-xl border border-white/15 px-6 py-2.5 font-semibold text-white hover:bg-white/10"
+            className="rounded-xl border border-[var(--admin-border)] px-6 py-2.5 font-semibold text-[var(--admin-ink)] hover:bg-[var(--admin-bg-deep)]"
           >
             Cancel
           </button>

@@ -8,26 +8,26 @@ export default function PaginationControls({ pagination, onPageChange }) {
 
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm text-white/80">
-        Showing <span className="font-semibold text-white">{from}</span> to{" "}
-        <span className="font-semibold text-white">{to}</span> of{" "}
-        <span className="font-semibold text-white">{total}</span> users
+      <p className="text-sm text-[var(--admin-ink)]/80">
+        Showing <span className="font-semibold text-[var(--admin-ink)]">{from}</span> to{" "}
+        <span className="font-semibold text-[var(--admin-ink)]">{to}</span> of{" "}
+        <span className="font-semibold text-[var(--admin-ink)]">{total}</span> users
       </p>
       <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={() => onPageChange(page - 1)}
           disabled={page <= 1}
-          className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-1.5 text-sm text-white disabled:opacity-50"
+          className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-1.5 text-sm text-[var(--admin-ink)] disabled:opacity-50"
         >
           Previous
         </button>
-        <span className="text-sm text-white/80">Page {page} / {totalPages}</span>
+        <span className="text-sm text-[var(--admin-ink)]/80">Page {page} / {totalPages}</span>
         <button
           type="button"
           onClick={() => onPageChange(page + 1)}
           disabled={page >= totalPages}
-          className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-1.5 text-sm text-white disabled:opacity-50"
+          className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-bg)] px-3 py-1.5 text-sm text-[var(--admin-ink)] disabled:opacity-50"
         >
           Next
         </button>

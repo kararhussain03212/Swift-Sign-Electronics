@@ -798,7 +798,7 @@ export default function SiteSettings({ forcedMainSection = "", forcedHomeSection
     handleSave,
   ]);
 
-  if (loading) return <p className="text-white/70">Loading settings...</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading settings...</p>;
 
   const getKeysFor = (sectionName) =>
     Object.keys(form).filter((key) => {
@@ -810,7 +810,7 @@ export default function SiteSettings({ forcedMainSection = "", forcedHomeSection
     <section className="space-y-4">
       <header className="rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-4 shadow-sm">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <h2 className="text-2xl font-bold text-white">{headerTitle}</h2>
+          <h2 className="text-2xl font-bold text-[var(--admin-ink)]">{headerTitle}</h2>
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -1043,7 +1043,7 @@ export default function SiteSettings({ forcedMainSection = "", forcedHomeSection
           type="button"
           onClick={handleSave}
           disabled={saving || uploading || loading || !loadedOk}
-          className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-white shadow-sm hover:bg-[var(--admin-primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-[var(--admin-ink)] shadow-sm hover:bg-[var(--admin-primary-strong)] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {saving ? "Saving..." : uploading ? "Uploading..." : loading ? "Loading..." : !loadedOk ? "Save Disabled" : "Save Settings"}
         </button>

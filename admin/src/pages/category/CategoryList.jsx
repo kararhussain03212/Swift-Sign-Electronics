@@ -52,20 +52,20 @@ export default function CategoryList() {
     }
   };
 
-  if (loading) return <p className="text-white/70">Loading categories...</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading categories...</p>;
 
   return (
     <section className="space-y-5">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-white">Categories</h2>
-          <p className="text-sm text-white/65">Manage product categories shown in the store.</p>
+          <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Categories</h2>
+          <p className="text-sm text-[var(--admin-ink)]/65">Manage product categories shown in the store.</p>
         </div>
         {canAdd && (
           <button
             type="button"
             onClick={() => navigate("/categories/new")}
-            className="inline-flex w-fit rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-white hover:bg-[var(--admin-primary-strong)]"
+            className="inline-flex w-fit rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)]"
           >
             + Add Category
           </button>
@@ -77,13 +77,13 @@ export default function CategoryList() {
       ) : null}
 
       {categories.length === 0 ? (
-        <div className="rounded-xl border border-white/10 bg-[var(--admin-bg)] p-6 text-white/70">
+        <div className="rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6 text-[var(--admin-muted)]">
           No categories found. Add your first category.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[var(--admin-bg)]">
-          <table className="w-full text-left text-sm text-white/80">
-            <thead className="border-b border-white/10 text-xs uppercase tracking-wider text-white/50">
+        <div className="overflow-x-auto rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)]">
+          <table className="w-full text-left text-sm text-[var(--admin-ink)]/80">
+            <thead className="border-b border-[var(--admin-border)] text-xs uppercase tracking-wider text-[var(--admin-muted-light)]">
               <tr>
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Key</th>
@@ -94,8 +94,8 @@ export default function CategoryList() {
             </thead>
             <tbody>
               {categories.map((item) => (
-                <tr key={item.id} className="border-b border-white/5 last:border-0">
-                  <td className="px-4 py-3 font-semibold text-white">{item.name}</td>
+                <tr key={item.id} className="border-b border-[var(--admin-border)] last:border-0">
+                  <td className="px-4 py-3 font-semibold text-[var(--admin-ink)]">{item.name}</td>
                   <td className="px-4 py-3">{item.cat_key}</td>
                   <td className="px-4 py-3">{item.icon || "—"}</td>
                   <td className="px-4 py-3">{Number(item.sort_order || 0)}</td>
@@ -105,7 +105,7 @@ export default function CategoryList() {
                         <button
                           type="button"
                           onClick={() => handleToggleActive(item)}
-                          className={`rounded-lg px-3 py-1.5 text-xs ${item.is_active ? "bg-green-600 text-white hover:bg-green-700" : "bg-red-600 text-white hover:bg-red-700"}`}
+                          className={`rounded-lg px-3 py-1.5 text-xs ${item.is_active ? "bg-green-600 text-[var(--admin-ink)] hover:bg-green-700" : "bg-red-600 text-[var(--admin-ink)] hover:bg-red-700"}`}
                         >
                           {item.is_active ? "Active" : "Inactive"}
                         </button>
@@ -114,7 +114,7 @@ export default function CategoryList() {
                         <button
                           type="button"
                           onClick={() => navigate(`/categories/edit/${item.id}`)}
-                          className="rounded-lg bg-[var(--admin-primary)] px-3 py-1.5 text-xs text-white hover:bg-[var(--admin-primary-strong)]"
+                          className="rounded-lg bg-[var(--admin-primary)] px-3 py-1.5 text-xs text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)]"
                         >
                           Edit
                         </button>

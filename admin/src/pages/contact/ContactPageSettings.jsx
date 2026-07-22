@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { getContactPageSettings, updateContactPageSettings } from "../../api/contactApi";
 
-const inputCls = "w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-[var(--admin-primary)]";
-const labelCls = "mb-1 block text-sm text-white/80";
-const sectionCls = "rounded-xl border border-white/10 bg-[var(--admin-bg)] p-4 space-y-3";
+const inputCls = "w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)] placeholder:text-[var(--admin-ink)]/30 focus:outline-none focus:ring-1 focus:ring-[var(--admin-primary)]";
+const labelCls = "mb-1 block text-sm text-[var(--admin-ink)]/80";
+const sectionCls = "rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-4 space-y-3";
 
 const EMPTY = {
   hero_badge: "", hero_heading: "", hero_highlight: "", hero_description: "",
@@ -100,13 +100,13 @@ export default function ContactPageSettings() {
     }
   };
 
-  if (loading) return <p className="text-white/70">Loading…</p>;
+  if (loading) return <p className="text-[var(--admin-muted)]">Loading…</p>;
 
   return (
     <section className="mx-auto max-w-3xl space-y-5">
       <header>
-        <h2 className="text-3xl font-bold text-white">Contact Page Settings</h2>
-        <p className="mt-1 text-sm text-white/65">
+        <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Contact Page Settings</h2>
+        <p className="mt-1 text-sm text-[var(--admin-ink)]/65">
           Edit every dynamic section of the Contact Us page — hero, form labels, contact info, and social links.
         </p>
       </header>
@@ -114,11 +114,11 @@ export default function ContactPageSettings() {
       {toast ? <div className="rounded-xl bg-green-600/80 px-4 py-2.5 text-sm font-medium text-white">{toast}</div> : null}
       {error ? <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</div> : null}
 
-      <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-6">
+      <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6">
 
         {/* SEO */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">SEO</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">SEO</h3>
           <div>
             <label className={labelCls}>SEO Meta Description</label>
             <textarea
@@ -128,7 +128,7 @@ export default function ContactPageSettings() {
               onChange={(e) => setField("seo_meta_description", e.target.value)}
               placeholder="e.g., Contact Swift Sign Electronics for tools, instruments, and project kits. Call, WhatsApp, or visit us in Islamabad, Pakistan."
             />
-            <p className="mt-1 text-[10px] text-white/50">
+            <p className="mt-1 text-[10px] text-[var(--admin-muted-light)]">
               {form.seo_meta_description?.length || 0}/160 characters (recommended)
             </p>
           </div>
@@ -136,7 +136,7 @@ export default function ContactPageSettings() {
 
         {/* Hero Section */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Hero Section</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Hero Section</h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className={labelCls}>Badge Text</label>
@@ -159,7 +159,7 @@ export default function ContactPageSettings() {
 
         {/* Contact Form Labels */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Contact Form</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Contact Form</h3>
           <div>
             <label className={labelCls}>Form Title</label>
             <input className={inputCls} value={form.form_title} onChange={(e) => setField("form_title", e.target.value)} placeholder="SEND US A MESSAGE" />
@@ -194,7 +194,7 @@ export default function ContactPageSettings() {
 
         {/* Contact Info Card */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Contact Info Card</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Contact Info Card</h3>
           <div>
             <label className={labelCls}>Availability Text</label>
             <input className={inputCls} value={form.availability_text} onChange={(e) => setField("availability_text", e.target.value)} placeholder="Available Mon – Sat, 9am – 6pm" />
@@ -223,7 +223,7 @@ export default function ContactPageSettings() {
           </div>
           <div>
             <div className="mb-3 flex items-center justify-between">
-              <label className="font-semibold text-white/90">Locations / Addresses</label>
+              <label className="font-semibold text-[var(--admin-ink)]">Locations / Addresses</label>
               <button
                 type="button"
                 onClick={() => setField("locations", [...form.locations, { address: "", google_map_url: "" }])}
@@ -234,9 +234,9 @@ export default function ContactPageSettings() {
             </div>
             <div className="space-y-4">
               {form.locations.map((location, index) => (
-                <div key={`location-${index}`} className="rounded-lg border border-white/10 bg-[var(--admin-card)] p-3 space-y-3">
+                <div key={`location-${index}`} className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] p-3 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-white/70">Location {index + 1}</span>
+                    <span className="text-sm font-medium text-[var(--admin-muted)]">Location {index + 1}</span>
                     {form.locations.length > 1 && (
                       <button
                         type="button"
@@ -278,7 +278,7 @@ export default function ContactPageSettings() {
 
         {/* Social Links */}
         <div className={sectionCls}>
-          <h3 className="font-semibold text-white/90">Social Media Links</h3>
+          <h3 className="font-semibold text-[var(--admin-ink)]">Social Media Links</h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label className={labelCls}>Facebook URL</label>

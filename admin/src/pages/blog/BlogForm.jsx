@@ -207,14 +207,14 @@ export default function BlogForm() {
     }
   };
 
-  if (loading) return <div className="text-white/70">Loading blog...</div>;
+  if (loading) return <div className="text-[var(--admin-muted)]">Loading blog...</div>;
 
   return (
     <section className="mx-auto max-w-5xl">
-      <h2 className="mb-4 text-2xl font-bold text-white">{isEditMode ? "Edit Blog" : "Add Blog"}</h2>
+      <h2 className="mb-4 text-2xl font-bold text-[var(--admin-ink)]">{isEditMode ? "Edit Blog" : "Add Blog"}</h2>
 
       {!canSave && (
-        <div className="mb-4 rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-300">
+        <div className="mb-4 rounded-xl border border-[#d97706]/30 bg-[#d97706]/10 px-4 py-3 text-sm text-[#92400e]">
           You do not have permission to {isEditMode ? "edit" : "create"} blog posts. Contact an admin.
         </div>
       )}
@@ -223,20 +223,20 @@ export default function BlogForm() {
         <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-red-300">{error}</div>
       ) : null}
 
-      <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-white/10 bg-[var(--admin-bg)] p-6">
+      <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div>
-            <label className="mb-1 block text-sm text-white/80">Title *</label>
-            <input value={form.title} onChange={(e) => handleTitleChange(e.target.value)} required className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Title *</label>
+            <input value={form.title} onChange={(e) => handleTitleChange(e.target.value)} required className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-white/80">Slug</label>
-            <input value={form.slug} onChange={(e) => handleSlugChange(e.target.value)} placeholder="auto-generated-from-title" className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
-            <p className="mt-1 text-xs text-white/50">Auto-generated from title. Edit to customize.</p>
+            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Slug</label>
+            <input value={form.slug} onChange={(e) => handleSlugChange(e.target.value)} placeholder="auto-generated-from-title" className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
+            <p className="mt-1 text-xs text-[var(--admin-muted-light)]">Auto-generated from title. Edit to customize.</p>
           </div>
           <div>
-            <label className="mb-1 block text-sm text-white/80">Category</label>
-            <select value={form.category} onChange={(e) => setField("category", e.target.value)} className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white">
+            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Category</label>
+            <select value={form.category} onChange={(e) => setField("category", e.target.value)} className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]">
               {!categories.some((c) => c.name === form.category) && form.category && (
                 <option value={form.category}>{form.category} (unlisted)</option>
               )}
@@ -244,26 +244,26 @@ export default function BlogForm() {
                 <option key={c.id} value={c.name}>{c.name}</option>
               ))}
             </select>
-            <p className="mt-1 text-xs text-white/50">Manage the list under Blog Categories.</p>
+            <p className="mt-1 text-xs text-[var(--admin-muted-light)]">Manage the list under Blog Categories.</p>
           </div>
           <div>
-            <label className="mb-1 block text-sm text-white/80">Category Color</label>
-            <input type="color" value={form.categoryColor} onChange={(e) => setField("categoryColor", e.target.value)} className="h-10 w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-1 py-1" />
+            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Category Color</label>
+            <input type="color" value={form.categoryColor} onChange={(e) => setField("categoryColor", e.target.value)} className="h-10 w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-1 py-1" />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-white/80">Author Name</label>
-            <input value={form.author} onChange={(e) => setField("author", e.target.value)} className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Author Name</label>
+            <input value={form.author} onChange={(e) => setField("author", e.target.value)} className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-white/80">Author Role</label>
-            <input value={form.authorRole} onChange={(e) => setField("authorRole", e.target.value)} placeholder="e.g. Senior IoT Architect" className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Author Role</label>
+            <input value={form.authorRole} onChange={(e) => setField("authorRole", e.target.value)} placeholder="e.g. Senior IoT Architect" className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-white/80">Author Avatar URL</label>
-            <input value={form.authorAvatar} onChange={(e) => setField("authorAvatar", e.target.value)} placeholder="https://…" className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Author Avatar URL</label>
+            <input value={form.authorAvatar} onChange={(e) => setField("authorAvatar", e.target.value)} placeholder="https://…" className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-white/80">Published At</label>
+            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Published At</label>
             <Calendar
               value={form.publishedAt}
               onChange={(e) => setField("publishedAt", e.value || null)}
@@ -275,14 +275,14 @@ export default function BlogForm() {
               panelClassName="admin-calendar-panel"
               placeholder="Select publish date and time"
               className="w-full"
-              inputClassName="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+              inputClassName="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
             />
           </div>
         </div>
 
         <div>
-          <label className="mb-1 block text-sm text-white/80">Excerpt</label>
-          <textarea rows={3} value={form.excerpt} onChange={(e) => setField("excerpt", e.target.value)} className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+          <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Excerpt</label>
+          <textarea rows={3} value={form.excerpt} onChange={(e) => setField("excerpt", e.target.value)} className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
         </div>
 
         <RichTextEditor value={form.content} onChange={(value) => setField("content", value)} label="Blog Content (Rich Text)" />
@@ -299,7 +299,7 @@ export default function BlogForm() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label className="mb-1 block text-sm text-white/80">Read Time (minutes)</label>
+            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Read Time (minutes)</label>
             <div className="flex gap-2">
               <input
                 type="number"
@@ -307,7 +307,7 @@ export default function BlogForm() {
                 value={form.readTime || ""}
                 onChange={(e) => setField("readTime", e.target.value ? Number(e.target.value) : null)}
                 placeholder="Leave empty to calculate from content"
-                className="flex-1 rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white"
+                className="flex-1 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]"
               />
               <button
                 type="button"
@@ -317,7 +317,7 @@ export default function BlogForm() {
                   const minutes = Math.ceil(words / 200) || 1;
                   setField("readTime", minutes);
                 }}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-[var(--admin-ink)] hover:bg-blue-700"
                 title="Calculate read time from content"
               >
                 Auto
@@ -326,10 +326,10 @@ export default function BlogForm() {
           </div>
           <div className="flex items-end gap-4">
             <div className="flex-1">
-              <label className="mb-1 block text-sm text-white/80">Sort Order</label>
-              <input type="number" min="1" value={form.sortOrder} onChange={(e) => setField("sortOrder", Number(e.target.value))} className="w-full rounded-lg border border-white/20 bg-[var(--admin-card)] px-3 py-2 text-white" />
+              <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Sort Order</label>
+              <input type="number" min="1" value={form.sortOrder} onChange={(e) => setField("sortOrder", Number(e.target.value))} className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
             </div>
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-white/85">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-[var(--admin-ink)]/85">
               <input
                 type="checkbox"
                 checked={form.isPublished}
@@ -338,7 +338,7 @@ export default function BlogForm() {
               />
               Publish
             </label>
-            <label className="flex cursor-pointer items-center gap-2 text-sm text-white/85">
+            <label className="flex cursor-pointer items-center gap-2 text-sm text-[var(--admin-ink)]/85">
               <input
                 type="checkbox"
                 checked={form.featured}
@@ -354,7 +354,7 @@ export default function BlogForm() {
           <button type="submit" disabled={saving || !canSave} className="rounded-lg bg-[var(--admin-primary)] px-5 py-2 text-black hover:bg-[var(--admin-primary-strong)] disabled:opacity-60">
             {saving ? "Saving..." : isEditMode ? "Update" : "Create"}
           </button>
-          <button type="button" onClick={() => navigate("/blogs")} className="rounded-lg border border-white/20 px-5 py-2 text-white/90 hover:bg-white/10">
+          <button type="button" onClick={() => navigate("/blogs")} className="rounded-lg border border-[var(--admin-border)] px-5 py-2 text-[var(--admin-ink)] hover:bg-[var(--admin-bg-deep)]">
             Cancel
           </button>
         </div>

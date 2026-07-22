@@ -4,14 +4,14 @@
 export const DEFAULT_SITE_SETTINGS = {
   brand_name: 'Swift Sign',
   brand_subtitle: 'Electronics',
-  nav_logo: '/logo.png',
+  nav_logo: '/images/logos/logo.png',
   nav_logo_alt: 'Swift Sign Electronics',
-  footer_logo: '/logo.png',
+  footer_logo: '/images/logos/logo.png',
   footer_logo_alt: 'Swift Sign Electronics',
   footer_description:
     'Empowering engineers, scholars, and makers with premium components, customizable final year projects, and diagnostic laboratory tools.',
   contact_phone: '+92 333 8399480',
-  contact_email: 'info@it.swiftsignbm.com',
+  contact_email: 'info@sstechnologies.pk',
   contact_address: 'Office 22, 4th Floor, Pakland city center, I-8 Markaz, Islamabad, Pakistan.',
   copyright_text: 'Swift Sign Electronics. All rights reserved.',
   designed_by_text: 'swiftsign',
@@ -36,9 +36,9 @@ export const DEFAULT_FOOTER_LINK_GROUPS = [
     title: 'Quick Links',
     links: [
       { id: 1, label: 'Home Page', url: '/' },
-      { id: 2, label: 'About Us', url: '#about' },
+      { id: 2, label: 'Products', url: '/products' },
       { id: 3, label: 'Contact Us', url: '/contact' },
-      { id: 4, label: 'Support & FAQs', url: '#faq' },
+      { id: 4, label: 'Blog & Resources', url: '/blog' },
     ],
   },
   {
@@ -54,10 +54,10 @@ export const DEFAULT_FOOTER_LINK_GROUPS = [
 ];
 
 export const DEFAULT_SOCIAL_LINKS = [
-  { id: 1, platform: 'github', url: 'https://github.com/' },
-  { id: 2, platform: 'discord', url: 'https://discord.com/' },
-  { id: 3, platform: 'twitter', url: 'https://twitter.com/' },
-  { id: 4, platform: 'linkedin', url: 'https://linkedin.com/' },
+  { id: 1, platform: 'facebook', url: 'https://facebook.com/sstechnologies' },
+  { id: 2, platform: 'instagram', url: 'https://instagram.com/sstechnologies' },
+  { id: 3, platform: 'twitter', url: 'https://twitter.com/sstechnologies' },
+  { id: 4, platform: 'linkedin', url: 'https://linkedin.com/company/sstechnologies' },
 ];
 
 export const DEFAULT_CONTACT_PAGE = {
@@ -77,17 +77,17 @@ export const DEFAULT_CONTACT_PAGE = {
   contact_description: 'Reach out through any channel below and our dedicated team will respond promptly.',
   whatsapp_number: '+92 333 8399480',
   phone_number: '+92 333 8399480',
-  email: 'info@swiftsigngeneraltrading.com',
+  email: 'info@sstechnologies.pk',
   address: 'Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan',
   google_map_url: 'https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan',
   locations: [{
     address: 'Office 22, 4th Floor, Pakland City Center, I-8 Markaz, Islamabad, Pakistan',
     google_map_url: 'https://maps.google.com/?q=Office+22,+4th+Floor,+Pakland+City+Center,+I-8+Markaz,+Islamabad,+Pakistan',
   }],
-  facebook_url: '#',
-  instagram_url: '#',
-  youtube_url: '#',
-  tiktok_url: '#',
+  facebook_url: 'https://facebook.com/sstechnologies',
+  instagram_url: 'https://instagram.com/sstechnologies',
+  youtube_url: 'https://youtube.com/@sstechnologies',
+  tiktok_url: 'https://tiktok.com/@sstechnologies',
 };
 
 export const DEFAULT_BLOG_PAGE_SETTINGS = {

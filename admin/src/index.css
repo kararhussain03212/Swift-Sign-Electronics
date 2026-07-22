@@ -3,29 +3,49 @@
 
 :root {
   font-family: "Source Sans 3", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  /* Swift Sign Electronics — dark navy panel, teal brand palette */
-  --admin-bg:             #0a0f14;
-  --admin-bg-deep:        #060a0e;
-  --admin-sidebar:        #0d1420;
-  --admin-sidebar-hover:  #16222f;
-  --admin-card:           #111a24;
-  --admin-card-elevated:  #16222f;
-  --admin-ink:            #ffffff;
-  --admin-muted:          rgba(255,255,255,0.52);
-  /* Primary = Swift Sign teal (matches storefront #0fafb8) */
+  /* ═════════════════════════════════════════════════════════════ */
+  /* SWIFT SIGN ELECTRONICS — LIGHT THEME (ENHANCED)               */
+  /* ═════════════════════════════════════════════════════════════ */
+
+  /* BACKGROUND & LAYOUT */
+  --admin-bg:             #ffffff;
+  --admin-bg-deep:        #f8f9fa;
+  --admin-sidebar:        #f0f2f5;
+  --admin-sidebar-hover:  #e8ecf1;
+  --admin-card:           #ffffff;
+  --admin-card-elevated:  #f5f6f8;
+
+  /* TEXT & FONTS - DARK FOR LIGHT THEME */
+  --admin-ink:            #1f2937;
+  --admin-ink-secondary:  #000000;
+  --admin-muted:          #374151;
+  --admin-muted-light:    #6b7280;
+
+  /* PRIMARY BRAND COLORS */
   --admin-primary:        #0fafb8;
   --admin-primary-strong: #0c8f96;
-  --admin-primary-light:  rgba(15,175,184,0.14);
-  /* Accent = warm gold for highlights */
-  --admin-amber:          #e0b85c;
+  --admin-primary-light:  rgba(15,175,184,0.1);
+
+  /* STATUS COLORS */
+  --admin-success:        #059669;
+  --admin-warning:        #d97706;
+  --admin-error:          #dc2626;
+  --admin-info:           #0fafb8;
+
+  /* BORDERS & DIVIDERS - VISIBLE */
+  --admin-border:         #cbd5e1;
+  --admin-border-light:   #e2e8f0;
+  --admin-border-amber:   rgba(15,175,184,0.4);
+  --admin-border-subtle:  #ddd6fe;
+
+  /* ACCENTS */
   --admin-accent:         #0fafb8;
   --admin-accent-strong:  #0c8f96;
-  /* Borders */
-  --admin-border:         rgba(255,255,255,0.08);
-  --admin-border-amber:   rgba(15,175,184,0.38);
-  /* Brand navy (dark, for gradients/backgrounds) */
-  --brand-green:          #123a44;
-  --brand-green-deep:     #0a2530;
+
+  /* LEGACY (COMPATIBILITY) */
+  --admin-amber:          #f59e0b;
+  --brand-green:          #0fafb8;
+  --brand-green-deep:     #0c8f96;
 }
 
 *,
@@ -55,6 +75,59 @@ a {
   text-decoration: none;
 }
 
+/* Light Theme Text Color Utilities */
+.text-muted {
+  color: #1f2937 !important;
+}
+
+.text-muted-light {
+  color: #374151 !important;
+}
+
+.text-ink {
+  color: #1f2937 !important;
+}
+
+.border-light {
+  border-color: var(--admin-border);
+}
+
+/* Sidebar Navigation - Dark Text */
+aside a {
+  color: #1f2937 !important;
+}
+
+aside a:hover {
+  color: #000000 !important;
+}
+
+aside p {
+  color: #1f2937 !important;
+}
+
+/* Navigation Links - Black Text */
+.p-tablist-item {
+  color: #1f2937 !important;
+}
+
+.p-tablist-item.p-highlight {
+  color: #0fafb8 !important;
+}
+
+/* Main Text */
+body {
+  color: #1f2937;
+}
+
+/* Paragraph Text */
+p {
+  color: #1f2937 !important;
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* PRIMEREACT COMPONENTS — LIGHT THEME OVERRIDES */
+/* ═════════════════════════════════════════════════════════════ */
+
 .admin-theme .p-inputtext,
 .admin-theme .p-dropdown,
 .admin-theme .p-component {
@@ -64,9 +137,15 @@ a {
 .admin-theme .p-inputtext,
 .admin-theme .p-dropdown {
   width: 100%;
-  border-color: var(--admin-border);
+  border-color: #cbd5e1;
+  border-width: 1.5px;
   background: var(--admin-card);
   color: var(--admin-ink);
+}
+
+.admin-theme .p-inputtext::placeholder,
+.admin-theme .p-dropdown::placeholder {
+  color: var(--admin-muted-light);
 }
 
 .admin-theme .p-dropdown .p-dropdown-label,
@@ -76,13 +155,416 @@ a {
 
 .admin-theme .p-button {
   border-radius: 0.65rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.admin-theme .p-button-primary {
+  background: var(--admin-primary);
+  border-color: var(--admin-primary);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.admin-theme .p-button-primary:hover {
+  background: var(--admin-primary-strong);
+  border-color: var(--admin-primary-strong);
+  color: #ffffff;
+}
+
+.admin-theme .p-button-secondary {
+  background: var(--admin-bg-deep);
+  border-color: var(--admin-border);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-button-secondary:hover {
+  background: #f0f1f3;
+}
+
+.admin-theme .p-button-outlined {
+  border: 1px solid var(--admin-border);
+  background: transparent;
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-button-outlined:hover {
+  background: var(--admin-bg-deep);
+  border-color: var(--admin-primary);
+  color: var(--admin-primary);
 }
 
 .admin-theme .p-inputtext:enabled:focus,
 .admin-theme .p-dropdown:not(.p-disabled).p-focus {
   border-color: var(--admin-primary);
-  box-shadow: 0 0 0 1px var(--admin-primary);
+  box-shadow: 0 0 0 0.2rem var(--admin-primary-light);
 }
+
+/* ═════════════════════════════════════════════════════════════ */
+/* DIALOGS & MODALS */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-dialog {
+  background: var(--admin-card);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-dialog .p-dialog-header {
+  background: var(--admin-bg-deep);
+  border-color: var(--admin-border);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-dialog .p-dialog-content {
+  background: var(--admin-card);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-dialog .p-dialog-footer {
+  background: var(--admin-bg-deep);
+  border-color: var(--admin-border);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* TABLES */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-datatable {
+  background: var(--admin-card);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-datatable .p-datatable-header {
+  background: var(--admin-bg-deep);
+  color: var(--admin-ink);
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-datatable .p-datatable-thead > tr > th {
+  background: #f0f2f5;
+  color: #1f2937;
+  border-color: #cbd5e1;
+  font-weight: 700;
+}
+
+.admin-theme .p-datatable .p-datatable-tbody > tr {
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-datatable .p-datatable-tbody > tr > td {
+  color: var(--admin-ink);
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-datatable .p-datatable-tbody > tr:hover {
+  background: #f9fafb;
+}
+
+.admin-theme .p-datatable .p-datatable-footer {
+  background: var(--admin-bg-deep);
+  color: var(--admin-ink);
+  border-color: var(--admin-border);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* FORMS & INPUTS */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-inputtext,
+.admin-theme .p-inputtextarea,
+.admin-theme .p-inputnumber .p-inputtext {
+  background: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-ink);
+  font-size: 0.95rem;
+}
+
+.admin-theme .p-inputtext:focus,
+.admin-theme .p-inputtextarea:focus {
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 0.2rem var(--admin-primary-light);
+}
+
+.admin-theme .p-dropdown {
+  background: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-dropdown:not(.p-disabled):hover {
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-dropdown.p-focus {
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 0.2rem var(--admin-primary-light);
+}
+
+.admin-theme .p-dropdown-panel {
+  background: var(--admin-card);
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-dropdown-items .p-dropdown-item {
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-dropdown-items .p-dropdown-item:hover {
+  background: var(--admin-bg-deep);
+}
+
+.admin-theme .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: var(--admin-primary-light);
+  color: var(--admin-primary);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* CHECKBOXES & RADIO */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-checkbox .p-checkbox-box {
+  border: 1px solid var(--admin-border);
+  background: var(--admin-card);
+}
+
+.admin-theme .p-checkbox:not(.p-disabled) .p-checkbox-box:hover {
+  border-color: var(--admin-primary);
+}
+
+.admin-theme .p-checkbox .p-checkbox-box.p-highlight {
+  background: var(--admin-primary);
+  border-color: var(--admin-primary);
+}
+
+.admin-theme .p-radiobutton .p-radiobutton-box {
+  border: 1px solid var(--admin-border);
+  background: var(--admin-card);
+}
+
+.admin-theme .p-radiobutton:not(.p-disabled) .p-radiobutton-box:hover {
+  border-color: var(--admin-primary);
+}
+
+.admin-theme .p-radiobutton .p-radiobutton-box.p-highlight {
+  background: var(--admin-primary);
+  border-color: var(--admin-primary);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* PANELS & CARDS */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-panel {
+  background: var(--admin-card);
+  color: var(--admin-ink);
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-panel .p-panel-header {
+  background: var(--admin-bg-deep);
+  border-color: var(--admin-border);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-panel .p-panel-content {
+  background: var(--admin-card);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-card {
+  background: var(--admin-card);
+  color: var(--admin-ink);
+  border: 1px solid var(--admin-border);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* TABS */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-tabview {
+  background: var(--admin-card);
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-tabview .p-tabview-nav {
+  background: var(--admin-bg-deep);
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-tabview .p-tabview-nav button.p-tablist-item {
+  color: var(--admin-muted);
+  border-color: transparent;
+}
+
+.admin-theme .p-tabview .p-tabview-nav button.p-tablist-item.p-highlight {
+  color: var(--admin-primary);
+  border-color: var(--admin-primary);
+}
+
+.admin-theme .p-tabview .p-tabview-panels {
+  background: var(--admin-card);
+  color: var(--admin-ink);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* MESSAGES & ALERTS */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-message {
+  border-radius: 0.65rem;
+}
+
+.admin-theme .p-message.p-message-info {
+  background: rgba(15, 175, 184, 0.12);
+  border: 1px solid rgba(15, 175, 184, 0.3);
+  color: var(--admin-info);
+}
+
+.admin-theme .p-message.p-message-success {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: var(--admin-success);
+}
+
+.admin-theme .p-message.p-message-warning {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: var(--admin-warning);
+}
+
+.admin-theme .p-message.p-message-error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: var(--admin-error);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* MENUS & TOOLTIPS */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-menu {
+  background: var(--admin-card);
+  border: 1px solid var(--admin-border);
+}
+
+.admin-theme .p-menu .p-menuitem > .p-menuitem-content {
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-menu .p-menuitem:hover > .p-menuitem-content {
+  background: var(--admin-bg-deep);
+}
+
+.admin-theme .p-tooltip {
+  background: var(--admin-ink);
+  color: var(--admin-card);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* CALENDAR & DATEPICKER */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-calendar {
+  width: 100%;
+}
+
+.admin-theme .p-calendar .p-calendar-input {
+  background: var(--admin-card);
+  border: 1px solid var(--admin-border);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-calendar .p-calendar-input:focus {
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 0.2rem var(--admin-primary-light);
+}
+
+.admin-theme .p-datepicker {
+  background: var(--admin-card);
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-datepicker .p-datepicker-header {
+  background: var(--admin-bg-deep);
+  border-color: var(--admin-border);
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-datepicker .p-datepicker-calendar thead th {
+  background: #f3f4f6;
+  color: var(--admin-ink);
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-datepicker .p-datepicker-calendar tbody td {
+  border-color: var(--admin-border);
+}
+
+.admin-theme .p-datepicker .p-datepicker-calendar tbody td > span {
+  color: var(--admin-ink);
+}
+
+.admin-theme .p-datepicker .p-datepicker-calendar tbody td > span:hover {
+  background: var(--admin-bg-deep);
+  border-radius: 0.35rem;
+}
+
+.admin-theme .p-datepicker .p-datepicker-calendar tbody td.p-datepicker-other-month > span {
+  color: var(--admin-muted);
+}
+
+.admin-theme .p-datepicker .p-datepicker-calendar tbody td.p-highlight > span {
+  background: var(--admin-primary);
+  color: white;
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* PROGRESS & LOADERS */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-progress-bar {
+  background: var(--admin-bg-deep);
+}
+
+.admin-theme .p-progress-bar .p-progress-bar-value {
+  background: var(--admin-primary);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* TAGS & CHIPS */
+/* ═════════════════════════════════════════════════════════════ */
+
+.admin-theme .p-tag {
+  background: var(--admin-primary-light);
+  color: var(--admin-primary);
+  border: none;
+  border-radius: 0.35rem;
+}
+
+.admin-theme .p-tag.p-tag-success {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--admin-success);
+}
+
+.admin-theme .p-tag.p-tag-warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--admin-warning);
+}
+
+.admin-theme .p-tag.p-tag-danger {
+  background: rgba(239, 68, 68, 0.12);
+  color: var(--admin-error);
+}
+
+.admin-theme .p-chip {
+  background: var(--admin-bg-deep);
+  border-color: var(--admin-border);
+  color: var(--admin-ink);
+}
+
+/* ═════════════════════════════════════════════════════════════ */
+/* QUILL EDITOR */
+/* ═════════════════════════════════════════════════════════════ */
 
 .admin-quill .ql-toolbar.ql-snow {
   border-color: var(--admin-border);
@@ -102,21 +584,25 @@ a {
 }
 
 .admin-quill .ql-editor.ql-blank::before {
-  color: rgba(255, 255, 255, 0.45);
+  color: var(--admin-muted-light);
   font-style: normal;
 }
 
 .admin-quill .ql-snow .ql-stroke {
-  stroke: rgba(255, 255, 255, 0.78);
+  stroke: var(--admin-muted);
 }
 
 .admin-quill .ql-snow .ql-fill {
-  fill: rgba(255, 255, 255, 0.78);
+  fill: var(--admin-muted);
 }
 
 .admin-quill .ql-snow .ql-picker {
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--admin-ink);
 }
+
+/* ═════════════════════════════════════════════════════════════ */
+/* CALENDAR PANEL */
+/* ═════════════════════════════════════════════════════════════ */
 
 .admin-calendar-panel.p-datepicker {
   font-size: 0.82rem;

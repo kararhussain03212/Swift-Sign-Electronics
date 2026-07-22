@@ -98,15 +98,15 @@ export default function SliderList() {
   };
 
   if (loading) {
-    return <p className="text-white/70">Loading sliders...</p>;
+    return <p className="text-[var(--admin-muted)]">Loading sliders...</p>;
   }
 
   return (
     <section className="space-y-5">
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-white">Sliders</h2>
-          <p className="text-sm text-white/65">Manage hero sliders on website home page.</p>
+          <h2 className="text-3xl font-bold text-[var(--admin-ink)]">Sliders</h2>
+          <p className="text-sm text-[var(--admin-ink)]/65">Manage hero sliders on website home page.</p>
         </div>
         <button
           type="button"
@@ -130,7 +130,7 @@ export default function SliderList() {
       ) : null}
 
       {sliders.length === 0 ? (
-        <div className="rounded-xl border border-white/10 bg-[var(--admin-bg)] p-6 text-white/70">
+        <div className="rounded-xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-6 text-[var(--admin-muted)]">
           No sliders found. Add your first slider.
         </div>
       ) : (
@@ -138,7 +138,7 @@ export default function SliderList() {
           {sliders.map((item) => (
             <article
               key={item.id}
-              className="overflow-hidden rounded-2xl border border-white/10 bg-[var(--admin-bg)]"
+              className="overflow-hidden rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)]"
             >
               <div className="grid grid-cols-1 md:grid-cols-[260px_1fr]">
                 <img
@@ -156,23 +156,23 @@ export default function SliderList() {
                       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f4a340]">
                         {item.heading || "Heading"}
                       </p>
-                      <h3 className="mt-1 break-words text-2xl font-bold text-white">
+                      <h3 className="mt-1 break-words text-2xl font-bold text-[var(--admin-ink)]">
                         {item.title || "Untitled Slider"}
                       </h3>
-                      <p className="mt-2 break-words text-sm text-white/70">
+                      <p className="mt-2 break-words text-sm text-[var(--admin-muted)]">
                         {item.subtitle || item.sub || "No subtitle"}
                       </p>
                       <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                        <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
+                        <span className="rounded-md bg-[var(--admin-bg-deep)] px-2 py-1 text-[var(--admin-ink)]/80">
                           Status: {item.is_active ? "Active" : "Inactive"}
                         </span>
-                        <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
+                        <span className="rounded-md bg-[var(--admin-bg-deep)] px-2 py-1 text-[var(--admin-ink)]/80">
                           Primary: {item.button_text || "Shop Now"}
                         </span>
-                        <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
+                        <span className="rounded-md bg-[var(--admin-bg-deep)] px-2 py-1 text-[var(--admin-ink)]/80">
                           Secondary: {item.secondary_button_text || "Our Story"}
                         </span>
-                        <span className="rounded-md bg-white/10 px-2 py-1 text-white/80">
+                        <span className="rounded-md bg-[var(--admin-bg-deep)] px-2 py-1 text-[var(--admin-ink)]/80">
                           Order: {Number(item.sort_order || 0)}
                         </span>
                       </div>
@@ -193,7 +193,7 @@ export default function SliderList() {
                       <button
                         type="button"
                         onClick={() => (canEdit ? navigate(`/sliders/edit/${item.id}`) : showNoPerm("edit sliders"))}
-                        className={`rounded-lg px-4 py-2 text-sm ${canEdit ? "bg-[#1f8b4c] text-white hover:bg-[var(--admin-primary-strong)]" : "border border-white/20 bg-white/10 text-white/60"}`}
+                        className={`rounded-lg px-4 py-2 text-sm ${canEdit ? "bg-[#1f8b4c] text-white hover:bg-[var(--admin-primary-strong)]" : "border border-[var(--admin-border)] bg-[var(--admin-bg-deep)] text-[var(--admin-ink)]/60"}`}
                       >
                         Edit
                       </button>
