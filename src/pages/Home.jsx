@@ -56,19 +56,19 @@ const DEFAULT_HERO_SLIDES = [
     id: 1,
     title: 'Premium Electronics',
     subtitle: 'Explore our curated collection of quality components',
-    image: '/image.png',
+    image: '/images/hero/hero1.png',
   },
   {
     id: 2,
     title: 'Latest Development Boards',
     subtitle: 'Powerful boards for your next project',
-    image: '/image copy.png',
+    image: '/images/hero/hero2.png',
   },
   {
     id: 3,
     title: 'Expert Tools & Accessories',
     subtitle: 'Everything you need for electronics projects',
-    image: '/image copy 2.png',
+    image: '/images/hero/hero3.png',
   }
 ];
 
@@ -81,7 +81,7 @@ const DEFAULT_SECTION_BANNERS = [
     title: 'Professional-Grade Tools',
     subtitle: 'Essential tools for electronics projects',
     description: 'Precision hand tools and workstations for soldering, cutting, and assembly.',
-    bgImage: '/image.png',
+    bgImage: '/images/hero/hero4.png',
   },
   {
     sectionKey: 'instruments',
@@ -91,7 +91,7 @@ const DEFAULT_SECTION_BANNERS = [
     title: 'Precision Test Instruments',
     subtitle: 'Precision measurement and diagnostic devices',
     description: 'Multimeters, oscilloscopes, and power supplies for accurate diagnostics.',
-    bgImage: '/image copy.png',
+    bgImage: '/images/hero/hero5.png',
   },
   {
     sectionKey: 'projects',
@@ -101,7 +101,7 @@ const DEFAULT_SECTION_BANNERS = [
     title: 'Complete Project Kits',
     subtitle: 'Complete project kits and components',
     description: 'Everything you need to build, learn, and prototype your next project.',
-    bgImage: '/image copy 2.png',
+    bgImage: '/images/hero/hero3.png',
   },
 ];
 

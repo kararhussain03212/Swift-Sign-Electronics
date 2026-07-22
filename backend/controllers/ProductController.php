@@ -33,7 +33,9 @@ final class ProductController extends BaseCrudController
             Response::error('Validation failed', 422, ['fields' => $errors]);
         }
 
-        if (isset($payload['name']) && (!isset($payload['slug']) || trim((string) $payload['slug']) === '')) {
+        if (isset($payload['slug']) && trim((string) $payload['slug']) !== '') {
+            $payload['slug'] = $this->slugify((string) $payload['slug']);
+        } elseif (isset($payload['name'])) {
             $payload['slug'] = $this->slugify((string) $payload['name']);
         }
 
@@ -59,7 +61,9 @@ final class ProductController extends BaseCrudController
         }
 
         $payload = Validator::sanitizeInput($this->body());
-        if (isset($payload['name']) && (!isset($payload['slug']) || trim((string) $payload['slug']) === '')) {
+        if (isset($payload['slug']) && trim((string) $payload['slug']) !== '') {
+            $payload['slug'] = $this->slugify((string) $payload['slug']);
+        } elseif (isset($payload['name'])) {
             $payload['slug'] = $this->slugify((string) $payload['name']);
         }
 

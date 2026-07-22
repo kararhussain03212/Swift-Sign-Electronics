@@ -393,20 +393,7 @@ export default function FooterManager() {
         </div>
       </div>
 
-      {canAdd && (
-        <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-4">
-          <input
-            type="text"
-            placeholder="New column title (e.g. Support)"
-            value={newGroupTitle}
-            onChange={(e) => setNewGroupTitle(e.target.value)}
-            className="flex-1 min-w-[220px] rounded-lg border border-[var(--admin-border)] bg-white/5 px-3 py-2 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
-          />
-          <button type="button" onClick={addGroup} disabled={saving} className="rounded-xl bg-[var(--admin-primary)] px-5 py-2.5 text-[var(--admin-ink)] hover:bg-[var(--admin-primary-strong)]">
-            + Add Column
-          </button>
-        </div>
-      )}
+
 
       <div className="grid grid-cols-1 gap-4">
         {groups.map((group, index) => (

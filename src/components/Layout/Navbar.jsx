@@ -109,11 +109,11 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
           >
             {/* Logo */}
             {navLogoUrl ? (
-              <div className="w-12 h-12 rounded-full border-2 border-gray-100 bg-gray-50 flex items-center justify-center overflow-hidden group-hover:border-[#0fafb8]/30 transition-colors">
+              <div className="w-12 h-12 rounded-full border-2 border-gray-100 bg-gray-50 flex items-center justify-center overflow-hidden transition-colors">
                 <img src={navLogoUrl} alt={navLogoAlt} className="w-full h-full object-contain" />
               </div>
             ) : (
-              <div className="w-12 h-12 rounded-full border-2 border-gray-100 bg-gray-50 flex items-center justify-center p-1 group-hover:border-[#0fafb8]/30 transition-colors">
+              <div className="w-12 h-12 rounded-full border-2 border-gray-100 bg-gray-50 flex items-center justify-center p-1 transition-colors">
                 <div className="w-full h-full rounded-full border border-dashed border-[#0fafb8] flex items-center justify-center text-[#0fafb8] bg-[#0fafb8]/5">
                   <Cpu className="w-5 h-5" />
                 </div>

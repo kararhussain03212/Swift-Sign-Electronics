@@ -281,7 +281,7 @@ export default function Layout({ children }) {
                 <span className="pi pi-sign-out text-[var(--admin-primary)]" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">Logout</h3>
+                <h3 className="text-lg font-bold text-[var(--admin-ink)]">Logout</h3>
                 <p className="text-xs text-[var(--admin-muted)]">You will be returned to the login page.</p>
               </div>
             </div>
@@ -289,7 +289,7 @@ export default function Layout({ children }) {
               <button
                 type="button"
                 onClick={() => setLogoutOpen(false)}
-                className="rounded-lg border border-[var(--admin-border)] px-4 py-2 text-sm font-semibold text-white hover:bg-[var(--admin-card-elevated)]"
+                className="rounded-lg border border-[var(--admin-border)] px-4 py-2 text-sm font-semibold text-[var(--admin-ink)] hover:bg-[var(--admin-card-elevated)]"
               >
                 Cancel
               </button>

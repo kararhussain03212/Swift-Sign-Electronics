@@ -40,7 +40,7 @@ export const ShopProvider = ({ children }) => {
   const [blogs, setBlogs] = useState(staticBlogs);
 
   // Site content (navbar/footer) — served from the API, fallback defaults if unreachable
-  const [siteSettings, setSiteSettings] = useState(DEFAULT_SITE_SETTINGS);
+  const [siteSettings, setSiteSettings] = useState(null);
   const [navLinks, setNavLinks] = useState(DEFAULT_NAV_LINKS);
   const [footerLinkGroups, setFooterLinkGroups] = useState(DEFAULT_FOOTER_LINK_GROUPS);
   const [socialLinks, setSocialLinks] = useState(DEFAULT_SOCIAL_LINKS);
