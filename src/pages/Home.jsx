@@ -50,28 +50,6 @@ const FEATURED_CATEGORIES = [
   { id: 'wearables', name: 'Wearables', icon: FiWatch }
 ];
 
-// Hero Slider Data — static fallback used until the API-backed slides load
-const DEFAULT_HERO_SLIDES = [
-  {
-    id: 1,
-    title: 'Premium Electronics',
-    subtitle: 'Explore our curated collection of quality components',
-    image: '/images/hero/hero1.png',
-  },
-  {
-    id: 2,
-    title: 'Latest Development Boards',
-    subtitle: 'Powerful boards for your next project',
-    image: '/images/hero/hero2.png',
-  },
-  {
-    id: 3,
-    title: 'Expert Tools & Accessories',
-    subtitle: 'Everything you need for electronics projects',
-    image: '/images/hero/hero3.png',
-  }
-];
-
 const DEFAULT_SECTION_BANNERS = [
   {
     sectionKey: 'tools',
@@ -138,7 +116,9 @@ export default function Home() {
 
 function HeroSliderSection() {
   const { heroSlides } = useShop();
-  const slides = heroSlides?.length ? heroSlides : DEFAULT_HERO_SLIDES;
+  const slides = heroSlides || [];
+
+  if (slides.length === 0) return null;
 
   return (
     <div className="w-full">

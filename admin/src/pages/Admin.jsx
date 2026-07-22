@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../context/useAuth";
 import { uploadImage } from "../api/uploadApi";
 import { getBackendRoot } from "../api/runtimeApi";
@@ -13,6 +13,22 @@ export default function Admin() {
     bio: user?.bio || "",
     profile_photo: user?.profile_photo || "",
   });
+
+  // Keep the form's photo/designation/bio in sync if the auth context's user
+  // data arrives or changes after this component already mounted, so a stale
+  // (e.g. momentarily blank) initial value can't be re-saved over real data.
+  useEffect(() => {
+    if (!user) return;
+    setProfileForm((prev) => ({
+      ...prev,
+      name: prev.name || user.name || "",
+      email: prev.email || user.email || "",
+      designation: prev.designation || user.designation || "",
+      bio: prev.bio || user.bio || "",
+      profile_photo: prev.profile_photo || user.profile_photo || "",
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.profile_photo, user?.designation, user?.bio, user?.name, user?.email]);
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
     nextPassword: "",

@@ -252,14 +252,28 @@ export function AuthProvider({ children }) {
       const sessionRole =
         normalizeRole(payload?.admin?.role || data?.admin?.role || (backendEmail === SUPER_ADMIN_EMAIL ? "admin" : "admin"));
 
+      // Preserve last-known profile fields (from a prior session for this same
+      // account) as a fallback so they aren't blanked out if the follow-up
+      // /me refresh below fails or is slow.
+      let cachedProfile = null;
+      try {
+        const raw = localStorage.getItem(AUTH_USER_KEY);
+        const parsed = raw ? JSON.parse(raw) : null;
+        if (parsed && normalizeEmail(parsed.email) === backendEmail) {
+          cachedProfile = parsed;
+        }
+      } catch {
+        cachedProfile = null;
+      }
+
       const sessionUser = {
         id: backendUserId || backendEmail,
         name: payload?.admin?.name || data?.admin?.name || data?.name || "Admin",
         email: backendEmail,
         role: sessionRole,
-        designation: "",
-        bio: "",
-        profile_photo: "",
+        designation: cachedProfile?.designation || "",
+        bio: cachedProfile?.bio || "",
+        profile_photo: cachedProfile?.profile_photo || "",
         status: String(payload?.admin?.status || data?.admin?.status || "active"),
         permissions: Array.isArray(payload?.admin?.permissions) ? payload.admin.permissions : [],
       };
@@ -274,7 +288,11 @@ export function AuthProvider({ children }) {
       }
       setToken(nextToken);
       setUser(sessionUser);
-      await refreshUsers();
+      try {
+        await refreshUsers();
+      } catch {
+        // Keep the cached/session profile above if the follow-up /me call fails.
+      }
     };
 
     try {
