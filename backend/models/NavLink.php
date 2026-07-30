@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Backend\Models;
 
 require_once __DIR__ . '/BaseModel.php';
+require_once __DIR__ . '/NavLinkItem.php';
 
 final class NavLink extends BaseModel
 {
@@ -16,6 +17,22 @@ final class NavLink extends BaseModel
     protected function defaultOrderBy(): string
     {
         return 'sort_order ASC, id ASC';
+    }
+
+    public function allWithItems(bool $onlyActive = false): array
+    {
+        $links = $this->all([], $onlyActive);
+        $itemModel = new NavLinkItem();
+        $items = $itemModel->all([], $onlyActive);
+
+        foreach ($links as &$link) {
+            $link['items'] = array_values(array_filter(
+                $items,
+                static fn (array $item): bool => (int) $item['nav_link_id'] === (int) $link['id']
+            ));
+        }
+
+        return $links;
     }
 
     public function reorder(array $items): bool

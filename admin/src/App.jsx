@@ -24,6 +24,15 @@ import UserManagement from "./pages/users/UserManagement";
 import ContactMessages from "./pages/contact/ContactMessages";
 import ContactPageSettings from "./pages/contact/ContactPageSettings";
 import CustomerAddresses from "./pages/addresses/CustomerAddresses";
+import AboutPageSettings from "./pages/about/AboutPageSettings";
+import AboutValueCardList from "./pages/about/AboutValueCardList";
+import AboutValueCardForm from "./pages/about/AboutValueCardForm";
+import AboutTeamMemberList from "./pages/about/AboutTeamMemberList";
+import AboutTeamMemberForm from "./pages/about/AboutTeamMemberForm";
+import AboutAccoladeCardList from "./pages/about/AboutAccoladeCardList";
+import AboutAccoladeCardForm from "./pages/about/AboutAccoladeCardForm";
+import AboutTestimonialList from "./pages/about/AboutTestimonialList";
+import AboutTestimonialForm from "./pages/about/AboutTestimonialForm";
 import SiteContentSettings from "./pages/site/SiteContentSettings";
 import FooterManager from "./pages/site/FooterManager";
 import SocialLinkManager from "./pages/site/SocialLinkManager";
@@ -172,6 +181,24 @@ export default function App() {
 
           <Route path="/contact-messages" element={<ProtectedPage><ContactMessages /></ProtectedPage>} />
           <Route path="/contact-settings" element={<ProtectedPage><ContactPageSettings /></ProtectedPage>} />
+
+          <Route path="/about/settings" element={<ProtectedPage><AboutPageSettings /></ProtectedPage>} />
+
+          <Route path="/about/value-cards" element={<ProtectedPage><AboutValueCardList /></ProtectedPage>} />
+          <Route path="/about/value-cards/new" element={<ProtectedPage><AboutValueCardForm /></ProtectedPage>} />
+          <Route path="/about/value-cards/edit/:id" element={<ProtectedPage><AboutValueCardForm /></ProtectedPage>} />
+
+          <Route path="/about/team-members" element={<ProtectedPage><AboutTeamMemberList /></ProtectedPage>} />
+          <Route path="/about/team-members/new" element={<ProtectedPage><AboutTeamMemberForm /></ProtectedPage>} />
+          <Route path="/about/team-members/edit/:id" element={<ProtectedPage><AboutTeamMemberForm /></ProtectedPage>} />
+
+          <Route path="/about/accolades" element={<ProtectedPage><AboutAccoladeCardList /></ProtectedPage>} />
+          <Route path="/about/accolades/new" element={<ProtectedPage><AboutAccoladeCardForm /></ProtectedPage>} />
+          <Route path="/about/accolades/edit/:id" element={<ProtectedPage><AboutAccoladeCardForm /></ProtectedPage>} />
+
+          <Route path="/about/testimonials" element={<ProtectedPage><AboutTestimonialList /></ProtectedPage>} />
+          <Route path="/about/testimonials/new" element={<ProtectedPage><AboutTestimonialForm /></ProtectedPage>} />
+          <Route path="/about/testimonials/edit/:id" element={<ProtectedPage><AboutTestimonialForm /></ProtectedPage>} />
 
           <Route
             path="/users"

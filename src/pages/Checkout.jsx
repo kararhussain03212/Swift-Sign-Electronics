@@ -153,66 +153,6 @@ export default function Checkout() {
         </>
       )}
 
-      {/* Wishlist Section */}
-      {wishlist.length > 0 && (
-        <div className="mt-16 border-t border-slate-200 pt-10 text-left">
-          <h2 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-            <FiHeart className="w-5 h-5 text-red-500 fill-current" /> My Wishlist ({wishlist.length})
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {wishlist.map((product) => {
-              const discountedPrice = product.price * (1 - (product.discount || 0) / 100);
-              const isOutOfStock = product.stock <= 0;
-              return (
-                <div key={product.id} className="border border-slate-200 p-4 bg-slate-50 flex flex-col justify-between h-full group hover:shadow-md transition-all duration-300">
-                  <div className="space-y-3">
-                    <div className="relative w-full h-32 bg-white flex items-center justify-center p-2 border border-slate-100">
-                      <img src={product.thumbnail} alt={product.name} className="w-full h-full object-contain" />
-                      {product.discount > 0 && (
-                        <span className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-black px-2 py-0.5">
-                          -{product.discount}%
-                        </span>
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="text-xs text-slate-400 font-bold uppercase tracking-wider">{product.brand}</h4>
-                      <Link to={`/product/${product.slug}`} className="text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors line-clamp-1 block mt-1">
-                        {product.name}
-                      </Link>
-                      <div className="text-sm font-black text-slate-800 mt-1">
-                        ${discountedPrice.toFixed(2)}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 mt-4 pt-3 border-t border-slate-100">
-                    <button
-                      disabled={isOutOfStock}
-                      onClick={() => {
-                        addToCart(product);
-                        toggleWishlist(product);
-                      }}
-                      className={`flex-1 py-2 font-bold text-xs shadow-xs transition-all text-center cursor-pointer ${
-                        isOutOfStock
-                          ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'
-                      }`}
-                    >
-                      Add to Cart
-                    </button>
-                    <button
-                      onClick={() => toggleWishlist(product)}
-                      className="p-2 border border-slate-200 text-slate-555 hover:bg-slate-100 transition-all cursor-pointer"
-                      title="Remove from Wishlist"
-                    >
-                      <FiTrash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
 
     </div>
   );

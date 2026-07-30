@@ -157,3 +157,28 @@ export const fetchNavLinks = () => get("/public/nav-links");
 export const fetchFooterLinkGroups = () => get("/public/footer-link-groups");
 export const fetchSocialLinks = () => get("/public/social-links");
 export const fetchContactPage = () => get("/public/contact-page");
+
+export const fetchAboutPage = async () => {
+  const row = await get("/public/about-page");
+  return {
+    ...row,
+    hero_image: resolveUploadUrl(row.hero_image),
+    ceo_photo: resolveUploadUrl(row.ceo_photo),
+  };
+};
+export const fetchAboutValueCards = async () =>
+  (await get("/public/about-value-cards")).map((row) => ({
+    ...row,
+    image: resolveUploadUrl(row.image),
+  }));
+export const fetchAboutTeamMembers = async () =>
+  (await get("/public/about-team-members")).map((row) => ({
+    ...row,
+    photo: resolveUploadUrl(row.photo),
+  }));
+export const fetchAboutAccoladeCards = () => get("/public/about-accolade-cards");
+export const fetchAboutTestimonials = async () =>
+  (await get("/public/about-testimonials")).map((row) => ({
+    ...row,
+    avatar: resolveUploadUrl(row.avatar),
+  }));

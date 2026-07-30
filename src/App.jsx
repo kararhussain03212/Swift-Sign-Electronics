@@ -15,6 +15,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import ReturnPolicy from "./pages/ReturnPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import Wishlist from "./pages/Wishlist";
+import AboutUs from "./pages/AboutUs";
 import "./App.css";
 import "./styles/responsive-improvements.css";
 
@@ -55,6 +56,7 @@ function App() {
         <Route path="/checkout/details" element={<CheckoutForm />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/about" element={<AboutUs />} />
         <Route path="/return-policy" element={<ReturnPolicy />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditions />} />

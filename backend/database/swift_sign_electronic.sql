@@ -295,6 +295,22 @@ INSERT IGNORE INTO `nav_links` (`id`, `link_key`, `label`, `url`, `sort_order`) 
 (4, 'contact', 'Contact', '/contact', 4);
 
 -- ------------------------------------------------------------
+-- nav_link_items (dropdown sub-links shown under a nav_links entry)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `nav_link_items` (
+  `id`          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `nav_link_id` INT UNSIGNED NOT NULL,
+  `label`       VARCHAR(120) NOT NULL,
+  `url`         VARCHAR(500) NOT NULL,
+  `sort_order`  SMALLINT NOT NULL DEFAULT 0,
+  `is_active`   TINYINT(1) NOT NULL DEFAULT 1,
+  `created_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_nav_link_items_nav_link` (`nav_link_id`),
+  CONSTRAINT `fk_nav_link_items_nav_link` FOREIGN KEY (`nav_link_id`) REFERENCES `nav_links`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
 -- footer_link_groups + footer_links (Quick Links / Legal Information columns)
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `footer_link_groups` (
@@ -421,5 +437,138 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   INDEX `idx_order_items_order` (`order_id`),
   CONSTRAINT `fk_order_items_order` FOREIGN KEY (`order_id`) REFERENCES `orders`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- about_page_settings (singleton row id=1)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `about_page_settings` (
+  `id`                       INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `hero_badge`               VARCHAR(120)  DEFAULT NULL,
+  `hero_heading`             VARCHAR(255)  DEFAULT NULL,
+  `hero_heading_highlight`   VARCHAR(255)  DEFAULT NULL,
+  `hero_description`         TEXT          DEFAULT NULL,
+  `hero_image`                VARCHAR(500)  DEFAULT NULL,
+  `anatomy_heading`          VARCHAR(255)  DEFAULT NULL,
+  `anatomy_subheading`       VARCHAR(500)  DEFAULT NULL,
+  `ceo_eyebrow`              VARCHAR(120)  DEFAULT NULL,
+  `ceo_quote`                TEXT          DEFAULT NULL,
+  `ceo_name`                 VARCHAR(180)  DEFAULT NULL,
+  `ceo_title`                VARCHAR(180)  DEFAULT NULL,
+  `ceo_photo`                VARCHAR(500)  DEFAULT NULL,
+  `team_heading`             VARCHAR(255)  DEFAULT NULL,
+  `team_subheading`          VARCHAR(500)  DEFAULT NULL,
+  `accolades_eyebrow`        VARCHAR(120)  DEFAULT NULL,
+  `accolades_heading`        VARCHAR(255)  DEFAULT NULL,
+  `accolades_heading_highlight` VARCHAR(255) DEFAULT NULL,
+  `accolades_description`    VARCHAR(500)  DEFAULT NULL,
+  `testimonials_heading`     VARCHAR(255)  DEFAULT NULL,
+  `testimonials_subheading`  VARCHAR(500)  DEFAULT NULL,
+  `created_at`               DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`               DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `about_page_settings` (
+  `id`, `hero_badge`, `hero_heading`, `hero_heading_highlight`, `hero_description`, `hero_image`,
+  `anatomy_heading`, `anatomy_subheading`,
+  `ceo_eyebrow`, `ceo_quote`, `ceo_name`, `ceo_title`, `ceo_photo`,
+  `team_heading`, `team_subheading`,
+  `accolades_eyebrow`, `accolades_heading`, `accolades_heading_highlight`, `accolades_description`,
+  `testimonials_heading`, `testimonials_subheading`
+) VALUES (
+  1, 'About Our Company', 'Engineering the', 'Future of Tech.',
+  'Swift Sign Electronics is the premier architect of high-quality electronics and cutting-edge components, bridging the gap between profound innovation and global usability.',
+  'https://images.unsplash.com/photo-1603732551658-5fabbafa84eb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'The anatomy of excellence.', 'We are more than a distributor; we are the foundation upon which modern technology is built.',
+  'Message from the CEO',
+  'At Swift Sign Electronics, our vision extends far beyond supplying hardware. We exist to architect the foundation for tomorrow''s creators. Every microchip and component we deliver carries our absolute guarantee of excellence and reliability.',
+  'Sir Tahir', 'Chief Executive Officer',
+  'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=200',
+  'The minds behind the magic.', 'Decades of combined engineering and strategic leadership.',
+  'Accolades', 'Certified', 'Excellence.', 'Global standards met and exceeded across every department.',
+  'Don''t just take our word for it.', 'Industry leaders trust Swift Sign Electronics to power their most critical innovations.'
+);
+
+-- ------------------------------------------------------------
+-- about_value_cards ("anatomy of excellence" grid)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `about_value_cards` (
+  `id`             INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `icon`           VARCHAR(60)   DEFAULT NULL,
+  `title`          VARCHAR(180)  DEFAULT NULL,
+  `description`    TEXT          DEFAULT NULL,
+  `style_variant`  ENUM('light','dark','gradient','image') NOT NULL DEFAULT 'light',
+  `image`          VARCHAR(500)  DEFAULT NULL,
+  `sort_order`     SMALLINT      NOT NULL DEFAULT 0,
+  `is_active`      TINYINT(1)    NOT NULL DEFAULT 1,
+  `created_at`     DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`     DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `about_value_cards` (`id`, `icon`, `title`, `description`, `style_variant`, `image`, `sort_order`, `is_active`) VALUES
+(1, 'FiCpu', 'Relentless Pursuit of Quality', 'Our organization is driven by a singular mission: to democratize access to enterprise-grade electronic components. From consumer silicon to industrial-grade hardware, every piece we source undergoes rigorous validation by our team of elite engineers.', 'light', NULL, 0, 1),
+(2, 'FiActivity', 'Innovation First', 'Staying ahead of the curve is in our DNA. We continuously adapt to the rapidly evolving tech landscape.', 'dark', NULL, 1, 1),
+(3, 'FiUsers', 'Client Centric', 'We build lasting partnerships through transparency, unparalleled support, and a deep understanding of your needs.', 'gradient', NULL, 2, 1),
+(4, NULL, NULL, NULL, 'image', 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200', 3, 1);
+
+-- ------------------------------------------------------------
+-- about_team_members ("the minds behind the magic")
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `about_team_members` (
+  `id`         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `name`       VARCHAR(180)  NOT NULL,
+  `role`       VARCHAR(180)  DEFAULT NULL,
+  `photo`      VARCHAR(500)  DEFAULT NULL,
+  `sort_order` SMALLINT      NOT NULL DEFAULT 0,
+  `is_active`  TINYINT(1)    NOT NULL DEFAULT 1,
+  `created_at` DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `about_team_members` (`id`, `name`, `role`, `photo`, `sort_order`, `is_active`) VALUES
+(1, 'Sir Tahir', 'Co-Founder & CEO', 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=600', 0, 1),
+(2, 'Professor Ibn e Ameen', 'Chief Architect', 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600', 1, 1);
+
+-- ------------------------------------------------------------
+-- about_accolade_cards ("certified excellence")
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `about_accolade_cards` (
+  `id`            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `icon`          VARCHAR(60)   DEFAULT NULL,
+  `badge_text`    VARCHAR(60)   DEFAULT NULL,
+  `title`         VARCHAR(180)  NOT NULL,
+  `description`   TEXT          DEFAULT NULL,
+  `size_variant`  ENUM('featured','standard','wide') NOT NULL DEFAULT 'standard',
+  `sort_order`    SMALLINT      NOT NULL DEFAULT 0,
+  `is_active`     TINYINT(1)    NOT NULL DEFAULT 1,
+  `created_at`    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at`    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `about_accolade_cards` (`id`, `icon`, `badge_text`, `title`, `description`, `size_variant`, `sort_order`, `is_active`) VALUES
+(1, 'FiAward', '2024', 'Tech Innovator of the Year', 'Awarded for our disruptive advancements in hardware architecture and our commitment to sustainable, high-performance silicon solutions on a global scale.', 'featured', 0, 1),
+(2, 'FiCheckCircle', 'Certification', 'ISO 9001:2015', 'Maintaining the highest international standards for rigorous quality management systems.', 'standard', 1, 1),
+(3, 'FiTarget', 'Compliance', 'RoHS Compliant', 'Strict adherence to environmental safety, ensuring lead-free and eco-conscious manufacturing.', 'standard', 2, 1),
+(4, 'FiStar', '2025', 'Best Global Support', 'Recognized by the B2B tech consortium for unmatched global client servicing and rapid supply chain resolution.', 'wide', 3, 1);
+
+-- ------------------------------------------------------------
+-- about_testimonials ("don't just take our word for it")
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `about_testimonials` (
+  `id`         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `rating`     TINYINT UNSIGNED NOT NULL DEFAULT 5,
+  `quote`      TEXT          NOT NULL,
+  `name`       VARCHAR(180)  NOT NULL,
+  `title`      VARCHAR(180)  DEFAULT NULL,
+  `avatar`     VARCHAR(500)  DEFAULT NULL,
+  `sort_order` SMALLINT      NOT NULL DEFAULT 0,
+  `is_active`  TINYINT(1)    NOT NULL DEFAULT 1,
+  `created_at` DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT IGNORE INTO `about_testimonials` (`id`, `rating`, `quote`, `name`, `title`, `avatar`, `sort_order`, `is_active`) VALUES
+(1, 5, 'Swift Sign Electronics completely transformed our supply chain. Their components are highly reliable, and their custom hardware solutions demonstrate absolute mastery of the craft.', 'Sarah Ahmed', 'VP Engineering, InnovateX', 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=200', 0, 1),
+(2, 5, 'The attention to detail and rigorous quality control is unmatched. We''ve sourced parts globally for years, but Swift Sign is in a completely different league of its own.', 'David Chen', 'CTO, Quantum Robotics', 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200', 1, 1),
+(3, 5, 'Exceptional service and flawless execution. They delivered a massive bulk order of rare silicon components exactly when we needed it to meet our launch deadline.', 'Elena Rodriguez', 'Director of Hardware, NexTech', 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200', 2, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use Backend\Controllers\AboutPageController;
+use Backend\Controllers\AboutValueCardController;
+use Backend\Controllers\AboutTeamMemberController;
+use Backend\Controllers\AboutAccoladeCardController;
+use Backend\Controllers\AboutTestimonialController;
 use Backend\Controllers\BlogCategoryController;
 use Backend\Controllers\BlogController;
 use Backend\Controllers\CategoryController;
@@ -14,6 +19,7 @@ use Backend\Controllers\FooterLinkController;
 use Backend\Controllers\FooterLinkGroupController;
 use Backend\Controllers\HeroController;
 use Backend\Controllers\NavLinkController;
+use Backend\Controllers\NavLinkItemController;
 use Backend\Controllers\ProductController;
 use Backend\Controllers\SettingController;
 use Backend\Controllers\SocialLinkController;
@@ -34,8 +40,14 @@ require_once __DIR__ . '/../controllers/UploadController.php';
 require_once __DIR__ . '/../controllers/UserController.php';
 require_once __DIR__ . '/../controllers/DashboardController.php';
 require_once __DIR__ . '/../controllers/ContactController.php';
+require_once __DIR__ . '/../controllers/AboutPageController.php';
+require_once __DIR__ . '/../controllers/AboutValueCardController.php';
+require_once __DIR__ . '/../controllers/AboutTeamMemberController.php';
+require_once __DIR__ . '/../controllers/AboutAccoladeCardController.php';
+require_once __DIR__ . '/../controllers/AboutTestimonialController.php';
 require_once __DIR__ . '/../controllers/CustomerAddressController.php';
 require_once __DIR__ . '/../controllers/NavLinkController.php';
+require_once __DIR__ . '/../controllers/NavLinkItemController.php';
 require_once __DIR__ . '/../controllers/FooterLinkGroupController.php';
 require_once __DIR__ . '/../controllers/FooterLinkController.php';
 require_once __DIR__ . '/../controllers/SocialLinkController.php';
@@ -114,6 +126,12 @@ function registerAdminRoutes(Router $router): void
     $router->delete('/api/admin/nav-links/{id}', [NavLinkController::class, 'destroy'], $mw);
     $router->patch('/api/admin/nav-links/reorder', [NavLinkController::class, 'reorder'], $mw);
 
+    // Nav Link Items (dropdown sub-links)
+    $router->post('/api/admin/nav-link-items', [NavLinkItemController::class, 'store'], $mw);
+    $router->put('/api/admin/nav-link-items/{id}', [NavLinkItemController::class, 'update'], $mw);
+    $router->delete('/api/admin/nav-link-items/{id}', [NavLinkItemController::class, 'destroy'], $mw);
+    $router->patch('/api/admin/nav-link-items/reorder', [NavLinkItemController::class, 'reorder'], $mw);
+
     // Footer Link Groups + Links
     $router->get('/api/admin/footer-link-groups', [FooterLinkGroupController::class, 'index'], $mw);
     $router->post('/api/admin/footer-link-groups', [FooterLinkGroupController::class, 'store'], $mw);
@@ -147,6 +165,42 @@ function registerAdminRoutes(Router $router): void
     // Contact Page Settings (admin)
     $router->get('/api/admin/contact-page', [ContactController::class, 'adminGetContactPage'], $mw);
     $router->put('/api/admin/contact-page', [ContactController::class, 'adminUpdateContactPage'], $mw);
+
+    // About Page Settings (admin)
+    $router->get('/api/admin/about-page', [AboutPageController::class, 'adminShow'], $mw);
+    $router->put('/api/admin/about-page', [AboutPageController::class, 'adminUpdate'], $mw);
+
+    // About Value Cards
+    $router->get('/api/admin/about-value-cards', [AboutValueCardController::class, 'index'], $mw);
+    $router->get('/api/admin/about-value-cards/{id}', [AboutValueCardController::class, 'show'], $mw);
+    $router->post('/api/admin/about-value-cards', [AboutValueCardController::class, 'store'], $mw);
+    $router->put('/api/admin/about-value-cards/{id}', [AboutValueCardController::class, 'update'], $mw);
+    $router->delete('/api/admin/about-value-cards/{id}', [AboutValueCardController::class, 'destroy'], $mw);
+    $router->patch('/api/admin/about-value-cards/reorder', [AboutValueCardController::class, 'reorder'], $mw);
+
+    // About Team Members
+    $router->get('/api/admin/about-team-members', [AboutTeamMemberController::class, 'index'], $mw);
+    $router->get('/api/admin/about-team-members/{id}', [AboutTeamMemberController::class, 'show'], $mw);
+    $router->post('/api/admin/about-team-members', [AboutTeamMemberController::class, 'store'], $mw);
+    $router->put('/api/admin/about-team-members/{id}', [AboutTeamMemberController::class, 'update'], $mw);
+    $router->delete('/api/admin/about-team-members/{id}', [AboutTeamMemberController::class, 'destroy'], $mw);
+    $router->patch('/api/admin/about-team-members/reorder', [AboutTeamMemberController::class, 'reorder'], $mw);
+
+    // About Accolade Cards
+    $router->get('/api/admin/about-accolade-cards', [AboutAccoladeCardController::class, 'index'], $mw);
+    $router->get('/api/admin/about-accolade-cards/{id}', [AboutAccoladeCardController::class, 'show'], $mw);
+    $router->post('/api/admin/about-accolade-cards', [AboutAccoladeCardController::class, 'store'], $mw);
+    $router->put('/api/admin/about-accolade-cards/{id}', [AboutAccoladeCardController::class, 'update'], $mw);
+    $router->delete('/api/admin/about-accolade-cards/{id}', [AboutAccoladeCardController::class, 'destroy'], $mw);
+    $router->patch('/api/admin/about-accolade-cards/reorder', [AboutAccoladeCardController::class, 'reorder'], $mw);
+
+    // About Testimonials
+    $router->get('/api/admin/about-testimonials', [AboutTestimonialController::class, 'index'], $mw);
+    $router->get('/api/admin/about-testimonials/{id}', [AboutTestimonialController::class, 'show'], $mw);
+    $router->post('/api/admin/about-testimonials', [AboutTestimonialController::class, 'store'], $mw);
+    $router->put('/api/admin/about-testimonials/{id}', [AboutTestimonialController::class, 'update'], $mw);
+    $router->delete('/api/admin/about-testimonials/{id}', [AboutTestimonialController::class, 'destroy'], $mw);
+    $router->patch('/api/admin/about-testimonials/reorder', [AboutTestimonialController::class, 'reorder'], $mw);
 
     // Contact Messages (admin)
     $router->get('/api/admin/contact', [ContactController::class, 'index'], $mw);

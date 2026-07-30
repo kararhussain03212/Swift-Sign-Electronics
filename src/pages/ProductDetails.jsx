@@ -32,6 +32,31 @@ export default function ProductDetails({ onQuickView }) {
   // FAQ Accordion State
   const [faqOpen, setFaqOpen] = useState({});
 
+  // Comments State
+  const [comments, setComments] = useState([
+    { id: 1, user: 'Alex M.', email: 'alex@example.com', text: 'Great product, highly recommend! The build quality is fantastic.', date: '2025-01-10' },
+    { id: 2, user: 'Sarah T.', email: 'sarah.t@example.com', text: 'Exactly what I was looking for. Fast shipping too.', date: '2025-01-15' }
+  ]);
+  const [newComment, setNewComment] = useState('');
+  const [commentName, setCommentName] = useState('');
+  const [commentEmail, setCommentEmail] = useState('');
+
+  const handleAddComment = (e) => {
+    e.preventDefault();
+    if (!newComment.trim() || !commentName.trim() || !commentEmail.trim()) return;
+    const comment = {
+      id: Date.now(),
+      user: commentName.trim(),
+      email: commentEmail.trim(),
+      text: newComment,
+      date: new Date().toISOString().split('T')[0]
+    };
+    setComments([...comments, comment]);
+    setNewComment('');
+    setCommentName('');
+    setCommentEmail('');
+  };
+
   // 1. Fetch Product
   const product = useMemo(() => {
     return products.find((p) => p.slug === slug);
@@ -302,6 +327,71 @@ export default function ProductDetails({ onQuickView }) {
           </div>
         </section>
       )}
+
+      {/* Comments / Reviews Section */}
+      <section className="bg-white border border-slate-200 p-6 md:p-10 shadow-sm mt-8">
+        <h3 className="text-xl md:text-2xl font-black text-slate-800 mb-6">Comments & Reviews</h3>
+        
+        {/* Comments List */}
+        <div className="space-y-6 mb-10">
+          {comments.length === 0 ? (
+            <p className="text-slate-500 text-sm">No comments yet. Be the first to share your thoughts!</p>
+          ) : (
+            comments.map(comment => (
+              <div key={comment.id} className="pb-6 border-b border-slate-100 last:border-0 last:pb-0">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex flex-col">
+                    <span className="font-bold text-slate-800">{comment.user}</span>
+                    {comment.email && <span className="text-xs text-blue-500 font-medium">{comment.email}</span>}
+                  </div>
+                  <span className="text-xs text-slate-400 mt-0.5">{comment.date}</span>
+                </div>
+                <p className="text-sm text-slate-600 leading-relaxed mt-2">{comment.text}</p>
+              </div>
+            ))
+          )}
+        </div>
+
+        {/* Add Comment Form */}
+        <div className="bg-slate-50 p-6 rounded-lg border border-slate-100">
+          <h4 className="font-bold text-slate-800 mb-4">Leave a Comment</h4>
+          <form onSubmit={handleAddComment} className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                className="w-full border border-slate-300 rounded p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                placeholder="Your Name *"
+                value={commentName}
+                onChange={(e) => setCommentName(e.target.value)}
+                required
+              />
+              <input
+                type="email"
+                className="w-full border border-slate-300 rounded p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                placeholder="Your Email *"
+                value={commentEmail}
+                onChange={(e) => setCommentEmail(e.target.value)}
+                required
+              />
+            </div>
+            <textarea
+              className="w-full border border-slate-300 rounded p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all min-h-[100px]"
+              placeholder="Write your review or comment here..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              required
+            ></textarea>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow-sm transition-colors cursor-pointer"
+              >
+                Post Comment
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
 
 
       {/* Related Products list */}

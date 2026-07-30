@@ -8,6 +8,9 @@ import {
   createNavLink,
   updateNavLink,
   deleteNavLink,
+  createNavLinkItem,
+  updateNavLinkItem,
+  deleteNavLinkItem,
 } from "../../api/navLinkApi";
 import { useAuth } from "../../context/useAuth";
 import { hasPermission } from "../../modules/users/constants";
@@ -23,7 +26,9 @@ const TEXT_FIELDS = [...NAVBAR_FIELDS, ...LOGO_FIELDS.map((key) => ({ key }))];
 
 const emptyForm = () => TEXT_FIELDS.reduce((acc, f) => ({ ...acc, [f.key]: "" }), {});
 
-const emptyNavLink = () => ({ id: null, label: "", url: "", is_active: 1, open_in_new_tab: 0 });
+const emptyNavLink = () => ({ id: null, label: "", url: "", is_active: 1, open_in_new_tab: 0, items: [] });
+
+const emptyNavLinkItem = () => ({ id: null, label: "", url: "", is_active: 1 });
 
 function FieldGroup({ fields, form, setField, canEdit, title }) {
   return (
@@ -135,7 +140,11 @@ export default function SiteContentSettings() {
     try {
       setNavLinksLoading(true);
       const res = await getNavLinks();
-      setNavLinks(Array.isArray(res.data?.data) ? res.data.data.map((l) => ({ ...l, dirty: false })) : []);
+      setNavLinks(
+        Array.isArray(res.data?.data)
+          ? res.data.data.map((l) => ({ ...l, items: Array.isArray(l.items) ? l.items : [] }))
+          : []
+      );
     } catch (err) {
       console.error(err);
       setError("Failed to load navigation links.");
@@ -151,6 +160,51 @@ export default function SiteContentSettings() {
   };
 
   const addNavLink = () => setNavLinks((prev) => [...prev, emptyNavLink()]);
+
+  const [expandedLink, setExpandedLink] = useState(null);
+  const toggleExpandedLink = (index) => setExpandedLink((prev) => (prev === index ? null : index));
+
+  const addNavLinkItem = (linkIndex) => {
+    setNavLinks((prev) =>
+      prev.map((l, i) => (i === linkIndex ? { ...l, items: [...(l.items || []), emptyNavLinkItem()] } : l))
+    );
+  };
+
+  const updateNavLinkItemField = (linkIndex, itemIndex, key, value) => {
+    setNavLinks((prev) =>
+      prev.map((l, i) => {
+        if (i !== linkIndex) return l;
+        return {
+          ...l,
+          items: l.items.map((it, j) => (j === itemIndex ? { ...it, [key]: value } : it)),
+        };
+      })
+    );
+  };
+
+  const deleteNavLinkItemRow = async (linkIndex, itemIndex) => {
+    const link = navLinks[linkIndex];
+    const item = link.items[itemIndex];
+    if (!canDelete) return;
+    if (!item.id) {
+      setNavLinks((prev) =>
+        prev.map((l, i) => (i === linkIndex ? { ...l, items: l.items.filter((_, j) => j !== itemIndex) } : l))
+      );
+      return;
+    }
+    if (!window.confirm(`Delete dropdown item "${item.label}"?`)) return;
+    try {
+      await deleteNavLinkItem(item.id);
+      setNavLinks((prev) =>
+        prev.map((l, i) => (i === linkIndex ? { ...l, items: l.items.filter((_, j) => j !== itemIndex) } : l))
+      );
+      setSuccess("Deleted.");
+      setTimeout(() => setSuccess(""), 2000);
+    } catch (err) {
+      console.error(err);
+      setError(err?.response?.data?.message || "Delete failed.");
+    }
+  };
 
   const deleteNavLinkRow = async (index) => {
     const link = navLinks[index];
@@ -209,6 +263,15 @@ export default function SiteContentSettings() {
       if (!hasLabel || !hasUrl) {
         setError("Every navigation link needs both a label and a URL.");
         return;
+      }
+      for (const item of link.items || []) {
+        const itemHasLabel = item.label.trim();
+        const itemHasUrl = item.url.trim();
+        if (!itemHasLabel && !itemHasUrl) continue;
+        if (!itemHasLabel || !itemHasUrl) {
+          setError(`Every dropdown item under "${link.label}" needs both a label and a URL.`);
+          return;
+        }
       }
     }
 

@@ -7,6 +7,7 @@ import { resolveUploadUrl } from '../../api/shopApi';
 
 export default function Navbar({ activeTab, onTabChange, cartCount }) {
   const { products, siteSettings, navLinks: apiNavLinks } = useShop();
+  const categories = [...new Set(products.map(p => p.category))].filter(Boolean);
   const brandName = siteSettings?.brand_name || DEFAULT_SITE_SETTINGS.brand_name;
   const brandSubtitle = siteSettings?.brand_subtitle || DEFAULT_SITE_SETTINGS.brand_subtitle;
   const navLogoUrl = siteSettings?.nav_logo
@@ -30,8 +31,9 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
         product.name.toLowerCase().includes(query.toLowerCase()) ||
         product.category.toLowerCase().includes(query.toLowerCase()) ||
         product.brand.toLowerCase().includes(query.toLowerCase()) ||
-        product.model.toLowerCase().includes(query.toLowerCase())
-      ).slice(0, 6);
+        product.model.toLowerCase().includes(query.toLowerCase()) ||
+        (product.SKU && product.SKU.toLowerCase().includes(query.toLowerCase()))
+      ).slice(0, 20);
       setSearchResults(filtered);
       setShowDropdown(true);
     } else {
@@ -109,7 +111,7 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
           >
             {/* Logo */}
             {navLogoUrl ? (
-              <div className="w-12 h-12 rounded-full border-2 border-gray-100 bg-gray-50 flex items-center justify-center overflow-hidden transition-colors">
+              <div className="w-12 h-12 rounded-full border-2 border-gray-100 flex items-center justify-center overflow-hidden transition-colors">
                 <img src={navLogoUrl} alt={navLogoAlt} className="w-full h-full object-contain" />
               </div>
             ) : (
@@ -133,17 +135,39 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
           <div className="hidden lg:flex items-center gap-8">
             <nav className="flex items-center gap-8">
               {navLinks.map((link) => (
-                <button
-                  key={link.id}
-                  onClick={() => handleNavClick(link)}
-                  className={`text-[15px] transition-colors ${
-                    activeTab === link.link_key
-                    ? 'text-[#0fafb8] font-bold'
-                    : 'text-gray-600 hover:text-[#0fafb8] font-semibold'
-                  }`}
-                >
-                  {link.label}
-                </button>
+                <div key={link.id} className="relative group">
+                  <button
+                    onClick={() => handleNavClick(link)}
+                    className={`text-[15px] transition-colors py-4 ${
+                      activeTab === link.link_key
+                      ? 'text-[#0fafb8] font-bold'
+                      : 'text-gray-600 hover:text-[#0fafb8] font-semibold'
+                    }`}
+                  >
+                    {link.label}
+                  </button>
+
+                  {/* Dropdown for products */}
+                  {link.link_key === 'products' && categories.length > 0 && (
+                    <div className="absolute top-[100%] -left-4 pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                       <div className="w-56 shadow-xl border border-gray-100 bg-white rounded-xl overflow-hidden py-2 flex flex-col">
+                         {categories.map((cat, idx) => (
+                           <button
+                             key={idx}
+                             onClick={(e) => {
+                               e.stopPropagation();
+                               onTabChange?.('products');
+                               sessionStorage.setItem('selectedCategory', cat);
+                             }}
+                             className="text-left px-5 py-2.5 text-sm text-gray-700 hover:bg-[#0fafb8]/5 hover:text-[#0fafb8] transition-colors"
+                           >
+                             {cat}
+                           </button>
+                         ))}
+                       </div>
+                    </div>
+                  )}
+                </div>
               ))}
             </nav>
           </div>
@@ -171,7 +195,7 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
               </div>
 
               {showDropdown && searchResults.length > 0 && (
-                <div ref={dropdownRef} className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                <div ref={dropdownRef} className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-[500px] overflow-y-auto">
                   {searchResults.map((product) => (
                     <button
                       key={product.id}
@@ -193,7 +217,7 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
                   {searchResults.length > 0 && (
                     <button
                       onClick={handleSearch}
-                      className="w-full px-4 py-2 text-center text-sm font-medium text-[#0fafb8] hover:bg-gray-50 border-t border-gray-100 transition-colors"
+                      className="w-full px-4 py-2 text-center text-sm font-medium text-[#0fafb8] hover:bg-gray-50 border-t border-gray-100 transition-colors sticky bottom-0 bg-white"
                     >
                       View all results
                     </button>

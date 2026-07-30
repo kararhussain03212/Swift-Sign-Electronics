@@ -44,7 +44,9 @@ export default function Footer() {
           <div className="flex flex-col gap-3.5 sm:gap-6 lg:col-span-1">
             <Link to="/" className="inline-block">
               {footerLogoUrl ? (
-                <img src={footerLogoUrl} alt={footerLogoAlt} className="h-10 w-auto object-contain" />
+                <div className="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full inline-flex items-center justify-center">
+                  <img src={footerLogoUrl} alt={footerLogoAlt} className="h-16 md:h-24 w-auto object-contain" />
+                </div>
               ) : (
                 <h2 className="text-2xl font-black text-white tracking-tight">
                   {settings.brand_name} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0fafb8] to-blue-400">{settings.brand_subtitle}</span>
@@ -123,8 +125,8 @@ export default function Footer() {
           <p className="text-xs text-slate-500 font-medium">
             © {new Date().getFullYear()} {settings.copyright_text}
           </p>
-          <div className="flex items-center gap-6">
-            <span className="text-xs text-slate-600 font-medium">Designed by <a href={settings.designed_by_url} target="_blank" rel="noopener noreferrer" className="text-[#0fafb8] hover:text-blue-400 font-bold transition-colors">{settings.designed_by_text}</a></span>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6">
+            <span className="text-xs text-slate-600 font-medium text-center sm:text-left">Designed by <a href={settings.designed_by_url} target="_blank" rel="noopener noreferrer" className="text-[#0fafb8] hover:text-blue-400 font-bold transition-colors">{settings.designed_by_text}</a></span>
           </div>
         </div>
       </div>

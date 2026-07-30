@@ -26,6 +26,11 @@ const NAV = [
   // Pages & Messages
   { path: "/contact-settings",  label: "Contact Page" },
   { path: "/contact-messages",  label: "Contact Messages" },
+  { path: "/about/settings",    label: "About Page" },
+  { path: "/about/value-cards", label: "About: Value Cards" },
+  { path: "/about/team-members", label: "About: Team Members" },
+  // { path: "/about/accolades",   label: "About: Accolades" },
+  { path: "/about/testimonials", label: "About: Testimonials" },
 
   // Site Configuration
   { path: "/settings/site-content", label: "Navbar" },
@@ -54,6 +59,15 @@ const PAGE_TITLES = {
   "/blog-categories/new":            "Add Blog Category",
   "/contact-messages":               "Contact Messages",
   "/contact-settings":               "Contact Page Settings",
+  "/about/settings":                 "About Page Settings",
+  "/about/value-cards":              "About: Value Cards",
+  "/about/value-cards/new":          "Add Value Card",
+  "/about/team-members":             "About: Team Members",
+  "/about/team-members/new":         "Add Team Member",
+  "/about/accolades":                "About: Accolades",
+  "/about/accolades/new":            "Add Accolade",
+  "/about/testimonials":             "About: Testimonials",
+  "/about/testimonials/new":         "Add Testimonial",
   "/settings/site-content":          "Navbar",
   "/settings/footer-links":          "Footer Manager",
   "/settings/social-links":          "Social Links Manager",
@@ -128,6 +142,10 @@ export default function Layout({ children }) {
     if (location.pathname.startsWith("/section-banners/edit")) return "Edit Section Banner";
     if (location.pathname.startsWith("/blogs/edit"))           return "Edit Blog";
     if (location.pathname.startsWith("/blog-categories/edit")) return "Edit Blog Category";
+    if (location.pathname.startsWith("/about/value-cards/edit")) return "Edit Value Card";
+    if (location.pathname.startsWith("/about/team-members/edit")) return "Edit Team Member";
+    if (location.pathname.startsWith("/about/accolades/edit")) return "Edit Accolade";
+    if (location.pathname.startsWith("/about/testimonials/edit")) return "Edit Testimonial";
     return "Dashboard";
   }, [location.pathname]);
 

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { FiGrid, FiList, FiChevronDown, FiAlertCircle } from 'react-icons/fi';
 import { useShop } from '../context/ShopContext';
 import ProductCard from '../components/Products/ProductCard';
@@ -32,6 +32,16 @@ export default function Products() {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const itemsPerPage = 16;
 
+  // Initialize search from sessionStorage if available
+  useEffect(() => {
+    const searchQuery = sessionStorage.getItem('searchQuery');
+    if (searchQuery) {
+      setFilters(prev => ({ ...prev, search: searchQuery }));
+      sessionStorage.removeItem('searchQuery');
+      setCurrentPage(1);
+    }
+  }, []);
+
   const handleSearchChange = (val) => {
     setFilters(prev => ({ ...prev, search: val }));
     setCurrentPage(1);
@@ -47,7 +57,9 @@ export default function Products() {
         const matchesDesc = product.description.toLowerCase().includes(query);
         const matchesBrand = product.brand.toLowerCase().includes(query);
         const matchesTags = product.tags?.some(t => t.toLowerCase().includes(query));
-        if (!matchesName && !matchesDesc && !matchesBrand && !matchesTags) {
+        const matchesSKU = product.SKU && product.SKU.toLowerCase().includes(query);
+        const matchesModel = product.model && product.model.toLowerCase().includes(query);
+        if (!matchesName && !matchesDesc && !matchesBrand && !matchesTags && !matchesSKU && !matchesModel) {
           return false;
         }
       }
@@ -145,7 +157,7 @@ export default function Products() {
 
       {/* Category Pills Quick Navigation */}
       <section className="space-y-4 text-left">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <h2 className="text-lg md:text-xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-2 flex-grow margin-0">
             <span>Categories</span>
             <span className="h-1 flex-grow bg-slate-100 dark:bg-slate-850 rounded-none" />
@@ -156,7 +168,7 @@ export default function Products() {
             onChange={handleSearchChange}
             placeholder="Search parts, tools, kits..."
           />
-        </div>
+        </div> */}
         
         <div className="flex flex-wrap gap-2.5">
           <button

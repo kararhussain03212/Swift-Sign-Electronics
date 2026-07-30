@@ -2,6 +2,9 @@
 export default {
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
       colors: {
         pale_sky: {
           DEFAULT: '#b9d6f2',

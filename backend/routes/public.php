@@ -3,6 +3,11 @@
 declare(strict_types=1);
 
 use Backend\Controllers\AddressController;
+use Backend\Controllers\AboutPageController;
+use Backend\Controllers\AboutValueCardController;
+use Backend\Controllers\AboutTeamMemberController;
+use Backend\Controllers\AboutAccoladeCardController;
+use Backend\Controllers\AboutTestimonialController;
 use Backend\Controllers\BlogCategoryController;
 use Backend\Controllers\BlogController;
 use Backend\Controllers\CategoryController;
@@ -27,6 +32,11 @@ require_once __DIR__ . '/../controllers/BlogController.php';
 require_once __DIR__ . '/../controllers/BlogCategoryController.php';
 require_once __DIR__ . '/../controllers/SettingController.php';
 require_once __DIR__ . '/../controllers/ContactController.php';
+require_once __DIR__ . '/../controllers/AboutPageController.php';
+require_once __DIR__ . '/../controllers/AboutValueCardController.php';
+require_once __DIR__ . '/../controllers/AboutTeamMemberController.php';
+require_once __DIR__ . '/../controllers/AboutAccoladeCardController.php';
+require_once __DIR__ . '/../controllers/AboutTestimonialController.php';
 require_once __DIR__ . '/../controllers/AddressController.php';
 require_once __DIR__ . '/../controllers/NavLinkController.php';
 require_once __DIR__ . '/../controllers/FooterLinkGroupController.php';
@@ -51,6 +61,11 @@ function registerPublicRoutes(Router $router): void
     $router->get('/api/public/settings', [SettingController::class, 'publicIndex']);
     $router->get('/api/public/contact-page',  [ContactController::class, 'publicContactPage']);
     $router->post('/api/public/contact', [ContactController::class, 'store']);
+    $router->get('/api/public/about-page', [AboutPageController::class, 'publicShow']);
+    $router->get('/api/public/about-value-cards', [AboutValueCardController::class, 'publicIndex']);
+    $router->get('/api/public/about-team-members', [AboutTeamMemberController::class, 'publicIndex']);
+    $router->get('/api/public/about-accolade-cards', [AboutAccoladeCardController::class, 'publicIndex']);
+    $router->get('/api/public/about-testimonials', [AboutTestimonialController::class, 'publicIndex']);
     $router->get('/api/public/nav-links', [NavLinkController::class, 'publicIndex']);
     $router->get('/api/public/footer-link-groups', [FooterLinkGroupController::class, 'publicIndex']);
     $router->get('/api/public/social-links', [SocialLinkController::class, 'publicIndex']);

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { useShop } from '../context/ShopContext';
 import { Clock, Calendar, ArrowRight, Heart, ShoppingCart } from 'lucide-react';
 import ProductCard from '../components/Products/ProductCard';
+import QuickViewModal from '../components/Products/QuickViewModal';
 import {
   BiGridAlt,
   BiVolumeFull,
@@ -85,6 +86,7 @@ const DEFAULT_SECTION_BANNERS = [
 
 export default function Home() {
   const { sectionBannersList } = useShop();
+  const [quickViewProduct, setQuickViewProduct] = useState(null);
 
   const banners = sectionBannersList.length ? sectionBannersList : DEFAULT_SECTION_BANNERS;
 
@@ -94,10 +96,10 @@ export default function Home() {
       <HeroSliderSection />
 
       {/* 2. FEATURED CATEGORIES SECTION */}
-      <FeaturedCategoriesSection />
+      {/* <FeaturedCategoriesSection /> */}
 
       {/* 6. DISCOVER ALL PRODUCTS SLIDER */}
-      <DiscoverSection />
+      <DiscoverSection onQuickView={setQuickViewProduct} />
 
       {/* 3-5. DYNAMIC CATEGORY SLIDERS — one per active section banner */}
       {banners.map((banner) => (
@@ -105,11 +107,20 @@ export default function Home() {
           key={banner.sectionKey}
           sectionName={banner.sectionTitle || banner.category}
           banner={banner}
+          onQuickView={setQuickViewProduct}
         />
       ))}
 
       {/* 8. BLOG SECTION */}
       <BlogSection />
+
+      {/* Quick View Modal */}
+      {quickViewProduct && (
+        <QuickViewModal
+          product={quickViewProduct}
+          onClose={() => setQuickViewProduct(null)}
+        />
+      )}
     </div>
   );
 }
@@ -203,7 +214,7 @@ function FeaturedCategoriesSection() {
   );
 }
 
-function CategorySliderSection({ sectionName, banner }) {
+function CategorySliderSection({ sectionName, banner, onQuickView }) {
   const { products } = useShop();
   const activeCategory = banner.category || sectionName;
   const categoryProducts = products.filter(p => p.category === activeCategory).slice(0, 8);
@@ -259,7 +270,7 @@ function CategorySliderSection({ sectionName, banner }) {
           >
             {categoryProducts.map((product) => (
               <SwiperSlide key={product.id}>
-                <ProductCard product={product} />
+                <ProductCard product={product} onQuickView={onQuickView} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -269,7 +280,7 @@ function CategorySliderSection({ sectionName, banner }) {
   );
 }
 
-function DiscoverSection() {
+function DiscoverSection({ onQuickView }) {
   const { products } = useShop();
   return (
     <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-gray-50">
@@ -299,7 +310,7 @@ function DiscoverSection() {
           >
             {products.slice(0, 12).map((product) => (
               <SwiperSlide key={product.id}>
-                <ProductCard product={product} />
+                <ProductCard product={product} onQuickView={onQuickView} />
               </SwiperSlide>
             ))}
           </Swiper>
