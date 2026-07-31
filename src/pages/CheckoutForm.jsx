@@ -236,51 +236,38 @@ const [postalCode, setPostalCode] = useState("");
   {/* Province */}
   <div className="space-y-1.5">
     <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Province <span className="text-red-500">*</span></label>
-    <select 
-      required 
+    <input
+      required
+      type="text"
       value={selectedProvince}
-      onChange={(e) => {
-        setSelectedProvince(e.target.value);
-        setSelectedCity(""); // Reset city
-        setPostalCode("");   // Reset postal code
-      }}
-      className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 outline-none text-slate-800"
-    >
-      <option value="">Select Province</option>
-      {Object.keys(locationData).map(p => <option key={p} value={p}>{p}</option>)}
-    </select>
+      onChange={(e) => setSelectedProvince(e.target.value)}
+      className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400"
+      placeholder="e.g. Punjab"
+    />
   </div>
 
   {/* City */}
   <div className="space-y-1.5">
     <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">City <span className="text-red-500">*</span></label>
-    <select 
-      required 
+    <input
+      required
+      type="text"
       value={selectedCity}
-      disabled={!selectedProvince}
-      onChange={(e) => {
-        const city = e.target.value;
-        setSelectedCity(city);
-        setPostalCode(locationData[selectedProvince][city]); // Auto-fill code
-      }}
-      className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 outline-none text-slate-800"
-    >
-      <option value="">{selectedProvince ? "Select City" : "Select province first"}</option>
-      {selectedProvince && Object.keys(locationData[selectedProvince]).map(c => (
-        <option key={c} value={c}>{c}</option>
-      ))}
-    </select>
+      onChange={(e) => setSelectedCity(e.target.value)}
+      className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400"
+      placeholder="e.g. Lahore"
+    />
   </div>
 
   {/* Postal Code */}
   <div className="space-y-1.5">
     <label className="text-xs font-bold text-slate-500 uppercase tracking-wide">Postal Code</label>
-    <input 
-      type="text" 
+    <input
+      type="text"
       value={postalCode}
-      readOnly // User doesn't need to type it
-      className="w-full px-4 py-2.5 text-sm bg-slate-100 border border-slate-200 rounded-none text-slate-800 cursor-not-allowed" 
-      placeholder="e.g. 54000" 
+      onChange={(e) => setPostalCode(e.target.value)}
+      className="w-full px-4 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-slate-800 placeholder-slate-400"
+      placeholder="e.g. 54000"
     />
   </div>
 </div>

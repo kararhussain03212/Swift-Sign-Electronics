@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { getSettings, updateSettings } from "../../api/settingApi";
 import { uploadImage } from "../../api/uploadApi";
 import { getBackendRoot } from "../../api/runtimeApi";
@@ -256,29 +256,30 @@ export default function SiteContentSettings() {
       return;
     }
 
-    for (const link of navLinks) {
-      const hasLabel = link.label.trim();
-      const hasUrl = link.url.trim();
-      if (!hasLabel && !hasUrl) continue;
-      if (!hasLabel || !hasUrl) {
-        setError("Every navigation link needs both a label and a URL.");
-        return;
-      }
-      for (const item of link.items || []) {
-        const itemHasLabel = item.label.trim();
-        const itemHasUrl = item.url.trim();
-        if (!itemHasLabel && !itemHasUrl) continue;
-        if (!itemHasLabel || !itemHasUrl) {
-          setError(`Every dropdown item under "${link.label}" needs both a label and a URL.`);
-          return;
-        }
-      }
-    }
-
     setSaving(true);
     setError("");
     setSuccess("");
+
     try {
+      for (const link of navLinks) {
+        const hasLabel = String(link.label || "").trim();
+        const hasUrl = String(link.url || "").trim();
+        if (!hasLabel && !hasUrl) continue;
+        if (!hasLabel || !hasUrl) {
+          setError("Every navigation link needs both a label and a URL.");
+          return;
+        }
+        for (const item of link.items || []) {
+          const itemHasLabel = String(item.label || "").trim();
+          const itemHasUrl = String(item.url || "").trim();
+          if (!itemHasLabel && !itemHasUrl) continue;
+          if (!itemHasLabel || !itemHasUrl) {
+            setError(`Every dropdown item under "${link.label}" needs both a label and a URL.`);
+            return;
+          }
+        }
+      }
+
       const payload = { ...form };
       payload.topbar_messages = JSON.stringify(
         messages.map((m) => ({ text: String(m || "").trim() })).filter((m) => m.text)
@@ -287,18 +288,41 @@ export default function SiteContentSettings() {
 
       for (let i = 0; i < navLinks.length; i += 1) {
         const link = navLinks[i];
-        if (!link.label.trim() || !link.url.trim()) continue;
+        const linkLabel = String(link.label || "").trim();
+        const linkUrl = String(link.url || "").trim();
+        if (!linkLabel || !linkUrl) continue;
         const linkPayload = {
-          label: link.label.trim(),
-          url: link.url.trim(),
+          label: linkLabel,
+          url: linkUrl,
           is_active: link.is_active ? 1 : 0,
           open_in_new_tab: link.open_in_new_tab ? 1 : 0,
           sort_order: link.sort_order ?? i + 1,
         };
-        if (link.id) {
-          await updateNavLink(link.id, linkPayload);
+        let navLinkId = link.id;
+        if (navLinkId) {
+          await updateNavLink(navLinkId, linkPayload);
         } else {
-          await createNavLink(linkPayload);
+          const created = await createNavLink(linkPayload);
+          navLinkId = created?.data?.data?.id;
+        }
+
+        for (let j = 0; j < (link.items || []).length; j += 1) {
+          const item = link.items[j];
+          const itemLabel = String(item.label || "").trim();
+          const itemUrl = String(item.url || "").trim();
+          if (!itemLabel || !itemUrl) continue;
+          const itemPayload = {
+            nav_link_id: navLinkId,
+            label: itemLabel,
+            url: itemUrl,
+            is_active: item.is_active ? 1 : 0,
+            sort_order: item.sort_order ?? j + 1,
+          };
+          if (item.id) {
+            await updateNavLinkItem(item.id, itemPayload);
+          } else {
+            await createNavLinkItem(itemPayload);
+          }
         }
       }
 
@@ -405,7 +429,8 @@ export default function SiteContentSettings() {
               </thead>
               <tbody>
                 {navLinks.map((link, index) => (
-                  <tr key={link.id ?? `new-${index}`} className="border-b border-[var(--admin-border)] last:border-0">
+                  <Fragment key={link.id ?? `new-${index}`}>
+                  <tr className="border-b border-[var(--admin-border)] last:border-0">
                     <td className="px-4 py-3">
                       <input
                         type="text"
@@ -437,6 +462,13 @@ export default function SiteContentSettings() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex justify-end gap-2">
+                        <button
+                          type="button"
+                          onClick={() => toggleExpandedLink(index)}
+                          className="rounded-lg border border-[var(--admin-border)] bg-white/5 px-3 py-1.5 text-xs text-[var(--admin-ink)] hover:bg-white/10"
+                        >
+                          Dropdown ({link.items?.length || 0}) {expandedLink === index ? "▲" : "▼"}
+                        </button>
                         {canDelete && (
                           <button
                             type="button"
@@ -449,6 +481,74 @@ export default function SiteContentSettings() {
                       </div>
                     </td>
                   </tr>
+                  {expandedLink === index && (
+                    <tr className="border-b border-[var(--admin-border)] last:border-0 bg-white/[0.02]">
+                      <td colSpan={4} className="px-4 py-3">
+                        <div className="space-y-2">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-[var(--admin-muted-light)]">
+                              Dropdown items shown when hovering "{link.label || "this link"}"
+                            </p>
+                            {canAdd && (
+                              <button
+                                type="button"
+                                onClick={() => addNavLinkItem(index)}
+                                className="rounded-lg bg-[var(--admin-bg-deep)] px-3 py-1.5 text-xs text-[var(--admin-ink)] hover:bg-white/20"
+                              >
+                                + Add Dropdown Item
+                              </button>
+                            )}
+                          </div>
+
+                          {(link.items || []).length === 0 ? (
+                            <p className="text-xs text-[var(--admin-muted)]">No dropdown items. This link renders as a plain nav link.</p>
+                          ) : (
+                            (link.items || []).map((item, itemIndex) => (
+                              <div
+                                key={item.id ?? `new-item-${itemIndex}`}
+                                className="grid grid-cols-1 gap-2 rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card-elevated)] p-2 md:grid-cols-[1fr_1fr_100px_auto] md:items-center"
+                              >
+                                <input
+                                  type="text"
+                                  placeholder="Label"
+                                  value={item.label}
+                                  onChange={(e) => updateNavLinkItemField(index, itemIndex, "label", e.target.value)}
+                                  disabled={!canEdit}
+                                  className="rounded-lg border border-[var(--admin-border)] bg-white/5 px-2 py-1.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="/products/category-slug"
+                                  value={item.url}
+                                  onChange={(e) => updateNavLinkItemField(index, itemIndex, "url", e.target.value)}
+                                  disabled={!canEdit}
+                                  className="rounded-lg border border-[var(--admin-border)] bg-white/5 px-2 py-1.5 text-sm text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => updateNavLinkItemField(index, itemIndex, "is_active", item.is_active ? 0 : 1)}
+                                  disabled={!canEdit}
+                                  className={`rounded-lg px-3 py-1 text-xs ${item.is_active ? "bg-green-600 text-[var(--admin-ink)]" : "bg-red-600 text-[var(--admin-ink)]"}`}
+                                >
+                                  {item.is_active ? "Active" : "Inactive"}
+                                </button>
+                                {canDelete && (
+                                  <button
+                                    type="button"
+                                    onClick={() => deleteNavLinkItemRow(index, itemIndex)}
+                                    className="rounded-lg bg-red-500 px-3 py-1.5 text-xs text-white hover:bg-red-600"
+                                  >
+                                    Delete
+                                  </button>
+                                )}
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  </Fragment>
                 ))}
               </tbody>
             </table>

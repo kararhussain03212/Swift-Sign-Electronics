@@ -101,34 +101,6 @@ const AppLayout = ({
       {/* Scroll to Top Button */}
       <ScrollToTopButton showScrollTop={showScrollTop} />
 
-      {/* Floating Action Buttons */}
-      <div className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 flex items-center bg-white rounded-full shadow-xl z-50 border border-gray-100 p-1.5 gap-1">
-        {/* Wishlist Button */}
-        <Link
-          to="/wishlist"
-          className="flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 text-red-500 hover:bg-gray-50 rounded-full transition-all duration-200"
-          title="View Wishlist"
-        >
-          <Heart className="w-5 h-5 sm:w-6 sm:h-6 fill-current" />
-        </Link>
-
-        {/* Divider */}
-        <div className="w-px h-8 bg-gray-200"></div>
-
-        {/* Cart Button */}
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className="icon relative flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 text-blue-600 hover:bg-gray-50 rounded-full transition-all duration-200 cursor-pointer animate-none"
-          title="Open Cart"
-        >
-          <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
-          {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[20px] h-5 px-1.5 bg-orange-500 text-white text-[10px] font-bold rounded-full">
-              {cartCount}
-            </span>
-          )}
-        </button>
-      </div>
 
       {/* Cart Drawer */}
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />

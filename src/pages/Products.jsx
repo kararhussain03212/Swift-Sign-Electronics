@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { FiGrid, FiList, FiChevronDown, FiAlertCircle } from 'react-icons/fi';
 import { useShop } from '../context/ShopContext';
 import ProductCard from '../components/Products/ProductCard';
@@ -8,6 +9,11 @@ import QuickViewModal from '../components/Products/QuickViewModal';
 
 export default function Products() {
   const { products, productCategories } = useShop();
+  const navigate = useNavigate();
+  const { categorySlug: categorySlugParam } = useParams();
+  // Legacy support: old dropdown links / bookmarks may still use ?category=slug
+  const [searchParams] = useSearchParams();
+  const categorySlug = categorySlugParam || searchParams.get('category') || '';
 
   const maxPrice = useMemo(() => {
     let highestPrice = 0;
@@ -41,6 +47,22 @@ export default function Products() {
       setCurrentPage(1);
     }
   }, []);
+
+  // Sync category filter from the URL (/products/tools path, or legacy ?category=tools) —
+  // covers navbar dropdown links and direct/shared URLs. Map slug (cat_key) to display name.
+  useEffect(() => {
+    if (!categorySlug) {
+      setFilters(prev => ({ ...prev, categories: [] }));
+      setCurrentPage(1);
+      return;
+    }
+    const matchedCat = productCategories.find(c => c.cat_key === categorySlug);
+    setFilters(prev => ({
+      ...prev,
+      categories: matchedCat ? [matchedCat.name] : [],
+    }));
+    setCurrentPage(1);
+  }, [categorySlug, productCategories]);
 
   const handleSearchChange = (val) => {
     setFilters(prev => ({ ...prev, search: val }));
@@ -127,15 +149,16 @@ export default function Products() {
     return sortedProducts.slice(startIdx, startIdx + itemsPerPage);
   }, [sortedProducts, currentPage]);
 
-  const handleCategoryNavClick = (category) => {
-    setFilters(prev => {
-      const isAlreadySelected = prev.categories.includes(category);
-      return {
-        ...prev,
-        categories: isAlreadySelected ? [] : [category]
-      };
-    });
-    setCurrentPage(1);
+  const handleCategoryNavClick = (categoryName) => {
+    const isAlreadySelected = filters.categories.includes(categoryName);
+    if (isAlreadySelected) {
+      navigate('/products');
+    } else {
+      const cat = productCategories.find(c => c.name === categoryName);
+      if (cat) {
+        navigate(`/products/${cat.cat_key}`);
+      }
+    }
   };
 
   const handleResetAll = () => {
@@ -149,6 +172,7 @@ export default function Products() {
     });
     setSortOption('featured');
     setCurrentPage(1);
+    navigate('/products');
   };
 
   return (
@@ -172,10 +196,7 @@ export default function Products() {
         
         <div className="flex flex-wrap gap-2.5">
           <button
-            onClick={() => {
-              setFilters(prev => ({ ...prev, categories: [] }));
-              setCurrentPage(1);
-            }}
+            onClick={() => navigate('/products')}
             className={`px-6 py-3 rounded-none font-bold text-sm transition-all cursor-pointer border flex items-center gap-2 ${
               filters.categories.length === 0
                 ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/10'

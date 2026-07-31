@@ -44,6 +44,10 @@ function App() {
           element={<Products onQuickView={appState.setQuickViewProduct} />}
         />
         <Route
+          path="/products/:categorySlug"
+          element={<Products onQuickView={appState.setQuickViewProduct} />}
+        />
+        <Route
           path="/product/:slug"
           element={
             <ProductDetails onQuickView={appState.setQuickViewProduct} />
