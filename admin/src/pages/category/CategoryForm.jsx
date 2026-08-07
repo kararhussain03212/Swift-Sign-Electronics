@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createCategory, getCategory, updateCategory } from "../../api/categoryApi";
 
-const EMPTY = { name: "", cat_key: "", icon: "", sort_order: 0, is_active: 1 };
+const EMPTY = { name: "", cat_key: "", is_active: 1 };
 
 const slugify = (text) => {
   return text
@@ -63,7 +63,6 @@ export default function CategoryForm() {
     const payload = {
       ...form,
       cat_key: form.cat_key.trim() || form.name.trim().toLowerCase().replace(/\s+/g, "-"),
-      sort_order: Number(form.sort_order || 0),
       is_active: Number(form.is_active ? 1 : 0),
     };
 
@@ -112,40 +111,22 @@ export default function CategoryForm() {
             className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-2.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
             placeholder="auto-generated from name if empty"
           />
+          <p className="mt-1.5 text-xs text-(--admin-ink)/60">
+            <span className="font-medium">💡 Auto-generates:</span> Clear this field or update the name to regenerate a URL-safe slug automatically.
+          </p>
         </label>
 
         <label className="block">
-          <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Icon name</span>
-          <input
-            value={form.icon || ""}
-            onChange={set("icon")}
+          <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Status</span>
+          <select
+            value={String(form.is_active)}
+            onChange={set("is_active")}
             className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-2.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
-            placeholder="e.g. BiGridAlt"
-          />
+          >
+            <option value="1">Active</option>
+            <option value="0">Inactive</option>
+          </select>
         </label>
-
-        <div className="grid grid-cols-2 gap-4">
-          <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Sort order</span>
-            <input
-              type="number"
-              value={form.sort_order}
-              onChange={set("sort_order")}
-              className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-2.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
-            />
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Status</span>
-            <select
-              value={String(form.is_active)}
-              onChange={set("is_active")}
-              className="w-full rounded-xl border border-[var(--admin-border)] bg-[var(--admin-card)] px-4 py-2.5 text-[var(--admin-ink)] outline-none focus:border-[var(--admin-primary)]"
-            >
-              <option value="1">Active</option>
-              <option value="0">Inactive</option>
-            </select>
-          </label>
-        </div>
 
         <div className="flex gap-3 pt-2">
           <button

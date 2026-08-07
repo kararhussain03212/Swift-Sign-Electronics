@@ -7,6 +7,7 @@ import Footer from "./Footer";
 import CompareDrawer from "../Products/CompareDrawer";
 import QuickViewModal from "../Products/QuickViewModal";
 import ScrollToTopButton from "./ScrollToTopButton";
+import WhatsAppButton from "./WhatsAppButton";
 import CartDrawer from "../Cart/CartDrawer";
 
 const AppLayout = ({
@@ -101,6 +102,8 @@ const AppLayout = ({
       {/* Scroll to Top Button */}
       <ScrollToTopButton showScrollTop={showScrollTop} />
 
+      {/* WhatsApp Button */}
+      <WhatsAppButton />
 
       {/* Cart Drawer */}
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />

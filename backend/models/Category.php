@@ -33,4 +33,30 @@ final class Category extends BaseModel
 
         return $stmt->fetch() !== false;
     }
+
+    public function getProductCount(string $categoryName): int
+    {
+        if (trim($categoryName) === '') {
+            return 0;
+        }
+        $stmt = $this->pdo->prepare('SELECT COUNT(*) as total FROM products WHERE category = :category AND is_active = 1');
+        $stmt->execute([':category' => $categoryName]);
+        $result = $stmt->fetch();
+        return (int) ($result['total'] ?? 0);
+    }
+
+    /**
+     * Products store a denormalized copy of the category name rather than a
+     * live foreign key, so a rename has to be cascaded here to keep already
+     * saved products in sync.
+     */
+    public function renameInProducts(string $oldName, string $newName): void
+    {
+        if ($oldName === '' || $oldName === $newName) {
+            return;
+        }
+
+        $stmt = $this->pdo->prepare('UPDATE products SET category = :new WHERE category = :old');
+        $stmt->execute([':new' => $newName, ':old' => $oldName]);
+    }
 }

@@ -7,6 +7,7 @@ namespace Backend\Controllers;
 use Backend\Models\Product;
 use Backend\Utils\ActivityLogger;
 use Backend\Utils\Cache;
+use Backend\Utils\FileUpload;
 use Backend\Utils\Response;
 use Backend\Utils\Validator;
 
@@ -14,6 +15,7 @@ require_once __DIR__ . '/BaseCrudController.php';
 require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../utils/ActivityLogger.php';
 require_once __DIR__ . '/../utils/Cache.php';
+require_once __DIR__ . '/../utils/FileUpload.php';
 require_once __DIR__ . '/../utils/Response.php';
 require_once __DIR__ . '/../utils/Validator.php';
 
@@ -25,6 +27,7 @@ final class ProductController extends BaseCrudController
 
     public function store(array $params = []): void
     {
+        $this->requirePermission('create_content');
         $model   = new $this->modelClass();
         $payload = Validator::sanitizeInput($this->body());
 
@@ -50,13 +53,15 @@ final class ProductController extends BaseCrudController
 
     public function update(array $params): void
     {
+        $this->requirePermission('edit_content');
         $id = (int) ($params['id'] ?? 0);
         if ($id <= 0) {
             Response::error('Invalid resource ID', 422);
         }
 
         $model = new $this->modelClass();
-        if (!$model->find($id)) {
+        $existing = $model->find($id);
+        if (!$existing) {
             Response::error('Resource not found', 404);
         }
 
@@ -73,6 +78,8 @@ final class ProductController extends BaseCrudController
         if (!$ok) {
             Response::error('No changes were applied', 422);
         }
+
+        $this->cleanupRemovedImages($existing, $payload);
 
         ActivityLogger::log($this->currentAdminId(), 'update', $this->resourceName, $id);
         Cache::clearAll();
@@ -94,6 +101,84 @@ final class ProductController extends BaseCrudController
         }
 
         Response::success($row, 'Fetched successfully');
+    }
+
+    public function destroy(array $params): void
+    {
+        $this->requirePermission('delete_content');
+        $id = (int) ($params['id'] ?? 0);
+        if ($id <= 0) {
+            Response::error('Invalid resource ID', 422);
+        }
+
+        $model = new $this->modelClass();
+        $existing = $model->find($id);
+        if (!$existing) {
+            Response::error('Resource not found', 404);
+        }
+
+        $model->delete($id);
+
+        if (!empty($existing['thumbnail'])) {
+            FileUpload::deleteExistingUpload((string) $existing['thumbnail']);
+        }
+        $images = $existing['images'] ?? [];
+        if (is_string($images)) {
+            $images = json_decode($images, true) ?: [];
+        }
+        foreach ((array) $images as $image) {
+            if (is_string($image) && $image !== '') {
+                FileUpload::deleteExistingUpload($image);
+            }
+        }
+
+        ActivityLogger::log($this->currentAdminId(), 'delete', $this->resourceName, $id);
+        Cache::clearAll();
+
+        Response::success(null, 'Deleted successfully');
+    }
+
+    /**
+     * The admin gallery form uploads new images and rewrites the whole
+     * `thumbnail`/`images` set on every save without telling the backend
+     * which old files it dropped (unlike single-image resources, which pass
+     * `old_path` up front). Diff old vs. new here and delete whatever's no
+     * longer referenced, so removed/replaced gallery images don't pile up
+     * in backend/uploads/ forever.
+     */
+    private function cleanupRemovedImages(array $existing, array $payload): void
+    {
+        $oldImages = $this->extractImagePaths($existing);
+        if (!array_key_exists('thumbnail', $payload) && !array_key_exists('images', $payload)) {
+            return;
+        }
+
+        $newImages = $this->extractImagePaths(array_merge($existing, $payload));
+        $removed = array_diff($oldImages, $newImages);
+
+        foreach ($removed as $path) {
+            FileUpload::deleteExistingUpload($path);
+        }
+    }
+
+    private function extractImagePaths(array $row): array
+    {
+        $paths = [];
+        if (!empty($row['thumbnail']) && is_string($row['thumbnail'])) {
+            $paths[] = $row['thumbnail'];
+        }
+
+        $images = $row['images'] ?? [];
+        if (is_string($images)) {
+            $images = json_decode($images, true) ?: [];
+        }
+        foreach ((array) $images as $image) {
+            if (is_string($image) && $image !== '') {
+                $paths[] = $image;
+            }
+        }
+
+        return array_values(array_unique($paths));
     }
 
     private function encodeJsonFields(array $payload): array

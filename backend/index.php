@@ -48,5 +48,16 @@ if ($apiPos !== false) {
 try {
     $router->dispatch($method, $path);
 } catch (Throwable $e) {
-    Response::error('Server error: ' . $e->getMessage(), 500);
+    error_log(sprintf(
+        '[unhandled] %s: %s in %s:%d',
+        get_class($e),
+        $e->getMessage(),
+        $e->getFile(),
+        $e->getLine()
+    ));
+
+    // Never leak internals (SQL text, file paths, stack traces) to the client in
+    // production; only show the real message locally where it aids debugging.
+    $message = $appEnv === 'production' ? 'Server error. Please try again later.' : 'Server error: ' . $e->getMessage();
+    Response::error($message, 500);
 }

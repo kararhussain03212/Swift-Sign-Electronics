@@ -37,6 +37,7 @@ export const useShop = () => {
 export const ShopProvider = ({ children }) => {
   // Catalog data — products come directly from the database (no static fallback)
   const [products, setProducts] = useState([]);
+  const [productsLoaded, setProductsLoaded] = useState(false);
   const [blogs, setBlogs] = useState(staticBlogs);
 
   // Site content (navbar/footer) — served from the API, fallback defaults if unreachable
@@ -60,7 +61,8 @@ export const ShopProvider = ({ children }) => {
       })
       .catch((err) => {
         console.error('[ShopContext] Failed to fetch products:', err);
-      });
+      })
+      .finally(() => setProductsLoaded(true));
     fetchBlogs()
       .then((list) => { if (list.length) setBlogs(list); })
       .catch(() => {});
@@ -239,6 +241,7 @@ export const ShopProvider = ({ children }) => {
     <ShopContext.Provider
       value={{
         products,
+        productsLoaded,
         blogs,
         siteSettings,
         navLinks,

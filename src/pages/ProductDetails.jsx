@@ -16,6 +16,7 @@ export default function ProductDetails({ onQuickView }) {
   const navigate = useNavigate();
   const {
     products,
+    productsLoaded,
     addToCart,
     toggleWishlist,
     isInWishlist,
@@ -62,12 +63,14 @@ export default function ProductDetails({ onQuickView }) {
     return products.find((p) => p.slug === slug);
   }, [products, slug]);
 
-  // Redirect if product not found
+  // Redirect if product not found (only after the product list has finished loading,
+  // otherwise this fires on the very first render while products is still [] and
+  // incorrectly bounces every direct/deep link to the home page).
   useEffect(() => {
-    if (!product) {
+    if (productsLoaded && !product) {
       navigate('/');
     }
-  }, [product, navigate]);
+  }, [product, productsLoaded, navigate]);
 
   // 2. Track Recently Viewed in LocalStorage
   useEffect(() => {

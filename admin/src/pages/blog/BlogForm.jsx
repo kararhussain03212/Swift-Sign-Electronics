@@ -14,7 +14,6 @@ const initialForm = {
   title: "",
   slug: "",
   category: "IoT",
-  categoryColor: "#0fafb8",
   excerpt: "",
   content: "",
   author: "Swift Sign Team",
@@ -28,6 +27,8 @@ const initialForm = {
   imageFile: null,
   imagePreview: "",
   imageAltText: "",
+  avatarFile: null,
+  avatarPreview: "",
 };
 
 const decodeHtmlEntities = (value) =>
@@ -129,7 +130,6 @@ export default function BlogForm() {
           title:        decodeHtmlEntities(item.title    || ""),
           slug:         decodeHtmlEntities(item.slug     || ""),
           category:     decodeHtmlEntities(item.category || "IoT"),
-          categoryColor: item.category_color || "#0fafb8",
           excerpt:      decodeHtmlEntities(item.excerpt  || ""),
           content:      decodeHtmlEntities(item.body     || ""),
           author:       decodeHtmlEntities(item.author_name || "Swift Sign Team"),
@@ -143,6 +143,8 @@ export default function BlogForm() {
           imageFile:    null,
           imagePreview: toImageUrl(item.cover || ""),
           imageAltText: "",
+          avatarFile:   null,
+          avatarPreview: toImageUrl(item.author_avatar || ""),
         });
       } catch (err) {
         console.error(err);
@@ -169,6 +171,7 @@ export default function BlogForm() {
     try {
       setSaving(true);
       let imagePath = "";
+      let avatarPath = "";
 
       if (form.imageFile) {
         const oldPath = isEditMode && form.imagePreview ? form.imagePreview.replace(apiRoot, "") : "";
@@ -177,16 +180,22 @@ export default function BlogForm() {
         imagePath = form.imagePreview.replace(apiRoot, "");
       }
 
+      if (form.avatarFile) {
+        const oldPath = isEditMode && form.avatarPreview ? form.avatarPreview.replace(apiRoot, "") : "";
+        avatarPath = await uploadImage(form.avatarFile, "avatars", oldPath);
+      } else if (form.avatarPreview) {
+        avatarPath = form.avatarPreview.replace(apiRoot, "");
+      }
+
       const payload = {
         title:          form.title.trim(),
         slug:           form.slug.trim(),
         category:       form.category.trim(),
-        category_color: form.categoryColor,
         excerpt:        form.excerpt.trim(),
         body:           form.content,
         cover:          imagePath,
         author_name:    form.author.trim(),
-        author_avatar:  form.authorAvatar.trim(),
+        author_avatar:  avatarPath,
         author_role:    form.authorRole.trim(),
         published_at:   toSqlDateTime(form.publishedAt),
         read_time:      form.readTime ? `${Number(form.readTime)} min read` : null,
@@ -247,20 +256,12 @@ export default function BlogForm() {
             <p className="mt-1 text-xs text-[var(--admin-muted-light)]">Manage the list under Blog Categories.</p>
           </div>
           <div>
-            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Category Color</label>
-            <input type="color" value={form.categoryColor} onChange={(e) => setField("categoryColor", e.target.value)} className="h-10 w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-1 py-1" />
-          </div>
-          <div>
             <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Author Name</label>
             <input value={form.author} onChange={(e) => setField("author", e.target.value)} className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
           </div>
           <div>
             <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Author Role</label>
             <input value={form.authorRole} onChange={(e) => setField("authorRole", e.target.value)} placeholder="e.g. Senior IoT Architect" className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Author Avatar URL</label>
-            <input value={form.authorAvatar} onChange={(e) => setField("authorAvatar", e.target.value)} placeholder="https://…" className="w-full rounded-lg border border-[var(--admin-border)] bg-[var(--admin-card)] px-3 py-2 text-[var(--admin-ink)]" />
           </div>
           <div>
             <label className="mb-1 block text-sm text-[var(--admin-ink)]/80">Published At</label>
@@ -295,6 +296,13 @@ export default function BlogForm() {
           label="Upload Blog Featured Image"
           helperText="This image will appear in home blog section and blog detail header."
           includeAltText={true}
+        />
+
+        <ImageUpload
+          value={form.avatarPreview}
+          onFileSelect={(file) => setField("avatarFile", file)}
+          label="Upload Author Avatar"
+          helperText="Profile picture for the author (displays in blog post header)."
         />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

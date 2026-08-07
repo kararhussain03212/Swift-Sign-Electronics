@@ -25,6 +25,7 @@ final class HeroController extends BaseCrudController
 
     public function store(array $params = []): void
     {
+        $this->requirePermission('create_content');
         $model = new $this->modelClass();
         $payload = Validator::sanitizeInput($this->body());
 
@@ -50,6 +51,7 @@ final class HeroController extends BaseCrudController
 
     public function update(array $params): void
     {
+        $this->requirePermission('edit_content');
         $id = (int) ($params['id'] ?? 0);
         if ($id <= 0) {
             Response::error('Invalid resource ID', 422);

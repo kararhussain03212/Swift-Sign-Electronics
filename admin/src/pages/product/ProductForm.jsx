@@ -288,7 +288,7 @@ export default function ProductForm() {
             <div>
               <label className={labelCls}>Slug</label>
               <input value={form.slug} onChange={(e) => setField("slug", slugify(e.target.value))} placeholder="auto-generated from name" className={inputCls} />
-              <p className="mt-1 text-xs text-[var(--admin-muted-light)]">Auto-slugified: lowercase, hyphens only, no spaces.</p>
+              <p className="mt-1 text-xs text-[var(--admin-muted-light)]">Auto-generates: Clear this field or update the name to regenerate a URL-safe slug automatically.</p>
             </div>
             <div>
               <label className={labelCls}>Category</label>

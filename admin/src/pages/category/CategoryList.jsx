@@ -87,8 +87,7 @@ export default function CategoryList() {
               <tr>
                 <th className="px-4 py-3">Name</th>
                 <th className="px-4 py-3">Key</th>
-                <th className="px-4 py-3">Icon</th>
-                <th className="px-4 py-3">Order</th>
+                <th className="px-4 py-3">Products</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
@@ -97,8 +96,7 @@ export default function CategoryList() {
                 <tr key={item.id} className="border-b border-[var(--admin-border)] last:border-0">
                   <td className="px-4 py-3 font-semibold text-[var(--admin-ink)]">{item.name}</td>
                   <td className="px-4 py-3">{item.cat_key}</td>
-                  <td className="px-4 py-3">{item.icon || "—"}</td>
-                  <td className="px-4 py-3">{Number(item.sort_order || 0)}</td>
+                  <td className="px-4 py-3">{item.products_count || 0}</td>
                   <td className="px-4 py-3">
                     <div className="flex justify-end gap-2">
                       {canEdit && (

@@ -46,8 +46,8 @@ export default function AboutPageSettings() {
     setSaving(true);
     try {
       const payload = { ...form };
-      if (heroImageFile) payload.hero_image = await uploadImage(heroImageFile, "about");
-      if (ceoPhotoFile) payload.ceo_photo = await uploadImage(ceoPhotoFile, "about");
+      if (heroImageFile) payload.hero_image = await uploadImage(heroImageFile, "about", form.hero_image);
+      if (ceoPhotoFile) payload.ceo_photo = await uploadImage(ceoPhotoFile, "about", form.ceo_photo);
       await updateAboutPageSettings(payload);
       setForm(payload);
       setToast("About page settings saved!");
@@ -159,7 +159,7 @@ export default function AboutPageSettings() {
         </div>
 
         {/* Accolades */}
-        <div className={sectionCls}>
+        {/* <div className={sectionCls}>
           <h3 className="font-semibold text-[var(--admin-ink)]">Accolades Section</h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
@@ -180,7 +180,7 @@ export default function AboutPageSettings() {
             <textarea rows={2} className={inputCls} value={form.accolades_description} onChange={(e) => setField("accolades_description", e.target.value)} />
           </div>
           <p className="text-xs text-[var(--admin-muted-light)]">The accolade cards are managed on the Accolades screen.</p>
-        </div>
+        </div> */}
 
         {/* Testimonials */}
         <div className={sectionCls}>

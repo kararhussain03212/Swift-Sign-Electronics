@@ -6,7 +6,7 @@ const ScrollToTopButton = ({ showScrollTop }) => {
   return (
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="fixed bottom-32 right-6 z-50 p-3 rounded-full bg-[#0042d7] text-white shadow-[0_4px_14px_rgba(0,66,215,0.4)] hover:bg-[#0033a8] hover:scale-110 hover:-translate-y-1 transition-all cursor-pointer flex items-center justify-center border-2 border-white/20"
+      className="fixed bottom-24 right-6 z-50 p-3 rounded-full bg-[#0042d7] text-white shadow-[0_4px_14px_rgba(0,66,215,0.4)] hover:bg-[#0033a8] hover:scale-110 hover:-translate-y-1 transition-all cursor-pointer flex items-center justify-center border-2 border-white/20"
       aria-label="Scroll to top"
     >
       <svg

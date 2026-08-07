@@ -1,0 +1,12 @@
+{
+  "name": "electronics-e2e",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node run.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
+}

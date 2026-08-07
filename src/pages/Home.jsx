@@ -154,7 +154,7 @@ function HeroSliderSection() {
               <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 w-full h-full flex items-center justify-between relative z-10">
                 {/* Text Content */}
                 <div className="flex-1 text-white pr-8">
-                  <h2 className="text-4xl md:text-6xl font-bold mb-4 leading-tight drop-shadow-md">
+                  <h2 className="text-4xl md:text-6xl font-semibold mb-4 leading-tight drop-shadow-md">
                     {slide.title}
                   </h2>
                   <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-lg drop-shadow-md font-medium">
@@ -222,7 +222,7 @@ function CategorySliderSection({ sectionName, banner, onQuickView }) {
   return (
     <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-gray-50">
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{banner.sectionTitle || sectionName}</h2>
+        <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-2">{banner.sectionTitle || sectionName}</h2>
         <p className="text-gray-600 text-lg">{banner.subtitle}</p>
       </div>
 
@@ -240,7 +240,7 @@ function CategorySliderSection({ sectionName, banner, onQuickView }) {
                     {banner.kicker}
                   </div>
                 )}
-                <h3 className="text-3xl md:text-4xl font-bold mb-4">{banner.title}</h3>
+                <h3 className="text-3xl md:text-4xl font-semibold mb-4">{banner.title}</h3>
                 <p className="text-blue-100 text-lg mb-6 line-clamp-3">{banner.description}</p>
               </div>
             </div>
@@ -285,7 +285,7 @@ function DiscoverSection({ onQuickView }) {
   return (
     <div className="w-full py-16 md:py-20 border-t border-gray-200 bg-gray-50">
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Discover</h2>
+        <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-2">Discover</h2>
         <p className="text-gray-600 text-lg">Explore our complete collection of electronics</p>
       </div>
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -329,7 +329,7 @@ function BlogSection() {
       <div className="max-w-[1536px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Latest Blog Articles</h2>
+            <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-2">Latest Blog Articles</h2>
             <p className="text-gray-600 text-lg">Stay updated with the latest electronics and IoT tutorials</p>
           </div>
           <Link

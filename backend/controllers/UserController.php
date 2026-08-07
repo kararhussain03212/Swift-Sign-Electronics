@@ -168,6 +168,11 @@ final class UserController extends BaseController
         $payload = Validator::sanitizeInput($this->body());
         $update = [];
         $isProtectedSuperAdmin = $this->isProtectedSuperAdmin($existing);
+        $isSelf = $id === (int) ($currentUser['id'] ?? 0);
+
+        if ($isSelf && (array_key_exists('role', $payload) || array_key_exists('permissions', $payload) || array_key_exists('status', $payload))) {
+            Response::error('You cannot change your own role, status, or permissions.', 403);
+        }
 
         if (array_key_exists('name', $payload)) {
             $name = trim((string) $payload['name']);

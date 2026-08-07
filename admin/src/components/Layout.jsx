@@ -6,39 +6,48 @@ import { getBackendRoot } from "../api/runtimeApi";
 import { getSettings } from "../api/settingApi";
 
 const NAV = [
-  // Overview
-  { path: "/dashboard",         label: "Dashboard" },
+  { section: "Dashboard", items: [
+    { path: "/dashboard", label: "Dashboard" },
+  ]},
 
-  // Shop Management
-  { path: "/products",          label: "Products" },
-  { path: "/categories",        label: "Categories" },
-  { path: "/orders",            label: "Orders" },
+  { section: "Shop Management", items: [
+    { path: "/products", label: "Products" },
+    { path: "/categories", label: "Categories" },
+    { path: "/orders", label: "Orders" },
+  ]},
 
-  // Content & Display
-  { path: "/sliders",           label: "Hero Slides" },
-  { path: "/section-banners",   label: "Section Banners" },
+  { section: "Home Page", items: [
+    { path: "/sliders", label: "Hero Slides" },
+    { path: "/section-banners", label: "Section Banners" },
+  ]},
 
-  // Blog Management
-  { path: "/blogs",             label: "Blogs" },
-  { path: "/blog-categories",   label: "Blog Categories" },
-  { path: "/settings/blog",     label: "Blog Page" },
+  { section: "Blog", items: [
+    { path: "/blogs", label: "Blogs" },
+    { path: "/blog-categories", label: "Blog Categories" },
+    { path: "/settings/blog", label: "Blog Page Settings" },
+  ]},
 
-  // Pages & Messages
-  { path: "/contact-settings",  label: "Contact Page" },
-  { path: "/contact-messages",  label: "Contact Messages" },
-  { path: "/about/settings",    label: "About Page" },
-  { path: "/about/value-cards", label: "About: Value Cards" },
-  { path: "/about/team-members", label: "About: Team Members" },
-  // { path: "/about/accolades",   label: "About: Accolades" },
-  { path: "/about/testimonials", label: "About: Testimonials" },
+  { section: "About Page", items: [
+    { path: "/about/settings", label: "About Page Settings" },
+    { path: "/about/value-cards", label: "Value Cards" },
+    { path: "/about/team-members", label: "Team Members" },
+    { path: "/about/testimonials", label: "Testimonials" },
+  ]},
 
-  // Site Configuration
-  { path: "/settings/site-content", label: "Navbar" },
-  { path: "/settings/footer-links", label: "Footer Manager" },
-  { path: "/settings/social-links", label: "Social Links" },
+  { section: "Contact", items: [
+    { path: "/contact-settings", label: "Contact Page Settings" },
+    { path: "/contact-messages", label: "Contact Messages" },
+  ]},
 
-  // User Management
-  { path: "/users",             label: "User Management", adminOnly: true },
+  { section: "Site Settings", items: [
+    { path: "/settings/site-content", label: "Navbar" },
+    { path: "/settings/footer-links", label: "Footer Manager" },
+    { path: "/settings/social-links", label: "Social Links" },
+  ]},
+
+  { section: "User Management", items: [
+    { path: "/users", label: "User Management", adminOnly: true },
+  ]},
 ];
 
 const PAGE_TITLES = {
@@ -222,14 +231,17 @@ export default function Layout({ children }) {
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto p-2.5 pb-4">
-          <p className="mb-1 mt-2 px-3 text-[9px] font-bold uppercase tracking-widest text-[var(--admin-muted)]">
-            Main
-          </p>
-
-          {NAV.filter((item) => !item.adminOnly || isAdmin).map((item) => (
-            <Link key={item.path} to={item.path} onClick={closeSidebar} className={cls.link(isActive(item.path))}>
-              {item.label}
-            </Link>
+          {NAV.map((section) => (
+            <div key={section.section}>
+              <p className="mb-2 mt-3 px-3 text-[9px] font-bold uppercase tracking-widest text-[var(--admin-muted)]">
+                {section.section}
+              </p>
+              {section.items.filter((item) => !item.adminOnly || isAdmin).map((item) => (
+                <Link key={item.path} to={item.path} onClick={closeSidebar} className={cls.link(isActive(item.path))}>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           ))}
         </nav>
 

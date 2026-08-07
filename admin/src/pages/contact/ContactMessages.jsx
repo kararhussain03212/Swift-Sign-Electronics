@@ -33,7 +33,8 @@ export default function ContactMessages() {
       const params = { page, per_page: 20 };
       if (filter) params.status = filter;
       const res = await getContactMessages(params);
-      const payload = res?.data ?? res;
+      // Response shape is { success, data: { data: [...], meta: {...} }, message }
+      const payload = res?.data?.data ?? res?.data ?? res;
       setMessages(Array.isArray(payload?.data) ? payload.data : (Array.isArray(payload) ? payload : []));
       setMeta(payload?.meta ?? null);
     } catch {

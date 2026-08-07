@@ -79,7 +79,7 @@ export default function AboutUs() {
                 <span className="w-2 h-2 rounded-full bg-[#0fafb8] absolute" />
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-800 ml-1">{content.hero_badge}</span>
              </div>
-             <h1 className="text-5xl md:text-7xl lg:text-[80px] font-extrabold text-gray-900 leading-[1.05] mb-8 tracking-tighter">
+             <h1 className="text-5xl md:text-7xl lg:text-[80px] font-bold text-gray-900 leading-[1.05] mb-8 tracking-tighter">
                 {content.hero_heading} <br className="hidden md:block"/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0fafb8] to-blue-700">{content.hero_heading_highlight}</span>
              </h1>
@@ -107,7 +107,7 @@ export default function AboutUs() {
       {/* 2. Who We Are - The "Bento Box" Grid Layout */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="mb-16">
-           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">{content.anatomy_heading}</h2>
+           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-4">{content.anatomy_heading}</h2>
            <p className="text-xl text-gray-500 font-light max-w-2xl">{content.anatomy_subheading}</p>
         </div>
 
@@ -131,7 +131,7 @@ export default function AboutUs() {
                  <div key={card.id} className="bg-gray-900 rounded-3xl p-10 shadow-xl relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     {renderIcon(card.icon, 'text-4xl text-blue-400 mb-6')}
-                    <h3 className="text-2xl font-bold text-white mb-4">{card.title}</h3>
+                    <h3 className="text-2xl font-semibold text-white mb-4">{card.title}</h3>
                     <p className="text-gray-400 font-light leading-relaxed">{card.description}</p>
                  </div>
                );
@@ -142,7 +142,7 @@ export default function AboutUs() {
                  <div key={card.id} className="bg-gradient-to-br from-[#0fafb8] to-blue-600 rounded-3xl p-10 shadow-xl text-white relative overflow-hidden group">
                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay" />
                     {renderIcon(card.icon, 'text-4xl text-white mb-6')}
-                    <h3 className="text-2xl font-bold text-white mb-4">{card.title}</h3>
+                    <h3 className="text-2xl font-semibold text-white mb-4">{card.title}</h3>
                     <p className="text-blue-100 font-light leading-relaxed">{card.description}</p>
                  </div>
                );
@@ -152,7 +152,7 @@ export default function AboutUs() {
                <div key={card.id} className="md:col-span-2 bg-white rounded-3xl p-10 lg:p-14 shadow-sm border border-gray-100 group relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#0fafb8]/10 to-transparent rounded-bl-full -z-10 group-hover:scale-110 transition-transform duration-700" />
                   {renderIcon(card.icon, 'text-5xl text-[#0fafb8] mb-8')}
-                  <h3 className="text-3xl font-bold text-gray-900 mb-6 tracking-tight">{card.title}</h3>
+                  <h3 className="text-3xl font-semibold text-gray-900 mb-6 tracking-tight">{card.title}</h3>
                   <p className="text-lg text-gray-600 leading-relaxed max-w-xl font-light">{card.description}</p>
                </div>
              );
@@ -197,7 +197,7 @@ export default function AboutUs() {
       {/* 4. Leadership - Asymmetric Hover Cards */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-20">
-           <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-6">{content.team_heading}</h2>
+           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-6">{content.team_heading}</h2>
            <p className="text-xl text-gray-500 font-light max-w-2xl mx-auto">{content.team_subheading}</p>
         </div>
 
@@ -215,7 +215,7 @@ export default function AboutUs() {
                       <img src={member.photo} alt={member.name} className="absolute top-0 left-0 w-full h-full min-h-full object-cover transform group-hover:scale-105 transition-transform duration-700 z-0" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#040914]/90 via-[#040914]/40 to-transparent z-10" />
                       <div className="absolute bottom-0 left-0 right-0 p-8 z-20 text-center">
-                        <h3 className="text-3xl font-bold text-white mb-1 drop-shadow-md">{member.name}</h3>
+                        <h3 className="text-3xl font-semibold text-white mb-1 drop-shadow-md">{member.name}</h3>
                         <p className={`${nameColor} font-bold uppercase tracking-widest text-sm drop-shadow-sm`}>{member.role}</p>
                       </div>
                    </div>
@@ -265,7 +265,7 @@ export default function AboutUs() {
                               </div>
                               <span className="px-4 py-2 rounded-full border border-white/20 text-white/70 text-sm font-semibold tracking-wider">{card.badge_text}</span>
                            </div>
-                           <h3 className="text-3xl font-bold text-white mb-4 tracking-tight">{card.title}</h3>
+                           <h3 className="text-3xl font-semibold text-white mb-4 tracking-tight">{card.title}</h3>
                            <p className="text-gray-400 font-light text-lg max-w-xl leading-relaxed">{card.description}</p>
                          </div>
                       </div>
@@ -282,7 +282,7 @@ export default function AboutUs() {
                          </div>
                          <div>
                            <div className="flex items-center gap-3 mb-2">
-                              <h4 className="font-bold text-2xl text-white">{card.title}</h4>
+                              <h4 className="font-semibold text-2xl text-white">{card.title}</h4>
                               <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs font-bold rounded">{card.badge_text}</span>
                            </div>
                            <p className="text-gray-400 font-light text-sm leading-relaxed max-w-2xl">{card.description}</p>
@@ -300,7 +300,7 @@ export default function AboutUs() {
                        </div>
                        <div className="mt-16">
                          <div className="text-xs text-blue-400 font-bold uppercase tracking-widest mb-2">{card.badge_text}</div>
-                         <h4 className="font-bold text-2xl text-white mb-3">{card.title}</h4>
+                         <h4 className="font-semibold text-2xl text-white mb-3">{card.title}</h4>
                          <p className="text-gray-500 font-light text-sm leading-relaxed">{card.description}</p>
                        </div>
                     </div>
@@ -316,7 +316,7 @@ export default function AboutUs() {
       <section className="py-32 px-6 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-20 items-center">
            <div className="lg:w-1/3">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-6 leading-tight">{content.testimonials_heading}</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight mb-6 leading-tight">{content.testimonials_heading}</h2>
               <p className="text-lg text-gray-500 font-light mb-10">
                 {content.testimonials_subheading}
               </p>
@@ -357,7 +357,7 @@ export default function AboutUs() {
                             <div className="flex items-center gap-6">
                               <img src={testimonial.avatar} alt={testimonial.name} className="w-16 h-16 rounded-full object-cover shadow-md" />
                               <div>
-                                <h5 className="font-bold text-xl text-gray-900">{testimonial.name}</h5>
+                                <h5 className="font-semibold text-xl text-gray-900">{testimonial.name}</h5>
                                 <p className="text-sm text-gray-500 font-medium tracking-wide uppercase mt-1">{testimonial.title}</p>
                               </div>
                             </div>

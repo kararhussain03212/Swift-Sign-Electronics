@@ -53,7 +53,7 @@ export default function AboutTestimonialForm() {
     setSaving(true);
     try {
       if (avatarFile) {
-        payload.avatar = await uploadImage(avatarFile, "about");
+        payload.avatar = await uploadImage(avatarFile, "about", form.avatar);
       }
       if (isEdit) await updateAboutTestimonial(id, payload);
       else await createAboutTestimonial(payload);

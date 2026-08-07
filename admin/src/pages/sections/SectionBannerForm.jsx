@@ -73,7 +73,7 @@ export default function SectionBannerForm() {
     setSaving(true);
     try {
       if (imageFile) {
-        payload.bg_image = await uploadImage(imageFile, "sections");
+        payload.bg_image = await uploadImage(imageFile, "sections", form.bg_image || "");
       }
       if (isEdit) await updateSectionBanner(id, payload);
       else await createSectionBanner(payload);
@@ -103,27 +103,18 @@ export default function SectionBannerForm() {
       ) : null}
 
       <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[var(--admin-border)] bg-[var(--admin-bg)] p-5">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Section key *</span>
-            <select value={form.section_key} onChange={set("section_key")} className={inputCls}>
-              <option value="" className="bg-[var(--admin-bg)] text-[var(--admin-ink)]">Select section…</option>
-              {categoryNames.map((cat) => (
-                <option key={cat} value={slugify(cat)} className="bg-[var(--admin-bg)] text-[var(--admin-ink)]">{slugify(cat)}</option>
-              ))}
-            </select>
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Product category *</span>
-            <select value={form.category || ""} onChange={set("category")} className={inputCls}>
-              <option value="" className="bg-[var(--admin-bg)] text-[var(--admin-ink)]">Select category…</option>
-              {categoryNames.map((cat) => (
-                <option key={cat} value={cat} className="bg-[var(--admin-bg)] text-[var(--admin-ink)]">{cat}</option>
-              ))}
-            </select>
-            <p className="mt-1 text-xs text-[var(--admin-muted-light)]">Products shown in the carousel below this banner. Pulled live from Categories — add a new one there and it appears here.</p>
-          </label>
-        </div>
+        <label className="block">
+          <span className="mb-1 block text-sm font-semibold text-[var(--admin-ink)]">Product category *</span>
+          <select value={form.category || ""} onChange={(e) => {
+            setForm(f => ({ ...f, category: e.target.value, section_key: slugify(e.target.value) }));
+          }} className={inputCls}>
+            <option value="" className="bg-[var(--admin-bg)] text-[var(--admin-ink)]">Select category…</option>
+            {categoryNames.map((cat) => (
+              <option key={cat} value={cat} className="bg-[var(--admin-bg)] text-[var(--admin-ink)]">{cat}</option>
+            ))}
+          </select>
+          <p className="mt-1 text-xs text-[var(--admin-muted-light)]">Products shown in the carousel below this banner. Pulled live from Categories — add a new one there and it appears here.</p>
+        </label>
 
         <div className="rounded-xl border border-[var(--admin-border)] p-4">
           <p className="mb-3 text-sm font-bold text-[var(--admin-ink)]">Page heading</p>

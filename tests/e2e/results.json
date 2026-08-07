@@ -1,0 +1,42 @@
+[
+  {
+    "step": "a. Admin login",
+    "ok": true,
+    "detail": "http://localhost:5174/dashboard"
+  },
+  {
+    "step": "b. Create product",
+    "ok": true,
+    "detail": "http://localhost:5174/products"
+  },
+  {
+    "step": "c. Storefront shows new product",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "step": "d. Edit product saved",
+    "ok": true,
+    "detail": "http://localhost:5174/products"
+  },
+  {
+    "step": "d. Storefront reflects edit",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "step": "e. Storefront shows new image",
+    "ok": true,
+    "detail": "before=http://localhost/Electronics/backend/uploads/img_6a757523e0c394.77741905.webp after=http://localhost/Electronics/backend/uploads/img_6a75754eeda0b9.07436011.webp"
+  },
+  {
+    "step": "f. Deleted from admin list",
+    "ok": true,
+    "detail": ""
+  },
+  {
+    "step": "f. Gone from storefront",
+    "ok": true,
+    "detail": ""
+  }
+]

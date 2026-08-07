@@ -9,6 +9,7 @@ use Backend\Config\Env;
 use Backend\Models\ContactMessage;
 use Backend\Models\ContactPageSetting;
 use Backend\Utils\Cache;
+use Backend\Utils\RateLimiter;
 use Backend\Utils\Response;
 use Backend\Utils\Validator;
 
@@ -18,6 +19,7 @@ require_once __DIR__ . '/../config/env.php';
 require_once __DIR__ . '/../models/ContactMessage.php';
 require_once __DIR__ . '/../models/ContactPageSetting.php';
 require_once __DIR__ . '/../utils/Cache.php';
+require_once __DIR__ . '/../utils/RateLimiter.php';
 require_once __DIR__ . '/../utils/Response.php';
 require_once __DIR__ . '/../utils/Validator.php';
 
@@ -55,6 +57,8 @@ final class ContactController extends BaseController
     /* ── Public: store contact message ─────────────────────── */
     public function store(array $params = []): void
     {
+        RateLimiter::enforce('contact', 5, 300);
+
         $payload = Validator::sanitizeInput($this->body());
 
         $errors = [];

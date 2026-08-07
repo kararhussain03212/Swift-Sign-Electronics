@@ -184,17 +184,21 @@ abstract class BaseModel
 
     public function reorder(array $items): bool
     {
-        if (!$this->hasColumn('order_position')) {
+        if ($this->hasColumn('order_position')) {
+            $orderColumn = 'order_position';
+        } elseif ($this->hasColumn('sort_order')) {
+            $orderColumn = 'sort_order';
+        } else {
             return false;
         }
 
         $this->pdo->beginTransaction();
 
         try {
-            $stmt = $this->pdo->prepare('UPDATE ' . $this->table . ' SET order_position = :order_position, updated_at = NOW() WHERE id = :id');
+            $stmt = $this->pdo->prepare('UPDATE ' . $this->table . ' SET ' . $orderColumn . ' = :order_position, updated_at = NOW() WHERE id = :id');
             foreach ($items as $index => $item) {
                 $id = (int) ($item['id'] ?? 0);
-                $position = (int) ($item['order_position'] ?? $index + 1);
+                $position = (int) ($item['order_position'] ?? $item['sort_order'] ?? $index + 1);
                 if ($id <= 0) {
                     continue;
                 }

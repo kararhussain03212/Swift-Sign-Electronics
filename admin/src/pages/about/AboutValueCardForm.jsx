@@ -61,7 +61,7 @@ export default function AboutValueCardForm() {
     setSaving(true);
     try {
       if (imageFile) {
-        payload.image = await uploadImage(imageFile, "about");
+        payload.image = await uploadImage(imageFile, "about", form.image);
       }
       if (isEdit) await updateAboutValueCard(id, payload);
       else await createAboutValueCard(payload);

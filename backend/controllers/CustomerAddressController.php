@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Backend\Controllers;
 
 use Backend\Models\Address;
+use Backend\Models\Customer;
 use Backend\Utils\Response;
 
 require_once __DIR__ . '/BaseController.php';
 require_once __DIR__ . '/../models/Address.php';
+require_once __DIR__ . '/../models/Customer.php';
 require_once __DIR__ . '/../utils/Response.php';
 
 final class CustomerAddressController extends BaseController
@@ -18,38 +20,8 @@ final class CustomerAddressController extends BaseController
         $this->requirePermission('manage_users');
 
         try {
-            $pdo = \Backend\Config\Database::connection();
-
-            $stmt = $pdo->prepare('
-                SELECT
-                    u.id, u.name, u.email,
-                    COUNT(a.id) as address_count,
-                    GROUP_CONCAT(
-                        JSON_OBJECT(
-                            "id", a.id,
-                            "label", a.label,
-                            "first_name", a.first_name,
-                            "last_name", a.last_name,
-                            "phone", a.phone,
-                            "email", a.email,
-                            "street_address", a.street_address,
-                            "apartment", a.apartment,
-                            "city", a.city,
-                            "state", a.state,
-                            "postal_code", a.postal_code,
-                            "country", a.country,
-                            "is_default", a.is_default,
-                            "created_at", a.created_at
-                        )
-                    ) as addresses_json
-                FROM users u
-                LEFT JOIN addresses a ON u.id = a.user_id
-                GROUP BY u.id
-                ORDER BY u.created_at DESC
-            ');
-
-            $stmt->execute();
-            $rows = $stmt->fetchAll() ?: [];
+            $model = new Customer();
+            $rows = $model->allWithAddresses();
 
             $customers = array_map(function ($row) {
                 $addresses = [];
@@ -83,11 +55,8 @@ final class CustomerAddressController extends BaseController
         }
 
         try {
-            $pdo = \Backend\Config\Database::connection();
-
-            $stmt = $pdo->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
-            $stmt->execute([':id' => $customerId]);
-            $customer = $stmt->fetch();
+            $customerModel = new Customer();
+            $customer = $customerModel->find($customerId);
 
             if (!$customer) {
                 Response::error('Customer not found.', 404);

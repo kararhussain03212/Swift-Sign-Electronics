@@ -21,6 +21,7 @@ notes.md
 # Runtime-generated backend state (auto-recreated on request)
 backend/storage/cache/*.json
 backend/storage/login_rate_limit.json
+backend/storage/rate_limit_*.json
 
 # Editor directories and files
 .vscode/*

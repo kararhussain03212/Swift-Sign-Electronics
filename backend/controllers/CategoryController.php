@@ -19,6 +19,26 @@ final class CategoryController extends BaseCrudController
     protected string $resourceName = 'categories';
     protected array $requiredCreateFields = ['name'];
 
+    public function index(array $params = []): void
+    {
+        $model = new Category();
+        $query = $this->query();
+
+        if (($query['paginate'] ?? '1') === '1') {
+            $result = $model->paginate($query);
+            foreach ($result['data'] as &$item) {
+                $item['products_count'] = $model->getProductCount($item['name']);
+            }
+            Response::success($result, 'Fetched successfully');
+        }
+
+        $items = $model->all($query);
+        foreach ($items as &$item) {
+            $item['products_count'] = $model->getProductCount($item['name']);
+        }
+        Response::success($items, 'Fetched successfully');
+    }
+
     public function store(array $params = []): void
     {
         $this->requirePermission('create_content');
@@ -61,6 +81,10 @@ final class CategoryController extends BaseCrudController
         $ok = $model->update($id, $payload);
         if (!$ok) {
             Response::error('No changes were applied', 422);
+        }
+
+        if ($name !== $existing['name']) {
+            $model->renameInProducts($existing['name'], $name);
         }
 
         ActivityLogger::log($this->currentAdminId(), 'update', $this->resourceName, $id);

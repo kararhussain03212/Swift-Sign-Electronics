@@ -8,6 +8,7 @@ use Backend\Config\Database;
 use Backend\Middleware\AuthMiddleware;
 use Backend\Models\Admin;
 use Backend\Utils\Jwt;
+use Backend\Utils\RateLimiter;
 use Backend\Utils\Response;
 use Backend\Utils\Validator;
 
@@ -16,6 +17,7 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../middleware/auth.php';
 require_once __DIR__ . '/../models/Admin.php';
 require_once __DIR__ . '/../utils/Jwt.php';
+require_once __DIR__ . '/../utils/RateLimiter.php';
 require_once __DIR__ . '/../utils/Response.php';
 require_once __DIR__ . '/../utils/Validator.php';
 
@@ -178,6 +180,8 @@ final class AuthController extends BaseController
         if (!$user) {
             Response::error('Unauthorized', 401);
         }
+
+        RateLimiter::enforce('change_password', 5, 300);
 
         $payload = Validator::sanitizeInput($this->body());
         $currentPassword = (string) ($payload['current_password'] ?? '');

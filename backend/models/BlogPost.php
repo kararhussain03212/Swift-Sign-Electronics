@@ -17,6 +17,22 @@ final class BlogPost extends BaseModel
         'is_published', 'published_at', 'sort_order',
     ];
 
+    public function slugExists(string $slug, ?int $excludeId = null): bool
+    {
+        $sql = 'SELECT id FROM ' . $this->table . ' WHERE slug = :slug';
+        $params = [':slug' => $slug];
+
+        if ($excludeId !== null) {
+            $sql .= ' AND id != :exclude_id';
+            $params[':exclude_id'] = $excludeId;
+        }
+
+        $stmt = $this->pdo->prepare($sql . ' LIMIT 1');
+        $stmt->execute($params);
+
+        return $stmt->fetch() !== false;
+    }
+
     public function search(string $query): array
     {
         $like = '%' . str_replace(['%', '_'], ['\\%', '\\_'], $query) . '%';

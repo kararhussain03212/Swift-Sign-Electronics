@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { FiGrid, FiList, FiChevronDown, FiAlertCircle } from 'react-icons/fi';
 import { useShop } from '../context/ShopContext';
@@ -37,6 +37,22 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const itemsPerPage = 16;
+
+  // On first mount, `products` hasn't loaded yet so `maxPrice` falls back to the
+  // default (1000) and gets baked into filters.priceRange[1] at init time. Once
+  // products arrive, re-sync the upper bound to the real max — but only while the
+  // user hasn't manually narrowed it (tracked via the previous maxPrice value).
+  const prevMaxPriceRef = useRef(maxPrice);
+  useEffect(() => {
+    setFilters(prev => {
+      if (prev.priceRange[1] === prevMaxPriceRef.current) {
+        prevMaxPriceRef.current = maxPrice;
+        return { ...prev, priceRange: [prev.priceRange[0], maxPrice] };
+      }
+      prevMaxPriceRef.current = maxPrice;
+      return prev;
+    });
+  }, [maxPrice]);
 
   // Initialize search from sessionStorage if available
   useEffect(() => {

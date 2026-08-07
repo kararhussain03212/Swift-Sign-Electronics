@@ -45,6 +45,7 @@ final class FileUpload
         'icons',
         'profiles',
         'documents',
+        'about',
     ];
     private const WEBP_QUALITY = 82;
 
@@ -203,7 +204,7 @@ final class FileUpload
         }
     }
 
-    private static function deleteExistingUpload(string $oldPath): void
+    public static function deleteExistingUpload(string $oldPath): void
     {
         $path = parse_url(trim($oldPath), PHP_URL_PATH);
         if (!is_string($path) || $path === '' || !self::startsWith($path, '/uploads/')) {

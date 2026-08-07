@@ -63,6 +63,7 @@ final class BlogController extends BaseCrudController
 
     public function store(array $params = []): void
     {
+        $this->requirePermission('create_content');
         $model = new BlogPost();
         $raw = $this->body();
         $payload = Validator::sanitizeInput($raw);
@@ -76,9 +77,8 @@ final class BlogController extends BaseCrudController
             Response::error('Validation failed', 422, ['fields' => $errors]);
         }
 
-        if (isset($payload['title']) && (!isset($payload['slug']) || trim((string) $payload['slug']) === '')) {
-            $payload['slug'] = $this->slugify((string) $payload['title']);
-        }
+        $requestedSlug = isset($payload['slug']) ? trim((string) $payload['slug']) : '';
+        $payload['slug'] = $this->uniqueSlug($model, $requestedSlug !== '' ? $requestedSlug : (string) $payload['title']);
 
         $id = $model->create($payload);
         ActivityLogger::log($this->currentAdminId(), 'create', $this->resourceName, $id);
@@ -89,13 +89,15 @@ final class BlogController extends BaseCrudController
 
     public function update(array $params): void
     {
+        $this->requirePermission('edit_content');
         $id = (int) ($params['id'] ?? 0);
         if ($id <= 0) {
             Response::error('Invalid resource ID', 422);
         }
 
         $model = new BlogPost();
-        if (!$model->find($id)) {
+        $existing = $model->find($id);
+        if (!$existing) {
             Response::error('Resource not found', 404);
         }
 
@@ -106,8 +108,10 @@ final class BlogController extends BaseCrudController
             $payload['body'] = trim((string) $raw['body']);
         }
 
-        if (isset($payload['title']) && (!isset($payload['slug']) || trim((string) $payload['slug']) === '')) {
-            $payload['slug'] = $this->slugify((string) $payload['title']);
+        if (isset($payload['slug']) || isset($payload['title'])) {
+            $requestedSlug = isset($payload['slug']) ? trim((string) $payload['slug']) : '';
+            $fallback = $requestedSlug !== '' ? $requestedSlug : (string) ($payload['title'] ?? $existing['title']);
+            $payload['slug'] = $this->uniqueSlug($model, $fallback, $id);
         }
 
         $ok = $model->update($id, $payload);
@@ -119,6 +123,27 @@ final class BlogController extends BaseCrudController
         Cache::clearAll();
 
         Response::success($model->find($id), 'Updated successfully');
+    }
+
+    /**
+     * Slugify the requested value, then disambiguate against existing rows
+     * so `slug` stays unique (mirrors CategoryController::uniqueSlug()).
+     */
+    private function uniqueSlug(BlogPost $model, string $requested, ?int $excludeId = null): string
+    {
+        $base = $this->slugify($requested);
+        if ($base === '') {
+            $base = 'post';
+        }
+
+        $slug = $base;
+        $suffix = 2;
+        while ($model->slugExists($slug, $excludeId)) {
+            $slug = $base . '-' . $suffix;
+            $suffix++;
+        }
+
+        return $slug;
     }
 
     public function publicShowBySlug(array $params): void

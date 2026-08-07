@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace Backend\Controllers;
 
 use Backend\Models\Order;
+use Backend\Models\Product;
 use Backend\Utils\ActivityLogger;
+use Backend\Utils\RateLimiter;
 use Backend\Utils\Response;
 use Backend\Utils\Validator;
 
 require_once __DIR__ . '/BaseCrudController.php';
 require_once __DIR__ . '/../models/Order.php';
+require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../utils/ActivityLogger.php';
+require_once __DIR__ . '/../utils/RateLimiter.php';
 require_once __DIR__ . '/../utils/Response.php';
 require_once __DIR__ . '/../utils/Validator.php';
 
@@ -26,6 +30,8 @@ final class OrderController extends BaseCrudController
      */
     public function publicStore(array $params = []): void
     {
+        RateLimiter::enforce('orders', 10, 300);
+
         $raw   = $this->body();
         $order = Validator::sanitizeInput($raw);
 
@@ -39,10 +45,32 @@ final class OrderController extends BaseCrudController
             Response::error('Order must contain at least one item', 422);
         }
 
+        // Never trust client-submitted prices: recompute each line's unit price
+        // from the product's current price/discount in the database.
+        $productModel = new Product();
         $subtotal = 0.0;
-        foreach ($items as $item) {
-            $subtotal += ((float) ($item['price'] ?? 0)) * max(1, (int) ($item['quantity'] ?? 1));
+        foreach ($items as &$item) {
+            $qty = max(1, (int) ($item['quantity'] ?? 1));
+            $item['quantity'] = $qty;
+
+            $productId = isset($item['product_id']) ? (int) $item['product_id'] : 0;
+            $product = $productId > 0 ? $productModel->find($productId) : null;
+
+            if ($product !== null) {
+                $price = (float) ($product['price'] ?? 0);
+                $discount = (float) ($product['discount'] ?? 0);
+                $item['price'] = round($price * (1 - max(0, min(100, $discount)) / 100), 2);
+                if (($item['name'] ?? '') === '') {
+                    $item['name'] = (string) ($product['name'] ?? '');
+                }
+            } else {
+                // Unknown/deleted product: do not trust any client-supplied price.
+                $item['price'] = 0.0;
+            }
+
+            $subtotal += $item['price'] * $qty;
         }
+        unset($item);
 
         $order['order_number'] = 'SSE-' . strtoupper(bin2hex(random_bytes(4)));
         $order['subtotal']     = $subtotal;

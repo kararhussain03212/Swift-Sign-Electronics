@@ -50,7 +50,7 @@ export default function AboutTeamMemberForm() {
     setSaving(true);
     try {
       if (photoFile) {
-        payload.photo = await uploadImage(photoFile, "about");
+        payload.photo = await uploadImage(photoFile, "about", form.photo);
       }
       if (isEdit) await updateAboutTeamMember(id, payload);
       else await createAboutTeamMember(payload);
