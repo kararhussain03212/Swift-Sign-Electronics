@@ -16,6 +16,7 @@ public/api/mail-config.php
 dist
 dist-ssr
 *.loc=-
+notes.md
 
 # Runtime-generated backend state (auto-recreated on request)
 backend/storage/cache/*.json
