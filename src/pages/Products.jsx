@@ -165,17 +165,6 @@ export default function Products() {
     return sortedProducts.slice(startIdx, startIdx + itemsPerPage);
   }, [sortedProducts, currentPage]);
 
-  const handleCategoryNavClick = (categoryName) => {
-    const isAlreadySelected = filters.categories.includes(categoryName);
-    if (isAlreadySelected) {
-      navigate('/products');
-    } else {
-      const cat = productCategories.find(c => c.name === categoryName);
-      if (cat) {
-        navigate(`/products/${cat.cat_key}`);
-      }
-    }
-  };
 
   const handleResetAll = () => {
     setFilters({
@@ -195,50 +184,37 @@ export default function Products() {
     <div className="max-w-[1536px] mx-auto px-4 lg:px-8 py-10 min-h-screen space-y-12">
 
 
-      {/* Category Pills Quick Navigation */}
-      <section className="space-y-4 text-left">
-        {/* <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <h2 className="text-lg md:text-xl font-black text-slate-800 dark:text-slate-100 flex items-center gap-2 flex-grow margin-0">
-            <span>Categories</span>
-            <span className="h-1 flex-grow bg-slate-100 dark:bg-slate-850 rounded-none" />
-          </h2>
-          
-          <SearchBar
-            value={filters.search}
-            onChange={handleSearchChange}
-            placeholder="Search parts, tools, kits..."
-          />
-        </div> */}
-        
-        <div className="flex flex-wrap gap-2.5">
-          <button
-            onClick={() => navigate('/products')}
-            className={`px-6 py-3 rounded-none font-bold text-sm transition-all cursor-pointer border flex items-center gap-2 ${
-              filters.categories.length === 0
-                ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/10'
-                : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'
-            }`}
+      {/* Category Dropdown Filter */}
+      <section className="flex items-center gap-3">
+        <label htmlFor="category-select" className="text-sm font-bold text-slate-700 whitespace-nowrap">
+          Filter by Category:
+        </label>
+        <div className="relative flex-1 max-w-xs">
+          <select
+            id="category-select"
+            value={filters.categories.length === 0 ? '' : filters.categories[0]}
+            onChange={(e) => {
+              if (e.target.value === '') {
+                navigate('/products');
+              } else {
+                const cat = productCategories.find(c => c.name === e.target.value);
+                if (cat) {
+                  navigate(`/products/${cat.cat_key}`);
+                }
+              }
+            }}
+            className="w-full appearance-none bg-white text-slate-700 font-semibold text-sm py-2.5 pl-4 pr-10 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm hover:border-slate-400 transition-all cursor-pointer"
           >
-            <span>All Products</span>
-            {filters.categories.length === 0 && <span className="h-2 w-2 rounded-full bg-white animate-pulse"></span>}
-          </button>
-          {productCategories.filter(cat => cat.cat_key !== 'all').map((cat) => {
-            const isSelected = filters.categories.includes(cat.name);
-            return (
-              <button
-                key={cat.id}
-                onClick={() => handleCategoryNavClick(cat.name)}
-                className={`px-6 py-3 rounded-none font-bold text-sm transition-all cursor-pointer border flex items-center gap-2 ${
-                  isSelected
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/10'
-                    : 'bg-white text-slate-700 border-slate-200 hover:border-slate-400'
-                }`}
-              >
-                <span>{cat.name}</span>
-                {isSelected && <span className="h-2 w-2 rounded-full bg-white animate-pulse"></span>}
-              </button>
-            );
-          })}
+            <option value="">All Products</option>
+            {productCategories.filter(cat => cat.cat_key !== 'all').map((cat) => (
+              <option key={cat.id} value={cat.name}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+          <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
         </div>
       </section>
 

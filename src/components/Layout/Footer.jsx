@@ -42,18 +42,20 @@ export default function Footer() {
           
           {/* Brand */}
           <div className="flex flex-col gap-3.5 sm:gap-6 lg:col-span-1">
-            <Link to="/" className="inline-block">
-              {footerLogoUrl ? (
-                <div className="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full inline-flex items-center justify-center">
-                  <img src={footerLogoUrl} alt={footerLogoAlt} className="h-16 md:h-24 w-auto object-contain" />
-                </div>
-              ) : (
-                <h2 className="text-2xl font-black text-white tracking-tight">
-                  {settings.brand_name} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0fafb8] to-blue-400">{settings.brand_subtitle}</span>
-                </h2>
-              )}
-            </Link>
-            <p className="text-sm text-slate-400 leading-relaxed font-medium">
+            <div className="cursor-pointer">
+              <Link to="/" className="inline-block hover:opacity-80 transition-opacity">
+                {footerLogoUrl ? (
+                  <div className="w-20 h-20 md:w-28 md:h-28 bg-white rounded-full inline-flex items-center justify-center">
+                    <img src={footerLogoUrl} alt={footerLogoAlt} className="h-16 md:h-24 w-auto object-contain" />
+                  </div>
+                ) : (
+                  <h2 className="text-2xl font-black text-white tracking-tight">
+                    {settings.brand_name} <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0fafb8] to-blue-400">{settings.brand_subtitle}</span>
+                  </h2>
+                )}
+              </Link>
+            </div>
+            <p className="text-sm text-slate-400 leading-relaxed font-medium pointer-events-none">
               {settings.footer_description}
             </p>
           </div>

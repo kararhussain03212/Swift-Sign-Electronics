@@ -131,7 +131,7 @@ export default function ProductCard({ product, viewMode = 'grid', onQuickView = 
   return (
     <div className="group relative flex flex-col justify-between bg-white border border-slate-200 hover:border-blue-500/50 rounded-none hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
       {/* Image Panel */}
-      <div className="relative w-full h-44 xs:h-48 sm:h-52 md:h-56 lg:h-60 shrink-0 overflow-hidden bg-slate-50 flex items-center justify-center p-2">
+      <div className="relative w-full h-56 xs:h-60 sm:h-64 md:h-72 lg:h-80 shrink-0 overflow-hidden bg-slate-50 flex items-center justify-center p-2">
         <img
           src={product.thumbnail}
           alt={product.name}

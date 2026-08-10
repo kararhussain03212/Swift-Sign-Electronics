@@ -12,7 +12,6 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
     (cat) => cat.cat_key !== 'all' && cat.is_active !== 0 && cat.is_active !== false
   );
   const brandName = siteSettings?.brand_name || DEFAULT_SITE_SETTINGS.brand_name;
-  const brandSubtitle = siteSettings?.brand_subtitle || DEFAULT_SITE_SETTINGS.brand_subtitle;
   const navLogoUrl = siteSettings?.nav_logo
     ? resolveUploadUrl(siteSettings.nav_logo)
     : DEFAULT_SITE_SETTINGS.nav_logo;
@@ -110,40 +109,35 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
         <div className="flex justify-between items-center min-h-[60px] sm:min-h-[72px] md:min-h-[84px] py-3 sm:py-4">
           
           {/* Logo Section */}
-          <div 
-            className="flex-shrink-0 flex items-center gap-3 cursor-pointer group" 
+          <div
+            className="flex-shrink-0 flex items-center cursor-pointer group"
             onClick={() => onTabChange?.('home')}
           >
             {/* Logo */}
             {navLogoUrl ? (
-              <div className="w-12 h-12 rounded-full border-2 border-gray-100 flex items-center justify-center overflow-hidden transition-colors">
+              <div className="w-12 h-12 rounded-full border-2 border-gray-100 flex items-center justify-center overflow-hidden transition-colors hover:border-[#0fafb8]">
                 <img src={navLogoUrl} alt={navLogoAlt} className="w-full h-full object-contain" />
               </div>
             ) : (
-              <div className="w-12 h-12 rounded-full border-2 border-gray-100 bg-gray-50 flex items-center justify-center p-1 transition-colors">
+              <div className="w-12 h-12 rounded-full border-2 border-gray-100 bg-gray-50 flex items-center justify-center p-1 transition-colors hover:border-[#0fafb8]">
                 <div className="w-full h-full rounded-full border border-dashed border-[#0fafb8] flex items-center justify-center text-[#0fafb8] bg-[#0fafb8]/5">
                   <Cpu className="w-5 h-5" />
                 </div>
               </div>
             )}
-            <div className="flex flex-col justify-center min-w-0">
-              <span className="font-sans text-[16px] sm:text-[20px] md:text-[24px] font-extrabold tracking-tight leading-none text-gray-900 truncate max-w-[120px] sm:max-w-[200px] md:max-w-none">
-                {brandName}
-              </span>
-              <span className="text-[8px] sm:text-[10px] font-bold text-[#0fafb8] tracking-[0.2em] sm:tracking-[0.25em] uppercase mt-0.5 sm:mt-1 truncate">
-                {brandSubtitle}
-              </span>
-            </div>
           </div>
 
           {/* Center Navigation */}
           <div className="hidden lg:flex items-center gap-8">
             <nav className="flex items-center gap-8">
               {navLinks.map((link) => {
-                const dropdownItems = (link.items || []).filter(
-                  (item) => item.is_active !== 0 && item.is_active !== false
-                );
-                const hasDropdown = dropdownItems.length > 0 || (link.link_key === 'products' && categories.length > 0);
+                const isProductsLink = link.link_key === 'products';
+                const dropdownItems = isProductsLink
+                  ? []
+                  : (link.items || []).filter(
+                      (item) => item.is_active !== 0 && item.is_active !== false
+                    );
+                const hasDropdown = dropdownItems.length > 0 || (isProductsLink && categories.length > 0);
 
                 return (
                   <div key={link.id} className="relative group">
@@ -314,10 +308,13 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
           {/* Navigation Links */}
           <nav className="flex flex-col gap-1.5 overflow-y-auto flex-1">
             {navLinks.map((link) => {
-              const dropdownItems = (link.items || []).filter(
-                (item) => item.is_active !== 0 && item.is_active !== false
-              );
-              const hasDropdown = dropdownItems.length > 0;
+              const isProductsLink = link.link_key === 'products';
+              const dropdownItems = isProductsLink
+                ? []
+                : (link.items || []).filter(
+                    (item) => item.is_active !== 0 && item.is_active !== false
+                  );
+              const hasDropdown = dropdownItems.length > 0 || (isProductsLink && categories.length > 0);
               const isExpanded = mobileExpandedLink === link.id;
 
               return (
@@ -349,18 +346,31 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
 
                   {hasDropdown && isExpanded && (
                     <div className="flex flex-col gap-1 pl-4">
-                      {dropdownItems.map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => {
-                            navigate(item.url);
-                            setIsMobileMenuOpen(false);
-                          }}
-                          className="text-left text-sm px-4 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all cursor-pointer"
-                        >
-                          {item.label}
-                        </button>
-                      ))}
+                      {dropdownItems.length > 0
+                        ? dropdownItems.map((item) => (
+                            <button
+                              key={item.id}
+                              onClick={() => {
+                                navigate(item.url);
+                                setIsMobileMenuOpen(false);
+                              }}
+                              className="text-left text-sm px-4 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all cursor-pointer"
+                            >
+                              {item.label}
+                            </button>
+                          ))
+                        : categories.map((cat) => (
+                            <button
+                              key={cat.id}
+                              onClick={() => {
+                                navigate(`/products/${cat.cat_key}`);
+                                setIsMobileMenuOpen(false);
+                              }}
+                              className="text-left text-sm px-4 py-2.5 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all cursor-pointer"
+                            >
+                              {cat.name}
+                            </button>
+                          ))}
                     </div>
                   )}
                 </div>
