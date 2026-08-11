@@ -16,20 +16,24 @@ async function get(path) {
   const res = await fetch(`${API_BASE}${path}`);
   if (!res.ok) throw new Error(`API ${path} failed: ${res.status}`);
   const json = await res.json();
-  if (!json.success) throw new Error(json.message || `API ${path} failed`);
+  if (!json.success) throw new Error(json.message || json.error || `API ${path} failed`);
   return json.data;
 }
 
-async function post(path, body) {
+async function send(method, path, body) {
   const res = await fetch(`${API_BASE}${path}`, {
-    method: "POST",
+    method,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
   const json = await res.json().catch(() => ({}));
-  if (!res.ok || !json.success) throw new Error(json.message || `API ${path} failed`);
+  if (!res.ok || !json.success) throw new Error(json.message || json.error || `API ${path} failed`);
   return json.data;
 }
+
+const post = (path, body) => send("POST", path, body);
+const put = (path, body) => send("PUT", path, body);
+const del = (path, body) => send("DELETE", path, body);
 
 const parseMaybeJson = (v, fallback) => {
   if (v == null) return fallback;
@@ -182,3 +186,12 @@ export const fetchAboutTestimonials = async () =>
     ...row,
     avatar: resolveUploadUrl(row.avatar),
   }));
+
+export const fetchProductComments = (productId) =>
+  get(`/public/products/${productId}/comments`);
+export const submitProductComment = (productId, payload) =>
+  post(`/public/products/${productId}/comments`, payload);
+export const updateProductComment = (commentId, payload) =>
+  put(`/public/comments/${commentId}`, payload);
+export const deleteProductComment = (commentId, editToken) =>
+  del(`/public/comments/${commentId}`, { edit_token: editToken });

@@ -3,13 +3,41 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   FiHeart, FiShoppingCart, FiShare2,
   FiFileText, FiPlus, FiMinus, FiCheck, FiChevronDown, FiAlertCircle,
-  FiMail, FiPhone, FiInfo, FiActivity
+  FiMail, FiPhone, FiInfo, FiActivity, FiEdit2, FiTrash2, FiX
 } from 'react-icons/fi';
 import { useShop } from '../context/ShopContext';
 import ProductGallery from '../components/Products/ProductGallery';
 import ProductTabs from '../components/Products/ProductTabs';
 import RelatedProducts from '../components/Products/RelatedProducts';
 import Rating from '../components/Products/Rating';
+import {
+  fetchProductComments,
+  submitProductComment,
+  updateProductComment,
+  deleteProductComment,
+} from '../api/shopApi';
+
+const COMMENT_TOKENS_KEY = 'electro_comment_tokens';
+
+const loadCommentTokens = () => {
+  try {
+    return JSON.parse(localStorage.getItem(COMMENT_TOKENS_KEY) || '{}');
+  } catch {
+    return {};
+  }
+};
+
+const saveCommentToken = (commentId, token) => {
+  const tokens = loadCommentTokens();
+  tokens[commentId] = token;
+  localStorage.setItem(COMMENT_TOKENS_KEY, JSON.stringify(tokens));
+};
+
+const removeCommentToken = (commentId) => {
+  const tokens = loadCommentTokens();
+  delete tokens[commentId];
+  localStorage.setItem(COMMENT_TOKENS_KEY, JSON.stringify(tokens));
+};
 
 export default function ProductDetails({ onQuickView }) {
   const { slug } = useParams();
@@ -34,28 +62,86 @@ export default function ProductDetails({ onQuickView }) {
   const [faqOpen, setFaqOpen] = useState({});
 
   // Comments State
-  const [comments, setComments] = useState([
-    { id: 1, user: 'Alex M.', email: 'alex@example.com', text: 'Great product, highly recommend! The build quality is fantastic.', date: '2025-01-10' },
-    { id: 2, user: 'Sarah T.', email: 'sarah.t@example.com', text: 'Exactly what I was looking for. Fast shipping too.', date: '2025-01-15' }
-  ]);
+  const [comments, setComments] = useState([]);
+  const [commentTokens, setCommentTokens] = useState(loadCommentTokens);
   const [newComment, setNewComment] = useState('');
   const [commentName, setCommentName] = useState('');
   const [commentEmail, setCommentEmail] = useState('');
+  const [commentSubmitting, setCommentSubmitting] = useState(false);
+  const [commentError, setCommentError] = useState('');
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingText, setEditingText] = useState('');
+  const [commentActionError, setCommentActionError] = useState('');
 
-  const handleAddComment = (e) => {
+  const handleAddComment = async (e) => {
     e.preventDefault();
-    if (!newComment.trim() || !commentName.trim() || !commentEmail.trim()) return;
-    const comment = {
-      id: Date.now(),
-      user: commentName.trim(),
-      email: commentEmail.trim(),
-      text: newComment,
-      date: new Date().toISOString().split('T')[0]
-    };
-    setComments([...comments, comment]);
-    setNewComment('');
-    setCommentName('');
-    setCommentEmail('');
+    if (!newComment.trim() || !commentName.trim() || !commentEmail.trim() || !product) return;
+
+    setCommentSubmitting(true);
+    setCommentError('');
+    try {
+      const saved = await submitProductComment(product.id, {
+        name: commentName.trim(),
+        email: commentEmail.trim(),
+        comment: newComment.trim(),
+      });
+      saveCommentToken(saved.id, saved.edit_token);
+      setCommentTokens(loadCommentTokens());
+      setComments((prev) => [
+        { id: saved.id, product_id: saved.product_id, name: saved.name, comment: saved.comment, created_at: saved.created_at, updated_at: saved.updated_at },
+        ...prev,
+      ]);
+      setNewComment('');
+      setCommentName('');
+      setCommentEmail('');
+    } catch (err) {
+      setCommentError(err.message || 'Failed to post comment. Please try again.');
+    } finally {
+      setCommentSubmitting(false);
+    }
+  };
+
+  const startEditComment = (comment) => {
+    setCommentActionError('');
+    setEditingCommentId(comment.id);
+    setEditingText(comment.comment);
+  };
+
+  const cancelEditComment = () => {
+    setEditingCommentId(null);
+    setEditingText('');
+  };
+
+  const saveEditComment = async (commentId) => {
+    const token = commentTokens[commentId];
+    if (!token || !editingText.trim()) return;
+    setCommentActionError('');
+    try {
+      const updated = await updateProductComment(commentId, {
+        edit_token: token,
+        comment: editingText.trim(),
+      });
+      setComments((prev) => prev.map((c) => (c.id === commentId ? { ...c, comment: updated.comment, updated_at: updated.updated_at } : c)));
+      setEditingCommentId(null);
+      setEditingText('');
+    } catch (err) {
+      setCommentActionError(err.message || 'Failed to update comment.');
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    const token = commentTokens[commentId];
+    if (!token) return;
+    if (!window.confirm('Delete this comment?')) return;
+    setCommentActionError('');
+    try {
+      await deleteProductComment(commentId, token);
+      removeCommentToken(commentId);
+      setCommentTokens(loadCommentTokens());
+      setComments((prev) => prev.filter((c) => c.id !== commentId));
+    } catch (err) {
+      setCommentActionError(err.message || 'Failed to delete comment.');
+    }
   };
 
   // 1. Fetch Product
@@ -92,6 +178,16 @@ export default function ProductDetails({ onQuickView }) {
     setQuantity(1);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [product, products]);
+
+  // 3. Fetch comments for this product
+  useEffect(() => {
+    if (!product) return;
+    let cancelled = false;
+    fetchProductComments(product.id)
+      .then((rows) => { if (!cancelled) setComments(rows); })
+      .catch((err) => console.error('[ProductDetails] failed to load comments:', err));
+    return () => { cancelled = true; };
+  }, [product]);
 
   if (!product) return null;
 
@@ -334,30 +430,92 @@ export default function ProductDetails({ onQuickView }) {
       {/* Comments / Reviews Section */}
       <section className="bg-white border border-slate-200 p-6 md:p-10 shadow-sm mt-8">
         <h3 className="text-xl md:text-2xl font-black text-slate-800 mb-6">Comments & Reviews</h3>
-        
+
+        {commentActionError && (
+          <p className="text-xs text-red-500 font-semibold mb-4">{commentActionError}</p>
+        )}
+
         {/* Comments List */}
         <div className="space-y-6 mb-10">
           {comments.length === 0 ? (
             <p className="text-slate-500 text-sm">No comments yet. Be the first to share your thoughts!</p>
           ) : (
-            comments.map(comment => (
-              <div key={comment.id} className="pb-6 border-b border-slate-100 last:border-0 last:pb-0">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex flex-col">
-                    <span className="font-bold text-slate-800">{comment.user}</span>
-                    {comment.email && <span className="text-xs text-blue-500 font-medium">{comment.email}</span>}
+            comments.map(comment => {
+              const isOwner = Boolean(commentTokens[comment.id]);
+              const isEditing = editingCommentId === comment.id;
+              const displayDate = comment.updated_at || comment.created_at;
+
+              return (
+                <div key={comment.id} className="pb-6 border-b border-slate-100 last:border-0 last:pb-0">
+                  <div className="flex items-start justify-between mb-2 gap-3">
+                    <div className="flex flex-col">
+                      <span className="font-bold text-slate-800">
+                        {comment.name}
+                        {isOwner && <span className="ml-2 text-[10px] font-bold uppercase tracking-wider text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded">You</span>}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 flex-shrink-0">
+                      <span className="text-xs text-slate-400 mt-0.5">
+                        {displayDate ? String(displayDate).split(' ')[0] : ''}
+                      </span>
+                      {isOwner && !isEditing && (
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => startEditComment(comment)}
+                            className="text-slate-400 hover:text-blue-500 transition-colors cursor-pointer"
+                            title="Edit comment"
+                          >
+                            <FiEdit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteComment(comment.id)}
+                            className="text-slate-400 hover:text-red-500 transition-colors cursor-pointer"
+                            title="Delete comment"
+                          >
+                            <FiTrash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <span className="text-xs text-slate-400 mt-0.5">{comment.date}</span>
+
+                  {isEditing ? (
+                    <div className="mt-2 space-y-2">
+                      <textarea
+                        className="w-full border border-slate-300 rounded p-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all min-h-[80px]"
+                        value={editingText}
+                        onChange={(e) => setEditingText(e.target.value)}
+                      />
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={cancelEditComment}
+                          className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-700 px-3 py-1.5 rounded cursor-pointer"
+                        >
+                          <FiX className="w-3.5 h-3.5" /> Cancel
+                        </button>
+                        <button
+                          onClick={() => saveEditComment(comment.id)}
+                          className="flex items-center gap-1 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded cursor-pointer"
+                        >
+                          <FiCheck className="w-3.5 h-3.5" /> Save
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-slate-600 leading-relaxed mt-2">{comment.comment}</p>
+                  )}
                 </div>
-                <p className="text-sm text-slate-600 leading-relaxed mt-2">{comment.text}</p>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 
         {/* Add Comment Form */}
         <div className="bg-slate-50 p-6 rounded-lg border border-slate-100">
           <h4 className="font-bold text-slate-800 mb-4">Leave a Comment</h4>
+          {commentError && (
+            <p className="text-xs text-red-500 font-semibold mb-3">{commentError}</p>
+          )}
           <form onSubmit={handleAddComment} className="flex flex-col gap-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
@@ -387,9 +545,10 @@ export default function ProductDetails({ onQuickView }) {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow-sm transition-colors cursor-pointer"
+                disabled={commentSubmitting}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow-sm transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Post Comment
+                {commentSubmitting ? 'Posting...' : 'Post Comment'}
               </button>
             </div>
           </form>

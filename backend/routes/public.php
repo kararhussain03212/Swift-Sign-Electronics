@@ -17,6 +17,7 @@ use Backend\Controllers\HeroController;
 use Backend\Controllers\NavLinkController;
 use Backend\Controllers\OrderController;
 use Backend\Controllers\ProductController;
+use Backend\Controllers\ProductCommentController;
 use Backend\Controllers\SectionBannerController;
 use Backend\Controllers\SettingController;
 use Backend\Controllers\SocialLinkController;
@@ -27,6 +28,7 @@ require_once __DIR__ . '/../controllers/HeroController.php';
 require_once __DIR__ . '/../controllers/CategoryController.php';
 require_once __DIR__ . '/../controllers/OrderController.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
+require_once __DIR__ . '/../controllers/ProductCommentController.php';
 require_once __DIR__ . '/../controllers/SectionBannerController.php';
 require_once __DIR__ . '/../controllers/BlogController.php';
 require_once __DIR__ . '/../controllers/BlogCategoryController.php';
@@ -53,6 +55,12 @@ function registerPublicRoutes(Router $router): void
     $router->post('/api/public/orders', [OrderController::class, 'publicStore']);
     $router->get('/api/public/products', [ProductController::class, 'publicIndex']);
     $router->get('/api/public/products/{slug}', [ProductController::class, 'publicShowBySlug']);
+
+    // Product Comments (public, anonymous, token-guarded edit/delete)
+    $router->get('/api/public/products/{productId}/comments', [ProductCommentController::class, 'publicIndex']);
+    $router->post('/api/public/products/{productId}/comments', [ProductCommentController::class, 'store']);
+    $router->put('/api/public/comments/{id}', [ProductCommentController::class, 'update']);
+    $router->delete('/api/public/comments/{id}', [ProductCommentController::class, 'destroy']);
     $router->get('/api/public/blog', [BlogController::class, 'publicIndex']);
     $router->get('/api/public/blog/search', [BlogController::class, 'publicSearch']);
     $router->get('/api/public/blog/settings', [BlogController::class, 'publicBlogSettings']);

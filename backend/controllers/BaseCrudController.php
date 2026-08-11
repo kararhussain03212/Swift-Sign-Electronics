@@ -8,6 +8,7 @@ use Backend\Utils\ActivityLogger;
 use Backend\Utils\Cache;
 use Backend\Utils\Response;
 use Backend\Utils\Validator;
+use PDOException;
 
 require_once __DIR__ . '/BaseController.php';
 require_once __DIR__ . '/../utils/ActivityLogger.php';
@@ -74,7 +75,12 @@ abstract class BaseCrudController extends BaseController
             $payload['slug'] = $this->slugify((string) $payload['title']);
         }
 
-        $id = $model->create($payload);
+        try {
+            $id = $model->create($payload);
+        } catch (PDOException $e) {
+            $this->handleDuplicateEntry($e);
+            throw $e;
+        }
         ActivityLogger::log($this->currentAdminId(), 'create', $this->resourceName, $id);
         Cache::clearAll();
 
@@ -99,7 +105,12 @@ abstract class BaseCrudController extends BaseController
             $payload['slug'] = $this->slugify((string) $payload['title']);
         }
 
-        $ok = $model->update($id, $payload);
+        try {
+            $ok = $model->update($id, $payload);
+        } catch (PDOException $e) {
+            $this->handleDuplicateEntry($e);
+            throw $e;
+        }
 
         if (!$ok) {
             Response::error('No changes were applied', 422);
@@ -129,6 +140,25 @@ abstract class BaseCrudController extends BaseController
         Cache::clearAll();
 
         Response::success(null, 'Deleted successfully');
+    }
+
+    /**
+     * Converts a MySQL duplicate-key violation (1062) into a friendly 422
+     * response instead of letting it surface as a raw 500. Re-throws
+     * anything else so it's still visible in the error log.
+     */
+    private function handleDuplicateEntry(PDOException $e): void
+    {
+        if ((int) ($e->errorInfo[1] ?? 0) !== 1062) {
+            return;
+        }
+
+        $message = $e->errorInfo[2] ?? $e->getMessage();
+        if (preg_match("/Duplicate entry '(.+)' for key '(.+)'/", (string) $message, $matches)) {
+            Response::error(sprintf('"%s" is already in use for %s. Please choose a different value.', $matches[1], str_replace('_', ' ', $matches[2])), 422);
+        }
+
+        Response::error('This value is already in use. Please choose a different one.', 422);
     }
 
     public function reorder(array $params = []): void

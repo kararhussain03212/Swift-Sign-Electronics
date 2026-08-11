@@ -32,8 +32,6 @@ final class AuthController extends BaseController
 
     public function login(array $params = []): void
     {
-        $this->ensureRateLimit();
-
         $payload = Validator::sanitizeInput($this->body());
         $login = strtolower((string) ($payload['email'] ?? $payload['login'] ?? ''));
         $password = (string) ($payload['password'] ?? '');
@@ -42,12 +40,17 @@ final class AuthController extends BaseController
             Response::error('Invalid login credentials', 422);
         }
 
+        $this->ensureRateLimit($login);
+
         $adminModel = new Admin();
         $admin = $adminModel->findByLogin($login);
 
         if (!$admin || !password_verify($password, (string) ($admin['password'] ?? ''))) {
+            $this->recordFailedAttempt($login);
             Response::error('Invalid login credentials', 401);
         }
+
+        $this->clearRateLimit($login);
 
         if (($admin['status'] ?? 'active') !== 'active') {
             Response::error('Your account has been deactivated. Please contact the administrator.', 403);
@@ -211,32 +214,72 @@ final class AuthController extends BaseController
         Response::success(null, 'Password changed successfully');
     }
 
-    private function ensureRateLimit(): void
+    private function rateLimitKey(string $login): string
     {
         $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-        $now = time();
-        $window = 60;
-        $maxAttempts = 5;
+        return $ip . '|' . $login;
+    }
 
+    private function readRateLimitState(): array
+    {
         if (!is_file($this->rateLimitPath)) {
             file_put_contents($this->rateLimitPath, json_encode([], JSON_UNESCAPED_SLASHES));
         }
 
         $raw = file_get_contents($this->rateLimitPath) ?: '[]';
         $state = json_decode($raw, true);
-        if (!is_array($state)) {
-            $state = [];
-        }
 
-        $entries = array_filter($state[$ip] ?? [], static fn ($timestamp): bool => ($now - (int) $timestamp) <= $window);
+        return is_array($state) ? $state : [];
+    }
+
+    private function writeRateLimitState(array $state): void
+    {
+        file_put_contents($this->rateLimitPath, json_encode($state, JSON_UNESCAPED_SLASHES));
+    }
+
+    /**
+     * Blocks the request if this IP+email combination has too many recent
+     * failed attempts. Keying by IP+email (rather than IP alone) avoids
+     * punishing every user behind a shared IP/VPN exit node for one
+     * account's failed logins.
+     */
+    private function ensureRateLimit(string $login): void
+    {
+        $key = $this->rateLimitKey($login);
+        $now = time();
+        $window = 60;
+        $maxAttempts = 5;
+
+        $state = $this->readRateLimitState();
+        $entries = array_filter($state[$key] ?? [], static fn ($timestamp): bool => ($now - (int) $timestamp) <= $window);
 
         if (count($entries) >= $maxAttempts) {
             Response::error('Too many login attempts. Try again in 1 minute.', 429);
         }
+    }
 
+    private function recordFailedAttempt(string $login): void
+    {
+        $key = $this->rateLimitKey($login);
+        $now = time();
+        $window = 60;
+
+        $state = $this->readRateLimitState();
+        $entries = array_filter($state[$key] ?? [], static fn ($timestamp): bool => ($now - (int) $timestamp) <= $window);
         $entries[] = $now;
-        $state[$ip] = array_values($entries);
+        $state[$key] = array_values($entries);
 
-        file_put_contents($this->rateLimitPath, json_encode($state, JSON_UNESCAPED_SLASHES));
+        $this->writeRateLimitState($state);
+    }
+
+    private function clearRateLimit(string $login): void
+    {
+        $key = $this->rateLimitKey($login);
+        $state = $this->readRateLimitState();
+
+        if (isset($state[$key])) {
+            unset($state[$key]);
+            $this->writeRateLimitState($state);
+        }
     }
 }

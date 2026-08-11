@@ -21,6 +21,7 @@ use Backend\Controllers\HeroController;
 use Backend\Controllers\NavLinkController;
 use Backend\Controllers\NavLinkItemController;
 use Backend\Controllers\ProductController;
+use Backend\Controllers\ProductCommentController;
 use Backend\Controllers\SettingController;
 use Backend\Controllers\SocialLinkController;
 use Backend\Controllers\UploadController;
@@ -33,6 +34,7 @@ require_once __DIR__ . '/../controllers/CategoryController.php';
 require_once __DIR__ . '/../controllers/OrderController.php';
 require_once __DIR__ . '/../controllers/SectionBannerController.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
+require_once __DIR__ . '/../controllers/ProductCommentController.php';
 require_once __DIR__ . '/../controllers/BlogController.php';
 require_once __DIR__ . '/../controllers/BlogCategoryController.php';
 require_once __DIR__ . '/../controllers/SettingController.php';
@@ -206,6 +208,10 @@ function registerAdminRoutes(Router $router): void
     $router->get('/api/admin/contact', [ContactController::class, 'index'], $mw);
     $router->patch('/api/admin/contact/{id}/read', [ContactController::class, 'markRead'], $mw);
     $router->delete('/api/admin/contact/{id}', [ContactController::class, 'destroy'], $mw);
+
+    // Product Comments (admin moderation)
+    $router->get('/api/admin/product-comments', [ProductCommentController::class, 'index'], $mw);
+    $router->delete('/api/admin/product-comments/{id}', [ProductCommentController::class, 'adminDestroy'], $mw);
 
     // Customer Addresses (admin)
     $router->get('/api/admin/customers', [CustomerAddressController::class, 'index'], $mw);

@@ -22,6 +22,7 @@ import OrderList from "./pages/orders/OrderList";
 import SiteSettings from "./pages/settings/SiteSettings";
 import UserManagement from "./pages/users/UserManagement";
 import ContactMessages from "./pages/contact/ContactMessages";
+import ProductComments from "./pages/comments/ProductComments";
 import ContactPageSettings from "./pages/contact/ContactPageSettings";
 import CustomerAddresses from "./pages/addresses/CustomerAddresses";
 import AboutPageSettings from "./pages/about/AboutPageSettings";
@@ -180,6 +181,7 @@ export default function App() {
           />
 
           <Route path="/contact-messages" element={<ProtectedPage><ContactMessages /></ProtectedPage>} />
+          <Route path="/product-comments" element={<ProtectedPage><ProductComments /></ProtectedPage>} />
           <Route path="/contact-settings" element={<ProtectedPage><ContactPageSettings /></ProtectedPage>} />
 
           <Route path="/about/settings" element={<ProtectedPage><AboutPageSettings /></ProtectedPage>} />

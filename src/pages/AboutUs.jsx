@@ -209,7 +209,7 @@ export default function AboutUs() {
               return (
                 <div key={member.id} className="group relative text-center">
                    {/* Profile Image Card */}
-                   <div className="relative w-64 sm:w-72 md:w-80 lg:w-96 h-64 sm:h-72 md:h-80 lg:h-96 rounded-3xl md:rounded-4xl overflow-hidden shadow-lg md:shadow-xl transition-all duration-500 transform group-hover:-translate-y-3 mb-4">
+                   <div className="relative w-72 sm:w-80 md:w-96 lg:w-[28rem] h-72 sm:h-80 md:h-96 lg:h-[28rem] rounded-3xl md:rounded-4xl overflow-hidden shadow-lg md:shadow-xl transition-all duration-500 transform group-hover:-translate-y-3 mb-4">
                       <img
                         src={member.photo ? resolveUploadUrl(member.photo) : ''}
                         alt={member.name}

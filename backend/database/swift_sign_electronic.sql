@@ -571,4 +571,23 @@ INSERT IGNORE INTO `about_testimonials` (`id`, `rating`, `quote`, `name`, `title
 (2, 5, 'The attention to detail and rigorous quality control is unmatched. We''ve sourced parts globally for years, but Swift Sign is in a completely different league of its own.', 'David Chen', 'CTO, Quantum Robotics', 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=200', 1, 1),
 (3, 5, 'Exceptional service and flawless execution. They delivered a massive bulk order of rare silicon components exactly when we needed it to meet our launch deadline.', 'Elena Rodriguez', 'Director of Hardware, NexTech', 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200', 2, 1);
 
+-- ------------------------------------------------------------
+-- product_comments (customer comments/reviews on a product; edit_token
+-- lets the anonymous poster edit/delete their own comment without login)
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `product_comments` (
+  `id`         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  `product_id` INT UNSIGNED NOT NULL,
+  `name`       VARCHAR(120) NOT NULL,
+  `email`      VARCHAR(180) NOT NULL,
+  `comment`    TEXT NOT NULL,
+  `edit_token` CHAR(64) NOT NULL,
+  `status`     ENUM('visible','hidden') NOT NULL DEFAULT 'visible',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_product_id` (`product_id`),
+  INDEX `idx_edit_token` (`edit_token`),
+  CONSTRAINT `fk_product_comments_product` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET FOREIGN_KEY_CHECKS = 1;

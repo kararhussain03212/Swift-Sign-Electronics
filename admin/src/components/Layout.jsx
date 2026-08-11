@@ -14,6 +14,7 @@ const NAV = [
     { path: "/products", label: "Products" },
     { path: "/categories", label: "Categories" },
     { path: "/orders", label: "Orders" },
+    { path: "/product-comments", label: "Product Comments" },
   ]},
 
   { section: "Home Page", items: [
@@ -67,6 +68,7 @@ const PAGE_TITLES = {
   "/blog-categories":                "Blog Categories",
   "/blog-categories/new":            "Add Blog Category",
   "/contact-messages":               "Contact Messages",
+  "/product-comments":               "Product Comments",
   "/contact-settings":               "Contact Page Settings",
   "/about/settings":                 "About Page Settings",
   "/about/value-cards":              "About: Value Cards",

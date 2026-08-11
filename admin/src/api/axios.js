@@ -71,6 +71,14 @@ api.interceptors.response.use(
         emitAuthLogout()
       }
     }
+
+    // Backend error responses carry the message under `error`, not `message`.
+    // Mirror it onto `message` so every form's `err.response.data.message` works.
+    const data = error?.response?.data
+    if (data && typeof data === 'object' && !data.message && data.error) {
+      data.message = data.error
+    }
+
     return Promise.reject(error)
   }
 )

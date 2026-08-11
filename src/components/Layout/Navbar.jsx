@@ -62,8 +62,8 @@ export default function Navbar({ activeTab, onTabChange, cartCount }) {
   };
 
   const handleProductClick = (product) => {
-    onTabChange?.('products');
-    sessionStorage.setItem('selectedProduct', product.id);
+    navigate(`/product/${product.slug}`);
+    setIsSearchSidebarOpen(false);
     setShowDropdown(false);
     setSearchQuery('');
   };
